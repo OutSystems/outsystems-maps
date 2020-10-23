@@ -8,6 +8,7 @@ function OsGoogleMap() {
         removeEvent: 'removeEvent',
         setCenter: 'setCenter'
     };
+    
     var OSMaps = {};
     var geocoder;
 
@@ -256,6 +257,11 @@ function OsGoogleMap() {
         marker.options = markerOptions;
         
         var gMarker = addGMarker(mapId, marker);
+
+        //For address locations only
+        if(!gMarker){
+            return;
+        }
 
         if(Map.handler !== '' && marker.options.eventName !== '') {
             gMarker.addListener(marker.options.eventName, function(){
