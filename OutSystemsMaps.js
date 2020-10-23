@@ -257,6 +257,11 @@ function OsGoogleMap() {
         
         var gMarker = addGMarker(mapId, marker);
 
+        //For address locations only
+        if(!gMarker){
+            return;
+        }
+
         if(Map.handler !== '' && marker.options.eventName !== '') {
             gMarker.addListener(marker.options.eventName, function(){
                 Map.handler(mapId, marker.markerId, marker.options.eventName);
