@@ -11,6 +11,8 @@ function OsGoogleMap() {
     var OSMaps = {};
     var geocoder;
 
+    //cenas
+
     function Map(container){
         this.mapId = container;
         this.markers = [];
