@@ -8,6 +8,7 @@ function OsGoogleMap() {
         removeEvent: 'removeEvent',
         setCenter: 'setCenter'
     };
+    
     var OSMaps = {};
     var geocoder;
 
