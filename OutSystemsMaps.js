@@ -441,7 +441,7 @@ function OsGoogleMap() {
     };
 
     this.getMarkersForStatic = function(){
-        var mapObject = getMapObject('static-map');
+        var mapObject = this.getMapObject('static-map');
         if(!mapObject){
             return;
         }
