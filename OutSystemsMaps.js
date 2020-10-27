@@ -10,6 +10,7 @@ function OsGoogleMap() {
     };
     
     var OSMaps = {};
+    var staticMarkers = {};
     var geocoder;
 
     function Map(container){
@@ -439,12 +440,13 @@ function OsGoogleMap() {
         map.callbacks = [];
     };
 
-    this.pushActionToQueue = function(mapId, action, object){
-        var map = this.getMapObject(mapId) || new Map(mapId);
-        var callback = {};
+    this.getMarkersForStatic = function(){
+        var mapObject = getMapObject('static-map');
+        if(!mapObject){
+            return;
+        }
 
-        callback.eventName = callbackCodes.addMarker;
-        callback.object = marker;
+        return mapObject.callbacks;        
     };
 
     this.setMapCenter = function(mapId, lat, lng){
@@ -457,6 +459,7 @@ function OsGoogleMap() {
         OSMaps[mapId] = map;
     };
 
+
     this.init = function init(mapContainer, apiKey, latitude, longitude, options, callback, eventHandler){
         
         //Check if script exists
@@ -464,7 +467,7 @@ function OsGoogleMap() {
             // Create the script tag, set the appropriate attributes
             var script = document.createElement('script');
     
-            script.src = 'https://maps.googleapis.com/maps/api/js?key=' + apiKey + '&callback=stuff';
+            script.src = 'https://maps.googleapis.com/maps/api/js?key=' + apiKey;
             script.async = true;
             script.defer = true;
             script.id='google-maps-script';
