@@ -10,7 +10,6 @@ function OsGoogleMap() {
     };
     
     var OSMaps = {};
-    var staticMarkers = {};
     var geocoder;
 
     function Map(container){
