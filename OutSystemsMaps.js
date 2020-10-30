@@ -276,6 +276,10 @@ function OsGoogleMap() {
         var marker = this.getMarker(mapId, markerId);
         var advancedFormatToString;
         var advancedFormatObj;
+
+        if(!advancedFormatObj){
+            return;
+        }
             
         try {
             advancedFormatToString = JSON.stringify(eval('(' + markerOptions + ')'));
