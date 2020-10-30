@@ -354,6 +354,17 @@ function OsGoogleMap() {
         map.setZoom(zoomLevel);
     };
 
+    this.setIcon(mapId, markerId, iconURL){
+        var map = osGoogleMap.getMap(mapId);
+        var marker = osGoogleMap.getMarker(mapId, markerId);
+
+        if(!map || !marker){
+            return;
+        }
+
+        marker.setIcon(iconURL);
+    }
+
     this.setMapPan = function (mapId, offsetX, offsetY){
 
         var mapObject = osGoogleMap.getMapObject(mapId);
