@@ -358,7 +358,7 @@ function OsGoogleMap() {
         map.setZoom(zoomLevel);
     };
 
-    this.setIcon(mapId, markerId, iconURL){
+    this.setIcon = function(mapId, markerId, iconURL){
         var map = osGoogleMap.getMap(mapId);
         var marker = osGoogleMap.getMarker(mapId, markerId);
 
