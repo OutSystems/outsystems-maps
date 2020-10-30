@@ -366,6 +366,10 @@ function OsGoogleMap() {
             return;
         }
 
+        if(marker.icon === iconURL){
+            return;
+        }
+
         marker.setIcon(iconURL);
     }
 
