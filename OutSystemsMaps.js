@@ -42,7 +42,6 @@ function OsGoogleMap() {
                     lat: latitude || 0, 
                     lng: longitude || 0
                 },
-                mapHeight: opts.mapHeight,
                 zoom: opts.mapZoom,
                 zoomControl: opts.zoomControl,
                 mapTypeControl: opts.mapTypeControl,
@@ -276,6 +275,10 @@ function OsGoogleMap() {
         var marker = this.getMarker(mapId, markerId);
         var advancedFormatToString;
         var advancedFormatObj;
+
+        if(!advancedFormatObj){
+            return;
+        }
             
         try {
             advancedFormatToString = JSON.stringify(eval('(' + markerOptions + ')'));
@@ -354,12 +357,30 @@ function OsGoogleMap() {
         map.setZoom(zoomLevel);
     };
 
+    this.setIcon = function(mapId, markerId, iconURL){
+        var map = osGoogleMap.getMap(mapId);
+        var marker = osGoogleMap.getMarker(mapId, markerId);
+
+        if(!map || !marker){
+            return;
+        }
+
+        if(marker.icon === iconURL){
+            return;
+        }
+
+        marker.setIcon(iconURL);
+    }
+
     this.setMapPan = function (mapId, offsetX, offsetY){
 
         var mapObject = osGoogleMap.getMapObject(mapId);
 
         mapObject.autofit.offsetX = offsetX || 0;
         mapObject.autofit.offsetY = offsetY || 0;
+        
+        console.log('setMapPan Function');
+        console.log(mapObject.autofit.enabled);
     };
 
     this.setOffset = function (mapId, offsetX, offsetY){
@@ -370,6 +391,8 @@ function OsGoogleMap() {
         }
 
         map.panBy(offsetX, offsetY);
+        
+        console.log('setOffset Function');
     };
 
     // Calculates the map's bounds
@@ -407,6 +430,8 @@ function OsGoogleMap() {
 
         // do autofit here
         osGoogleMap.setOffset(mapId, mapObject.autofit.offsetX, mapObject.autofit.offsetY);
+        
+        console.log('setMapBounds Function');
     };
 
 
