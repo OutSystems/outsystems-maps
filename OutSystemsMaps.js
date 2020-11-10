@@ -355,8 +355,6 @@ function OsGoogleMap() {
         mapObject.autofit.offsetX = offsetX || 0;
         mapObject.autofit.offsetY = offsetY || 0;
         
-        console.log('setMapPan Function');
-        console.log(mapObject.autofit.enabled);
     };
 
     this.setOffset = function (mapId, offsetX, offsetY){
@@ -368,7 +366,7 @@ function OsGoogleMap() {
 
         map.panBy(offsetX, offsetY);
         
-        console.log('setOffset Function');
+        
     };
 
     // Calculates the map's bounds
@@ -407,7 +405,6 @@ function OsGoogleMap() {
         // do autofit here
         osGoogleMap.setOffset(mapId, mapObject.autofit.offsetX, mapObject.autofit.offsetY);
         
-        console.log('setMapBounds Function');
     };
 
 
