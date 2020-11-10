@@ -140,23 +140,25 @@ function OsGoogleMap() {
     };
     
     function convertAddressToCoordinates(mapId, marker){
+        var obj;
         geocoder = new google.maps.Geocoder();
         geocoder.geocode( { 'address': marker.options.address}, function(results, status) {
             if (status == 'OK') {
                 marker.options.lat = results[0].geometry.location.lat();
                 marker.options.lng = results[0].geometry.location.lng();
-                addGMarker(mapId, marker);
+                obj = addGMarker(mapId, marker);
                 osGoogleMap.setMapBounds(mapId);
             } else {
                 alert('Geocode was not successful for the following reason: ' + status);
             }
         });
-
+        return obj;
     };
 
     //Private function
     function addGMarker(mapId, marker){
         var map = osGoogleMap.getMap(mapId);
+        var Map = osGoogleMap.getMapObject(mapId);
         var coordinates;
         var markerOptions = {};
         var advancedFormatToString;
@@ -169,8 +171,8 @@ function OsGoogleMap() {
         if(marker.options.lat !== undefined && marker.options.lng !== undefined){
             coordinates = {lat: marker.options.lat, lng: marker.options.lng};
         } else if(marker.options.hasOwnProperty('address')){
-            convertAddressToCoordinates(mapId, marker);
-            return;
+            var makrerObject = convertAddressToCoordinates(mapId, marker);
+            return makrerObject.markerId;
         }
         
         if(typeof marker.options.iconImage !== 'undefined' && marker.options.iconImage !== '') {
@@ -198,7 +200,11 @@ function OsGoogleMap() {
             gMarker.addListener(marker.options.eventName, function(){
                 marker.options.eventHandler(mapId, marker.markerId, marker.options.eventName);
             });
-        } 
+        } else if(Map.handler !== '' && marker.options.eventName !== '') {
+            gMarker.addListener(marker.options.eventName, function(){
+                Map.handler(mapId, marker.markerId, marker.options.eventName);
+            });
+        }
 
         if(marker.options.options !== "") {
             
@@ -224,7 +230,7 @@ function OsGoogleMap() {
         // Assign the news Marker to the respective Map position
         OSMaps[mapId].markers.push(newMarker);
 
-        return gMarker;
+        return {marker: gMarker, markerId: marker.markerId} ;
     };
 
     // This function is exposed to add markers via client action
@@ -235,7 +241,7 @@ function OsGoogleMap() {
         marker.markerId = markerId;
         marker.options = markerOptions;
         
-        var gMarker = addGMarker(mapId, marker);
+        var gMarker = addGMarker(mapId, marker).marker;
 
         //For address locations only
         if(!gMarker){
@@ -250,7 +256,7 @@ function OsGoogleMap() {
 
         osGoogleMap.setMapBounds(mapId);
 
-        return markerId;
+        return addGMarker(mapId, marker).markerId;
     };
 
     this.updateMarker = function(mapId, markerId, markerOptions){
