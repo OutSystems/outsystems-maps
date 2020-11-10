@@ -171,8 +171,8 @@ function OsGoogleMap() {
         if(marker.options.lat !== undefined && marker.options.lng !== undefined){
             coordinates = {lat: marker.options.lat, lng: marker.options.lng};
         } else if(marker.options.hasOwnProperty('address')){
-            var makrerObject = convertAddressToCoordinates(mapId, marker);
-            return makrerObject.markerId;
+            convertAddressToCoordinates(mapId, marker);
+            return;
         }
         
         if(typeof marker.options.iconImage !== 'undefined' && marker.options.iconImage !== '') {
