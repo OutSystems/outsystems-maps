@@ -1,14 +1,6 @@
 var osGoogleMap;
 
 function OsGoogleMap() {
-    var callbackCodes = {
-        addMarker: 'addMarker',
-        removeMarker: 'removeMarker',
-        addEvent: 'addEvent',
-        removeEvent: 'removeEvent',
-        setCenter: 'setCenter'
-    };
-    
     var OSMaps = {};
     var geocoder;
 
@@ -137,7 +129,6 @@ function OsGoogleMap() {
             var map = osGoogleMap.getMapObject(mapContainer) || new Map(mapContainer);
             map.gmap = map.initGMap(container,latitude, longitude, options, callback, eventHandler);
             OSMaps[mapContainer] = map;
-            applyCallback(mapContainer);
             
         } else {
             setTimeout(function(){
@@ -231,21 +222,6 @@ function OsGoogleMap() {
         OSMaps[mapId].markers.push(newMarker);
 
         return gMarker;
-    };
-
-    // This function is to add markers via callback
-    this.addMarker = function(mapContainer, markerId, markerOptions){
-        var map = this.getMapObject(mapContainer) || new Map(mapContainer);
-        var marker = {};
-        var callback = {};
-        marker.map = mapContainer;
-        marker.markerId = markerId;
-        marker.options = markerOptions;
-        callback.eventName = callbackCodes.addMarker;
-        callback.object = marker;
-        
-        map.callbacks.push(callback);
-        OSMaps[mapContainer] = map;
     };
 
     // This function is exposed to add markers via client action
@@ -428,35 +404,6 @@ function OsGoogleMap() {
         osGoogleMap.setOffset(mapId, mapObject.autofit.offsetX, mapObject.autofit.offsetY);
     };
 
-
-    //This is where the callbacks will be removed from the queue
-    function applyCallback(mapId){
-        var map = osGoogleMap.getMapObject(mapId);
-        if(!map){
-            return;
-        }
-        var callbacks = map.callbacks;
-        var gmap = map.gmap;
-
-        for(var i = 0; i < callbacks.length; i++){
-            switch (callbacks[i].eventName) {
-                case callbackCodes.addMarker:
-                    addGMarker(mapId, callbacks[i].object);
-                    break;
-                case callbackCodes.removeMarker:
-                    this.removeMarker(mapId, markerId);
-                    break;
-                case callbackCodes.setCenter:
-                    gmap.setCenter(callbacks[i].object);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        osGoogleMap.setMapBounds(mapId);
-        map.callbacks = [];
-    };
 
     this.getMarkersForStatic = function(){
         var mapObject = this.getMapObject('static-map');
