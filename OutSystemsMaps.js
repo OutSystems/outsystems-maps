@@ -392,27 +392,34 @@ function OsGoogleMap() {
         var mapObject = osGoogleMap.getMapObject(mapId);
         var bounds  = new google.maps.LatLngBounds();
         var loc;
+        
 
         //If the autofit feature has been turned off
-        if(!mapObject.autofit.enabled){
+        if(mapObject.markers.length === 0){
             return;
         }
-
-        if(mapObject.markers.length == 1) {
-            loc = new google.maps.LatLng(mapObject.markers[0].marker.position.lat(), mapObject.markers[0].marker.position.lng());
-            mapObject.gmap.setCenter(loc);
-        } else if(mapObject.markers.length >= 2) {
-            mapObject.markers.forEach(function(item){
-                loc = new google.maps.LatLng(item.marker.position.lat(), item.marker.position.lng());
+        
+        //If the autofit feature has been turned on
+        if(mapObject.autofit.enabled){
+            if(mapObject.markers.length == 1) {
+                loc = new google.maps.LatLng(mapObject.markers[0].marker.position.lat(), mapObject.markers[0].marker.position.lng());
                 bounds.extend(loc);
-            });
-            mapObject.gmap.fitBounds(bounds);
-            mapObject.gmap.panToBounds(bounds);
-        } else{
-            return;
+                mapObject.gmap.fitBounds(bounds);
+                mapObject.gmap.setCenter(loc);
+                mapObject.gmap.setZoom(8);
+            } else if(mapObject.markers.length >= 2) {
+                mapObject.markers.forEach(function(item){
+                    loc = new google.maps.LatLng(item.marker.position.lat(), item.marker.position.lng());
+                    bounds.extend(loc);
+                });
+                mapObject.gmap.fitBounds(bounds);
+                mapObject.gmap.panToBounds(bounds);
+            } else{
+                return;
+            }
         }
 
-        // do autofit here
+        // do offset here
         osGoogleMap.setOffset(mapId, mapObject.autofit.offsetX, mapObject.autofit.offsetY);
         
     };
