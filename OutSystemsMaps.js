@@ -2,13 +2,8 @@ var osGoogleMap;
 
 function OsGoogleMap() {
     var callbackCodes = {
-        addMarker: 'addMarker',
-        removeMarker: 'removeMarker',
-        addEvent: 'addEvent',
-        removeEvent: 'removeEvent',
         setCenter: 'setCenter'
     };
-    
     var OSMaps = {};
     var geocoder;
 
@@ -42,7 +37,6 @@ function OsGoogleMap() {
                     lat: latitude || 0, 
                     lng: longitude || 0
                 },
-                mapHeight: opts.mapHeight,
                 zoom: opts.mapZoom,
                 zoomControl: opts.zoomControl,
                 mapTypeControl: opts.mapTypeControl,
@@ -138,7 +132,6 @@ function OsGoogleMap() {
             map.gmap = map.initGMap(container,latitude, longitude, options, callback, eventHandler);
             OSMaps[mapContainer] = map;
             applyCallback(mapContainer);
-            
         } else {
             setTimeout(function(){
                 initMap(mapContainer, apiKey, latitude, longitude, options, callback, eventHandler);
@@ -163,6 +156,7 @@ function OsGoogleMap() {
     //Private function
     function addGMarker(mapId, marker){
         var map = osGoogleMap.getMap(mapId);
+        var Map = osGoogleMap.getMapObject(mapId);
         var coordinates;
         var markerOptions = {};
         var advancedFormatToString;
@@ -204,7 +198,11 @@ function OsGoogleMap() {
             gMarker.addListener(marker.options.eventName, function(){
                 marker.options.eventHandler(mapId, marker.markerId, marker.options.eventName);
             });
-        } 
+        } else if(Map.handler !== '' && marker.options.eventName !== '') {
+            gMarker.addListener(marker.options.eventName, function(){
+                Map.handler(mapId, marker.markerId, marker.options.eventName);
+            });
+        }
 
         if(marker.options.options !== "") {
             
@@ -233,21 +231,6 @@ function OsGoogleMap() {
         return gMarker;
     };
 
-    // This function is to add markers via callback
-    this.addMarker = function(mapContainer, markerId, markerOptions){
-        var map = this.getMapObject(mapContainer) || new Map(mapContainer);
-        var marker = {};
-        var callback = {};
-        marker.map = mapContainer;
-        marker.markerId = markerId;
-        marker.options = markerOptions;
-        callback.eventName = callbackCodes.addMarker;
-        callback.object = marker;
-        
-        map.callbacks.push(callback);
-        OSMaps[mapContainer] = map;
-    };
-
     // This function is exposed to add markers via client action
     this.addMapMarker = function (mapId, markerId, markerOptions){
         var Map = osGoogleMap.getMapObject(mapId);
@@ -270,12 +253,18 @@ function OsGoogleMap() {
         }
 
         osGoogleMap.setMapBounds(mapId);
+
+        return markerId;
     };
 
     this.updateMarker = function(mapId, markerId, markerOptions){
         var marker = this.getMarker(mapId, markerId);
         var advancedFormatToString;
         var advancedFormatObj;
+
+        if(!advancedFormatObj){
+            return;
+        }
             
         try {
             advancedFormatToString = JSON.stringify(eval('(' + markerOptions + ')'));
@@ -354,12 +343,28 @@ function OsGoogleMap() {
         map.setZoom(zoomLevel);
     };
 
+    this.setIcon = function(mapId, markerId, iconURL){
+        var map = osGoogleMap.getMap(mapId);
+        var marker = osGoogleMap.getMarker(mapId, markerId);
+
+        if(!map || !marker){
+            return;
+        }
+
+        if(marker.icon === iconURL){
+            return;
+        }
+
+        marker.setIcon(iconURL);
+    }
+
     this.setMapPan = function (mapId, offsetX, offsetY){
 
         var mapObject = osGoogleMap.getMapObject(mapId);
 
         mapObject.autofit.offsetX = offsetX || 0;
         mapObject.autofit.offsetY = offsetY || 0;
+        
     };
 
     this.setOffset = function (mapId, offsetX, offsetY){
@@ -370,6 +375,8 @@ function OsGoogleMap() {
         }
 
         map.panBy(offsetX, offsetY);
+        
+        
     };
 
     // Calculates the map's bounds
@@ -407,8 +414,8 @@ function OsGoogleMap() {
 
         // do autofit here
         osGoogleMap.setOffset(mapId, mapObject.autofit.offsetX, mapObject.autofit.offsetY);
+        
     };
-
 
     //This is where the callbacks will be removed from the queue
     function applyCallback(mapId){
@@ -421,12 +428,6 @@ function OsGoogleMap() {
 
         for(var i = 0; i < callbacks.length; i++){
             switch (callbacks[i].eventName) {
-                case callbackCodes.addMarker:
-                    addGMarker(mapId, callbacks[i].object);
-                    break;
-                case callbackCodes.removeMarker:
-                    this.removeMarker(mapId, markerId);
-                    break;
                 case callbackCodes.setCenter:
                     gmap.setCenter(callbacks[i].object);
                     break;
@@ -438,6 +439,7 @@ function OsGoogleMap() {
         osGoogleMap.setMapBounds(mapId);
         map.callbacks = [];
     };
+
 
     this.getMarkersForStatic = function(){
         var mapObject = this.getMapObject('static-map');
