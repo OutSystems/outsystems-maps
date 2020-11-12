@@ -25,15 +25,6 @@ function OsGoogleMap() {
                 newMapStyle = opts.mapStyle.replace(/'/g, '"');
                 mapStyleObj = JSON.parse(newMapStyle);    
             }
-            
-
-            // Review this as this won' accpet what we have on the description: 100% and 100vh;
-            if(numbers.test(opts.mapHeight)) {
-                opts.mapHeight = opts.mapHeight + "px";
-            } 
-
-            // Set maps height based on ratio of width
-            container.style.height = opts.mapHeight;
 
             var gmap = new google.maps.Map(container, {
                 center: { 
