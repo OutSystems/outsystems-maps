@@ -13,6 +13,9 @@ function OsGoogleMap() {
         this.callbacks = []; //event, object
         this.autofit={};
         this.handler;
+        this.markerClick;
+        this.markerMouseover;
+        this.markerMouseout;
         
         this.initGMap = function initGMap(container, latitude, longitude, opts, callback, eventHandler){
             var newMapStyle, mapStyleObj;
@@ -47,6 +50,10 @@ function OsGoogleMap() {
                 mapTypeId: opts.mapTypeId,
                 styles: mapStyleObj
             });
+            
+            this.markerClick = opts.markerClick;
+            this.markerMouseover = opts.markerMouseover;
+            this.markerMouseout = opts.markerMouseout;
            
             if(opts.mapAdvancedFormat !== "")
                 gmap.setOptions(JSON.parse(JSON.stringify(eval('(' + opts.mapAdvancedFormat + ')'))));
@@ -188,21 +195,20 @@ function OsGoogleMap() {
         
         var gMarker = new google.maps.Marker(markerOptions);
         
-
-        //check if these options exist hasOwnProperty
-        if(marker.options.useDefault) {
-            gMarker.addListener('click', function() {
-                
-              });
-        } else if(marker.options.eventName !== '' && marker.options.hasOwnProperty('eventHandler')){
-            gMarker.addListener(marker.options.eventName, function(){
-                marker.options.eventHandler(mapId, marker.markerId, marker.options.eventName);
-            });
-        } else if(Map.handler !== '' && marker.options.eventName !== '') {
-            gMarker.addListener(marker.options.eventName, function(){
-                Map.handler(mapId, marker.markerId, marker.options.eventName);
-            });
-        }
+        var currentIndex = marker.options.currentIndex;
+        
+        gMarker.addListener("click", function(){
+            Map.markerClick(mapId, marker.markerId, currentIndex);
+        });
+        
+        gMarker.addListener("mouseover", function(){
+            Map.markerMouseover(mapId, marker.markerId, currentIndex);
+        });
+        
+        gMarker.addListener("mouseout", function(){
+            Map.markerMouseout(mapId, marker.markerId, currentIndex);
+        });
+        
 
         if(marker.options.options !== "") {
             
@@ -220,8 +226,19 @@ function OsGoogleMap() {
             
             if(typeof advancedFormatObj === 'object' && advancedFormatObj !== null) {
                 gMarker.setOptions(advancedFormatObj);
+                
+                if(Map.handler !== '' && advancedFormatObj.hasOwnProperty('markerEvents')) {
+                    for (var i = 0; i < advancedFormatObj.markerEvents.length; i++){
+                        var event = advancedFormatObj.markerEvents[i];
+                        
+                        gMarker.addListener(advancedFormatObj.markerEvents[i], function(){
+                            Map.handler(mapId, marker.markerId, currentIndex, event);
+                        });
+                    }
+                }
             }
         }
+        
 
         var newMarker = new Marker(mapId, marker.markerId, gMarker);
 
@@ -315,14 +332,17 @@ function OsGoogleMap() {
         OSMap.markers = []; 
     };
 
-    this.addMarkerEvent = function(mapId, markerId, eventName, handler) {
+    this.addEventsToMarker = function(mapId, eventName, handler) {
         var OSMap = this.getMapObject(mapId);
+        var gMap = this.getMap(mapId);
         
         // Gets an existing OSMarker or a stub (to add callbacks)
-        var marker = OSMap.markers[markerId];
-        googleMaps.event.addListener(marker.marker, eventName, function(){
-            handler(mapId, markerId, eventName);
-        });
+        var marker = OSMap.markers;
+        for(var i = 0; i < OSMap.markers.length; i++) {
+            marker[i].marker.addListener(eventName, function(){
+                handler(mapId, eventName);
+            });
+        }
     };
 
     this.panMapToMarker = function (mapId, markerId, zoomLevel){
@@ -392,34 +412,27 @@ function OsGoogleMap() {
         var mapObject = osGoogleMap.getMapObject(mapId);
         var bounds  = new google.maps.LatLngBounds();
         var loc;
-        
 
         //If the autofit feature has been turned off
-        if(mapObject.markers.length === 0){
+        if(!mapObject.autofit.enabled){
             return;
         }
-        
-        //If the autofit feature has been turned on
-        if(mapObject.autofit.enabled){
-            if(mapObject.markers.length == 1) {
-                loc = new google.maps.LatLng(mapObject.markers[0].marker.position.lat(), mapObject.markers[0].marker.position.lng());
+
+        if(mapObject.markers.length == 1) {
+            loc = new google.maps.LatLng(mapObject.markers[0].marker.position.lat(), mapObject.markers[0].marker.position.lng());
+            mapObject.gmap.setCenter(loc);
+        } else if(mapObject.markers.length >= 2) {
+            mapObject.markers.forEach(function(item){
+                loc = new google.maps.LatLng(item.marker.position.lat(), item.marker.position.lng());
                 bounds.extend(loc);
-                mapObject.gmap.fitBounds(bounds);
-                mapObject.gmap.setCenter(loc);
-                mapObject.gmap.setZoom(8);
-            } else if(mapObject.markers.length >= 2) {
-                mapObject.markers.forEach(function(item){
-                    loc = new google.maps.LatLng(item.marker.position.lat(), item.marker.position.lng());
-                    bounds.extend(loc);
-                });
-                mapObject.gmap.fitBounds(bounds);
-                mapObject.gmap.panToBounds(bounds);
-            } else{
-                return;
-            }
+            });
+            mapObject.gmap.fitBounds(bounds);
+            mapObject.gmap.panToBounds(bounds);
+        } else{
+            return;
         }
 
-        // do offset here
+        // do autofit here
         osGoogleMap.setOffset(mapId, mapObject.autofit.offsetX, mapObject.autofit.offsetY);
         
     };
