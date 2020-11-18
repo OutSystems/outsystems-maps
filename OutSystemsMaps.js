@@ -135,6 +135,7 @@ function OsGoogleMap() {
                 initMap(mapContainer, apiKey, latitude, longitude, options, callback, eventHandler);
             }, 50);
         }
+        alert('inited');
     };
     
     function convertAddressToCoordinates(mapId, marker){
