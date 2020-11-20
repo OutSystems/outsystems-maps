@@ -4,6 +4,35 @@ function OsGoogleMap() {
     var callbackCodes = {
         setCenter: 'setCenter'
     };
+    var geocoderCodes = {
+        ok: {
+			status: "OK"
+		},
+        zero: {
+			status: "ZERO_RESULTS",
+			message: "[🗺 GEOCODE 🗺] The geocode was successful but returned no results. This may have occurred if the geocoder was passed a non-existent address."
+		},
+        query: {
+			status: "OVER_QUERY_LIMIT", 
+			message: "[🗺 GEOCODE 🗺] The geocode was not successful because you are over your quota" 		},
+        denied: {
+			status: "REQUEST_DENIED",
+			message: "[🗺 GEOCODE 🗺] Your geocode request was denied. The web page is not allowed to use the geocoder"
+		},
+        invalid: {
+			status: "INVALID_REQUEST",
+			message: "[🗺 GEOCODE 🗺] The query made to  the geocoder is invalid, the query is missing"
+		}, 
+        unknown: {
+			status: "UNKNOWN_ERROR",
+			message: "[🗺 GEOCODE 🗺] The geocode request could not be processed due to a server error. The request may succedd if you try again."
+		},
+        error: {
+			status: "ERROR",
+			message: "[🗺 GEOCODE 🗺] The request timed out or there was a problem contacting the Google servers. The request may succedd if you try again."
+		}
+    };
+
     var OSMaps = {};
     var geocoder;
 
@@ -25,6 +54,7 @@ function OsGoogleMap() {
                 newMapStyle = opts.mapStyle.replace(/'/g, '"');
                 mapStyleObj = JSON.parse(newMapStyle);    
             }
+            
 
             var gmap = new google.maps.Map(container, {
                 center: { 
@@ -140,13 +170,33 @@ function OsGoogleMap() {
     function convertAddressToCoordinates(mapId, marker){
         geocoder = new google.maps.Geocoder();
         geocoder.geocode( { 'address': marker.options.address}, function(results, status) {
-            if (status == 'OK') {
-                marker.options.lat = results[0].geometry.location.lat();
-                marker.options.lng = results[0].geometry.location.lng();
-                addGMarker(mapId, marker);
-                osGoogleMap.setMapBounds(mapId);
-            } else {
-                alert('Geocode was not successful for the following reason: ' + status);
+            switch(status){
+                case geocoderCodes.ok.status:
+                    marker.options.lat = results[0].geometry.location.lat();
+                    marker.options.lng = results[0].geometry.location.lng();
+                    addGMarker(mapId, marker);
+                    osGoogleMap.setMapBounds(mapId);
+                    break;
+                case geocoderCodes.zero.status:
+                    console.warn("[GEOCODE ] The geocode was successful but returned no results. This may have occurred if the geocoder was passed a non-existent address.");
+                    break;
+                case geocoderCodes.query.status:
+                    console.warn("[GEOCODE] The geocode was not successful because you are over your quota");
+                    break;
+                case geocoderCodes.denied.status:
+                    console.warn("[GEOCODE] Your geocode request was denied. The web page is not allowed to use the geocoder");
+                    break;
+                case geocoderCodes.invalid.status:
+                    console.warn("[GEOCODE] The query made to  the geocoder is invalid, the query is missing");
+                    break;
+                case geocoderCodes.unknown.status:
+                    console.warn("[GEOCODE] The geocode request could not be processed due to a server error. The request may succedd if you try again.");
+                    break;
+                case geocoderCodes.error.status:
+                    console.warn("[GEOCODE] The request timed out or there was a problem contacting the Google servers. The request may succedd if you try again.");
+                    break;
+                default:
+                    break;
             }
         });
     };
@@ -405,25 +455,31 @@ function OsGoogleMap() {
         var loc;
 
         //If the autofit feature has been turned off
-        if(!mapObject.autofit.enabled){
+        if(mapObject.markers.length === 0){
             return;
         }
-
-        if(mapObject.markers.length == 1) {
-            loc = new google.maps.LatLng(mapObject.markers[0].marker.position.lat(), mapObject.markers[0].marker.position.lng());
-            mapObject.gmap.setCenter(loc);
-        } else if(mapObject.markers.length >= 2) {
-            mapObject.markers.forEach(function(item){
-                loc = new google.maps.LatLng(item.marker.position.lat(), item.marker.position.lng());
+        
+        //If the autofit feature has been turned on
+        if(mapObject.autofit.enabled){
+            if(mapObject.markers.length === 1) {
+                loc = new google.maps.LatLng(mapObject.markers[0].marker.position.lat(), mapObject.markers[0].marker.position.lng());
                 bounds.extend(loc);
-            });
-            mapObject.gmap.fitBounds(bounds);
-            mapObject.gmap.panToBounds(bounds);
-        } else{
-            return;
+                mapObject.gmap.fitBounds(bounds);
+                mapObject.gmap.setCenter(loc);
+                mapObject.gmap.setZoom(8);
+            } else if(mapObject.markers.length >= 2) {
+                mapObject.markers.forEach(function(item){
+                    loc = new google.maps.LatLng(item.marker.position.lat(), item.marker.position.lng());
+                    bounds.extend(loc);
+                });
+                mapObject.gmap.fitBounds(bounds);
+                mapObject.gmap.panToBounds(bounds);
+            } else{
+                return;
+            }
         }
 
-        // do autofit here
+        // do offset here
         osGoogleMap.setOffset(mapId, mapObject.autofit.offsetX, mapObject.autofit.offsetY);
         
     };
