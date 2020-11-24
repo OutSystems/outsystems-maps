@@ -95,13 +95,6 @@ function OsGoogleMap() {
                 }
             });
 
-
-            google.maps.event.addListener(gmap, 'resize', function() {
-                if(typeof opts.resize === 'function'){
-                    opts.resize(opts.mapId);
-                }
-            });
-
             if(opts.eventName !== ""){
                 google.maps.event.addListener(gmap, opts.eventName, function() {
                     if(typeof opts.event === 'function'){
