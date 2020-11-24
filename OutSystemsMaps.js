@@ -45,6 +45,7 @@ function OsGoogleMap() {
         this.markerClick;
         this.markerMouseover;
         this.markerMouseout;
+        this.trafficLayer;
         
         this.initGMap = function initGMap(container, latitude, longitude, opts, callback, eventHandler){
             var newMapStyle, mapStyleObj;
@@ -87,6 +88,10 @@ function OsGoogleMap() {
             if(opts.hasOwnProperty('autofit')){
                 this.autofit.enabled = opts.autofit;
             }
+            
+            if(opts.mapShowTraffic){
+                trafficLayer = new google.maps.TrafficLayer();
+            }
 
             //Map was initialized
             google.maps.event.addListenerOnce(gmap, 'idle', function(){
@@ -94,6 +99,7 @@ function OsGoogleMap() {
                     callback();
                 }
             });
+
 
             if(opts.eventName !== ""){
                 google.maps.event.addListener(gmap, opts.eventName, function() {
