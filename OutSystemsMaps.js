@@ -101,12 +101,16 @@ function OsGoogleMap() {
             });
 
 
-            if(opts.eventName !== ""){
-                google.maps.event.addListener(gmap, opts.eventName, function() {
-                    if(typeof opts.event === 'function'){
-                        opts.event(opts.mapId, opts.eventName);
-                    }
-                });
+            // Handling the events for map added via Advanced Format
+            if(opts.mapAdvancedFormat.includes('eventName')){
+            	let options = (JSON.parse(JSON.stringify(eval('(' + opts.mapAdvancedFormat + ')'))))
+            	if(options.eventName !== ""){
+					google.maps.event.addListener(gmap, options.eventName, function() {
+						if(typeof opts.event === 'function'){
+							opts.event(opts.mapId, options.eventName);
+						}
+					});
+				}
             }
 
             this.handler = eventHandler;
