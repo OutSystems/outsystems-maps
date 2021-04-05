@@ -2,7 +2,7 @@
 Add maps to your applications **OutSystems Reactive Web apps** with a single or multiple locations. Fully customizable and adaptable, allows you to change map behaviors, customize your map, add markers and customize each of them, according to your use case.
 
 ## About the component
--
+- _TODO_
 
 #### Key features 
 * Display a google map
@@ -14,10 +14,10 @@ The OutSystems component, like all components, can be found in [OutSystems forge
 The documentation for the component can be found in the [official page](https://success.outsystems.com/Documentation/11/Developing_an_Application/Design_UI/Patterns/Using_Mobile_and_Reactive_Patterns/Map).
 
 ### Why use this component?
--
+- _TODO_
 
 ## About this repository
-This repository contains the code that enable the usage of an external provider **google maps** to which you're required to [obtain a license]((https://developers.google.com/maps/documentation/javascript/get-api-key).
+This repository contains the code that enable the usage of an external provider **google maps** to which you're required to [obtain a license](https://developers.google.com/maps/documentation/javascript/get-api-key).
 The code is written in TypeScript🖤, and you are welcome to branch it and PR your changes/proposals!
 
 ### What tools should you use?
