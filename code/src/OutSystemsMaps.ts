@@ -42,10 +42,10 @@ function OsGoogleMap() {
     };
 
     const OSMaps = {};
-    let geocoder;
+    let geocoder: google.maps.Geocoder;
 
-    function Map(container) {
-        this.mapId = container;
+    function Map(mapContainerId: string): void {
+        this.mapId = mapContainerId;
         this.markers = [];
         this.callbacks = []; //event, object
         this.autofit = {};
@@ -56,13 +56,13 @@ function OsGoogleMap() {
         this.trafficLayer;
 
         this.initGMap = function initGMap(
-            container,
-            latitude,
-            longitude,
+            container: Element,
+            latitude: number,
+            longitude: number,
             opts,
             callback,
             eventHandler
-        ) {
+        ): google.maps.Map {
             let newMapStyle;
             let mapStyleObj;
 
@@ -145,14 +145,18 @@ function OsGoogleMap() {
         };
     }
 
-    function Marker(container, markerId, marker) {
-        this.parentMap = container;
+    function Marker(
+        parentMapId: string,
+        markerId: string,
+        marker: google.maps.Marker
+    ): void {
+        this.parentMap = parentMapId;
         this.markerId = markerId;
         this.marker = marker;
     }
 
     // This returns the Google Map object associated with a Map
-    this.getMap = function (mapId) {
+    this.getMap = function (mapId: string): google.maps.Map {
         if (typeof OSMaps[mapId] === 'undefined') {
             return;
         } else {
@@ -161,11 +165,11 @@ function OsGoogleMap() {
     };
 
     //This returns the Map object
-    this.getMapObject = function (mapId) {
+    this.getMapObject = function (mapId: string) /*: Map */ {
         return OSMaps[mapId];
     };
 
-    this.getMarker = function (mapId, markerId) {
+    this.getMarker = function (mapId: string, markerId): void {
         this.getMapObject(mapId);
         if (typeof OSMaps[mapId] === 'undefined') {
             console.error('Map does not exist.');
@@ -181,19 +185,18 @@ function OsGoogleMap() {
     };
 
     function initMap(
-        mapContainer,
-        apiKey,
-        latitude,
-        longitude,
+        mapId: string,
+        apiKey: string,
+        latitude: number,
+        longitude: number,
         options,
         callback,
         eventHandler
-    ) {
+    ): void {
         // Check if google object exists or not
         if (typeof google === 'object' && typeof google.maps === 'object') {
-            const container = document.getElementById(mapContainer);
-            const map =
-                osGoogleMap.getMapObject(mapContainer) || new Map(mapContainer);
+            const container: HTMLElement = document.getElementById(mapId);
+            const map = osGoogleMap.getMapObject(mapId) || new Map(mapId);
             map.gmap = map.initGMap(
                 container,
                 latitude,
@@ -202,12 +205,12 @@ function OsGoogleMap() {
                 callback,
                 eventHandler
             );
-            OSMaps[mapContainer] = map;
-            applyCallback(mapContainer);
+            OSMaps[mapId] = map;
+            applyCallback(mapId);
         } else {
             setTimeout(function () {
                 initMap(
-                    mapContainer,
+                    mapId,
                     apiKey,
                     latitude,
                     longitude,
@@ -219,7 +222,7 @@ function OsGoogleMap() {
         }
     }
 
-    function convertAddressToCoordinates(mapId, marker) {
+    function convertAddressToCoordinates(mapId: string, marker) {
         geocoder = new google.maps.Geocoder();
         geocoder.geocode(
             { address: marker.options.address },
@@ -269,7 +272,7 @@ function OsGoogleMap() {
     }
 
     //Private function
-    function addGMarker(mapId, marker) {
+    function addGMarker(mapId: string, marker): google.maps.Marker {
         const map = osGoogleMap.getMap(mapId);
         const Map = osGoogleMap.getMapObject(mapId);
         let coordinates;
@@ -380,7 +383,11 @@ function OsGoogleMap() {
     }
 
     // This function is exposed to add markers via client action
-    this.addMapMarker = function (mapId, markerId, markerOptions) {
+    this.addMapMarker = function (
+        mapId: string,
+        markerId: string,
+        markerOptions
+    ): string {
         const Map = osGoogleMap.getMapObject(mapId);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const marker: any = {};
@@ -406,7 +413,11 @@ function OsGoogleMap() {
         return markerId;
     };
 
-    this.updateMarker = function (mapId, markerId, markerOptions) {
+    this.updateMarker = function (
+        mapId: string,
+        markerId: string,
+        markerOptions
+    ) {
         const marker = this.getMarker(mapId, markerId);
         let advancedFormatToString;
         // eslint-disable-next-line prefer-const
@@ -438,7 +449,7 @@ function OsGoogleMap() {
         }
     };
 
-    this.removeMarker = function (mapId, markerId) {
+    this.removeMarker = function (mapId: string, markerId: string): void {
         const OSMap = this.getMapObject(mapId);
         const markersCopy = [];
 
@@ -458,7 +469,7 @@ function OsGoogleMap() {
         OSMap.markers = markersCopy;
     };
 
-    this.removeMarkers = function (mapId) {
+    this.removeMarkers = function (mapId: string) {
         const OSMap = this.getMapObject(mapId);
         for (const key in OSMap.markers) {
             const marker = OSMap.markers[key];
@@ -470,19 +481,27 @@ function OsGoogleMap() {
         OSMap.markers = [];
     };
 
-    this.addEventsToMarker = function (mapId, eventName, handler) {
+    this.addEventsToMarker = function (
+        mapId: string,
+        eventName: string,
+        handler
+    ) {
         const OSMap = this.getMapObject(mapId);
 
         // Gets an existing OSMarker or a stub (to add callbacks)
-        const marker = OSMap.markers;
+        const markers = OSMap.markers;
         for (let i = 0; i < OSMap.markers.length; i++) {
-            marker[i].marker.addListener(eventName, function () {
+            markers[i].marker.addListener(eventName, function () {
                 handler(mapId, eventName);
             });
         }
     };
 
-    this.panMapToMarker = function (mapId, markerId, zoomLevel) {
+    this.panMapToMarker = function (
+        mapId: string,
+        markerId: string,
+        zoomLevel
+    ) {
         const map = osGoogleMap.getMap(mapId);
         const marker = osGoogleMap.getMarker(mapId, markerId);
 
@@ -503,7 +522,7 @@ function OsGoogleMap() {
         map.setZoom(zoomLevel);
     };
 
-    this.setIcon = function (mapId, markerId, iconURL) {
+    this.setIcon = function (mapId: string, markerId: string, iconURL: string) {
         const map = osGoogleMap.getMap(mapId);
         const marker = osGoogleMap.getMarker(mapId, markerId);
 
@@ -518,14 +537,22 @@ function OsGoogleMap() {
         marker.setIcon(iconURL);
     };
 
-    this.setMapPan = function (mapId, offsetX, offsetY) {
+    this.setMapPan = function (
+        mapId: string,
+        offsetX: number,
+        offsetY: number
+    ) {
         const mapObject = osGoogleMap.getMapObject(mapId);
 
         mapObject.autofit.offsetX = offsetX || 0;
         mapObject.autofit.offsetY = offsetY || 0;
     };
 
-    this.setOffset = function (mapId, offsetX, offsetY) {
+    this.setOffset = function (
+        mapId: string,
+        offsetX: number,
+        offsetY: number
+    ): void {
         const map = osGoogleMap.getMap(mapId);
 
         if (!map) {
@@ -539,7 +566,7 @@ function OsGoogleMap() {
     // If no marker is set, the map's initial position is set
     // If just one marker is present on the map, the map will center on that location
     // If there are two or maore markers are present
-    this.setMapBounds = function (mapId) {
+    this.setMapBounds = function (mapId: string): void {
         if (typeof google !== 'object') {
             return;
         }
@@ -588,7 +615,7 @@ function OsGoogleMap() {
     };
 
     //This is where the callbacks will be removed from the queue
-    function applyCallback(mapId) {
+    function applyCallback(mapId: string): void {
         const map = osGoogleMap.getMapObject(mapId);
         if (!map) {
             return;
@@ -610,7 +637,7 @@ function OsGoogleMap() {
         map.callbacks = [];
     }
 
-    this.getMarkersForStatic = function () {
+    this.getMarkersForStatic = function (): [] {
         const mapObject = this.getMapObject('static-map');
         if (!mapObject) {
             return;
@@ -619,7 +646,11 @@ function OsGoogleMap() {
         return mapObject.callbacks;
     };
 
-    this.setMapCenter = function (mapId, lat, lng) {
+    this.setMapCenter = function (
+        mapId: string,
+        lat: number,
+        lng: number
+    ): void {
         const map = this.getMapObject(mapId) || new Map(mapId);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const callback: any = {};
@@ -631,10 +662,10 @@ function OsGoogleMap() {
     };
 
     this.init = function init(
-        mapContainer,
-        apiKey,
-        latitude,
-        longitude,
+        mapContainer: string,
+        apiKey: string,
+        latitude: number,
+        longitude: number,
         options,
         callback,
         eventHandler
