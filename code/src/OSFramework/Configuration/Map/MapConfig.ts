@@ -1,3 +1,0 @@
-namespace OSFramework.Configuration.Map {
-
-}

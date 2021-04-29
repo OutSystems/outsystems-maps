@@ -14,7 +14,7 @@ namespace MapAPI.MapManager {
         mapId: string,
         configs: string
     ): OSFramework.OSMap.IMap {
-        const _map = undefined;
+        const _map = GoogleProvider.Map.MapFactory.MakeMap(OSFramework.Enum.MapType.GoogleMaps, mapId, JSON.parse(configs));
 
         if (maps.has(mapId)) {
             throw new Error(
