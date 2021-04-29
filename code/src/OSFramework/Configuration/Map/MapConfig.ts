@@ -1,0 +1,3 @@
+namespace OSFramework.Configuration.Map {
+
+}
