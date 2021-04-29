@@ -48,7 +48,7 @@ namespace OSFramework.OSMap {
             this._isReady = true;
         }
 
-        addMarker(marker: any) {
+        addMarker(marker: OSFramework.Marker.IMarker): OSFramework.Marker.IMarker {
             throw new Error("Method not implemented.");
         }
         changeMarkerProperty(markerId: string, propertyName: string, propertyValue: any): void {
@@ -57,10 +57,10 @@ namespace OSFramework.OSMap {
         changeProperty(propertyName: string, propertyValue: any): void {
             throw new Error("Method not implemented.");
         }
-        getMarker(markerId: string) {
+        getMarker(markerId: string): OSFramework.Marker.IMarker {
             throw new Error("Method not implemented.");
         }
-        getMarkers(): any[] {
+        getMarkers(): OSFramework.Marker.IMarker[] {
             throw new Error("Method not implemented.");
         }
         hasMarker(markerId: string): boolean {
