@@ -7,7 +7,7 @@ namespace OSFramework.Map {
             /** Boolean that indicates if the Map is ready */
             isReady: boolean;
             /** Events from the Map */
-            mapEvents: Event.Map.MapEventsManager;
+            mapEvents: Event.OSMap.MapEventsManager;
             /** Map provider */
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             provider: any;
