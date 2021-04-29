@@ -9,7 +9,7 @@ namespace OSFramework.Configuration.OSMap {
         public advancedFormat: string;
         public extendedClass: string;
         public height: string;
-        public location: string;
+        public center: OSStructures.OSMap.Coordinates;
         public offset: OSStructures.OSMap.Offset;
         public showTraffic: boolean;
         public staticMap: boolean;
@@ -27,10 +27,17 @@ namespace OSFramework.Configuration.OSMap {
         public getProviderConfig(): any {
             // eslint-disable-next-line prefer-const
             let provider = {
-                // autoGenerateColumns: this.autoGenerateColumns,
-                // isReadOnly: this.allowEdit === false,
-                // validateEdits: this.validateEdits,
-                // showSelectedHeaders: 'All' // highlight row/column header
+                advancedFormat: this.advancedFormat,
+                extendedClass: this.extendedClass,
+                height: this.height,
+                center: this.center,
+                offset: this.offset,
+                showTraffic: this.showTraffic,
+                staticMap: this.staticMap,
+                style: this.style,
+                type: this.type,
+                uniqueId: this.uniqueId,
+                zoom: this.zoom
             };
 
             //Cleanning undefined properties

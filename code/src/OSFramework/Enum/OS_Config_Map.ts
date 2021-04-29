@@ -6,7 +6,7 @@ namespace OSFramework.Enum {
         advancedFormat,
         extendedClass,
         height,
-        location,
+        center,
         offset,
         showTraffic,
         staticMap,

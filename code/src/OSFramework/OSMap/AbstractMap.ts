@@ -52,7 +52,7 @@ namespace OSFramework.OSMap {
             throw new Error("Method not implemented.");
         }
         build(): void {
-            throw new Error("Method not implemented.");
+            // throw new Error("Method not implemented.");
         }
         changeMarkerProperty(markerId: string, propertyName: string, propertyValue: any): void {
             throw new Error("Method not implemented.");
@@ -61,7 +61,7 @@ namespace OSFramework.OSMap {
             throw new Error("Method not implemented.");
         }
         dispose(): void {
-            throw new Error("Method not implemented.");
+            // throw new Error("Method not implemented.");
         }
         equalsToID(id: string): boolean {
             throw new Error("Method not implemented.");
@@ -70,7 +70,7 @@ namespace OSFramework.OSMap {
             throw new Error("Method not implemented.");
         }
         getMarkers(): OSFramework.Marker.IMarker[] {
-            throw new Error("Method not implemented.");
+            return;
         }
         hasMarker(markerId: string): boolean {
             throw new Error("Method not implemented.");

@@ -1,3 +1,5 @@
+/// <reference path="../OSFramework/OSMap/AbstractMap.ts" />
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace GoogleProvider.Map {
     export class GoogleMap
@@ -18,7 +20,7 @@ namespace GoogleProvider.Map {
 
         // eslint-disable-next-line @typescript-eslint/member-ordering
         private _buildMarkers(): void {
-            this.getMarkers().forEach((marker) => marker.build());
+            // this.getMarkers().forEach((marker) => marker.build());
         }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -43,7 +45,7 @@ namespace GoogleProvider.Map {
             super.build();
 
             this._provider = new google.maps.Map(
-                OSFramework.Helper.GetElementByUniqueId(this.uniqueId),
+                document.querySelector("#" + this.uniqueId),
                 this._getProviderConfig()
             );
 
@@ -63,7 +65,7 @@ namespace GoogleProvider.Map {
             const marker = this.getMarker(markerId);
 
             if (!marker) {
-                console.log(
+                console.error(
                     `changeMarkerProperty - marker id:${markerId} not found.`
                 );
             } else {
@@ -76,26 +78,14 @@ namespace GoogleProvider.Map {
             const propValue = OSFramework.Enum.OS_Config_Map[propertyName];
 
             switch (propValue) {
-                // case OSFramework.Enum.OS_Config_Map.allowColumnSort:
-                //     return this.features.sort.setState(value);
-                // case OSFramework.Enum.OS_Config_Map.allowFiltering:
-                //     return this.features.filter.setState(value);
-                // case OSFramework.Enum.OS_Config_Map.rowsPerPage:
-                //     return this.features.pagination.changePageSize(value);
-                // case OSFramework.Enum.OS_Config_Map.rowHeight:
-                //     return this.features.styling.changeRowHeight(value);
-                // case OSFramework.Enum.OS_Config_Map.allowColumnReorder:
-                //     return this.features.columnReorder.setState(value);
-                // case OSFramework.Enum.OS_Config_Map.allowColumnResize:
-                //     return this.features.columnResize.setState(value);
-                // case OSFramework.Enum.OS_Config_Map.allowKeyTabNavigation:
-                //     return this.features.tabNavigation.setState(value);
-                // case OSFramework.Enum.OS_Config_Map.allowEdit:
-                //     this._provider.isReadOnly = value === false;
-                //     return;
-                // case OSFramework.Enum.OS_Config_Map.selectionMode:
-                //     this.features.selection.setState(value);
-                //     return;
+                case OSFramework.Enum.OS_Config_Map.center:
+                    const coordinates = new google.maps.LatLng(
+                        value.lat,
+                        value.lng
+                    );
+                    return this._provider.setCenter(coordinates);
+                case OSFramework.Enum.OS_Config_Map.zoom:
+                    return this._provider.setZoom(value);
                 default:
                     throw Error(
                         `changeProperty - Property '${propertyName}' can't be changed.`
@@ -108,7 +98,7 @@ namespace GoogleProvider.Map {
 
             // this._fBuilder.dispose();
 
-            this._provider.dispose();
+            // this._provider.dispose();
             this._provider = undefined;
         }
     }

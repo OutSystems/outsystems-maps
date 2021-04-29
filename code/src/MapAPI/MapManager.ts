@@ -31,6 +31,18 @@ namespace MapAPI.MapManager {
     }
 
     /**
+     * Function that initializes the provider Map in the page.
+     * The current provider Map is GoogleMaps.
+     * @export
+     * @param {string} mapId Id of the Grid that is going to be initialized.
+     */
+    export function InitializeMap(mapId: string): void {
+        const map = GetMapById(mapId);
+
+        map.build();
+    }
+
+    /**
      * Function that gets the instance of a Map, by a given Id.
      *
      * @export

@@ -7,7 +7,7 @@ namespace OSFramework.Configuration {
         advancedFormat: string;
         extendedClass: string;
         height: string;
-        location: string;
+        center: OSFramework.OSStructures.OSMap.Coordinates;
         offset: OSFramework.OSStructures.OSMap.Offset;
         showTraffic: boolean;
         staticMap: boolean;
