@@ -1,4 +1,4 @@
-namespace OSFramework.Map {
+namespace OSFramework.OSMap {
     export interface IMap 
         extends Interface.IBuilder,
         Interface.IDisposable {
