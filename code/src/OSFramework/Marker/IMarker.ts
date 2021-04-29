@@ -1,5 +1,5 @@
 namespace OSFramework.Marker {
-    export interface IMarker extends Interface.IBuilder, Interface.IDisposable {
+    export interface IMarker extends Interface.IBuilder, Interface.ISearchById, Interface.IDisposable {
         config: OSFramework.Configuration.IConfigurationMarker; //IConfigurationMarker
         isReady: boolean;
         map: any; //IMap

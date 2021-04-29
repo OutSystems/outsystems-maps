@@ -1,6 +1,8 @@
 namespace OSFramework.OSMap {
     export interface IMap 
+    
         extends Interface.IBuilder,
+        Interface.ISearchById,
         Interface.IDisposable {
             /** Map configuration */
             config: Configuration.IConfigurationMap;
@@ -66,5 +68,9 @@ namespace OSFramework.OSMap {
              * @param markerId id of the marker
              */
             removeMarker(markedId: string): void;    
+            /**
+             * Remove all Markers from the Map
+             */
+            removeAllMarkers(): void; 
     }
 }
