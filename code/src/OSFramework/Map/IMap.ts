@@ -21,7 +21,7 @@ namespace OSFramework.Map {
              * @param marker Marker that will be added to the Map
              * @returns Marker that has been created
              */
-            addMarker(marker: Marker.IMarker): Marker.IMarker;
+            addMarker(marker: OSFramework.Marker.IMarker): OSFramework.Marker.IMarker;
             /**
              * Change property of a marker from the Map by specifying the property name and the new value
              * @param markerId id of the Marker
@@ -46,12 +46,12 @@ namespace OSFramework.Map {
              * @param markerId id of the marker
              * @returns Marker found via the specified markerId
              */
-            getMarker(markerId: string): Marker.IMarker;
+            getMarker(markerId: string): OSFramework.Marker.IMarker;
             /**
              * Get all Markers from the Map
              * @returns Array of Markers from the Map
              */
-            getMarkers(): Array<Marker.IMarker>;
+            getMarkers(): Array<OSFramework.Marker.IMarker>;
             /**
              * Checks if the Map has a specific Marker by giving a markerId
              * @param markerId id of the marker
