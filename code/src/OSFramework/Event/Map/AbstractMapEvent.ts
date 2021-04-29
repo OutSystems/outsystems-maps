@@ -8,7 +8,8 @@ namespace OSFramework.Event.OSMap {
      * @class AbstractGridEvent
      * @extends {AbstractEvent<OSFramework.Grid.IGrid>}
      */
-    export abstract class AbstractMapEvent extends OSFramework.Event.AbstractEvent<OSFramework.OSMap.IMap> {
+    export abstract class AbstractMapEvent extends OSFramework.Event
+        .AbstractEvent<OSFramework.OSMap.IMap> {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         public trigger(
             mapObj: OSFramework.OSMap.IMap,

@@ -1,15 +1,15 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.Event.OSMap {
     /**
-     * Class that will be responsible for managing the events of the grid.
+     * Class that will be responsible for managing the events of the Map.
      *
      * @export
-     * @class GridEventsManager
+     * @class MapEventsManager
      * @extends {AbstractEventsManager<MapEventType, OSFramework.OSMap.IMap>}
      */
     export class MapEventsManager extends AbstractEventsManager<
-    MapEventType,
-    OSFramework.OSMap.IMap
+        MapEventType,
+        OSFramework.OSMap.IMap
     > {
         private _map: OSFramework.OSMap.IMap;
 
@@ -44,6 +44,19 @@ namespace OSFramework.Event.OSMap {
                 setTimeout(() => handler(this._map.widgetId, this._map), 0);
             } else {
                 super.addHandler(eventType, handler);
+            }
+        }
+
+        public trigger(
+            event: MapEventType,
+            mapObj: OSFramework.OSMap.IMap,
+            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+            ...args
+        ): void {
+            if (this.handlers.has(event)) {
+                this.handlers
+                    .get(event)
+                    .trigger(mapObj, mapObj.widgetId, ...args);
             }
         }
     }

@@ -3,14 +3,14 @@ namespace MapAPI.MapManager {
     let activeMap: OSFramework.OSMap.IMap = undefined;
 
     /**
-     * Function that creates an instance of grid object with the configurations passed.
+     * Function that creates an instance of Map object with the configurations passed.
      *
      * @export
-     * @param {string} gridID ID of the Grid where the change will occur.
-     * @param {string} configs configurations for the grid in JSON format.
-     * @returns {*}  {Grid.IGrid} instance of the grid.
+     * @param {string} mapId Id of the Map where the change will occur.
+     * @param {string} configs configurations for the Map in JSON format.
+     * @returns {*}  {OSMap.IMap} instance of the Map.
      */
-     export function CreateGrid(
+     export function CreateMap(
         mapId: string,
         configs: string
     ): OSFramework.OSMap.IMap {
