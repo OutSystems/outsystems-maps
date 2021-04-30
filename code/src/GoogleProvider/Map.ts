@@ -105,6 +105,8 @@ namespace GoogleProvider.Map {
                     return this.features.trafficLayer.setState(value);
                 case OSFramework.Enum.OS_Config_Map.staticMap:
                     return this.features.staticMap.setState(value);
+                case OSFramework.Enum.OS_Config_Map.offset:
+                    return this.features.offset.setOffset(value);
                 default:
                     throw Error(
                         `changeProperty - Property '${propertyName}' can't be changed.`

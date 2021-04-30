@@ -53,6 +53,11 @@ namespace GoogleProvider.Feature {
     }
 
     export class FeatureBuilder extends AbstractFactoryBuilder {
+        private _makeOffset(offset: OSFramework.OSStructures.OSMap.Offset): FeatureBuilder {
+            this._features.offset = this._makeItem(Offset, offset);
+            return this;
+        }
+
         private _makeTrafficLayer(enable: boolean): FeatureBuilder {
             this._features.trafficLayer = this._makeItem(TrafficLayer, enable);
             return this;
@@ -68,7 +73,8 @@ namespace GoogleProvider.Feature {
                 .config as OSFramework.Configuration.OSMap.GoogleMapConfig;
 
             this._makeTrafficLayer(config.showTraffic)
-                ._makeStaticMap(config.staticMap);
+                ._makeStaticMap(config.staticMap)
+                ._makeOffset(config.offset);
 
             super.build();
         }
