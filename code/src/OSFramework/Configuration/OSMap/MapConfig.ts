@@ -28,17 +28,7 @@ namespace OSFramework.Configuration.OSMap {
         public getProviderConfig(): any {
             // eslint-disable-next-line prefer-const
             let provider = {
-                advancedFormat: this.advancedFormat,
-                apiKey: this.apiKey,
-                extendedClass: this.extendedClass,
-                height: this.height,
                 center: this.center,
-                offset: this.offset,
-                showTraffic: this.showTraffic,
-                staticMap: this.staticMap,
-                style: this.style,
-                type: this.type,
-                uniqueId: this.uniqueId,
                 zoom: this.zoom
             };
 
