@@ -57,10 +57,16 @@ namespace OSFramework.OSMap {
         }
 
         addMarker(marker: OSFramework.Marker.IMarker): OSFramework.Marker.IMarker {
-            throw new Error("Method not implemented.");
+            // console.log(`Add Marker '${marker.uniqueId}'`);
+            this._markers.set(marker.uniqueId, marker);
+            this._markersSet.add(marker);
+
+            return marker;
         }
         build(): void {
-            // throw new Error("Method not implemented.");
+            // this._widgetId = OSFramework.Helper.GetElementByUniqueId(
+            //     this.uniqueId
+            // ).closest(OSFramework.Helper.Constants.gridTag).id;
         }
         changeMarkerProperty(markerId: string, propertyName: string, propertyValue: any): void {
             throw new Error("Method not implemented.");
@@ -69,28 +75,52 @@ namespace OSFramework.OSMap {
             throw new Error("Method not implemented.");
         }
         dispose(): void {
-            // throw new Error("Method not implemented.");
+            this._isReady = false;
+            this._markers.forEach(
+                (marker: OSFramework.Marker.IMarker, markerId: string) => {
+                    this.removeMarker(markerId);
+                }
+            );
         }
-        equalsToID(id: string): boolean {
-            throw new Error("Method not implemented.");
+        equalsToID(mapId: string): boolean {
+            return mapId === this._uniqueId || mapId === this._widgetId;
         }
         getMarker(markerId: string): OSFramework.Marker.IMarker {
-            throw new Error("Method not implemented.");
+            if (this._markers.has(markerId)) {
+                return this._markers.get(markerId);
+            } else {
+                return this.getMarkers().find((p) => p && p.equalsToID(markerId));
+            }
         }
         getMarkers(): OSFramework.Marker.IMarker[] {
-            return;
+            return Array.from(this._markersSet);
         }
         hasMarker(markerId: string): boolean {
-            throw new Error("Method not implemented.");
+            return this._markers.has(markerId);
         }
         hasMarkersDefined(): boolean {
             throw new Error("Method not implemented.");
         }
         removeAllMarkers(): void {
-            throw new Error("Method not implemented.");
+            this._markers.clear();
+            this._markersSet.clear();
         }
         removeMarker(markedId: string): void {
-            throw new Error("Method not implemented.");
+            if (this._markers.has(markedId)) {
+                const marker = this._markers.get(markedId);
+
+                marker.dispose();
+                this._markers.delete(markedId);
+                this._markersSet.delete(marker);
+
+                console.log(
+                    `Remove Marker '${markedId}'`
+                );
+            } else {
+                console.error(
+                    `removeMarker - Marker id:${markedId} doesn't exist`
+                );
+            }
         }
 
     }
