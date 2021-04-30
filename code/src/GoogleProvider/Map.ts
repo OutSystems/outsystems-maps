@@ -2,12 +2,13 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace GoogleProvider.Map {
-    export class GoogleMap
+    export class Map
         extends OSFramework.OSMap.AbstractMap<
             google.maps.Map,
             OSFramework.Configuration.OSMap.GoogleMapConfig
         >
         implements IMapGoogle {
+        private _fBuilder: GoogleProvider.Feature.FeatureBuilder;
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         constructor(mapId: string, configs: any) {
@@ -49,11 +50,19 @@ namespace GoogleProvider.Map {
                 this._getProviderConfig()
             );
 
-            // this.buildFeatures();
+            this.buildFeatures();
 
             this._buildMarkers();
 
             this.finishBuild();
+        }
+
+        public buildFeatures(): void {
+            this._fBuilder = new GoogleProvider.Feature.FeatureBuilder(this);
+
+            this._features = this._fBuilder.features;
+
+            this._fBuilder.build();
         }
 
         public changeMarkerProperty(
@@ -86,6 +95,14 @@ namespace GoogleProvider.Map {
                     return this._provider.setCenter(coordinates);
                 case OSFramework.Enum.OS_Config_Map.zoom:
                     return this._provider.setZoom(value);
+                case OSFramework.Enum.OS_Config_Map.mapTypeId:
+                    return this._provider.setMapTypeId(value);
+                case OSFramework.Enum.OS_Config_Map.styles:
+                    return this._provider.setOptions({styles: value});
+                case OSFramework.Enum.OS_Config_Map.showTraffic:
+                    return this.features.trafficLayer.setState(value);
+                case OSFramework.Enum.OS_Config_Map.advancedFormat:
+                        return this._provider.setOptions(value);
                 default:
                     throw Error(
                         `changeProperty - Property '${propertyName}' can't be changed.`

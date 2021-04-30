@@ -8,7 +8,7 @@ namespace GoogleProvider.Map {
         ): OSFramework.OSMap.IMap {
             switch (type) {
                 case OSFramework.Enum.MapType.GoogleMaps:
-                    return new GoogleMap(
+                    return new Map(
                         mapdId,
                         configs as OSFramework.Configuration.OSMap.GoogleMapConfig
                     );

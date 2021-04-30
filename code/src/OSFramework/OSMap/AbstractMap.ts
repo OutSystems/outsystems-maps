@@ -11,6 +11,7 @@ namespace OSFramework.OSMap {
         private _uniqueId: string;
         private _widgetId: string;
 
+        protected _features: OSFramework.Feature.ExposedFeatures;
         protected _provider: W;
 
         constructor(uniqueId: string, config: OSFramework.Configuration.IConfigurationMap){
@@ -39,13 +40,20 @@ namespace OSFramework.OSMap {
         public get widgetId(): string {
             return this._widgetId;
         }
-
         public get provider(): W {
             return this._provider;
+        }
+        public get features(): OSFramework.Feature.ExposedFeatures {
+            return this._features;
         }
 
         protected finishBuild(): void {
             this._isReady = true;
+
+            // this.mapEvents.trigger(
+            //     OSFramework.Event.OSMap.MapEventType.Initialized,
+            //     this
+            // );
         }
 
         addMarker(marker: OSFramework.Marker.IMarker): OSFramework.Marker.IMarker {

@@ -52,7 +52,7 @@ namespace MapAPI.MapManager {
      */
      export function GetMapById(
         mapId: string,
-        raiseError = true
+        raiseError: boolean = true
     ): OSFramework.OSMap.IMap {
         let map: OSFramework.OSMap.IMap;
 
