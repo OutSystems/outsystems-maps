@@ -38,6 +38,7 @@ namespace GoogleProvider.Map {
                 script.async = true;
                 script.defer = true;
                 script.id = 'google-maps-script';
+                script.onload = this._createGoogleMap.bind(this);
     
                 document.head.appendChild(script);
             }
@@ -53,10 +54,7 @@ namespace GoogleProvider.Map {
                 this._buildMarkers();
                 this.finishBuild();
             }else{
-                //It takes a while to set the googleMaps api
-                setTimeout(() => {
-                    this._createGoogleMap();
-                }, 50);
+                throw Error(`The google.maps lib has not been loaded.`);
             }
         }
 
@@ -64,10 +62,7 @@ namespace GoogleProvider.Map {
             super.addMarker(marker);
 
             if (this.isReady) {
-                //OS takes a while to set the WidgetId
-                setTimeout(() => {
-                    marker.build();
-                }, 0);
+                marker.build();
             }
 
             return marker;
