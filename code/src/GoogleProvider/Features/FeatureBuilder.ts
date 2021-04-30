@@ -57,11 +57,18 @@ namespace GoogleProvider.Feature {
             this._features.trafficLayer = this._makeItem(TrafficLayer, enable);
             return this;
         }
+
+        private _makeStaticMap(enable: boolean): FeatureBuilder {
+            this._features.staticMap = this._makeItem(StaticMap, enable);
+            return this;
+        }
+        
         public build(): void {
             const config = this._map
                 .config as OSFramework.Configuration.OSMap.GoogleMapConfig;
 
-            this._makeTrafficLayer(config.showTraffic);
+            this._makeTrafficLayer(config.showTraffic)
+                ._makeStaticMap(config.staticMap);
 
             super.build();
         }
