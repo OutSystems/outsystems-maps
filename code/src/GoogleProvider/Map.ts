@@ -99,10 +99,12 @@ namespace GoogleProvider.Map {
                     return this._provider.setMapTypeId(value);
                 case OSFramework.Enum.OS_Config_Map.styles:
                     return this._provider.setOptions({styles: value});
+                case OSFramework.Enum.OS_Config_Map.advancedFormat:
+                    return this._provider.setOptions(value);
                 case OSFramework.Enum.OS_Config_Map.showTraffic:
                     return this.features.trafficLayer.setState(value);
-                case OSFramework.Enum.OS_Config_Map.advancedFormat:
-                        return this._provider.setOptions(value);
+                case OSFramework.Enum.OS_Config_Map.staticMap:
+                    return this.features.staticMap.setState(value);
                 default:
                     throw Error(
                         `changeProperty - Property '${propertyName}' can't be changed.`
@@ -113,9 +115,8 @@ namespace GoogleProvider.Map {
         public dispose(): void {
             super.dispose();
 
-            // this._fBuilder.dispose();
+            this._fBuilder.dispose();
 
-            // this._provider.dispose();
             this._provider = undefined;
         }
     }
