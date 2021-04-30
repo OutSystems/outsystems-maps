@@ -5,6 +5,7 @@ namespace OSFramework.Configuration {
      */
     export interface IConfigurationMap extends IConfiguration {
         advancedFormat: string;
+        apiKey: string;
         extendedClass: string;
         height: string;
         center: OSFramework.OSStructures.OSMap.Coordinates;

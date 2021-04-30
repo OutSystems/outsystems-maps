@@ -7,6 +7,7 @@ namespace OSFramework.Configuration.OSMap {
         implements IConfigurationMap {
 
         public advancedFormat: string;
+        public apiKey: string;
         public extendedClass: string;
         public height: string;
         public center: OSStructures.OSMap.Coordinates;
@@ -28,6 +29,7 @@ namespace OSFramework.Configuration.OSMap {
             // eslint-disable-next-line prefer-const
             let provider = {
                 advancedFormat: this.advancedFormat,
+                apiKey: this.apiKey,
                 extendedClass: this.extendedClass,
                 height: this.height,
                 center: this.center,
