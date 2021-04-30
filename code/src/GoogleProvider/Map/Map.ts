@@ -38,9 +38,8 @@ namespace GoogleProvider.Map {
                 script.async = true;
                 script.defer = true;
                 script.id = 'google-maps-script';
-                script.onload = this._createGoogleMap.bind(this);
-    
                 document.head.appendChild(script);
+                script.onload = this._createGoogleMap.bind(this);
             }
         }
 
@@ -71,7 +70,6 @@ namespace GoogleProvider.Map {
         public build(): void {
             super.build();
             this._initializeGoogleMap();
-            this._createGoogleMap();
         }
 
         public buildFeatures(): void {
