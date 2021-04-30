@@ -25,6 +25,18 @@ namespace OSFramework.OSMap {
             );
         }
 
+        public abstract changeMarkerProperty(
+            markerId: string, 
+            propertyName: string, 
+            propertyValue: any
+        ): void
+        public abstract changeProperty(
+            propertyName: string,
+            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+            propertyValue: any
+        ): void;
+        
+
         public get config(): Configuration.IConfigurationMap {
             return this._config;
         }
@@ -57,7 +69,7 @@ namespace OSFramework.OSMap {
         }
 
         addMarker(marker: OSFramework.Marker.IMarker): OSFramework.Marker.IMarker {
-            // console.log(`Add Marker '${marker.uniqueId}'`);
+            console.log(`Add Marker '${marker.uniqueId}'`);
             this._markers.set(marker.uniqueId, marker);
             this._markersSet.add(marker);
 
@@ -67,12 +79,6 @@ namespace OSFramework.OSMap {
             // this._widgetId = OSFramework.Helper.GetElementByUniqueId(
             //     this.uniqueId
             // ).closest(OSFramework.Helper.Constants.gridTag).id;
-        }
-        changeMarkerProperty(markerId: string, propertyName: string, propertyValue: any): void {
-            throw new Error("Method not implemented.");
-        }
-        changeProperty(propertyName: string, propertyValue: any): void {
-            throw new Error("Method not implemented.");
         }
         dispose(): void {
             this._isReady = false;
@@ -122,6 +128,5 @@ namespace OSFramework.OSMap {
                 );
             }
         }
-
     }
 }
