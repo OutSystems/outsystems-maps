@@ -1,4 +1,4 @@
-/// <reference path="../OSFramework/OSMap/AbstractMap.ts" />
+/// <reference path="../../OSFramework/OSMap/AbstractMap.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace GoogleProvider.Map {
@@ -15,7 +15,6 @@ namespace GoogleProvider.Map {
             super(
                 mapId,
                 new OSFramework.Configuration.OSMap.GoogleMapConfig(configs)
-                // new WijmoProvider.Column.ColumnGenerator()
             );
         }
 
@@ -27,6 +26,38 @@ namespace GoogleProvider.Map {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         private _getProviderConfig(): any {
             return this.config.getProviderConfig();
+        }
+
+        private _initializeGoogleMap(): void {
+            if (!document.getElementById('google-maps-script')) {
+                // Create the script tag, set the appropriate attributes
+                const script = document.createElement('script');
+    
+                script.src =
+                    'https://maps.googleapis.com/maps/api/js?key=' + this.config.apiKey;
+                script.async = true;
+                script.defer = true;
+                script.id = 'google-maps-script';
+    
+                document.head.appendChild(script);
+            }
+        }
+
+        private _createGoogleMap(): void{
+            if (typeof google === 'object' && typeof google.maps === 'object') {
+                this._provider = new google.maps.Map(
+                    document.querySelector("#" + this.uniqueId),
+                    this._getProviderConfig()
+                );
+                this.buildFeatures();
+                this._buildMarkers();
+                this.finishBuild();
+            }else{
+                //It takes a while to set the googleMaps api
+                setTimeout(() => {
+                    this._createGoogleMap();
+                }, 50);
+            }
         }
 
         public addMarker(marker: OSFramework.Marker.IMarker): OSFramework.Marker.IMarker {
@@ -44,24 +75,13 @@ namespace GoogleProvider.Map {
 
         public build(): void {
             super.build();
-
-            this._provider = new google.maps.Map(
-                document.querySelector("#" + this.uniqueId),
-                this._getProviderConfig()
-            );
-
-            this.buildFeatures();
-
-            this._buildMarkers();
-
-            this.finishBuild();
+            this._initializeGoogleMap();
+            this._createGoogleMap();
         }
 
         public buildFeatures(): void {
             this._fBuilder = new GoogleProvider.Feature.FeatureBuilder(this);
-
             this._features = this._fBuilder.features;
-
             this._fBuilder.build();
         }
 
