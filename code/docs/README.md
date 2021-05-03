@@ -7,7 +7,7 @@ For a quick reference use file [OutSystems-maps-UML.svg](https://github.com/OutS
 
 ## When should the UML change?
 The diagram is a living blueprint of the OutSystems Maps typescript code, and will always reflect the current architecture of the code.
-If you are doing a PR request that introduces changes in the code on architecture level (adding methods, parameters, classes, etc...), please reflect these changes also in the UML.
+If you are doing a Pull Request that introduces changes in the code on architecture level (adding methods, parameters, classes, etc...), please reflect these changes also in the UML.
 
 ### How to change the UML?
 The file [OutSystems-maps-UML.mdj](https://github.com/OutSystems/outsystems-maps/blob/dev/documentation/OutSystems-maps-UML.mdj), is the source file for the diagram. To change please download a compatible tool for changing it.
