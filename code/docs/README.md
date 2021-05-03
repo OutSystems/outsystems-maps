@@ -2,7 +2,7 @@
 This folder contains the UML diagram of the OutSystems Maps typescript code, in the different formats.
 
 ## How to use the diagrams?
-The arquitecture desgined using UML (Unified Modeling Language) format.
+The arquitecture designed using UML (Unified Modeling Language) format.
 For a quick reference use file [OutSystems-maps-UML.svg](https://github.com/OutSystems/outsystems-maps/blob/dev/documentation/OutSystems-maps-UML.svg) to see how to navigate through the concepts and code.
 
 ## When should the UML change?
