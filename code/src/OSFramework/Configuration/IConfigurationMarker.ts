@@ -6,7 +6,7 @@ namespace OSFramework.Configuration {
     export interface IConfigurationMarker extends IConfiguration {
         advancedFormat: string;
         iconURL: string;
-        location: OSFramework.OSStructures.OSMap.Coordinates;
+        location: string;
         uniqueId: string;
     }
 }

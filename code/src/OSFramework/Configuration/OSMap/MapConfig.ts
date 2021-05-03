@@ -10,7 +10,7 @@ namespace OSFramework.Configuration.OSMap {
         public apiKey: string;
         public extendedClass: string;
         public height: string;
-        public center: OSStructures.OSMap.Coordinates;
+        public center: any;
         public offset: OSStructures.OSMap.Offset;
         public showTraffic: boolean;
         public staticMap: boolean;

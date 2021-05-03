@@ -25,6 +25,26 @@ namespace GoogleProvider.Marker {
             return this.config.getProviderConfig();
         }
 
+        private _convertAddressToCoordinates(
+            address: string,
+            apiKey: string
+        ): any {    
+            let jsondata;  
+            return fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`)
+                .then(response => {
+                    if(response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Server response wasn\'t OK');
+                    }
+                })
+                .then(json => {
+                    jsondata = json.results[0].geometry.location;
+                    console.log(jsondata);
+                    return jsondata;
+                })
+        }
+
         public build(): void {
             super.build();
             
@@ -36,7 +56,25 @@ namespace GoogleProvider.Marker {
                 markerOptions.icon = this.config.iconURL;
             }
             if (typeof this.config.location !== 'undefined') {
-                markerOptions.position = this.config.location;
+                var letters = /[a-zA-Z]/g;
+                var setLatitude;
+                var setLongitude;
+                if (this.config.location.search(letters) == -1) {
+                    if (this.config.location.indexOf(',') > -1) {
+                        setLatitude = this.config.location.split(',')[0].replace(' ', '');
+                        setLongitude = this.config.location.split(',')[1].replace(' ', '');
+                        markerOptions.position.lat = setLatitude;
+                        markerOptions.position.lng = setLongitude;
+                    }
+                }
+                else {
+                    this.config.location = this.config.location.replace(/[^a-zA-Z0-9 ]/g, "");
+                    var coordinates = this._convertAddressToCoordinates(this.config.location, this.map.config.apiKey);
+                    coordinates.then(function (response) {
+                        console.log(response.lat);
+                        markerOptions.position = {lat: response.lat, lng: response.lng};
+                    });
+                }
             } 
             markerOptions.map = this.map.provider;
             // If location's type is not coordinates
@@ -46,8 +84,6 @@ namespace GoogleProvider.Marker {
             this._provider = new google.maps.Marker(markerOptions);
 
             // this.buildFeatures();
-
-            this.finishBuild();
         }
 
         // public buildFeatures(): void {
@@ -60,7 +96,7 @@ namespace GoogleProvider.Marker {
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         public changeProperty(propertyName: string, value: any): void {
-            const propValue = OSFramework.Enum.OS_Config_Map[propertyName];
+            const propValue = OSFramework.Enum.OS_Config_Marker[propertyName];
 
             switch (propValue) {
                 case OSFramework.Enum.OS_Config_Marker.location:
@@ -87,6 +123,11 @@ namespace GoogleProvider.Marker {
             this._fBuilder.dispose();
 
             this._provider = undefined;
+        }
+
+        /** Checks if the column has associated events */
+        public get hasEvents(): boolean {
+            return this.markerEvents !== undefined;
         }
     }
 }

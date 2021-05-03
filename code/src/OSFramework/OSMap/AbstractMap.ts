@@ -3,6 +3,7 @@ namespace OSFramework.OSMap {
         W,
         Z extends Configuration.IConfigurationMap
     > implements IMapGeneric<W> {
+        /** Configuration reference */
         private _config: Configuration.IConfigurationMap;
         private _isReady: boolean;
         private _mapEvents: Event.OSMap.MapEventsManager;

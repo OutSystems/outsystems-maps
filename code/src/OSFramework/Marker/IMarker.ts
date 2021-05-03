@@ -8,11 +8,9 @@ namespace OSFramework.Marker {
         uniqueId: string;
         widgetId: string;
 
-        applyConfigs(): void;
         build(): void;
         changeProperty(propertyName: string, propertyValue: any): void;
         dispose(): void;
         getProviderConfig(): any;
-        refresh(): void;
     }
 }

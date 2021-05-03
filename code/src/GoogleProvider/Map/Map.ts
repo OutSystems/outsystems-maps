@@ -46,7 +46,7 @@ namespace GoogleProvider.Map {
         private _createGoogleMap(): void{
             if (typeof google === 'object' && typeof google.maps === 'object') {
                 this._provider = new google.maps.Map(
-                    document.querySelector("#" + this.uniqueId),
+                    OSFramework.Helper.GetElementByUniqueId(this.uniqueId),
                     this._getProviderConfig()
                 );
                 this.buildFeatures();

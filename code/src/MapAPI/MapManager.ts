@@ -125,6 +125,18 @@ namespace MapAPI.MapManager {
     }
 
     /**
+     * Function that will retrieve all Markers from the Map.
+     *
+     * @export
+     * @param {string} mapId Id of the Map to get the Markers.
+     */
+     export function GetAllMarkers(mapId: string): Array<OSFramework.Marker.IMarker> {
+        const map = GetMapById(mapId);
+
+        return map.getMarkers();
+    }
+
+    /**
      * Function that will destroy the Map from the page.
      *
      * @export

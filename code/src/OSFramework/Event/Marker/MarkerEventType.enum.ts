@@ -7,6 +7,9 @@ namespace OSFramework.Event.Marker {
      * @enum {string}
      */
     export enum MarkerEventType {
-        Initialized = 'Initialized'
+        OnClick = 'OnClick',
+        OnMouseover = 'OnMouseover',
+        OnMouseout = 'OnMouseout'
+
     }
 }

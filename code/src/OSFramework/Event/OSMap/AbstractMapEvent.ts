@@ -5,8 +5,8 @@ namespace OSFramework.Event.OSMap {
      * with the correct parameters.
      *
      * @abstract
-     * @class AbstractGridEvent
-     * @extends {AbstractEvent<OSFramework.Grid.IGrid>}
+     * @class AbstractMapEvent
+     * @extends {AbstractEvent<OSFramework.Map.IMap>}
      */
     export abstract class AbstractMapEvent extends OSFramework.Event
         .AbstractEvent<OSFramework.OSMap.IMap> {

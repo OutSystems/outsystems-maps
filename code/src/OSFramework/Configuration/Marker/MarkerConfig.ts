@@ -8,7 +8,7 @@ namespace OSFramework.Configuration.Marker {
 
         public advancedFormat: string;
         public iconURL: string;
-        public location: OSStructures.OSMap.Coordinates;
+        public location: string;
         public uniqueId: string;
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any

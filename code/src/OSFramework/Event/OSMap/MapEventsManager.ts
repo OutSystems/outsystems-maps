@@ -28,7 +28,7 @@ namespace OSFramework.Event.OSMap {
                     event = new MapInitializedEvent();
                     break;
                 default:
-                    throw `The event '${eventType}' is not supported in a grid`;
+                    throw `The event '${eventType}' is not supported in a Map`;
                     break;
             }
             return event;
