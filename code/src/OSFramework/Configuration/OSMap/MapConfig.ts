@@ -14,7 +14,7 @@ namespace OSFramework.Configuration.OSMap {
         public offset: OSStructures.OSMap.Offset;
         public showTraffic: boolean;
         public staticMap: boolean;
-        public style: Enum.OSMap.Style;
+        public style: JSON;
         public type: Enum.OSMap.Type;
         public uniqueId: string;
         public zoom: Enum.OSMap.Zoom;

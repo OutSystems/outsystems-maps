@@ -12,7 +12,7 @@ namespace OSFramework.Configuration {
         offset: OSFramework.OSStructures.OSMap.Offset;
         showTraffic: boolean;
         staticMap: boolean;
-        style: OSFramework.Enum.OSMap.Style;
+        style: JSON;
         type: OSFramework.Enum.OSMap.Type;
         uniqueId: string;
         zoom: OSFramework.Enum.OSMap.Zoom;

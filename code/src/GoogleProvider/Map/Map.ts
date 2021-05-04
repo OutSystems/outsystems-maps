@@ -127,7 +127,8 @@ namespace GoogleProvider.Map {
                 case OSFramework.Enum.OS_Config_Map.mapTypeId:
                     return this._provider.setMapTypeId(value);
                 case OSFramework.Enum.OS_Config_Map.styles:
-                    return this._provider.setOptions({styles: value});
+                    const style = GoogleProvider.GetStyleByStyleId(value);
+                    return this._provider.setOptions({styles: style});
                 case OSFramework.Enum.OS_Config_Map.advancedFormat:
                     return this._provider.setOptions(value);
                 case OSFramework.Enum.OS_Config_Map.showTraffic:
