@@ -20,69 +20,34 @@ namespace GoogleProvider.Marker {
             );
         }
 
+        private _convertCoordinates(location: string | OSFramework.OSStructures.OSMap.Coordinates): Promise<OSFramework.OSStructures.OSMap.Coordinates> {
+            if (typeof location !== 'undefined' && typeof location === 'string') {
+                return GoogleProvider.Helper.Conversions.ConvertAddressToCoordinates(location, this.map.config.apiKey).then((response) => {
+                    return response;
+                });
+            }
+        }
+
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         private _getProviderConfig(): any {
             return this.config.getProviderConfig();
-        }
-
-        private _convertAddressToCoordinates(
-            address: string,
-            apiKey: string
-        ): any {    
-            let jsondata;  
-            return fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`)
-                .then(response => {
-                    if(response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error('Server response wasn\'t OK');
-                    }
-                })
-                .then(json => {
-                    jsondata = json.results[0].geometry.location;
-                    console.log(jsondata);
-                    return jsondata;
-                })
         }
 
         public build(): void {
             super.build();
             
             const markerOptions: google.maps.MarkerOptions = {};
-            if (
-                typeof this.config.iconURL !== 'undefined' &&
-                this.config.iconURL !== ''
-            ) {
+            if (typeof this.config.iconURL !== 'undefined' && this.config.iconURL !== '') {
                 markerOptions.icon = this.config.iconURL;
             }
             if (typeof this.config.location !== 'undefined') {
-                var letters = /[a-zA-Z]/g;
-                var setLatitude;
-                var setLongitude;
-                if (this.config.location.search(letters) == -1) {
-                    if (this.config.location.indexOf(',') > -1) {
-                        setLatitude = this.config.location.split(',')[0].replace(' ', '');
-                        setLongitude = this.config.location.split(',')[1].replace(' ', '');
-                        markerOptions.position.lat = setLatitude;
-                        markerOptions.position.lng = setLongitude;
-                    }
-                }
-                else {
-                    this.config.location = this.config.location.replace(/[^a-zA-Z0-9 ]/g, "");
-                    var coordinates = this._convertAddressToCoordinates(this.config.location, this.map.config.apiKey);
-                    coordinates.then(function (response) {
-                        console.log(response.lat);
-                        markerOptions.position = {lat: response.lat, lng: response.lng};
+                this._convertCoordinates(this.config.location)
+                    .then((response) => {
+                        markerOptions.position = { lat: response.lat, lng: response.lng };
+                        markerOptions.map = this.map.provider;
+                        this._provider = new google.maps.Marker(markerOptions);
                     });
-                }
             } 
-            markerOptions.map = this.map.provider;
-            // If location's type is not coordinates
-            // else {
-            //     markerOptions.position = coordinates;
-            // }
-            this._provider = new google.maps.Marker(markerOptions);
-
             // this.buildFeatures();
         }
 
@@ -100,11 +65,14 @@ namespace GoogleProvider.Marker {
 
             switch (propValue) {
                 case OSFramework.Enum.OS_Config_Marker.location:
-                    const coordinates = new google.maps.LatLng(
-                        value.lat,
-                        value.lng
-                    );
-                    return this._provider.setPosition(coordinates);
+                    this._convertCoordinates(value).then(response => {
+                        const coordinates = new google.maps.LatLng(
+                            response.lat,
+                            response.lng
+                        );
+                        this._provider.setPosition(coordinates);
+                    });
+                    return;
                 case OSFramework.Enum.OS_Config_Marker.advancedFormat:
                     return this._provider.setOptions(value);
                 case OSFramework.Enum.OS_Config_Marker.iconURL:
