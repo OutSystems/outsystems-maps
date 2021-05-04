@@ -154,4 +154,44 @@ namespace MapAPI.MapManager {
 
         map.removeAllMarkers();
     }
+
+    /**
+     * Function that will the height of a given Map.
+     *
+     * @export
+     * @param {string} mapId Id of the Map where the change will occur.
+     * @param {string} height new height for the map.
+     */
+    export function SetHeight(mapId: string, height: string): void {
+        const map = GetMapById(mapId);
+        let widgetId = map.widgetId;
+
+        //This code below, should be removed... we'd be better of without it.
+        //It would imply that the widgetId would be set in a different moment than what is now.
+        //*************************************/
+        if (widgetId === undefined) {
+            widgetId = OSFramework.Helper.GetElementByUniqueId(mapId).closest(
+                OSFramework.Helper.Constants.mapTag
+            ).id;
+        }
+        //*************************************/
+
+        const widget = OSFramework.Helper.GetElementByWidgetId(widgetId);
+
+        if (widget) {
+            if (height === '') {
+                const parentHeight = (widget.parentNode as HTMLElement)
+                    .offsetHeight;
+                height = parentHeight + 'px';
+            } else {
+                if (isNaN(Number(height)) === false) {
+                    height = height + 'px';
+                }
+            }
+
+            widget.style.setProperty('--map-height', height);
+        } else {
+            throw new Error(`Map id:${mapId} not found`);
+        }
+    }
 }
