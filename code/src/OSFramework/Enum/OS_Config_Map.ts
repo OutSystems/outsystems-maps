@@ -10,8 +10,8 @@ namespace OSFramework.Enum {
         offset,
         showTraffic,
         staticMap,
-        styles,
-        mapTypeId,
+        style,
+        type,
         uniqueId,
         zoom
     }
