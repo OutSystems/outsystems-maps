@@ -4,8 +4,8 @@
 namespace GoogleProvider.Map {
     export class Map
         extends OSFramework.OSMap.AbstractMap<
-            google.maps.Map,
-            OSFramework.Configuration.OSMap.GoogleMapConfig
+        google.maps.Map,
+        OSFramework.Configuration.OSMap.GoogleMapConfig
         >
         implements IMapGoogle {
         private _fBuilder: GoogleProvider.Feature.FeatureBuilder;
@@ -25,9 +25,7 @@ namespace GoogleProvider.Map {
 
         private _convertCoordinates(location: string | OSFramework.OSStructures.OSMap.Coordinates): Promise<OSFramework.OSStructures.OSMap.Coordinates> {
             if (typeof location !== 'undefined' && typeof location === 'string') {
-                return GoogleProvider.Helper.Conversions.ConvertAddressToCoordinates(location, this.config.apiKey).then((response) => {
-                    return response;
-                });
+                return GoogleProvider.Helper.Conversions.ConvertLocationToCoordinates(location, this.config.apiKey);
             }
         }
 
@@ -45,7 +43,7 @@ namespace GoogleProvider.Map {
             if (!document.getElementById('google-maps-script')) {
                 // Create the script tag, set the appropriate attributes
                 const script = document.createElement('script');
-    
+
                 script.src =
                     'https://maps.googleapis.com/maps/api/js?key=' + this.config.apiKey;
                 script.async = true;
@@ -65,7 +63,7 @@ namespace GoogleProvider.Map {
                 this.buildFeatures();
                 this._buildMarkers();
                 this.finishBuild();
-            }else{
+            } else {
                 throw Error(`The google.maps lib has not been loaded.`);
             }
         }
@@ -124,11 +122,11 @@ namespace GoogleProvider.Map {
                     return;
                 case OSFramework.Enum.OS_Config_Map.zoom:
                     return this._provider.setZoom(value);
-                case OSFramework.Enum.OS_Config_Map.mapTypeId:
+                case OSFramework.Enum.OS_Config_Map.type:
                     return this._provider.setMapTypeId(value);
-                case OSFramework.Enum.OS_Config_Map.styles:
+                case OSFramework.Enum.OS_Config_Map.style:
                     const style = GoogleProvider.GetStyleByStyleId(value);
-                    return this._provider.setOptions({styles: style});
+                    return this._provider.setOptions({ styles: style });
                 case OSFramework.Enum.OS_Config_Map.advancedFormat:
                     return this._provider.setOptions(value);
                 case OSFramework.Enum.OS_Config_Map.showTraffic:

@@ -22,9 +22,7 @@ namespace GoogleProvider.Marker {
 
         private _convertCoordinates(location: string | OSFramework.OSStructures.OSMap.Coordinates): Promise<OSFramework.OSStructures.OSMap.Coordinates> {
             if (typeof location !== 'undefined' && typeof location === 'string') {
-                return GoogleProvider.Helper.Conversions.ConvertAddressToCoordinates(location, this.map.config.apiKey).then((response) => {
-                    return response;
-                });
+                return GoogleProvider.Helper.Conversions.ConvertLocationToCoordinates(location, this.map.config.apiKey);
             }
         }
 

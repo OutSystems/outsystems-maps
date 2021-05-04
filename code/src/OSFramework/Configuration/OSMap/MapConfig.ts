@@ -29,7 +29,9 @@ namespace OSFramework.Configuration.OSMap {
             // eslint-disable-next-line prefer-const
             let provider = {
                 center: this.center,
-                zoom: this.zoom
+                zoom: this.zoom,
+                styles: this.style,
+                mapTypeId: this.type
             };
 
             //Cleanning undefined properties
