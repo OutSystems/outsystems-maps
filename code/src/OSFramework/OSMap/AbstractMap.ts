@@ -1,6 +1,8 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.OSMap {
     export abstract class AbstractMap<
         W,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         Z extends Configuration.IConfigurationMap
     > implements IMapGeneric<W> {
         /** Configuration reference */
@@ -15,7 +17,10 @@ namespace OSFramework.OSMap {
         protected _features: OSFramework.Feature.ExposedFeatures;
         protected _provider: W;
 
-        constructor(uniqueId: string, config: OSFramework.Configuration.IConfigurationMap){
+        constructor(
+            uniqueId: string,
+            config: OSFramework.Configuration.IConfigurationMap
+        ) {
             this._uniqueId = uniqueId;
             this._markers = new Map<string, OSFramework.Marker.IMarker>();
             this._markersSet = new Set<OSFramework.Marker.IMarker>();
@@ -25,18 +30,6 @@ namespace OSFramework.OSMap {
                 this
             );
         }
-
-        public abstract changeMarkerProperty(
-            markerId: string, 
-            propertyName: string, 
-            propertyValue: any
-        ): void
-        public abstract changeProperty(
-            propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            propertyValue: any
-        ): void;
-        
 
         public get config(): Configuration.IConfigurationMap {
             return this._config;
@@ -69,19 +62,21 @@ namespace OSFramework.OSMap {
             // );
         }
 
-        addMarker(marker: OSFramework.Marker.IMarker): OSFramework.Marker.IMarker {
+        public addMarker(
+            marker: OSFramework.Marker.IMarker
+        ): OSFramework.Marker.IMarker {
             console.log(`Add Marker '${marker.uniqueId}'`);
             this._markers.set(marker.uniqueId, marker);
             this._markersSet.add(marker);
 
             return marker;
         }
-        build(): void {
+        public build(): void {
             this._widgetId = OSFramework.Helper.GetElementByUniqueId(
                 this.uniqueId
             ).closest(OSFramework.Helper.Constants.mapTag).id;
         }
-        dispose(): void {
+        public dispose(): void {
             this._isReady = false;
             this._markers.forEach(
                 (marker: OSFramework.Marker.IMarker, markerId: string) => {
@@ -89,30 +84,33 @@ namespace OSFramework.OSMap {
                 }
             );
         }
-        equalsToID(mapId: string): boolean {
+        public equalsToID(mapId: string): boolean {
             return mapId === this._uniqueId || mapId === this._widgetId;
         }
-        getMarker(markerId: string): OSFramework.Marker.IMarker {
+        public getMarker(markerId: string): OSFramework.Marker.IMarker {
             if (this._markers.has(markerId)) {
                 return this._markers.get(markerId);
             } else {
-                return this.getMarkers().find((p) => p && p.equalsToID(markerId));
+                return this.getMarkers().find(
+                    (p) => p && p.equalsToID(markerId)
+                );
             }
         }
-        getMarkers(): OSFramework.Marker.IMarker[] {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        public getMarkers(): OSFramework.Marker.IMarker[] {
             return Array.from(this._markersSet);
         }
-        hasMarker(markerId: string): boolean {
+        public hasMarker(markerId: string): boolean {
             return this._markers.has(markerId);
         }
-        hasMarkersDefined(): boolean {
-            throw new Error("Method not implemented.");
+        public hasMarkersDefined(): boolean {
+            throw new Error('Method not implemented.');
         }
-        removeAllMarkers(): void {
+        public removeAllMarkers(): void {
             this._markers.clear();
             this._markersSet.clear();
         }
-        removeMarker(markedId: string): void {
+        public removeMarker(markedId: string): void {
             if (this._markers.has(markedId)) {
                 const marker = this._markers.get(markedId);
 
@@ -120,14 +118,25 @@ namespace OSFramework.OSMap {
                 this._markers.delete(markedId);
                 this._markersSet.delete(marker);
 
-                console.log(
-                    `Remove Marker '${markedId}'`
-                );
+                console.log(`Remove Marker '${markedId}'`);
             } else {
                 console.error(
                     `removeMarker - Marker id:${markedId} doesn't exist`
                 );
             }
         }
+
+        public abstract changeMarkerProperty(
+            markerId: string,
+            propertyName: string,
+            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+            propertyValue: any
+        ): void;
+
+        public abstract changeProperty(
+            propertyName: string,
+            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+            propertyValue: any
+        ): void;
     }
 }
