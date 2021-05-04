@@ -147,10 +147,4 @@ namespace MapAPI.MapManager {
 
         map.removeAllMarkers();
     }
-
-    export function AddMarker(mapId: string, marker: any): void {
-        const map = GetMapById(mapId);
-
-        map.addMarker(marker);
-    }
 }
