@@ -11,4 +11,6 @@ namespace OSFramework.Helper.Constants {
     export const mapUniqueIdCss = '.map-container';
     /** Tag used to find the uniqueId property of a DOM element */
     export const uniqueIdAttribute = 'name';
+
+    export const defaultMapCenter = {lat: 42.3517926, lng: -71.0467845};
 }

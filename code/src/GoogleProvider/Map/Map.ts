@@ -23,8 +23,21 @@ namespace GoogleProvider.Map {
             // this.getMarkers().forEach((marker) => marker.build());
         }
 
+        private _convertCoordinates(location: string | OSFramework.OSStructures.OSMap.Coordinates): Promise<OSFramework.OSStructures.OSMap.Coordinates> {
+            if (typeof location !== 'undefined' && typeof location === 'string') {
+                return GoogleProvider.Helper.Conversions.ConvertAddressToCoordinates(location, this.config.apiKey).then((response) => {
+                    return response;
+                });
+            }
+        }
+
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        private _getProviderConfig(): any {
+        private _getProviderConfig(): google.maps.MapOptions {
+            this._convertCoordinates(this.config.center).then(response => {
+                this.config.center = response;
+                this._provider.setCenter(this.config.center);
+            });
+            this.config.center = OSFramework.Helper.Constants.defaultMapCenter;
             return this.config.getProviderConfig();
         }
 
@@ -43,7 +56,7 @@ namespace GoogleProvider.Map {
             }
         }
 
-        private _createGoogleMap(): void{
+        private _createGoogleMap(): void {
             if (typeof google === 'object' && typeof google.maps === 'object') {
                 this._provider = new google.maps.Map(
                     OSFramework.Helper.GetElementByUniqueId(this.uniqueId),
@@ -101,11 +114,14 @@ namespace GoogleProvider.Map {
 
             switch (propValue) {
                 case OSFramework.Enum.OS_Config_Map.center:
-                    const coordinates = new google.maps.LatLng(
-                        value.lat,
-                        value.lng
-                    );
-                    return this._provider.setCenter(coordinates);
+                    this._convertCoordinates(value).then(response => {
+                        const coordinates = new google.maps.LatLng(
+                            response.lat,
+                            response.lng
+                        );
+                        this._provider.setCenter(coordinates);
+                    });
+                    return;
                 case OSFramework.Enum.OS_Config_Map.zoom:
                     return this._provider.setZoom(value);
                 case OSFramework.Enum.OS_Config_Map.mapTypeId:

@@ -8,7 +8,7 @@ namespace OSFramework.Configuration {
         apiKey: string;
         extendedClass: string;
         height: string;
-        center: OSFramework.OSStructures.OSMap.Coordinates;
+        center: any;
         offset: OSFramework.OSStructures.OSMap.Offset;
         showTraffic: boolean;
         staticMap: boolean;
