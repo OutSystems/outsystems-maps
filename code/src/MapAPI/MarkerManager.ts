@@ -1,6 +1,7 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace MapAPI.MarkerManager {
     const markerMap = new Map<string, string>(); //marker.uniqueId -> map.uniqueId
-    const markerArr = new Array<OSFramework.Marker.IMarker>()
+    const markerArr = new Array<OSFramework.Marker.IMarker>();
 
     /**
      * Function that creates an instance of Map object with the configurations passed
@@ -14,9 +15,13 @@ namespace MapAPI.MarkerManager {
         map: OSFramework.OSMap.IMap,
         markerId: string,
         configs: string
-    ): OSFramework.Marker.IMarker { 
+    ): OSFramework.Marker.IMarker {
         if (!map.hasMarker(markerId)) {
-            const _marker = GoogleProvider.Marker.MarkerFactory.MakeMarker(map, markerId, JSON.parse(configs));
+            const _marker = GoogleProvider.Marker.MarkerFactory.MakeMarker(
+                map,
+                markerId,
+                JSON.parse(configs)
+            );
             markerArr.push(_marker);
             markerMap.set(markerId, map.uniqueId);
             map.addMarker(_marker);
@@ -40,8 +45,7 @@ namespace MapAPI.MarkerManager {
         //markerId is the UniqueId
         if (markerMap.has(markerId)) {
             map = MapManager.GetMapById(markerMap.get(markerId), false);
-        
-        } 
+        }
         //UniqueID not found
         else {
             // Try to find its reference on DOM
@@ -109,5 +113,4 @@ namespace MapAPI.MarkerManager {
             1
         );
     }
-
 }

@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace MapAPI.MapManager {
     const maps = new Map<string, OSFramework.OSMap.IMap>(); //grid.uniqueId -> Grid obj
     let activeMap: OSFramework.OSMap.IMap = undefined;
@@ -10,11 +11,15 @@ namespace MapAPI.MapManager {
      * @param {string} configs configurations for the Map in JSON format.
      * @returns {*}  {OSMap.IMap} instance of the Map.
      */
-     export function CreateMap(
+    export function CreateMap(
         mapId: string,
         configs: string
     ): OSFramework.OSMap.IMap {
-        const _map = GoogleProvider.Map.MapFactory.MakeMap(OSFramework.Enum.MapType.GoogleMaps, mapId, JSON.parse(configs));
+        const _map = GoogleProvider.Map.MapFactory.MakeMap(
+            OSFramework.Enum.MapType.GoogleMaps,
+            mapId,
+            JSON.parse(configs)
+        );
 
         if (maps.has(mapId)) {
             throw new Error(
@@ -50,9 +55,9 @@ namespace MapAPI.MapManager {
      * @param {boolean} raiseError Will raise errors when there is no object with this uniqueId
      * @returns {*}  {OSMap.IMap} instance of the grid.
      */
-     export function GetMapById(
+    export function GetMapById(
         mapId: string,
-        raiseError: boolean = true
+        raiseError = true
     ): OSFramework.OSMap.IMap {
         let map: OSFramework.OSMap.IMap;
 
@@ -130,7 +135,9 @@ namespace MapAPI.MapManager {
      * @export
      * @param {string} mapId Id of the Map to get the Markers.
      */
-     export function GetAllMarkers(mapId: string): Array<OSFramework.Marker.IMarker> {
+    export function GetAllMarkers(
+        mapId: string
+    ): Array<OSFramework.Marker.IMarker> {
         const map = GetMapById(mapId);
 
         return map.getMarkers();
