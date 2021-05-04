@@ -77,9 +77,9 @@ namespace OSFramework.OSMap {
             return marker;
         }
         build(): void {
-            // this._widgetId = OSFramework.Helper.GetElementByUniqueId(
-            //     this.uniqueId
-            // ).closest(OSFramework.Helper.Constants.gridTag).id;
+            this._widgetId = OSFramework.Helper.GetElementByUniqueId(
+                this.uniqueId
+            ).closest(OSFramework.Helper.Constants.mapTag).id;
         }
         dispose(): void {
             this._isReady = false;
