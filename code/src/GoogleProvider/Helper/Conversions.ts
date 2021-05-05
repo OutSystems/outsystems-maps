@@ -7,12 +7,12 @@ namespace GoogleProvider.Helper.Conversions {
      * @param apiKey Google API Key 
      * @returns Promise that will retrieve the coordinates
      */
-    export function ConvertLocationToCoordinates(
+    export function ConvertToCoordinates(
         location: string,
         apiKey: string
-    ): any {
+    ): Promise<OSFramework.OSStructures.OSMap.Coordinates> {
         if(location.length === 0) {
-            throw new Error("The address can't be empty.");
+            throw new Error("Invalid location.");
         }
         // If the location is a set of coordinates
         if (location.search(/[a-zA-Z]/g) === -1) {

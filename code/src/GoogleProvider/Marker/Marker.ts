@@ -9,10 +9,9 @@ namespace GoogleProvider.Marker {
         >
         implements IMarkerGoogle {
         private _fBuilder: GoogleProvider.Feature.FeatureBuilder;
-        private _markerOptions: google.maps.MarkerOptions;
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        constructor(map:OSFramework.OSMap.IMap, markerId: string, configs: any) {
+        constructor(map: OSFramework.OSMap.IMap, markerId: string, configs: any) {
             super(
                 map,
                 markerId,
@@ -20,42 +19,22 @@ namespace GoogleProvider.Marker {
             );
         }
 
-        private _convertCoordinates(location: string | OSFramework.OSStructures.OSMap.Coordinates): Promise<OSFramework.OSStructures.OSMap.Coordinates> {
-            if (typeof location !== 'undefined' && typeof location === 'string') {
-                return GoogleProvider.Helper.Conversions.ConvertLocationToCoordinates(location, this.map.config.apiKey);
-            }
-        }
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        private _getProviderConfig(): any {
-            return this.config.getProviderConfig();
-        }
-
         public build(): void {
             super.build();
             
             const markerOptions: google.maps.MarkerOptions = {};
-            if (typeof this.config.iconURL !== 'undefined' && this.config.iconURL !== '') {
-                markerOptions.icon = this.config.iconURL;
+            if (typeof this.config.iconUrl !== 'undefined' && this.config.iconUrl !== '') {
+                markerOptions.icon = this.config.iconUrl;
             }
             if (typeof this.config.location !== 'undefined') {
-                this._convertCoordinates(this.config.location)
+                GoogleProvider.Helper.Conversions.ConvertToCoordinates(this.config.location, this.map.config.apiKey)
                     .then((response) => {
                         markerOptions.position = { lat: response.lat, lng: response.lng };
                         markerOptions.map = this.map.provider;
                         this._provider = new google.maps.Marker(markerOptions);
                     });
             } 
-            // this.buildFeatures();
         }
-
-        // public buildFeatures(): void {
-        //     this._fBuilder = new GoogleProvider.Feature.FeatureBuilder(this);
-
-        //     this._features = this._fBuilder.features;
-
-        //     this._fBuilder.build();
-        // }
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         public changeProperty(propertyName: string, value: any): void {
@@ -63,16 +42,18 @@ namespace GoogleProvider.Marker {
 
             switch (propValue) {
                 case OSFramework.Enum.OS_Config_Marker.location:
-                    this._convertCoordinates(value).then(response => {
-                        const coordinates = new google.maps.LatLng(
-                            response.lat,
-                            response.lng
-                        );
-                        this._provider.setPosition(coordinates);
-                    });
+                    GoogleProvider.Helper.Conversions.ConvertToCoordinates(value, this.map.config.apiKey)
+                        .then(response => {
+                            const coordinates = new google.maps.LatLng(
+                                response.lat,
+                                response.lng
+                            );
+                            this._provider.setPosition(coordinates);
+                        });
                     return;
-                case OSFramework.Enum.OS_Config_Marker.advancedFormat:
-                    return this._provider.setOptions(value);
+                case OSFramework.Enum.OS_Config_Map.advancedFormat:
+                    const parsedAdvFormat = value !== '' ? JSON.parse(value) : '';
+                    return this._provider.setOptions(parsedAdvFormat);
                 case OSFramework.Enum.OS_Config_Marker.iconURL:
                     return this._provider.setIcon(value);
 

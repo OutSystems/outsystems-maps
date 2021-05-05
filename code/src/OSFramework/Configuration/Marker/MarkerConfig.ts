@@ -7,7 +7,7 @@ namespace OSFramework.Configuration.Marker {
         implements IConfigurationMarker {
 
         public advancedFormat: string;
-        public iconURL: string;
+        public iconUrl: string;
         public location: string;
         public uniqueId: string;
 
@@ -21,7 +21,7 @@ namespace OSFramework.Configuration.Marker {
             // eslint-disable-next-line prefer-const
             let provider = {
                 advancedFormat: this.advancedFormat,
-                iconURL: this.iconURL,
+                iconURL: this.iconUrl,
                 location: this.location,
                 uniqueId: this.uniqueId
             };
