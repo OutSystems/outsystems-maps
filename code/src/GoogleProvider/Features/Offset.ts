@@ -27,12 +27,12 @@ namespace GoogleProvider.Feature {
         }
 
         public setOffset(value: OSFramework.OSStructures.OSMap.Offset): void {
-            // The offset of the map should be the sum of the previous offSet and the new one
             this._offset = {
-                offsetX: value.offsetX + this._offset.offsetX, 
-                offsetY: value.offsetY + this._offset.offsetY
+                offsetX: value.offsetX || 0, 
+                offsetY: value.offsetY || 0
             }
-            this._map.provider.panBy(value.offsetX, value.offsetY);
+            this._map.provider.panTo(this._map.features.center.getCenter());
+            this._map.provider.panBy(this._offset.offsetX, this._offset.offsetY);
         }
 
         public setAutoFit(state: boolean): void {

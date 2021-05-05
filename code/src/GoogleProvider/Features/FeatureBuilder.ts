@@ -58,6 +58,11 @@ namespace GoogleProvider.Feature {
             return this;
         }
 
+        private _makeCenter(center: OSFramework.OSStructures.OSMap.Coordinates): FeatureBuilder {
+            this._features.center = this._makeItem(Center, center);
+            return this;
+        }
+
         private _makeTrafficLayer(enable: boolean): FeatureBuilder {
             this._features.trafficLayer = this._makeItem(TrafficLayer, enable);
             return this;
@@ -74,6 +79,7 @@ namespace GoogleProvider.Feature {
 
             this._makeTrafficLayer(config.showTraffic)
                 ._makeStaticMap(config.staticMap)
+                ._makeCenter(config.center)
                 ._makeOffset(config.offset);
 
             super.build();
