@@ -67,8 +67,6 @@ namespace GoogleProvider.Marker {
         public dispose(): void {
             super.dispose();
 
-            this._fBuilder.dispose();
-
             this._provider = undefined;
         }
 
