@@ -26,14 +26,20 @@ namespace GoogleProvider.Marker {
             if (typeof this.config.iconUrl !== 'undefined' && this.config.iconUrl !== '') {
                 markerOptions.icon = this.config.iconUrl;
             }
-            if (typeof this.config.location !== 'undefined') {
+            if (typeof this.config.advancedFormat !== 'undefined' && this.config.advancedFormat !== '') {
+                // Change advancedFormat
+            }
+            if (typeof this.config.location !== 'undefined' && this.config.location !== '') {
                 GoogleProvider.Helper.Conversions.ConvertToCoordinates(this.config.location, this.map.config.apiKey)
                     .then((response) => {
                         markerOptions.position = { lat: response.lat, lng: response.lng };
                         markerOptions.map = this.map.provider;
                         this._provider = new google.maps.Marker(markerOptions);
                     });
-            } 
+            } else {
+                throw new Error("Invalid location");
+            }
+
         }
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
