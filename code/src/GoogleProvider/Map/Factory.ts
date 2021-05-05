@@ -13,7 +13,7 @@ namespace GoogleProvider.Map {
                         configs as OSFramework.Configuration.OSMap.GoogleMapConfig
                     );
                 default:
-                    throw `There is no factory for this type of grid (${type})`;
+                    throw `There is no factory for this type of Map (${type})`;
             }
         }
     }

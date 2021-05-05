@@ -20,7 +20,7 @@ namespace GoogleProvider.Map {
 
         // eslint-disable-next-line @typescript-eslint/member-ordering
         private _buildMarkers(): void {
-            // this.getMarkers().forEach((marker) => marker.build());
+            this.getMarkers().forEach((marker) => marker.build());
         }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

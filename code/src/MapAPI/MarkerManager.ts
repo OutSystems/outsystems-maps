@@ -12,10 +12,11 @@ namespace MapAPI.MarkerManager {
      * @returns {*}  {OSMap.IMap} instance of the Map
      */
     export function CreateMarker(
-        map: OSFramework.OSMap.IMap,
+        mapId: string,
         markerId: string,
         configs: string
     ): OSFramework.Marker.IMarker {
+        const map = MapManager.GetMapById(mapId, true);
         if (!map.hasMarker(markerId)) {
             const _marker = GoogleProvider.Marker.MarkerFactory.MakeMarker(
                 map,
@@ -102,9 +103,9 @@ namespace MapAPI.MarkerManager {
      * @param {string} markerID id of the Marker that is about to be removed
      */
     export function RemoveMarker(markerId: string): void {
-        const grid = GetMapByMarkerId(markerId);
+        const map = GetMapByMarkerId(markerId);
 
-        grid && grid.removeMarker(markerId);
+        map && map.removeMarker(markerId);
         markerMap.delete(markerId);
         markerArr.splice(
             markerArr.findIndex((p) => {

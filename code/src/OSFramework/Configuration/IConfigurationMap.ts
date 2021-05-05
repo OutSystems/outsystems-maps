@@ -1,7 +1,7 @@
 namespace OSFramework.Configuration {
     /**
      * Used to translate configurations from OS to Provider
-     * Defines the basic structure for grid objects
+     * Defines the basic structure for Map objects
      */
     export interface IConfigurationMap extends IConfiguration {
         advancedFormat: string;
