@@ -107,9 +107,14 @@ namespace OSFramework.OSMap {
             throw new Error('Method not implemented.');
         }
         public removeAllMarkers(): void {
+            this._markers.forEach((marker) => {
+                marker.dispose();
+            });
+
             this._markers.clear();
             this._markersSet.clear();
         }
+
         public removeMarker(markedId: string): void {
             if (this._markers.has(markedId)) {
                 const marker = this._markers.get(markedId);

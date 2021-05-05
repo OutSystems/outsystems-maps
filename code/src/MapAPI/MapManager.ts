@@ -115,6 +115,18 @@ namespace MapAPI.MapManager {
     }
 
     /**
+     * Function that will remove all Markers from a given Map.
+     *
+     * @export
+     * @param {string} mapId Id of the Map to have markers removed.
+     */
+    export function RemoveMarkers(mapId: string): void {
+        const map = GetMapById(mapId);
+
+        map.removeAllMarkers();
+    }
+
+    /**
      * Function that will change the property of a given Map.
      *
      * @export
