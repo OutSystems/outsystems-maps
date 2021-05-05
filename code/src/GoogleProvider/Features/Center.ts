@@ -12,14 +12,6 @@ namespace GoogleProvider.Feature {
             this._currentCenter = center;
         }
 
-        private _convertCoordinates(location: string | OSFramework.OSStructures.OSMap.Coordinates): Promise<OSFramework.OSStructures.OSMap.Coordinates> {
-            if (typeof location !== 'undefined' && typeof location === 'string') {
-                return GoogleProvider.Helper.Conversions.ConvertLocationToCoordinates(location, this._map.config.apiKey);
-            }else{
-                throw new Error("Invalid location.");
-            }
-        }
-
         private _setCenter(value: OSFramework.OSStructures.OSMap.Coordinates): void {
             // Save the new value as the new center
             this._currentCenter = value;
@@ -39,8 +31,8 @@ namespace GoogleProvider.Feature {
             return this._currentCenter;
         }
 
-        public updateCenter(location: string | OSFramework.OSStructures.OSMap.Coordinates): void {
-            this._convertCoordinates(location).then(response => {
+        public updateCenter(location: string): void {
+            GoogleProvider.Helper.Conversions.ConvertToCoordinates(location, this._map.config.apiKey).then(response => {
                 this._map.config.center = response;
                 this._setCenter(this._map.config.center);
             });
