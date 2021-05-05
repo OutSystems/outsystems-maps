@@ -8,6 +8,8 @@ namespace OSFramework.OSMap {
             config: Configuration.IConfigurationMap;
             /** Boolean that indicates if the Map is ready */
             isReady: boolean;
+            /** Exposed features of the Map */
+            features: OSFramework.Feature.ExposedFeatures;
             /** Events from the Map */
             mapEvents: Event.OSMap.MapEventsManager;
             /** Map provider */
