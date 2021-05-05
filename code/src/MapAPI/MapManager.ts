@@ -1,7 +1,11 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace MapAPI.MapManager {
-    const maps = new Map<string, OSFramework.OSMap.IMap>(); //grid.uniqueId -> Grid obj
+    const maps = new Map<string, OSFramework.OSMap.IMap>(); //map.uniqueId -> Map obj
     let activeMap: OSFramework.OSMap.IMap = undefined;
+    
+    export function GetMapsFromPage(): Map<string, OSFramework.OSMap.IMap> {
+        return maps;
+    }
 
     /**
      * Function that creates an instance of Map object with the configurations passed.
