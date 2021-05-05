@@ -23,22 +23,19 @@ namespace GoogleProvider.Map {
             // this.getMarkers().forEach((marker) => marker.build());
         }
 
-        private _convertCoordinates(location: string | OSFramework.OSStructures.OSMap.Coordinates): Promise<OSFramework.OSStructures.OSMap.Coordinates> {
-            if (typeof location !== 'undefined' && typeof location === 'string') {
-                return GoogleProvider.Helper.Conversions.ConvertLocationToCoordinates(location, this.config.apiKey);
-            }
-        }
-
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         private _getProviderConfig(): google.maps.MapOptions {
-            this._convertCoordinates(this.config.center).then(response => {
-                this.config.center = response;
-                this._provider.setCenter(this.config.center);
-            });
+            // Make sure the center has a default value before the conversion of the location to coordinates
             this.config.center = OSFramework.Helper.Constants.defaultMapCenter;
+
             return this.config.getProviderConfig();
         }
 
+        /**
+         * Initializes the Google Map. 
+         * 1) Add the script from GoogleAPIS to the header of the page
+         * 2) Creates the Map via GoogleMap API
+         */
         private _initializeGoogleMap(): void {
             if (!document.getElementById('google-maps-script')) {
                 // Create the script tag, set the appropriate attributes
@@ -51,18 +48,34 @@ namespace GoogleProvider.Map {
                 script.id = 'google-maps-script';
                 document.head.appendChild(script);
                 script.onload = this._createGoogleMap.bind(this);
+            }else{
+                this._createGoogleMap();
             }
         }
 
+        /**
+         * Creates the Map via GoogleMap API
+         */
         private _createGoogleMap(): void {
             if (typeof google === 'object' && typeof google.maps === 'object') {
+                // Make sure the center is saved before setting a default value which is going to be used 
+                // before the conversion of the location to coordinates gets resolved
+                const currentCenter = this.config.center;
+
                 this._provider = new google.maps.Map(
                     OSFramework.Helper.GetElementByUniqueId(this.uniqueId),
+                    // The provider config will retrieve the default center position
+                    // (this.config.center = OSFramework.Helper.Constants.defaultMapCenter)
+                    // Which will get updated after the Map is rendered
                     this._getProviderConfig()
                 );
+
                 this.buildFeatures();
                 this._buildMarkers();
                 this.finishBuild();
+    
+                // Make sure to change the center after the conversion of the location to coordinates
+                this.features.center.updateCenter(currentCenter);
             } else {
                 throw Error(`The google.maps lib has not been loaded.`);
             }
@@ -80,6 +93,7 @@ namespace GoogleProvider.Map {
 
         public build(): void {
             super.build();
+
             this._initializeGoogleMap();
         }
 
@@ -112,13 +126,7 @@ namespace GoogleProvider.Map {
 
             switch (propValue) {
                 case OSFramework.Enum.OS_Config_Map.center:
-                    this._convertCoordinates(value).then(response => {
-                        const coordinates = new google.maps.LatLng(
-                            response.lat,
-                            response.lng
-                        );
-                        this._provider.setCenter(coordinates);
-                    });
+                    this.features.center.updateCenter(value);
                     return;
                 case OSFramework.Enum.OS_Config_Map.zoom:
                     return this._provider.setZoom(value);
@@ -128,13 +136,15 @@ namespace GoogleProvider.Map {
                     const style = GoogleProvider.GetStyleByStyleId(value);
                     return this._provider.setOptions({ styles: style });
                 case OSFramework.Enum.OS_Config_Map.advancedFormat:
-                    return this._provider.setOptions(value);
+                    const parsedAdvFormat = value !== '' ? JSON.parse(value) : '';
+                    return this._provider.setOptions(parsedAdvFormat);
                 case OSFramework.Enum.OS_Config_Map.showTraffic:
                     return this.features.trafficLayer.setState(value);
                 case OSFramework.Enum.OS_Config_Map.staticMap:
                     return this.features.staticMap.setState(value);
                 case OSFramework.Enum.OS_Config_Map.offset:
-                    return this.features.offset.setOffset(value);
+                    const parsedOffset = JSON.parse(value);
+                    return this.features.offset.setOffset(parsedOffset);
                 default:
                     throw Error(
                         `changeProperty - Property '${propertyName}' can't be changed.`
