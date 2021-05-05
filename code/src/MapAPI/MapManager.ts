@@ -160,18 +160,6 @@ namespace MapAPI.MapManager {
     }
 
     /**
-     * Function that will destroy the Map from the page.
-     *
-     * @export
-     * @param {string} mapId Id of the Map to be destroyed.
-     */
-    export function RemoveAllMarkers(mapId: string): void {
-        const map = GetMapById(mapId);
-
-        map.removeAllMarkers();
-    }
-
-    /**
      * Function that will the height of a given Map.
      *
      * @export

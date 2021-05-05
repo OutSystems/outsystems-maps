@@ -12,10 +12,11 @@ namespace MapAPI.MarkerManager {
      * @returns {*}  {OSMap.IMap} instance of the Map
      */
     export function CreateMarker(
-        map: OSFramework.OSMap.IMap,
+        mapId: string,
         markerId: string,
         configs: string
     ): OSFramework.Marker.IMarker {
+        const map = MapManager.GetMapById(mapId, true);
         if (!map.hasMarker(markerId)) {
             const _marker = GoogleProvider.Marker.MarkerFactory.MakeMarker(
                 map,
