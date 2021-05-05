@@ -43,7 +43,7 @@ namespace MapAPI.MapManager {
      * Function that initializes the provider Map in the page.
      * The current provider Map is GoogleMaps.
      * @export
-     * @param {string} mapId Id of the Grid that is going to be initialized.
+     * @param {string} mapId Id of the Map that is going to be initialized.
      */
     export function InitializeMap(mapId: string): void {
         const map = GetMapById(mapId);
@@ -57,7 +57,7 @@ namespace MapAPI.MapManager {
      * @export
      * @param {string} mapId Id of the Map where the change will occur.
      * @param {boolean} raiseError Will raise errors when there is no object with this uniqueId
-     * @returns {*}  {OSMap.IMap} instance of the grid.
+     * @returns {*}  {OSMap.IMap} instance of the Map.
      */
     export function GetMapById(
         mapId: string,

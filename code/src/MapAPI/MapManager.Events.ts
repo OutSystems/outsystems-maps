@@ -16,8 +16,8 @@ namespace MapAPI.MapManager.Events {
      *
      * @export
      * @param {string} mapId Map where the event will be attached
-     * @param {OSFramework.Event.Grid.GridEventType} eventName name fo the event to be attached
-     * @param {GridAPI.Callbacks.OSGrid.Event} callback callback to be invoked when the event occurs
+     * @param {OSFramework.Event.Map.MapEventType} eventName name fo the event to be attached
+     * @param {MapAPI.Callbacks.OSMap.Event} callback callback to be invoked when the event occurs
      */
     export function Subscribe(
         mapId: string,
@@ -66,8 +66,8 @@ namespace MapAPI.MapManager.Events {
      *
      * @export
      * @param {string} mapId Map where the event will be removed
-     * @param {OSFramework.Event.Grid.GridEventType} eventName name of the event to be removed
-     * @param {GridAPI.Callbacks.OSGrid.Event} callback callback that will be removed
+     * @param {OSFramework.Event.Map.MapEventType} eventName name of the event to be removed
+     * @param {MapAPI.Callbacks.OSMap.Event} callback callback that will be removed
      */
     export function Unsubscribe(
         mapId: string,

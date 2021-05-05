@@ -103,9 +103,9 @@ namespace MapAPI.MarkerManager {
      * @param {string} markerID id of the Marker that is about to be removed
      */
     export function RemoveMarker(markerId: string): void {
-        const grid = GetMapByMarkerId(markerId);
+        const map = GetMapByMarkerId(markerId);
 
-        grid && grid.removeMarker(markerId);
+        map && map.removeMarker(markerId);
         markerMap.delete(markerId);
         markerArr.splice(
             markerArr.findIndex((p) => {
