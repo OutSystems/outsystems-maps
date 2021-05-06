@@ -21,7 +21,10 @@ namespace GoogleProvider.Marker {
             );
         }
 
-        private _setMarkerEvents() {
+        private _setMarkerEvents(parsedAdvFormat: string) {
+            // Make sure all the listeners get removed before adding the new ones
+            google.maps.event.clearInstanceListeners(this.provider);
+
             // OnClick Event
             if (
                 this.markerEvents.hasHandlers(
@@ -63,11 +66,9 @@ namespace GoogleProvider.Marker {
                 this.markerEvents.hasHandlers(
                     OSFramework.Event.Marker.MarkerEventType.OnEventTriggered
                 ) &&
-                this.config.advancedFormat !== ''
+                parsedAdvFormat !== ''
             ) {
-                const advancedFormatObj = JSON.parse(
-                    this.config.advancedFormat
-                );
+                const advancedFormatObj = JSON.parse(parsedAdvFormat);
                 if (advancedFormatObj.hasOwnProperty('markerEvents')) {
                     // markerEvents is an Array of events
                     advancedFormatObj.markerEvents.forEach(
@@ -120,8 +121,9 @@ namespace GoogleProvider.Marker {
                     };
                     markerOptions.map = this.map.provider;
                     this._provider = new google.maps.Marker(markerOptions);
-                    // We can only set the events on the provider after its creating
-                    this._setMarkerEvents();
+
+                    // We can only set the events on the provider after its creation
+                    this._setMarkerEvents(this.config.advancedFormat);
                 });
             } else {
                 throw new Error('Invalid location');
@@ -145,6 +147,8 @@ namespace GoogleProvider.Marker {
                     });
                     return;
                 case OSFramework.Enum.OS_Config_Map.advancedFormat:
+                    // Make sure the MapEvents that are associated in the advancedFormat get updated
+                    this._setMarkerEvents(value);
                     return this._provider.setOptions(
                         value !== '' ? JSON.parse(value) : ''
                     );
@@ -161,6 +165,7 @@ namespace GoogleProvider.Marker {
         public dispose(): void {
             super.dispose();
 
+            this._provider.setMap(null);
             this._provider = undefined;
         }
 

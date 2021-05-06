@@ -57,7 +57,7 @@ namespace OSFramework.OSMap {
             this._isReady = true;
 
             this.mapEvents.trigger(
-                OSFramework.Event.OSMap.MapEventType.Initialized,
+                OSFramework.Event.OSMap.MapEventType.Initialized
             );
         }
 

@@ -1,28 +1,32 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.Marker {
     export abstract class AbstractMarker<
         W,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         Z extends Configuration.IConfigurationMarker
     > implements IMarkerGeneric<W> {
         /** Configuration reference */
         private _config: Configuration.IConfigurationMarker;
-        private _map: OSFramework.OSMap.IMap;
+        private _map: OSMap.IMap;
         private _uniqueId: string;
         private _widgetId: string;
-        
+
         protected _built: boolean;
         protected _markerEvents: Event.Marker.MarkerEventsManager;
         protected _provider: W;
 
         abstract hasEvents: boolean;
 
-        constructor(map:OSFramework.OSMap.IMap, uniqueId:string, config:OSFramework.Configuration.IConfigurationMarker){
+        constructor(
+            map: OSMap.IMap,
+            uniqueId: string,
+            config: Configuration.IConfigurationMarker
+        ) {
             this._map = map;
             this._uniqueId = uniqueId;
             this._config = config;
             this._built = false;
-            this._markerEvents = new OSFramework.Event.Marker.MarkerEventsManager(
-                this
-            );
+            this._markerEvents = new Event.Marker.MarkerEventsManager(this);
         }
 
         public get config(): Configuration.IConfigurationMarker {
@@ -31,7 +35,7 @@ namespace OSFramework.Marker {
         public get isReady(): boolean {
             return this._built;
         }
-        public get map(): OSFramework.OSMap.IMap {
+        public get map(): OSMap.IMap {
             return this._map;
         }
         public get markerEvents(): Event.Marker.MarkerEventsManager {
@@ -53,6 +57,8 @@ namespace OSFramework.Marker {
 
             // this._preBuild();
         }
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
         public changeProperty(propertyName: string, propertyValue: any): void {
             //Update Marker's config when the property is available
             if (this.config.hasOwnProperty(propertyName)) {
@@ -63,19 +69,18 @@ namespace OSFramework.Marker {
                 );
             }
         }
+
         public dispose(): void {
             this._built = false;
         }
+
+        public equalsToID(id: string): boolean {
+            return id === this._uniqueId || id === this._widgetId;
+        }
+
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public getProviderConfig(): any {
             return this._config.getProviderConfig();
-        }
-
-        public equalsToID(id: string): boolean {
-            return (
-                id === this._uniqueId ||
-                id === this._widgetId
-            );
         }
     }
 }

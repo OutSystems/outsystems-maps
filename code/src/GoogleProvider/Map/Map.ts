@@ -4,11 +4,11 @@
 namespace GoogleProvider.Map {
     export class Map
         extends OSFramework.OSMap.AbstractMap<
-        google.maps.Map,
-        OSFramework.Configuration.OSMap.GoogleMapConfig
+            google.maps.Map,
+            OSFramework.Configuration.OSMap.GoogleMapConfig
         >
         implements IMapGoogle {
-        private _fBuilder: GoogleProvider.Feature.FeatureBuilder;
+        private _fBuilder: Feature.FeatureBuilder;
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         constructor(mapId: string, configs: any) {
@@ -23,42 +23,12 @@ namespace GoogleProvider.Map {
             this.getMarkers().forEach((marker) => marker.build());
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        private _getProviderConfig(): google.maps.MapOptions {
-            // Make sure the center has a default value before the conversion of the location to coordinates
-            this.config.center = OSFramework.Helper.Constants.defaultMapCenter;
-
-            return this.config.getProviderConfig();
-        }
-
-        /**
-         * Initializes the Google Map. 
-         * 1) Add the script from GoogleAPIS to the header of the page
-         * 2) Creates the Map via GoogleMap API
-         */
-        private _initializeGoogleMap(): void {
-            if (!document.getElementById('google-maps-script')) {
-                // Create the script tag, set the appropriate attributes
-                const script = document.createElement('script');
-
-                script.src =
-                    'https://maps.googleapis.com/maps/api/js?key=' + this.config.apiKey;
-                script.async = true;
-                script.defer = true;
-                script.id = 'google-maps-script';
-                document.head.appendChild(script);
-                script.onload = this._createGoogleMap.bind(this);
-            }else{
-                this._createGoogleMap();
-            }
-        }
-
         /**
          * Creates the Map via GoogleMap API
          */
         private _createGoogleMap(): void {
             if (typeof google === 'object' && typeof google.maps === 'object') {
-                // Make sure the center is saved before setting a default value which is going to be used 
+                // Make sure the center is saved before setting a default value which is going to be used
                 // before the conversion of the location to coordinates gets resolved
                 const currentCenter = this.config.center;
 
@@ -73,8 +43,10 @@ namespace GoogleProvider.Map {
                 this.buildFeatures();
                 this._buildMarkers();
                 this.finishBuild();
+
+                // We can only set the events on the provider after its creation
                 this._setMapEvents(this.config.advancedFormat);
-    
+
                 // Make sure to change the center after the conversion of the location to coordinates
                 this.features.center.updateCenter(currentCenter);
             } else {
@@ -82,22 +54,67 @@ namespace GoogleProvider.Map {
             }
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        private _getProviderConfig(): google.maps.MapOptions {
+            // Make sure the center has a default value before the conversion of the location to coordinates
+            this.config.center = OSFramework.Helper.Constants.defaultMapCenter;
+
+            return this.config.getProviderConfig();
+        }
+
+        /**
+         * Initializes the Google Map.
+         * 1) Add the script from GoogleAPIS to the header of the page
+         * 2) Creates the Map via GoogleMap API
+         */
+        private _initializeGoogleMap(): void {
+            if (!document.getElementById('google-maps-script')) {
+                // Create the script tag, set the appropriate attributes
+                const script = document.createElement('script');
+
+                script.src =
+                    'https://maps.googleapis.com/maps/api/js?key=' +
+                    this.config.apiKey;
+                script.async = true;
+                script.defer = true;
+                script.id = 'google-maps-script';
+                document.head.appendChild(script);
+                script.onload = this._createGoogleMap.bind(this);
+            } else {
+                this._createGoogleMap();
+            }
+        }
+
         private _setMapEvents(parsedAdvFormat: string) {
+            // Make sure all the listeners get removed before adding the new ones
             google.maps.event.clearInstanceListeners(this.provider);
-            if(this.mapEvents.hasHandlers(OSFramework.Event.OSMap.MapEventType.OnEventTriggered) && parsedAdvFormat !== ''){
+
+            // OnEventTriggered Event (other events that can be set on the advancedFormat of the Map)
+            if (
+                this.mapEvents.hasHandlers(
+                    OSFramework.Event.OSMap.MapEventType.OnEventTriggered
+                ) &&
+                parsedAdvFormat !== ''
+            ) {
                 const advancedFormatObj = JSON.parse(parsedAdvFormat);
                 if (advancedFormatObj.hasOwnProperty('mapEvents')) {
                     // markerEvents is an Array of events
                     advancedFormatObj.mapEvents.forEach((eventName: string) => {
                         this._provider.addListener(eventName, () => {
-                            this.mapEvents.trigger(OSFramework.Event.OSMap.MapEventType.OnEventTriggered, eventName);
+                            this.mapEvents.trigger(
+                                OSFramework.Event.OSMap.MapEventType
+                                    .OnEventTriggered,
+                                eventName
+                            );
                         });
-                    })
+                    });
                 }
             }
         }
 
-        public addMarker(marker: OSFramework.Marker.IMarker): OSFramework.Marker.IMarker {
+        public addMarker(
+            marker: OSFramework.Marker.IMarker
+        ): OSFramework.Marker.IMarker {
             super.addMarker(marker);
 
             if (this.isReady) {
@@ -114,7 +131,7 @@ namespace GoogleProvider.Map {
         }
 
         public buildFeatures(): void {
-            this._fBuilder = new GoogleProvider.Feature.FeatureBuilder(this);
+            this._fBuilder = new Feature.FeatureBuilder(this);
             this._features = this._fBuilder.features;
             this._fBuilder.build();
         }
@@ -149,19 +166,21 @@ namespace GoogleProvider.Map {
                 case OSFramework.Enum.OS_Config_Map.type:
                     return this._provider.setMapTypeId(value);
                 case OSFramework.Enum.OS_Config_Map.style:
-                    const style = GoogleProvider.GetStyleByStyleId(value);
-                    return this._provider.setOptions({ styles: style });
+                    return this._provider.setOptions({
+                        styles: GetStyleByStyleId(value)
+                    });
                 case OSFramework.Enum.OS_Config_Map.advancedFormat:
-                    const parsedAdvFormat = value !== '' ? JSON.parse(value) : '';
+                    // Make sure the MapEvents that are associated in the advancedFormat get updated
                     this._setMapEvents(value);
-                    return this._provider.setOptions(parsedAdvFormat);
+                    return this._provider.setOptions(
+                        value !== '' ? JSON.parse(value) : ''
+                    );
                 case OSFramework.Enum.OS_Config_Map.showTraffic:
                     return this.features.trafficLayer.setState(value);
                 case OSFramework.Enum.OS_Config_Map.staticMap:
                     return this.features.staticMap.setState(value);
                 case OSFramework.Enum.OS_Config_Map.offset:
-                    const parsedOffset = JSON.parse(value);
-                    return this.features.offset.setOffset(parsedOffset);
+                    return this.features.offset.setOffset(JSON.parse(value));
                 default:
                     throw Error(
                         `changeProperty - Property '${propertyName}' can't be changed.`
