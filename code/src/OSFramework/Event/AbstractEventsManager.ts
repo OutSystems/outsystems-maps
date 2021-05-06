@@ -16,7 +16,7 @@ namespace OSFramework.Event {
         private _handlers: Map<ET, OSFramework.Event.IEvent<D>>;
 
         constructor() {
-            //this._handlers = new Map<ET, OSFramework.Event.IEvent<D>>();
+            this._handlers = new Map<ET, OSFramework.Event.IEvent<D>>();
         }
 
         public get handlers(): Map<ET, OSFramework.Event.IEvent<D>> {
@@ -27,7 +27,7 @@ namespace OSFramework.Event {
             eventType: ET,
             handler: OSFramework.Callbacks.Generic
         ): void {
-            if (this._handlers.has(eventType)) {
+            if (this._handlers && this._handlers.has(eventType)) {
                 this._handlers.get(eventType).addHandler(handler);
             } else {
                 const ev = this.getInstanceOfEventType(eventType);

@@ -7,6 +7,7 @@ namespace OSFramework.Event.OSMap {
      * @enum {string}
      */
     export enum MapEventType {
-        Initialized = 'Initialized'
+        Initialized = 'Initialized',
+        OnEventTriggered = 'OnEventTriggered'
     }
 }

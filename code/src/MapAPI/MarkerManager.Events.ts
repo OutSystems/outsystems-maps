@@ -17,4 +17,16 @@ namespace MapAPI.MarkerManager.Events {
         const marker = GetMarkerById(markerId);
         marker.markerEvents.addHandler(eventName, callback);
     }
+
+    export function SubscribeAll(
+        mapId: string,
+        eventName: OSFramework.Event.Marker.MarkerEventType,
+        // eslint-disable-next-line
+        callback: OSFramework.Callbacks.Marker.Event
+    ): void {
+        const map = MapManager.GetMapById(mapId);
+        map.getMarkers().forEach((marker) => {
+            marker.markerEvents.addHandler(eventName, callback);
+        });
+    }
 }

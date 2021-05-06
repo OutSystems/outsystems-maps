@@ -73,11 +73,27 @@ namespace GoogleProvider.Map {
                 this.buildFeatures();
                 this._buildMarkers();
                 this.finishBuild();
+                this._setMapEvents(this.config.advancedFormat);
     
                 // Make sure to change the center after the conversion of the location to coordinates
                 this.features.center.updateCenter(currentCenter);
             } else {
                 throw Error(`The google.maps lib has not been loaded.`);
+            }
+        }
+
+        private _setMapEvents(parsedAdvFormat: string) {
+            google.maps.event.clearInstanceListeners(this.provider);
+            if(this.mapEvents.hasHandlers(OSFramework.Event.OSMap.MapEventType.OnEventTriggered) && parsedAdvFormat !== ''){
+                const advancedFormatObj = JSON.parse(parsedAdvFormat);
+                if (advancedFormatObj.hasOwnProperty('mapEvents')) {
+                    // markerEvents is an Array of events
+                    advancedFormatObj.mapEvents.forEach((eventName: string) => {
+                        this._provider.addListener(eventName, () => {
+                            this.mapEvents.trigger(OSFramework.Event.OSMap.MapEventType.OnEventTriggered, eventName);
+                        });
+                    })
+                }
             }
         }
 
@@ -137,6 +153,7 @@ namespace GoogleProvider.Map {
                     return this._provider.setOptions({ styles: style });
                 case OSFramework.Enum.OS_Config_Map.advancedFormat:
                     const parsedAdvFormat = value !== '' ? JSON.parse(value) : '';
+                    this._setMapEvents(value);
                     return this._provider.setOptions(parsedAdvFormat);
                 case OSFramework.Enum.OS_Config_Map.showTraffic:
                     return this.features.trafficLayer.setState(value);

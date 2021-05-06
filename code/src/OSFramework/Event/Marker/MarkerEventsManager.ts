@@ -9,7 +9,7 @@ namespace OSFramework.Event.Marker {
      */
     export class MarkerEventsManager extends AbstractEventsManager<
         MarkerEventType,
-        OSFramework.Marker.IMarker
+        string
     > {
         private _marker: OSFramework.Marker.IMarker;
 
@@ -20,8 +20,8 @@ namespace OSFramework.Event.Marker {
 
         protected getInstanceOfEventType(
             eventType: MarkerEventType
-        ): OSFramework.Event.IEvent<OSFramework.Marker.IMarker> {
-            let event: OSFramework.Event.IEvent<OSFramework.Marker.IMarker>;
+        ): OSFramework.Event.IEvent<string> {
+            let event: OSFramework.Event.IEvent<string>;
 
             switch (eventType) {
                 case MarkerEventType.OnClick:
@@ -32,6 +32,9 @@ namespace OSFramework.Event.Marker {
                     break;
                 case MarkerEventType.OnMouseover:
                     event = new MarkerOnMouseoverEvent();
+                    break;
+                case MarkerEventType.OnEventTriggered:
+                    event = new MarkerOnEventTriggered();
                     break;
                 default:
                     throw `The event '${eventType}' is not supported in a Marker`;
@@ -46,15 +49,34 @@ namespace OSFramework.Event.Marker {
          * @param value Value to be passed to OS in the type of a string.
          */
         public trigger(
-            event: MarkerEventType,
-            markerObj: OSFramework.Marker.IMarker,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-            ...args
+            eventType: MarkerEventType,
+            eventName?: string
         ): void {
-            if (this.handlers.has(event)) {
-                this.handlers
-                    .get(event)
-                    .trigger(markerObj, markerObj.widgetId, ...args);
+            if (this.handlers.has(eventType)) {
+                const handlerEvent = this.handlers.get(eventType);
+
+                switch (eventType) {
+                    case MarkerEventType.OnClick:
+                    case MarkerEventType.OnMouseout:
+                    case MarkerEventType.OnMouseover:
+                        handlerEvent.trigger(
+                            this._marker.map.widgetId, // Id of Map block that was clicked.
+                            this._marker.uniqueId, // Id of Marker block that was clicked.
+                            0 // In this case the value is the JSON Serialization of the line in which the Marker that clicked is located.
+                        );
+                        break;
+                    case MarkerEventType.OnEventTriggered:
+                        handlerEvent.trigger(
+                            this._marker.map.widgetId, // Id of Map block that was clicked.
+                            this._marker.uniqueId, // Id of Marker block that was clicked.
+                            0,
+                            eventName
+                        )
+                        break;
+                    default:
+                        throw `The event '${eventType}' is not supported in a Marker`;
+                        break;
+                }
             }
         }
     }

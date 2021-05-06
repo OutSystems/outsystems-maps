@@ -6,18 +6,17 @@ namespace OSFramework.Event.Marker {
      *
      * @abstract
      * @class AbstractMarkerEvent
-     * @extends {AbstractEvent<OSFramework.Marker.IMarker>}
+     * @extends {AbstractEvent<string>}
      */
     export abstract class AbstractMarkerEvent extends OSFramework.Event
-        .AbstractEvent<OSFramework.Marker.IMarker> {
+        .AbstractEvent<string> {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         public trigger(
-            markerObj: OSFramework.Marker.IMarker,
-            markerId: string,
             mapId: string,
+            markerId: string,
             ...args
         ): void {
-            this.handlers.slice(0).forEach((h) => h(markerId, markerObj, mapId));
+            this.handlers.slice(0).forEach((h) => h(mapId, markerId, ...args));
         }
     }
 }

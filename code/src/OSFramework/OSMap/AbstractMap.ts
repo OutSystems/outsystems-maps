@@ -56,10 +56,9 @@ namespace OSFramework.OSMap {
         protected finishBuild(): void {
             this._isReady = true;
 
-            // this.mapEvents.trigger(
-            //     OSFramework.Event.OSMap.MapEventType.Initialized,
-            //     this
-            // );
+            this.mapEvents.trigger(
+                OSFramework.Event.OSMap.MapEventType.Initialized,
+            );
         }
 
         public addMarker(

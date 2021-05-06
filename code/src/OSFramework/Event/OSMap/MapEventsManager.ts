@@ -5,11 +5,11 @@ namespace OSFramework.Event.OSMap {
      *
      * @export
      * @class MapEventsManager
-     * @extends {AbstractEventsManager<MapEventType, OSFramework.OSMap.IMap>}
+     * @extends {AbstractEventsManager<MapEventType, string>}
      */
     export class MapEventsManager extends AbstractEventsManager<
         MapEventType,
-        OSFramework.OSMap.IMap
+        string
     > {
         private _map: OSFramework.OSMap.IMap;
 
@@ -20,12 +20,15 @@ namespace OSFramework.Event.OSMap {
 
         protected getInstanceOfEventType(
             eventType: MapEventType
-        ): OSFramework.Event.IEvent<OSFramework.OSMap.IMap> {
-            let event: OSFramework.Event.IEvent<OSFramework.OSMap.IMap>;
+        ): OSFramework.Event.IEvent<string> {
+            let event: OSFramework.Event.IEvent<string>;
 
             switch (eventType) {
                 case MapEventType.Initialized:
                     event = new MapInitializedEvent();
+                    break;
+                case MapEventType.OnEventTriggered:
+                    event = new MapOnEventTriggered();
                     break;
                 default:
                     throw `The event '${eventType}' is not supported in a Map`;
@@ -47,16 +50,33 @@ namespace OSFramework.Event.OSMap {
             }
         }
 
-        public trigger(
-            event: MapEventType,
-            mapObj: OSFramework.OSMap.IMap,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-            ...args
+        /**
+         * Trigger the specific events depending on the event type specified
+         * @param eventType Type of the event currently supported in the Map element.
+         */
+         public trigger(
+            eventType: MapEventType,
+            eventName?: string
         ): void {
-            if (this.handlers.has(event)) {
-                this.handlers
-                    .get(event)
-                    .trigger(mapObj, mapObj.widgetId, ...args);
+            if (this.handlers.has(eventType)) {
+                const handlerEvent = this.handlers.get(eventType);
+
+                switch (eventType) {
+                    case MapEventType.Initialized:
+                        handlerEvent.trigger(
+                            this._map.widgetId, 
+                        );
+                        break;
+                    case MapEventType.OnEventTriggered:
+                        handlerEvent.trigger(
+                            this._map.widgetId, // Id of Map block that was clicked.
+                            eventName
+                        )
+                        break;
+                    default:
+                        throw `The event '${eventType}' is not supported in a Marker`;
+                        break;
+                }
             }
         }
     }
