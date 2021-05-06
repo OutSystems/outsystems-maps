@@ -2,7 +2,7 @@
 namespace MapAPI.MapManager {
     const maps = new Map<string, OSFramework.OSMap.IMap>(); //map.uniqueId -> Map obj
     let activeMap: OSFramework.OSMap.IMap = undefined;
-    
+
     export function GetMapsFromPage(): Map<string, OSFramework.OSMap.IMap> {
         return maps;
     }

@@ -60,7 +60,7 @@ namespace GoogleProvider {
     export function GetStyleByStyleId(id: number): google.maps.MapTypeStyle[] {
         // Replace all double quotes to single quotes
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const style = Style[GoogleProvider.StyleOptions[id-1]].style.replace(
+        const style = Style[GoogleProvider.StyleOptions[id - 1]].style.replace(
             /'/g,
             '"'
         );
