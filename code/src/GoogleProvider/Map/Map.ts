@@ -8,7 +8,10 @@ namespace GoogleProvider.Map {
             OSFramework.Configuration.OSMap.GoogleMapConfig
         >
         implements IMapGoogle {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        private _advancedFormatObj: any;
         private _fBuilder: Feature.FeatureBuilder;
+        private _listeners: Array<string>;
         private _scriptCallback: () => void;
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
@@ -49,7 +52,7 @@ namespace GoogleProvider.Map {
                 this.finishBuild();
 
                 // We can only set the events on the provider after its creation
-                this._setMapEvents(this.config.advancedFormat);
+                this._setMapEvents(this._advancedFormatObj.mapEvents);
 
                 // Make sure to change the center after the conversion of the location to coordinates
                 this.features.center.updateCenter(currentCenter);
@@ -62,6 +65,14 @@ namespace GoogleProvider.Map {
         private _getProviderConfig(): google.maps.MapOptions {
             // Make sure the center has a default value before the conversion of the location to coordinates
             this.config.center = OSFramework.Helper.Constants.defaultMapCenter;
+
+            // Take care of the advancedFormat options which can override the previous configuration
+            this._advancedFormatObj = OSFramework.Helper.JsonFormatter(
+                this.config.advancedFormat
+            );
+            for (const property in this._advancedFormatObj) {
+                this.config[property] = this._advancedFormatObj[property];
+            }
 
             return this.config.getProviderConfig();
         }
@@ -89,30 +100,32 @@ namespace GoogleProvider.Map {
             script.addEventListener('load', this._scriptCallback);
         }
 
-        private _setMapEvents(parsedAdvFormat: string) {
-            // Make sure all the listeners get removed before adding the new ones
-            google.maps.event.clearInstanceListeners(this.provider);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        private _setMapEvents(events: Array<string>) {
+            if (this._listeners === undefined) this._listeners = [];
+            // Make sure the listeners get removed before adding the new ones
+            this._listeners.forEach((eventListener, index) => {
+                google.maps.event.clearListeners(this.provider, eventListener);
+                this._listeners.splice(index, 1);
+            });
 
             // OnEventTriggered Event (other events that can be set on the advancedFormat of the Map)
             if (
                 this.mapEvents.hasHandlers(
                     OSFramework.Event.OSMap.MapEventType.OnEventTriggered
                 ) &&
-                parsedAdvFormat !== ''
+                events !== undefined
             ) {
-                const advancedFormatObj = JSON.parse(parsedAdvFormat);
-                if (advancedFormatObj.hasOwnProperty('mapEvents')) {
-                    // markerEvents is an Array of events
-                    advancedFormatObj.mapEvents.forEach((eventName: string) => {
-                        this._provider.addListener(eventName, () => {
-                            this.mapEvents.trigger(
-                                OSFramework.Event.OSMap.MapEventType
-                                    .OnEventTriggered,
-                                eventName
-                            );
-                        });
+                events.forEach((eventName: string) => {
+                    this._provider.addListener(eventName, () => {
+                        this._listeners.push(eventName);
+                        this.mapEvents.trigger(
+                            OSFramework.Event.OSMap.MapEventType
+                                .OnEventTriggered,
+                            eventName
+                        );
                     });
-                }
+                });
             }
         }
 
@@ -174,11 +187,10 @@ namespace GoogleProvider.Map {
                         styles: GetStyleByStyleId(value)
                     });
                 case OSFramework.Enum.OS_Config_Map.advancedFormat:
+                    value = OSFramework.Helper.JsonFormatter(value);
                     // Make sure the MapEvents that are associated in the advancedFormat get updated
-                    this._setMapEvents(value);
-                    return this._provider.setOptions(
-                        value !== '' ? JSON.parse(value) : ''
-                    );
+                    this._setMapEvents(value.mapEvents);
+                    return this._provider.setOptions(value);
                 case OSFramework.Enum.OS_Config_Map.showTraffic:
                     return this.features.trafficLayer.setState(value);
                 case OSFramework.Enum.OS_Config_Map.staticMap:

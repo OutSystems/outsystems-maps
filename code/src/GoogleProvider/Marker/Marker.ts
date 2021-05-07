@@ -8,6 +8,10 @@ namespace GoogleProvider.Marker {
             OSFramework.Configuration.Marker.GoogleMarkerConfig
         >
         implements IMarkerGoogle {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        private _advancedFormatObj: any;
+        private _listeners: Array<string>;
+
         constructor(
             map: OSFramework.OSMap.IMap,
             markerId: string,
@@ -21,9 +25,13 @@ namespace GoogleProvider.Marker {
             );
         }
 
-        private _setMarkerEvents(parsedAdvFormat: string) {
-            // Make sure all the listeners get removed before adding the new ones
-            google.maps.event.clearInstanceListeners(this.provider);
+        private _setMarkerEvents(events: Array<string>) {
+            if (this._listeners === undefined) this._listeners = [];
+            // Make sure the listeners get removed before adding the new ones
+            this._listeners.forEach((eventListener, index) => {
+                google.maps.event.clearListeners(this.provider, eventListener);
+                this._listeners.splice(index, 1);
+            });
 
             // OnClick Event
             if (
@@ -66,23 +74,18 @@ namespace GoogleProvider.Marker {
                 this.markerEvents.hasHandlers(
                     OSFramework.Event.Marker.MarkerEventType.OnEventTriggered
                 ) &&
-                parsedAdvFormat !== ''
+                events !== undefined
             ) {
-                const advancedFormatObj = JSON.parse(parsedAdvFormat);
-                if (advancedFormatObj.hasOwnProperty('markerEvents')) {
-                    // markerEvents is an Array of events
-                    advancedFormatObj.markerEvents.forEach(
-                        (eventName: string) => {
-                            this._provider.addListener(eventName, () => {
-                                this.markerEvents.trigger(
-                                    OSFramework.Event.Marker.MarkerEventType
-                                        .OnEventTriggered,
-                                    eventName
-                                );
-                            });
-                        }
-                    );
-                }
+                events.forEach((eventName: string) => {
+                    this._provider.addListener(eventName, () => {
+                        this._listeners.push(eventName);
+                        this.markerEvents.trigger(
+                            OSFramework.Event.Marker.MarkerEventType
+                                .OnEventTriggered,
+                            eventName
+                        );
+                    });
+                });
             }
         }
 
@@ -96,17 +99,17 @@ namespace GoogleProvider.Marker {
             ) {
                 markerOptions.icon = this.config.iconUrl;
             }
-            if (
-                typeof this.config.advancedFormat !== 'undefined' &&
-                this.config.advancedFormat !== ''
-            ) {
-                const advancedFormatObj = JSON.parse(
-                    this.config.advancedFormat
-                );
-                for (const property in advancedFormatObj) {
-                    markerOptions[property] = advancedFormatObj[property];
-                }
+
+            // Take care of the advancedFormat options which can override the previous configuration
+            this._advancedFormatObj = OSFramework.Helper.JsonFormatter(
+                this.config.advancedFormat
+            );
+            for (const property in this._advancedFormatObj) {
+                const value = this._advancedFormatObj[property];
+                this.config[property] = value;
+                markerOptions[property] = value;
             }
+
             if (
                 typeof this.config.location !== 'undefined' &&
                 this.config.location !== ''
@@ -123,7 +126,7 @@ namespace GoogleProvider.Marker {
                     this._provider = new google.maps.Marker(markerOptions);
 
                     // We can only set the events on the provider after its creation
-                    this._setMarkerEvents(this.config.advancedFormat);
+                    this._setMarkerEvents(this._advancedFormatObj.markerEvents);
                 });
             } else {
                 throw new Error('Invalid location');
@@ -147,11 +150,10 @@ namespace GoogleProvider.Marker {
                     });
                     return;
                 case OSFramework.Enum.OS_Config_Map.advancedFormat:
+                    value = OSFramework.Helper.JsonFormatter(value);
                     // Make sure the MapEvents that are associated in the advancedFormat get updated
-                    this._setMarkerEvents(value);
-                    return this._provider.setOptions(
-                        value !== '' ? JSON.parse(value) : ''
-                    );
+                    this._setMarkerEvents(value.markerEvents);
+                    return this._provider.setOptions(value);
                 case OSFramework.Enum.OS_Config_Marker.iconURL:
                     return this._provider.setIcon(value);
 
