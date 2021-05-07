@@ -9,6 +9,7 @@ namespace GoogleProvider.Map {
         >
         implements IMapGoogle {
         private _fBuilder: Feature.FeatureBuilder;
+        private _scriptCallback: () => void;
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         constructor(mapId: string, configs: any) {
@@ -27,6 +28,9 @@ namespace GoogleProvider.Map {
          * Creates the Map via GoogleMap API
          */
         private _createGoogleMap(): void {
+            document
+                .getElementById('google-maps-script')
+                .removeEventListener('load', this._scriptCallback);
             if (typeof google === 'object' && typeof google.maps === 'object') {
                 // Make sure the center is saved before setting a default value which is going to be used
                 // before the conversion of the location to coordinates gets resolved
@@ -68,10 +72,11 @@ namespace GoogleProvider.Map {
          * 2) Creates the Map via GoogleMap API
          */
         private _initializeGoogleMap(): void {
-            if (!document.getElementById('google-maps-script')) {
-                // Create the script tag, set the appropriate attributes
-                const script = document.createElement('script');
-
+            let script = document.getElementById(
+                'google-maps-script'
+            ) as HTMLScriptElement;
+            if (script === null) {
+                script = document.createElement('script');
                 script.src =
                     'https://maps.googleapis.com/maps/api/js?key=' +
                     this.config.apiKey;
@@ -79,10 +84,9 @@ namespace GoogleProvider.Map {
                 script.defer = true;
                 script.id = 'google-maps-script';
                 document.head.appendChild(script);
-                script.onload = this._createGoogleMap.bind(this);
-            } else {
-                this._createGoogleMap();
             }
+            this._scriptCallback = this._createGoogleMap.bind(this);
+            script.addEventListener('load', this._scriptCallback);
         }
 
         private _setMapEvents(parsedAdvFormat: string) {
