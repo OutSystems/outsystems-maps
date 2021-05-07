@@ -59,7 +59,8 @@ namespace GoogleProvider.Map {
 
                 // Make sure the style is converted from an id to the correspondent JSON
                 this._provider.setOptions({
-                    styles: GetStyleByStyleId(this.config.style)
+                    styles: GetStyleByStyleId(this.config.style),
+                    ...this._advancedFormatObj
                 });
             } else {
                 throw Error(`The google.maps lib has not been loaded.`);
@@ -74,9 +75,6 @@ namespace GoogleProvider.Map {
             this._advancedFormatObj = OSFramework.Helper.JsonFormatter(
                 this.config.advancedFormat
             );
-            for (const property in this._advancedFormatObj) {
-                this.config[property] = this._advancedFormatObj[property];
-            }
 
             return this.config.getProviderConfig();
         }
