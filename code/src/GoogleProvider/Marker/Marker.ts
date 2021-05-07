@@ -77,8 +77,8 @@ namespace GoogleProvider.Marker {
                 events !== undefined
             ) {
                 events.forEach((eventName: string) => {
+                    this._listeners.push(eventName);
                     this._provider.addListener(eventName, () => {
-                        this._listeners.push(eventName);
                         this.markerEvents.trigger(
                             OSFramework.Event.Marker.MarkerEventType
                                 .OnEventTriggered,
@@ -165,10 +165,10 @@ namespace GoogleProvider.Marker {
         }
 
         public dispose(): void {
+            if (this.isReady) {
+                this._provider.setMap(null);
+            }
             super.dispose();
-
-            this._provider.setMap(null);
-            this._provider = undefined;
         }
 
         /** Checks if the column has associated events */

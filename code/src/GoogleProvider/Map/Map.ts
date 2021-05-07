@@ -117,8 +117,8 @@ namespace GoogleProvider.Map {
                 events !== undefined
             ) {
                 events.forEach((eventName: string) => {
+                    this._listeners.push(eventName);
                     this._provider.addListener(eventName, () => {
-                        this._listeners.push(eventName);
                         this.mapEvents.trigger(
                             OSFramework.Event.OSMap.MapEventType
                                 .OnEventTriggered,
