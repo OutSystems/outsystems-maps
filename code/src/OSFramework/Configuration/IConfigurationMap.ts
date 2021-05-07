@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.Configuration {
     /**
      * Used to translate configurations from OS to Provider
@@ -6,15 +7,16 @@ namespace OSFramework.Configuration {
     export interface IConfigurationMap extends IConfiguration {
         advancedFormat: string;
         apiKey: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        center: any;
         extendedClass: string;
         height: string;
-        center: any;
-        offset: OSFramework.OSStructures.OSMap.Offset;
+        offset: OSStructures.OSMap.Offset;
         showTraffic: boolean;
         staticMap: boolean;
-        style: JSON;
-        type: OSFramework.Enum.OSMap.Type;
+        style: Enum.OSMap.Style;
+        type: Enum.OSMap.Type;
         uniqueId: string;
-        zoom: OSFramework.Enum.OSMap.Zoom;
+        zoom: Enum.OSMap.Zoom;
     }
 }

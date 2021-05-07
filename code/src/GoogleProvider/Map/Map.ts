@@ -56,6 +56,11 @@ namespace GoogleProvider.Map {
 
                 // Make sure to change the center after the conversion of the location to coordinates
                 this.features.center.updateCenter(currentCenter);
+
+                // Make sure the style is converted from an id to the correspondent JSON
+                this._provider.setOptions({
+                    styles: GetStyleByStyleId(this.config.style)
+                });
             } else {
                 throw Error(`The google.maps lib has not been loaded.`);
             }
@@ -65,7 +70,6 @@ namespace GoogleProvider.Map {
         private _getProviderConfig(): google.maps.MapOptions {
             // Make sure the center has a default value before the conversion of the location to coordinates
             this.config.center = OSFramework.Helper.Constants.defaultMapCenter;
-
             // Take care of the advancedFormat options which can override the previous configuration
             this._advancedFormatObj = OSFramework.Helper.JsonFormatter(
                 this.config.advancedFormat

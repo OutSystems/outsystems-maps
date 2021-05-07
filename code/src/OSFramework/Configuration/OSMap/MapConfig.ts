@@ -5,16 +5,16 @@ namespace OSFramework.Configuration.OSMap {
     export class GoogleMapConfig
         extends AbstractConfiguration
         implements IConfigurationMap {
-
         public advancedFormat: string;
         public apiKey: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        public center: any;
         public extendedClass: string;
         public height: string;
-        public center: any;
         public offset: OSStructures.OSMap.Offset;
         public showTraffic: boolean;
         public staticMap: boolean;
-        public style: JSON;
+        public style: Enum.OSMap.Style;
         public type: Enum.OSMap.Type;
         public uniqueId: string;
         public zoom: Enum.OSMap.Zoom;
