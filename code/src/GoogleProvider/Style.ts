@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace GoogleProvider {
     export const Style = {
         Standard: {

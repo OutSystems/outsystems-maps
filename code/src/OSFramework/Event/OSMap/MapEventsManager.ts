@@ -54,24 +54,19 @@ namespace OSFramework.Event.OSMap {
          * Trigger the specific events depending on the event type specified
          * @param eventType Type of the event currently supported in the Map element.
          */
-         public trigger(
-            eventType: MapEventType,
-            eventName?: string
-        ): void {
+        public trigger(eventType: MapEventType, eventName?: string): void {
             if (this.handlers.has(eventType)) {
                 const handlerEvent = this.handlers.get(eventType);
 
                 switch (eventType) {
                     case MapEventType.Initialized:
-                        handlerEvent.trigger(
-                            this._map.widgetId, 
-                        );
+                        handlerEvent.trigger(this._map.widgetId);
                         break;
                     case MapEventType.OnEventTriggered:
                         handlerEvent.trigger(
                             this._map.widgetId, // Id of Map block that was clicked.
                             eventName
-                        )
+                        );
                         break;
                     default:
                         throw `The event '${eventType}' is not supported in a Marker`;
