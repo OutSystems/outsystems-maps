@@ -9,30 +9,28 @@ namespace OSFramework.OSMap {
         private _config: Configuration.IConfigurationMap;
         private _isReady: boolean;
         private _mapEvents: Event.OSMap.MapEventsManager;
-        private _markers: Map<string, OSFramework.Marker.IMarker>;
-        private _markersSet: Set<OSFramework.Marker.IMarker>;
+        private _markers: Map<string, Marker.IMarker>;
+        private _markersSet: Set<Marker.IMarker>;
         private _uniqueId: string;
         private _widgetId: string;
 
-        protected _features: OSFramework.Feature.ExposedFeatures;
+        protected _features: Feature.ExposedFeatures;
         protected _provider: W;
 
-        constructor(
-            uniqueId: string,
-            config: OSFramework.Configuration.IConfigurationMap
-        ) {
+        constructor(uniqueId: string, config: Configuration.IConfigurationMap) {
             this._uniqueId = uniqueId;
-            this._markers = new Map<string, OSFramework.Marker.IMarker>();
-            this._markersSet = new Set<OSFramework.Marker.IMarker>();
+            this._markers = new Map<string, Marker.IMarker>();
+            this._markersSet = new Set<Marker.IMarker>();
             this._config = config;
             this._isReady = false;
-            this._mapEvents = new OSFramework.Event.OSMap.MapEventsManager(
-                this
-            );
+            this._mapEvents = new Event.OSMap.MapEventsManager(this);
         }
 
         public get config(): Configuration.IConfigurationMap {
             return this._config;
+        }
+        public get markers(): Marker.IMarker[] {
+            return Array.from(this._markersSet);
         }
         public get isReady(): boolean {
             return this._isReady;
@@ -49,21 +47,17 @@ namespace OSFramework.OSMap {
         public get provider(): W {
             return this._provider;
         }
-        public get features(): OSFramework.Feature.ExposedFeatures {
+        public get features(): Feature.ExposedFeatures {
             return this._features;
         }
 
         protected finishBuild(): void {
             this._isReady = true;
 
-            this.mapEvents.trigger(
-                OSFramework.Event.OSMap.MapEventType.Initialized
-            );
+            this.mapEvents.trigger(Event.OSMap.MapEventType.Initialized);
         }
 
-        public addMarker(
-            marker: OSFramework.Marker.IMarker
-        ): OSFramework.Marker.IMarker {
+        public addMarker(marker: Marker.IMarker): Marker.IMarker {
             console.log(`Add Marker '${marker.uniqueId}'`);
             this._markers.set(marker.uniqueId, marker);
             this._markersSet.add(marker);
@@ -71,14 +65,14 @@ namespace OSFramework.OSMap {
             return marker;
         }
         public build(): void {
-            this._widgetId = OSFramework.Helper.GetElementByUniqueId(
-                this.uniqueId
-            ).closest(OSFramework.Helper.Constants.mapTag).id;
+            this._widgetId = Helper.GetElementByUniqueId(this.uniqueId).closest(
+                Helper.Constants.mapTag
+            ).id;
         }
         public dispose(): void {
             this._isReady = false;
             this._markers.forEach(
-                (marker: OSFramework.Marker.IMarker, markerId: string) => {
+                (marker: Marker.IMarker, markerId: string) => {
                     this.removeMarker(markerId);
                 }
             );
@@ -86,18 +80,12 @@ namespace OSFramework.OSMap {
         public equalsToID(mapId: string): boolean {
             return mapId === this._uniqueId || mapId === this._widgetId;
         }
-        public getMarker(markerId: string): OSFramework.Marker.IMarker {
+        public getMarker(markerId: string): Marker.IMarker {
             if (this._markers.has(markerId)) {
                 return this._markers.get(markerId);
             } else {
-                return this.getMarkers().find(
-                    (p) => p && p.equalsToID(markerId)
-                );
+                return this.markers.find((p) => p && p.equalsToID(markerId));
             }
-        }
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        public getMarkers(): OSFramework.Marker.IMarker[] {
-            return Array.from(this._markersSet);
         }
         public hasMarker(markerId: string): boolean {
             return this._markers.has(markerId);
@@ -142,5 +130,7 @@ namespace OSFramework.OSMap {
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             propertyValue: any
         ): void;
+
+        public abstract refresh(): void;
     }
 }

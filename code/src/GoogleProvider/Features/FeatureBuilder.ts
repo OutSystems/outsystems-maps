@@ -19,6 +19,7 @@ namespace GoogleProvider.Feature {
 
         // eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/no-explicit-any
         private _instanceOfIDisposable(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             object: any
         ): object is OSFramework.Interface.IDisposable {
             return 'dispose' in object;
@@ -53,32 +54,33 @@ namespace GoogleProvider.Feature {
     }
 
     export class FeatureBuilder extends AbstractFactoryBuilder {
-        private _makeOffset(offset: OSFramework.OSStructures.OSMap.Offset): FeatureBuilder {
-            this._features.offset = this._makeItem(Offset, offset);
-            return this;
-        }
-
-        private _makeCenter(center: OSFramework.OSStructures.OSMap.Coordinates): FeatureBuilder {
+        private _makeCenter(
+            center: OSFramework.OSStructures.OSMap.Coordinates
+        ): FeatureBuilder {
             this._features.center = this._makeItem(Center, center);
             return this;
         }
-
+        private _makeOffset(
+            offset: OSFramework.OSStructures.OSMap.Offset
+        ): FeatureBuilder {
+            this._features.offset = this._makeItem(Offset, offset);
+            return this;
+        }
         private _makeTrafficLayer(enable: boolean): FeatureBuilder {
             this._features.trafficLayer = this._makeItem(TrafficLayer, enable);
             return this;
         }
-
-        private _makeStaticMap(enable: boolean): FeatureBuilder {
-            this._features.staticMap = this._makeItem(StaticMap, enable);
+        private _makeZoom(level: OSFramework.Enum.OSMap.Zoom): FeatureBuilder {
+            this._features.zoom = this._makeItem(Zoom, level);
             return this;
         }
-        
+
         public build(): void {
             const config = this._map
                 .config as OSFramework.Configuration.OSMap.GoogleMapConfig;
 
             this._makeTrafficLayer(config.showTraffic)
-                ._makeStaticMap(config.staticMap)
+                ._makeZoom(config.zoom)
                 ._makeCenter(config.center)
                 ._makeOffset(config.offset);
 
