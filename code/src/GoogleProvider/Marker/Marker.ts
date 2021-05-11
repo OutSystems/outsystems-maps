@@ -127,6 +127,9 @@ namespace GoogleProvider.Marker {
 
                     // We can only set the events on the provider after its creation
                     this._setMarkerEvents(this._advancedFormatObj.markerEvents);
+
+                    // Trigger the new center location after creating the marker
+                    this.map.refresh();
                 });
             } else {
                 throw new Error('Invalid location');

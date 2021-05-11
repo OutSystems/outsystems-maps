@@ -24,7 +24,7 @@ namespace GoogleProvider.Map {
 
         // eslint-disable-next-line @typescript-eslint/member-ordering
         private _buildMarkers(): void {
-            this.getMarkers().forEach((marker) => marker.build());
+            this.markers.forEach((marker) => marker.build());
         }
 
         /**
@@ -178,10 +178,11 @@ namespace GoogleProvider.Map {
 
             switch (propValue) {
                 case OSFramework.Enum.OS_Config_Map.center:
-                    this.features.center.updateCenter(value);
-                    return;
+                    return this.features.center.updateCenter(value);
+                case OSFramework.Enum.OS_Config_Map.offset:
+                    return this.features.offset.setOffset(JSON.parse(value));
                 case OSFramework.Enum.OS_Config_Map.zoom:
-                    return this._provider.setZoom(value);
+                    return this.features.zoom.setLevel(value);
                 case OSFramework.Enum.OS_Config_Map.type:
                     return this._provider.setMapTypeId(value);
                 case OSFramework.Enum.OS_Config_Map.style:
@@ -195,10 +196,6 @@ namespace GoogleProvider.Map {
                     return this._provider.setOptions(value);
                 case OSFramework.Enum.OS_Config_Map.showTraffic:
                     return this.features.trafficLayer.setState(value);
-                case OSFramework.Enum.OS_Config_Map.staticMap:
-                    return this.features.staticMap.setState(value);
-                case OSFramework.Enum.OS_Config_Map.offset:
-                    return this.features.offset.setOffset(JSON.parse(value));
                 default:
                     throw Error(
                         `changeProperty - Property '${propertyName}' can't be changed.`
@@ -212,6 +209,42 @@ namespace GoogleProvider.Map {
             this._fBuilder.dispose();
 
             this._provider = undefined;
+        }
+
+        public refresh(): void {
+            let position = this.features.center.getCenter();
+            // If the configured center position of the map is equal to the default
+            // When the position is empty, we use the default position
+            const isDefault =
+                position.toString() ===
+                OSFramework.Helper.Constants.defaultMapCenter.toString();
+            if (
+                isDefault &&
+                this.markers.length >= 1 &&
+                this.markers[0].provider !== undefined
+            ) {
+                position = this.markers[0].provider.position.toJSON();
+            } else if (
+                this.markers.length === 1 &&
+                this.markers[0].provider !== undefined
+            ) {
+                position = this.markers[0].provider.position.toJSON();
+            } else if (
+                this.markers.length >= 2 &&
+                this.markers[0].provider !== undefined &&
+                this.features.zoom.isAutofit
+            ) {
+                position = this.markers[0].provider.position.toJSON();
+            }
+
+            // Refresh the center position
+            this.features.center.refreshCenter(position);
+
+            // Refresh the zoom
+            this.features.zoom.refreshZoom();
+
+            // Refresh the offset
+            this.features.offset.setOffset(this.features.offset.getOffset);
         }
     }
 }
