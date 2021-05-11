@@ -11,6 +11,8 @@ namespace OSFramework.Helper.Constants {
     export const mapUniqueIdCss = '.map-container';
     /** Tag used to find the uniqueId property of a DOM element */
     export const uniqueIdAttribute = 'name';
-
-    export const defaultMapCenter = {lat: 42.3517926, lng: -71.0467845};
+    /** Default position for the Map on initialize (should get changed after the promise that converts the address into coordinates) */
+    export const defaultMapCenter = { lat: 42.3517926, lng: -71.0467845 };
+    /** Zoom that is going to be applied when the zoom is set to 0 (Auto Fit) */
+    export const zoomAutofit = Enum.OSMap.Zoom.Zoom8;
 }
