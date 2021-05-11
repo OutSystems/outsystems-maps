@@ -24,6 +24,9 @@ namespace OSFramework.Event.Marker {
             let event: OSFramework.Event.IEvent<string>;
 
             switch (eventType) {
+                case MarkerEventType.Initialized:
+                    event = new MarkerInitializedEvent();
+                    break;
                 case MarkerEventType.OnClick:
                     event = new MarkerOnClickEvent();
                     break;
@@ -48,14 +51,18 @@ namespace OSFramework.Event.Marker {
          * @param eventType Type of the event currently supported in the Marker element.
          * @param value Value to be passed to OS in the type of a string.
          */
-        public trigger(
-            eventType: MarkerEventType,
-            eventName?: string
-        ): void {
+        public trigger(eventType: MarkerEventType, eventName?: string): void {
             if (this.handlers.has(eventType)) {
                 const handlerEvent = this.handlers.get(eventType);
 
                 switch (eventType) {
+                    case MarkerEventType.Initialized:
+                        handlerEvent.trigger(
+                            this._marker.map.widgetId, // Id of Map block that was clicked.
+                            this._marker.uniqueId, // Id of Marker block that was clicked.
+                            0 // In this case the value is the JSON Serialization of the line in which the Marker that clicked is located.
+                        );
+                        break;
                     case MarkerEventType.OnClick:
                     case MarkerEventType.OnMouseout:
                     case MarkerEventType.OnMouseover:
@@ -71,7 +78,7 @@ namespace OSFramework.Event.Marker {
                             this._marker.uniqueId, // Id of Marker block that was clicked.
                             0,
                             eventName
-                        )
+                        );
                         break;
                     default:
                         throw `The event '${eventType}' is not supported in a Marker`;

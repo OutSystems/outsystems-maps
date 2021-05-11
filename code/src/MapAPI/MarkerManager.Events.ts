@@ -25,7 +25,7 @@ namespace MapAPI.MarkerManager.Events {
         callback: OSFramework.Callbacks.Marker.Event
     ): void {
         const map = MapManager.GetMapById(mapId);
-        map.getMarkers().forEach((marker) => {
+        map.markers.forEach((marker) => {
             marker.markerEvents.addHandler(eventName, callback);
         });
     }
