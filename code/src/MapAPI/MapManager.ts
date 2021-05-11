@@ -156,7 +156,7 @@ namespace MapAPI.MapManager {
     ): Array<OSFramework.Marker.IMarker> {
         const map = GetMapById(mapId);
 
-        return map.getMarkers();
+        return map.markers;
     }
 
     /**
