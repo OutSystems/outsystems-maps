@@ -8,6 +8,7 @@ namespace OSFramework.Event.OSMap {
      */
     export enum MapEventType {
         Initialized = 'Initialized',
+        OnError = 'OnError',
         OnEventTriggered = 'OnEventTriggered'
     }
 }

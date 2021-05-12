@@ -21,11 +21,15 @@ namespace OSFramework.Event.OSMap {
         protected getInstanceOfEventType(
             eventType: MapEventType
         ): OSFramework.Event.IEvent<string> {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             let event: OSFramework.Event.IEvent<string>;
 
             switch (eventType) {
                 case MapEventType.Initialized:
                     event = new MapInitializedEvent();
+                    break;
+                case MapEventType.OnError:
+                    event = new MapOnError();
                     break;
                 case MapEventType.OnEventTriggered:
                     event = new MapOnEventTriggered();
@@ -39,7 +43,7 @@ namespace OSFramework.Event.OSMap {
 
         public addHandler(
             eventType: MapEventType,
-            handler: OSFramework.Callbacks.OSMap.Event
+            handler: Callbacks.OSMap.Event
         ): void {
             //if the Map is already ready, fire immediatly the event.
             if (eventType === MapEventType.Initialized && this._map.isReady) {
@@ -54,7 +58,7 @@ namespace OSFramework.Event.OSMap {
          * Trigger the specific events depending on the event type specified
          * @param eventType Type of the event currently supported in the Map element.
          */
-        public trigger(eventType: MapEventType, eventName?: string): void {
+        public trigger(eventType: MapEventType, value?: string): void {
             if (this.handlers.has(eventType)) {
                 const handlerEvent = this.handlers.get(eventType);
 
@@ -62,10 +66,15 @@ namespace OSFramework.Event.OSMap {
                     case MapEventType.Initialized:
                         handlerEvent.trigger(this._map.widgetId);
                         break;
+                    case MapEventType.OnError:
+                        // The value here is an error code
+                        handlerEvent.trigger(this._map.widgetId, value);
+                        break;
                     case MapEventType.OnEventTriggered:
+                        // The value here is the eventName
                         handlerEvent.trigger(
                             this._map.widgetId, // Id of Map block that was clicked.
-                            eventName
+                            value
                         );
                         break;
                     default:

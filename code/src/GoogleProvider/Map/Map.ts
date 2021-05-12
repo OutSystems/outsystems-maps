@@ -47,6 +47,14 @@ namespace GoogleProvider.Map {
                     this._getProviderConfig()
                 );
 
+                // Check if the provider has been created with a valid APIKey
+                window[
+                    'gm_authFailure'
+                ] = MapAPI.MapManager.GetActiveMap().mapEvents.trigger(
+                    OSFramework.Event.OSMap.MapEventType.OnError,
+                    OSFramework.Enum.Errors.InvalidApiKey
+                );
+
                 this.buildFeatures();
                 this._buildMarkers();
                 this.finishBuild();
