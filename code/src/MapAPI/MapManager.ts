@@ -184,8 +184,13 @@ namespace MapAPI.MapManager {
 
         if (widget) {
             if (height === '') {
-                const parentHeight = (widget.parentNode as HTMLElement)
-                    .offsetHeight;
+                let parentHeight = 0;
+                let currParent = widget.parentNode as HTMLElement;
+                // asdfads
+                do {
+                    parentHeight = currParent.offsetHeight;
+                    currParent = currParent.parentNode as HTMLElement;
+                } while (parentHeight === 0 && currParent !== document.body);
                 height = parentHeight + 'px';
             } else {
                 if (isNaN(Number(height)) === false) {
