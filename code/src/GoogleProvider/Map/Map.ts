@@ -31,9 +31,11 @@ namespace GoogleProvider.Map {
          * Creates the Map via GoogleMap API
          */
         private _createGoogleMap(): void {
-            document
-                .getElementById('google-maps-script')
-                .removeEventListener('load', this._scriptCallback);
+            if (this._scriptCallback !== undefined) {
+                document
+                    .getElementById('google-maps-script')
+                    .removeEventListener('load', this._scriptCallback);
+            }
             if (typeof google === 'object' && typeof google.maps === 'object') {
                 // Make sure the center is saved before setting a default value which is going to be used
                 // before the conversion of the location to coordinates gets resolved
@@ -93,21 +95,25 @@ namespace GoogleProvider.Map {
          * 2) Creates the Map via GoogleMap API
          */
         private _initializeGoogleMap(): void {
-            let script = document.getElementById(
-                'google-maps-script'
-            ) as HTMLScriptElement;
-            if (script === null) {
-                script = document.createElement('script');
-                script.src =
-                    'https://maps.googleapis.com/maps/api/js?key=' +
-                    this.config.apiKey;
-                script.async = true;
-                script.defer = true;
-                script.id = 'google-maps-script';
-                document.head.appendChild(script);
+            if (typeof google === 'object' && typeof google.maps === 'object') {
+                this._createGoogleMap();
+            } else {
+                let script = document.getElementById(
+                    'google-maps-script'
+                ) as HTMLScriptElement;
+                if (script === null) {
+                    script = document.createElement('script');
+                    script.src =
+                        'https://maps.googleapis.com/maps/api/js?key=' +
+                        this.config.apiKey;
+                    script.async = true;
+                    script.defer = true;
+                    script.id = 'google-maps-script';
+                    document.head.appendChild(script);
+                }
+                this._scriptCallback = this._createGoogleMap.bind(this);
+                script.addEventListener('load', this._scriptCallback);
             }
-            this._scriptCallback = this._createGoogleMap.bind(this);
-            script.addEventListener('load', this._scriptCallback);
         }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -185,6 +191,14 @@ namespace GoogleProvider.Map {
             const propValue = OSFramework.Enum.OS_Config_Map[propertyName];
 
             switch (propValue) {
+                case OSFramework.Enum.OS_Config_Map.apiKey:
+                    if (this.config.apiKey !== '') {
+                        this.mapEvents.trigger(
+                            OSFramework.Event.OSMap.MapEventType.OnError,
+                            OSFramework.Enum.Errors.APIKeyAlreadySet
+                        );
+                    }
+                    return super.changeProperty(propertyName, value);
                 case OSFramework.Enum.OS_Config_Map.center:
                     return this.features.center.updateCenter(value);
                 case OSFramework.Enum.OS_Config_Map.offset:

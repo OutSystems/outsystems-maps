@@ -69,6 +69,17 @@ namespace OSFramework.OSMap {
                 Helper.Constants.mapTag
             ).id;
         }
+        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+        public changeProperty(propertyName: string, propertyValue: any): void {
+            //Update Marker's config when the property is available
+            if (this.config.hasOwnProperty(propertyName)) {
+                this.config[propertyName] = propertyValue;
+            } else {
+                throw new Error(
+                    `changeProperty - Property '${propertyName}' can't be changed.`
+                );
+            }
+        }
         public dispose(): void {
             this._isReady = false;
             this._markers.forEach(
@@ -120,12 +131,6 @@ namespace OSFramework.OSMap {
 
         public abstract changeMarkerProperty(
             markerId: string,
-            propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            propertyValue: any
-        ): void;
-
-        public abstract changeProperty(
             propertyName: string,
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             propertyValue: any

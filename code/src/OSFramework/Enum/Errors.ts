@@ -4,6 +4,7 @@ namespace OSFramework.Enum {
      * Internal type definition
      */
     export enum Errors {
-        InvalidApiKey = 'E403'
+        APIKeyAlreadySet = 'E400',
+        InvalidApiKey = 'E401'
     }
 }
