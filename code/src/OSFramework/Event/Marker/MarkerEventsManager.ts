@@ -21,6 +21,7 @@ namespace OSFramework.Event.Marker {
         protected getInstanceOfEventType(
             eventType: MarkerEventType
         ): OSFramework.Event.IEvent<string> {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             let event: OSFramework.Event.IEvent<string>;
 
             switch (eventType) {
@@ -58,26 +59,26 @@ namespace OSFramework.Event.Marker {
                 switch (eventType) {
                     case MarkerEventType.Initialized:
                         handlerEvent.trigger(
-                            this._marker.map.widgetId, // Id of Map block that was clicked.
-                            this._marker.uniqueId, // Id of Marker block that was clicked.
-                            0 // In this case the value is the JSON Serialization of the line in which the Marker that clicked is located.
+                            this._marker.map.widgetId, // Id of Map block that was initialized
+                            this._marker.uniqueId, // Id of Marker block that was initialized
+                            this._marker.index // Index of Marker block that was initialized
                         );
                         break;
                     case MarkerEventType.OnClick:
                     case MarkerEventType.OnMouseout:
                     case MarkerEventType.OnMouseover:
                         handlerEvent.trigger(
-                            this._marker.map.widgetId, // Id of Map block that was clicked.
-                            this._marker.uniqueId, // Id of Marker block that was clicked.
-                            0 // In this case the value is the JSON Serialization of the line in which the Marker that clicked is located.
+                            this._marker.map.widgetId, // Id of Map block that was clicked
+                            this._marker.uniqueId, // Id of Marker block that was clicked
+                            this._marker.index // Index of Marker block that was clicked
                         );
                         break;
                     case MarkerEventType.OnEventTriggered:
                         handlerEvent.trigger(
                             this._marker.map.widgetId, // Id of Map block that was clicked.
                             this._marker.uniqueId, // Id of Marker block that was clicked.
-                            0,
-                            eventName
+                            this._marker.index, // Index of Marker block that was clicked
+                            eventName // Name of the event that got triggered
                         );
                         break;
                     default:
