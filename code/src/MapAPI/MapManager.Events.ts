@@ -12,6 +12,22 @@ namespace MapAPI.MapManager.Events {
     >();
 
     /**
+     * API method to check if there are pending events to a specific Map
+     *
+     * @export
+     * @param {string} mapId Map that is ready for events to be attached to
+     */
+    export function CheckPendingEvents(mapId: string): void {
+        if (_pendingEvents.has(mapId)) {
+            const map = GetMapById(mapId);
+            _pendingEvents.get(mapId).forEach((obj) => {
+                map.mapEvents.addHandler(obj.event, obj.cb);
+            });
+            _pendingEvents.delete(mapId);
+        }
+    }
+
+    /**
      * API method to subscribe to events of a specific Map
      *
      * @export
@@ -42,22 +58,6 @@ namespace MapAPI.MapManager.Events {
             }
         } else {
             map.mapEvents.addHandler(eventName, callback);
-        }
-    }
-
-    /**
-     * API method to check if there are pending events to a specific Map
-     *
-     * @export
-     * @param {string} mapId Map that is ready for events to be attached to
-     */
-    export function CheckPendingEvents(mapId: string): void {
-        if (_pendingEvents.has(mapId)) {
-            const map = GetMapById(mapId);
-            _pendingEvents.get(mapId).forEach((obj) => {
-                map.mapEvents.addHandler(obj.event, obj.cb);
-            });
-            _pendingEvents.delete(mapId);
         }
     }
 

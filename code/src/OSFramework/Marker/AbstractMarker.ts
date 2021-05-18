@@ -7,6 +7,7 @@ namespace OSFramework.Marker {
     > implements IMarkerGeneric<W> {
         /** Configuration reference */
         private _config: Configuration.IConfigurationMarker;
+        private _index: number;
         private _map: OSMap.IMap;
         private _uniqueId: string;
         private _widgetId: string;
@@ -31,6 +32,11 @@ namespace OSFramework.Marker {
 
         public get config(): Configuration.IConfigurationMarker {
             return this._config;
+        }
+        public get index(): number {
+            return this._map.markers.findIndex(
+                (marker) => marker.uniqueId === this.uniqueId
+            );
         }
         public get isReady(): boolean {
             return this._built;

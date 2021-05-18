@@ -1,10 +1,7 @@
-/**
- *
- */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace MapAPI.Auxiliary {
     /**
-     * Receives a string and generates the hashcode of it.
+     * Receives a string and generates the hashcode from it.
      * @param str - string, typically the data to be showed in the Map.
      * @returns hashcode to the str
      */
