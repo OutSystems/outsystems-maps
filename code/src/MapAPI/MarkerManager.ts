@@ -4,7 +4,28 @@ namespace MapAPI.MarkerManager {
     const markerArr = new Array<OSFramework.Marker.IMarker>();
 
     /**
-     * Function that creates an instance of Map object with the configurations passed
+     * Changes the property value of a given Marker.
+     *
+     * @export
+     * @param {string} markerId Id of the Marker to be changed
+     * @param {string} propertyName name of the property to be changed - some properties of the provider might not work out of be box
+     * @param {*} propertyValue value to which the property should be changed to.
+     */
+    export function ChangeProperty(
+        markerId: string,
+        propertyName: string,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+        propertyValue: any
+    ): void {
+        const map = GetMapByMarkerId(markerId);
+
+        if (map !== undefined) {
+            map.changeMarkerProperty(markerId, propertyName, propertyValue);
+        }
+    }
+
+    /**
+     * Function that will create an instance of Map object with the configurations passed
      *
      * @export
      * @param {string} mapId Id of the Map where the change will occur
@@ -66,38 +87,17 @@ namespace MapAPI.MarkerManager {
     }
 
     /**
-     * Returns a Marker based on ID
-     * @param markerID Id of the Marker
+     * Returns a Marker based on Id
+     * @param markerId Id of the Marker
      */
     export function GetMarkerById(
-        markerID: string
+        markerId: string
     ): OSFramework.Marker.IMarker {
-        return markerArr.find((p) => p && p.equalsToID(markerID));
+        return markerArr.find((p) => p && p.equalsToID(markerId));
     }
 
     /**
-     * Changes the property of a given Marker.
-     *
-     * @export
-     * @param {string} markerID Id of the Marker to be changed
-     * @param {string} propertyName name of the property to be changed - some properties of the provider might not work out of be box
-     * @param {*} propertyValue value to which the property should be changed to.
-     */
-    export function ChangeProperty(
-        markerID: string,
-        propertyName: string,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-        propertyValue: any
-    ): void {
-        const map = GetMapByMarkerId(markerID);
-
-        if (map !== undefined) {
-            map.changeMarkerProperty(markerID, propertyName, propertyValue);
-        }
-    }
-
-    /**
-     * Removes the Marker
+     * Function that will destroy the Marker from the current page
      *
      * @export
      * @param {string} markerID id of the Marker that is about to be removed

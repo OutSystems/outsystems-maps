@@ -3,12 +3,27 @@ namespace MapAPI.MapManager {
     const maps = new Map<string, OSFramework.OSMap.IMap>(); //map.uniqueId -> Map obj
     let activeMap: OSFramework.OSMap.IMap = undefined;
 
-    export function GetMapsFromPage(): Map<string, OSFramework.OSMap.IMap> {
-        return maps;
+    /**
+     * Function that will change the property value of a given Map.
+     *
+     * @export
+     * @param {string} mapId Id of the Map where the change will occur.
+     * @param {string} propertyName name of the property to be changed - some properties of the provider might not work out of be box.
+     * @param {*} propertyValue value to which the property should be changed to.
+     */
+    export function ChangeProperty(
+        mapId: string,
+        propertyName: string,
+        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+        propertyValue: any
+    ): void {
+        const map = GetMapById(mapId);
+
+        map.changeProperty(propertyName, propertyValue);
     }
 
     /**
-     * Function that creates an instance of Map object with the configurations passed.
+     * Function that will create an instance of Map object with the configurations passed.
      *
      * @export
      * @param {string} mapId Id of the Map where the change will occur.
@@ -40,19 +55,31 @@ namespace MapAPI.MapManager {
     }
 
     /**
-     * Function that initializes the provider Map in the page.
-     * The current provider Map is GoogleMaps.
+     * Function that will get the instance of the current active Map. The active Map, is always the last (existing) Map that was created in the page.
+     *
      * @export
-     * @param {string} mapId Id of the Map that is going to be initialized.
+     * @returns {*}  {OSMap.IMap} instance of the active Map.
      */
-    export function InitializeMap(mapId: string): void {
-        const map = GetMapById(mapId);
-
-        map.build();
+    export function GetActiveMap(): OSFramework.OSMap.IMap {
+        return activeMap;
     }
 
     /**
-     * Function that gets the instance of a Map, by a given Id.
+     * Function that will retrieve all Markers from the Map.
+     *
+     * @export
+     * @param {string} mapId Id of the Map to get the Markers.
+     */
+    export function GetAllMarkers(
+        mapId: string
+    ): Array<OSFramework.Marker.IMarker> {
+        const map = GetMapById(mapId);
+
+        return map.markers;
+    }
+
+    /**
+     * Function that will get the instance of a Map, by a given Id.
      *
      * @export
      * @param {string} mapId Id of the Map where the change will occur.
@@ -86,13 +113,23 @@ namespace MapAPI.MapManager {
     }
 
     /**
-     * Function that gets the instance of the current active Map. The active Map, is always the last (existing) Map that was created in the page.
-     *
-     * @export
-     * @returns {*}  {OSMap.IMap} instance of the active Map.
+     * Function that will get all the maps from the current page
+     * @returns Map structure containing all the maps and the corresponding uniqueId
      */
-    export function GetActiveMap(): OSFramework.OSMap.IMap {
-        return activeMap;
+    export function GetMapsFromPage(): Map<string, OSFramework.OSMap.IMap> {
+        return maps;
+    }
+
+    /**
+     * Function that will initialize the provider Map in the page.
+     * The current provider Map is GoogleMaps.
+     * @export
+     * @param {string} mapId Id of the Map that is going to be initialized.
+     */
+    export function InitializeMap(mapId: string): void {
+        const map = GetMapById(mapId);
+
+        map.build();
     }
 
     /**
@@ -127,40 +164,7 @@ namespace MapAPI.MapManager {
     }
 
     /**
-     * Function that will change the property of a given Map.
-     *
-     * @export
-     * @param {string} mapId Id of the Map where the change will occur.
-     * @param {string} propertyName name of the property to be changed - some properties of the provider might not work out of be box.
-     * @param {*} propertyValue value to which the property should be changed to.
-     */
-    export function ChangeProperty(
-        mapId: string,
-        propertyName: string,
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        propertyValue: any
-    ): void {
-        const map = GetMapById(mapId);
-
-        map.changeProperty(propertyName, propertyValue);
-    }
-
-    /**
-     * Function that will retrieve all Markers from the Map.
-     *
-     * @export
-     * @param {string} mapId Id of the Map to get the Markers.
-     */
-    export function GetAllMarkers(
-        mapId: string
-    ): Array<OSFramework.Marker.IMarker> {
-        const map = GetMapById(mapId);
-
-        return map.markers;
-    }
-
-    /**
-     * Function that will the height of a given Map.
+     * Function that will set the height of a given Map.
      *
      * @export
      * @param {string} mapId Id of the Map where the change will occur.
