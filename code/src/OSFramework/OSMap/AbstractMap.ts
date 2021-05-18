@@ -29,26 +29,33 @@ namespace OSFramework.OSMap {
         public get config(): Configuration.IConfigurationMap {
             return this._config;
         }
-        public get markers(): Marker.IMarker[] {
-            return Array.from(this._markersSet);
+
+        public get features(): Feature.ExposedFeatures {
+            return this._features;
         }
+
         public get isReady(): boolean {
             return this._isReady;
         }
+
+        public get markers(): Marker.IMarker[] {
+            return Array.from(this._markersSet);
+        }
+
         public get mapEvents(): Event.OSMap.MapEventsManager {
             return this._mapEvents;
         }
-        public get uniqueId(): string {
-            return this._uniqueId;
-        }
-        public get widgetId(): string {
-            return this._widgetId;
-        }
+
         public get provider(): W {
             return this._provider;
         }
-        public get features(): Feature.ExposedFeatures {
-            return this._features;
+
+        public get uniqueId(): string {
+            return this._uniqueId;
+        }
+
+        public get widgetId(): string {
+            return this._widgetId;
         }
 
         protected finishBuild(): void {
@@ -64,11 +71,13 @@ namespace OSFramework.OSMap {
 
             return marker;
         }
+
         public build(): void {
             this._widgetId = Helper.GetElementByUniqueId(this.uniqueId).closest(
                 Helper.Constants.mapTag
             ).id;
         }
+
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         public changeProperty(propertyName: string, propertyValue: any): void {
             //Update Marker's config when the property is available
@@ -80,6 +89,7 @@ namespace OSFramework.OSMap {
                 );
             }
         }
+
         public dispose(): void {
             this._isReady = false;
             this._markers.forEach(
@@ -88,9 +98,11 @@ namespace OSFramework.OSMap {
                 }
             );
         }
+
         public equalsToID(mapId: string): boolean {
             return mapId === this._uniqueId || mapId === this._widgetId;
         }
+
         public getMarker(markerId: string): Marker.IMarker {
             if (this._markers.has(markerId)) {
                 return this._markers.get(markerId);
@@ -98,12 +110,15 @@ namespace OSFramework.OSMap {
                 return this.markers.find((p) => p && p.equalsToID(markerId));
             }
         }
+
         public hasMarker(markerId: string): boolean {
             return this._markers.has(markerId);
         }
+
         public hasMarkersDefined(): boolean {
             throw new Error('Method not implemented.');
         }
+
         public removeAllMarkers(): void {
             this._markers.forEach((marker) => {
                 marker.dispose();

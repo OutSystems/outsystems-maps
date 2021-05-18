@@ -71,13 +71,13 @@ namespace OSFramework.OSMap {
          */
         refresh(): void;
         /**
+         * Remove all Markers from the Map
+         */
+        removeAllMarkers(): void;
+        /**
          * Remove a Marker from the Map by giving a markerId
          * @param markerId id of the marker
          */
         removeMarker(markedId: string): void;
-        /**
-         * Remove all Markers from the Map
-         */
-        removeAllMarkers(): void;
     }
 }
