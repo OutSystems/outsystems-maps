@@ -6,7 +6,6 @@ namespace OSFramework.Enum {
     export enum OS_Config_Map {
         advancedFormat,
         apiKey,
-        extendedClass,
         height,
         center,
         offset,
