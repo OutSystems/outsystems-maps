@@ -5,7 +5,6 @@ namespace OSFramework.Configuration.Marker {
     export class GoogleMarkerConfig
         extends AbstractConfiguration
         implements IConfigurationMarker {
-
         public advancedFormat: string;
         public iconUrl: string;
         public location: string;

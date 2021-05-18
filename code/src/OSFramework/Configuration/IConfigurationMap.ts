@@ -9,7 +9,6 @@ namespace OSFramework.Configuration {
         apiKey: string;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         center: any;
-        extendedClass: string;
         height: string;
         offset: OSStructures.OSMap.Offset;
         showTraffic: boolean;

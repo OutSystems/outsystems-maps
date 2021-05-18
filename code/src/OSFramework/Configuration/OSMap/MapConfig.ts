@@ -9,7 +9,6 @@ namespace OSFramework.Configuration.OSMap {
         public apiKey: string;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public center: any;
-        public extendedClass: string;
         public height: string;
         public offset: OSStructures.OSMap.Offset;
         public showTraffic: boolean;
@@ -35,9 +34,11 @@ namespace OSFramework.Configuration.OSMap {
             };
 
             //Cleanning undefined properties
-            Object.keys(provider).forEach(
-                (key) => provider[key] === undefined && delete provider[key]
-            );
+            Object.keys(provider).forEach((key) => {
+                if (provider[key] === undefined) {
+                    delete provider[key];
+                }
+            });
 
             return provider;
         }
