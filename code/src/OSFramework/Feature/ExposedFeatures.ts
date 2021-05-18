@@ -2,9 +2,9 @@
 namespace OSFramework.Feature {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     export class ExposedFeatures {
-        public center: GoogleProvider.Feature.Center;
-        public offset: GoogleProvider.Feature.Offset;
+        public center: ICenter;
+        public offset: IOffset;
         public trafficLayer: ITrafficLayer;
-        public zoom: GoogleProvider.Feature.Zoom;
+        public zoom: IZoom;
     }
 }

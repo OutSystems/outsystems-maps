@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.Feature {
     export interface IOffset {
         /** Sets the current Offset of the Map
