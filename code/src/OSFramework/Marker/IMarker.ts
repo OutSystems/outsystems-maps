@@ -4,9 +4,11 @@ namespace OSFramework.Marker {
             Interface.ISearchById,
             Interface.IDisposable {
         config: Configuration.IConfigurationMarker; //IConfigurationMarker
+        index: number;
         isReady: boolean;
-        map: any; //IMap
+        map: OSMap.IMap; //IMap
         markerEvents: Event.Marker.MarkerEventsManager;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         provider: any;
         uniqueId: string;
         widgetId: string;
