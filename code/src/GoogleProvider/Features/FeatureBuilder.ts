@@ -7,9 +7,9 @@ namespace GoogleProvider.Feature {
 
     export abstract class AbstractFactoryBuilder
         implements IFeatures, OSFramework.Interface.IBuilder {
+        protected _featureList: OSFramework.Interface.IBuilder[];
         protected _features: OSFramework.Feature.ExposedFeatures;
         protected _map: OSFramework.OSMap.IMap;
-        public _featureList: OSFramework.Interface.IBuilder[];
 
         constructor(map: OSFramework.OSMap.IMap) {
             this._map = map;

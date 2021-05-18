@@ -25,7 +25,7 @@ namespace GoogleProvider.Marker {
             );
         }
 
-        private _setMarkerEvents(events: Array<string>) {
+        private _setMarkerEvents(events: Array<string>): void {
             if (this._listeners === undefined) this._listeners = [];
             // Make sure the listeners get removed before adding the new ones
             this._listeners.forEach((eventListener, index) => {
@@ -87,6 +87,11 @@ namespace GoogleProvider.Marker {
                     });
                 });
             }
+        }
+
+        /** Checks if the Marker has associated events */
+        public get hasEvents(): boolean {
+            return this.markerEvents !== undefined;
         }
 
         public build(): void {
@@ -172,11 +177,6 @@ namespace GoogleProvider.Marker {
                 this._provider.setMap(null);
             }
             super.dispose();
-        }
-
-        /** Checks if the column has associated events */
-        public get hasEvents(): boolean {
-            return this.markerEvents !== undefined;
         }
     }
 }

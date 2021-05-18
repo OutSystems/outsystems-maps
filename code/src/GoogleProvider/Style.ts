@@ -49,6 +49,7 @@ namespace GoogleProvider {
         }
     };
 
+    /** Method that will get the Style object that corresponds to the specified Id */
     export function GetStyleByStyleId(id: number): google.maps.MapTypeStyle[] {
         // Replace all double quotes to single quotes
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
