@@ -11,13 +11,13 @@ namespace OSFramework.Event {
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     export abstract class AbstractEvent<T> implements IEvent<T> {
-        private _handlers: OSFramework.Callbacks.Generic[] = [];
+        private _handlers: Callbacks.Generic[] = [];
 
-        protected get handlers(): OSFramework.Callbacks.Generic[] {
+        protected get handlers(): Callbacks.Generic[] {
             return this._handlers;
         }
 
-        public addHandler(handler: OSFramework.Callbacks.Generic): void {
+        public addHandler(handler: Callbacks.Generic): void {
             this._handlers.push(handler);
         }
 
@@ -25,8 +25,7 @@ namespace OSFramework.Event {
             return this._handlers.length > 0;
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public removeHandler(handler: OSFramework.Callbacks.Generic): void {
+        public removeHandler(handler: Callbacks.Generic): void {
             const index = this._handlers.findIndex((hd) => {
                 return hd === handler;
             });

@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.Event {
     /**
      * This interface is the base to all events. All events (both internal or external)
@@ -8,11 +9,9 @@ namespace OSFramework.Event {
      * @template D this will the type of Data to be passed, by default to the handlers.
      */
     export interface IEvent<D> {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        addHandler(handler: OSFramework.Callbacks.Generic, ...args);
+        addHandler(handler: OSFramework.Callbacks.Generic, ...args): void;
         hasHandlers(): boolean;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        removeHandler(handler: OSFramework.Callbacks.Generic);
+        removeHandler(handler: OSFramework.Callbacks.Generic): void;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         trigger(data: D, ...args): any;
     }

@@ -20,7 +20,7 @@ namespace OSFramework.Event.Marker {
 
         protected getInstanceOfEventType(
             eventType: MarkerEventType
-        ): OSFramework.Event.IEvent<string> {
+        ): IEvent<string> {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             let event: OSFramework.Event.IEvent<string>;
 

@@ -13,20 +13,17 @@ namespace OSFramework.Event {
      * @template D  this will the type of Data to be passed, by default to the handlers.
      */
     export abstract class AbstractEventsManager<ET, D> {
-        private _handlers: Map<ET, OSFramework.Event.IEvent<D>>;
+        private _handlers: Map<ET, IEvent<D>>;
 
         constructor() {
-            this._handlers = new Map<ET, OSFramework.Event.IEvent<D>>();
+            this._handlers = new Map<ET, IEvent<D>>();
         }
 
-        public get handlers(): Map<ET, OSFramework.Event.IEvent<D>> {
+        public get handlers(): Map<ET, IEvent<D>> {
             return this._handlers;
         }
 
-        public addHandler(
-            eventType: ET,
-            handler: OSFramework.Callbacks.Generic
-        ): void {
+        public addHandler(eventType: ET, handler: Callbacks.Generic): void {
             if (this._handlers && this._handlers.has(eventType)) {
                 this._handlers.get(eventType).addHandler(handler);
             } else {
@@ -45,10 +42,7 @@ namespace OSFramework.Event {
             return returnValue;
         }
 
-        public removeHandler(
-            eventType: ET,
-            handler: OSFramework.Callbacks.Generic
-        ): void {
+        public removeHandler(eventType: ET, handler: Callbacks.Generic): void {
             if (this._handlers.has(eventType)) {
                 const event = this._handlers.get(eventType);
                 event.removeHandler(handler);
@@ -72,8 +66,6 @@ namespace OSFramework.Event {
          * @returns {*}  {IEvent<D>} Instance of the event.
          * @memberof AbstractEventsManager
          */
-        protected abstract getInstanceOfEventType(
-            eventType: ET
-        ): OSFramework.Event.IEvent<D>;
+        protected abstract getInstanceOfEventType(eventType: ET): IEvent<D>;
     }
 }

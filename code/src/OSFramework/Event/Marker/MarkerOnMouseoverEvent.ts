@@ -1,4 +1,4 @@
-/// <reference path="AbstractMarkerEvent.ts" />
+///<reference path="AbstractMarkerEvent.ts"/>
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.Event.Marker {
