@@ -15,4 +15,6 @@ namespace OSFramework.Helper.Constants {
     export const defaultMapCenter = { lat: 42.3517926, lng: -71.0467845 };
     /** Zoom that is going to be applied when the zoom is set to 0 (Auto Fit) */
     export const zoomAutofit = Enum.OSMap.Zoom.Zoom8;
+    /** URL for GoogleMapsApi  */
+    export const googleMapsApiURL = 'https://maps.googleapis.com/maps/api';
 }

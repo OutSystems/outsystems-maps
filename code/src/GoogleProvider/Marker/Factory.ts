@@ -10,7 +10,7 @@ namespace GoogleProvider.Marker {
             return new Marker(
                 map,
                 markerId,
-                configs as OSFramework.Configuration.Marker.GoogleMarkerConfig
+                configs as Configuration.Marker.GoogleMarkerConfig
             );
         }
     }

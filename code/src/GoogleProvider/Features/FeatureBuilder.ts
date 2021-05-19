@@ -77,7 +77,7 @@ namespace GoogleProvider.Feature {
 
         public build(): void {
             const config = this._map
-                .config as OSFramework.Configuration.OSMap.GoogleMapConfig;
+                .config as Configuration.OSMap.GoogleMapConfig;
 
             this._makeTrafficLayer(config.showTraffic)
                 ._makeZoom(config.zoom)

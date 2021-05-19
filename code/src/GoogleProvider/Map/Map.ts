@@ -5,7 +5,7 @@ namespace GoogleProvider.Map {
     export class Map
         extends OSFramework.OSMap.AbstractMap<
             google.maps.Map,
-            OSFramework.Configuration.OSMap.GoogleMapConfig
+            Configuration.OSMap.GoogleMapConfig
         >
         implements IMapGoogle {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -16,10 +16,7 @@ namespace GoogleProvider.Map {
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         constructor(mapId: string, configs: any) {
-            super(
-                mapId,
-                new OSFramework.Configuration.OSMap.GoogleMapConfig(configs)
-            );
+            super(mapId, new Configuration.OSMap.GoogleMapConfig(configs));
         }
 
         // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -103,9 +100,8 @@ namespace GoogleProvider.Map {
                 ) as HTMLScriptElement;
                 if (script === null) {
                     script = document.createElement('script');
-                    script.src =
-                        'https://maps.googleapis.com/maps/api/js?key=' +
-                        this.config.apiKey;
+                    /* eslint-disable-next-line prettier/prettier */
+                    script.src = OSFramework.Helper.Constants.googleMapsApiURL + '/js?key=' + this.config.apiKey;
                     script.async = true;
                     script.defer = true;
                     script.id = 'google-maps-script';

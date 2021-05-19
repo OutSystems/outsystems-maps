@@ -2,11 +2,10 @@
 namespace OSFramework.OSMap {
     export abstract class AbstractMap<
         W,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         Z extends Configuration.IConfigurationMap
     > implements IMapGeneric<W> {
         /** Configuration reference */
-        private _config: Configuration.IConfigurationMap;
+        private _config: Z;
         private _isReady: boolean;
         private _mapEvents: Event.OSMap.MapEventsManager;
         private _markers: Map<string, Marker.IMarker>;
@@ -17,7 +16,7 @@ namespace OSFramework.OSMap {
         protected _features: Feature.ExposedFeatures;
         protected _provider: W;
 
-        constructor(uniqueId: string, config: Configuration.IConfigurationMap) {
+        constructor(uniqueId: string, config: Z) {
             this._uniqueId = uniqueId;
             this._markers = new Map<string, Marker.IMarker>();
             this._markersSet = new Set<Marker.IMarker>();
@@ -26,7 +25,7 @@ namespace OSFramework.OSMap {
             this._mapEvents = new Event.OSMap.MapEventsManager(this);
         }
 
-        public get config(): Configuration.IConfigurationMap {
+        public get config(): Z {
             return this._config;
         }
 
@@ -80,7 +79,7 @@ namespace OSFramework.OSMap {
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         public changeProperty(propertyName: string, propertyValue: any): void {
-            //Update Marker's config when the property is available
+            //Update Map's config when the property is available
             if (this.config.hasOwnProperty(propertyName)) {
                 this.config[propertyName] = propertyValue;
             } else {

@@ -1,10 +1,10 @@
-/// <reference path="../AbstractConfiguration.ts" />
+/// <reference path="../../../OSFramework/Configuration/AbstractConfiguration.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Configuration.Marker {
+namespace GoogleProvider.Configuration.Marker {
     export class GoogleMarkerConfig
-        extends AbstractConfiguration
-        implements IConfigurationMarker {
+        extends OSFramework.Configuration.AbstractConfiguration
+        implements OSFramework.Configuration.IConfigurationMarker {
         public advancedFormat: string;
         public iconUrl: string;
         public location: string;

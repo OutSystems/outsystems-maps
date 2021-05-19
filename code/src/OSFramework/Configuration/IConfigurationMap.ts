@@ -10,9 +10,6 @@ namespace OSFramework.Configuration {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         center: any;
         height: string;
-        offset: OSStructures.OSMap.Offset;
-        showTraffic: boolean;
-        staticMap: boolean;
         style: Enum.OSMap.Style;
         type: Enum.OSMap.Type;
         uniqueId: string;

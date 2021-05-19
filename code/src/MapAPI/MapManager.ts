@@ -32,10 +32,11 @@ namespace MapAPI.MapManager {
      */
     export function CreateMap(
         mapId: string,
+        mapType: OSFramework.Enum.MapType,
         configs: string
     ): OSFramework.OSMap.IMap {
         const _map = GoogleProvider.Map.MapFactory.MakeMap(
-            OSFramework.Enum.MapType.GoogleMaps,
+            mapType,
             mapId,
             JSON.parse(configs)
         );
@@ -194,7 +195,7 @@ namespace MapAPI.MapManager {
                 do {
                     parentHeight = currParent.offsetHeight;
                     currParent = currParent.parentNode as HTMLElement;
-                } while (parentHeight === 0 && currParent !== document.body);
+                } while (parentHeight <= 200 && currParent !== document.body);
                 height = parentHeight + 'px';
             } else {
                 if (isNaN(Number(height)) === false) {

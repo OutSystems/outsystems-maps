@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.Enum.OSMap {
     /**
      * Internal type definition
@@ -8,9 +9,9 @@ namespace OSFramework.Enum.OSMap {
         Zoom2 = 2,
         Zoom3 = 3,
         Zoom4 = 4,
-        Zoom5_Continent= 5,
+        Zoom5_Continent = 5,
         Zoom6 = 6,
-        Zoom7= 7,
+        Zoom7 = 7,
         Zoom8 = 8,
         Zoom9 = 9,
         Zoom10_City = 10,

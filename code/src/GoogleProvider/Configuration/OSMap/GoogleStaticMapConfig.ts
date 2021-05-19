@@ -1,22 +1,17 @@
-/// <reference path="../AbstractConfiguration.ts" />
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Configuration.OSMap {
-    export class GoogleMapConfig
-        extends AbstractConfiguration
-        implements IConfigurationMap {
+namespace GoogleProvider.Configuration.OSMap {
+    export class GoogleStaticMapConfig
+        extends OSFramework.Configuration.AbstractConfiguration
+        implements OSFramework.Configuration.IConfigurationMap {
         public advancedFormat: string;
         public apiKey: string;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public center: any;
         public height: string;
-        public offset: OSStructures.OSMap.Offset;
-        public showTraffic: boolean;
-        public staticMap: boolean;
-        public style: Enum.OSMap.Style;
-        public type: Enum.OSMap.Type;
+        public style: OSFramework.Enum.OSMap.Style;
+        public type: OSFramework.Enum.OSMap.Type;
         public uniqueId: string;
-        public zoom: Enum.OSMap.Zoom;
+        public zoom: OSFramework.Enum.OSMap.Zoom;
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         constructor(config: any) {

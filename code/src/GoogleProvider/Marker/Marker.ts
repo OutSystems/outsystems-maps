@@ -5,7 +5,7 @@ namespace GoogleProvider.Marker {
     export class Marker
         extends OSFramework.Marker.AbstractMarker<
             google.maps.Marker,
-            OSFramework.Configuration.Marker.GoogleMarkerConfig
+            Configuration.Marker.GoogleMarkerConfig
         >
         implements IMarkerGoogle {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -21,7 +21,7 @@ namespace GoogleProvider.Marker {
             super(
                 map,
                 markerId,
-                new OSFramework.Configuration.Marker.GoogleMarkerConfig(configs)
+                new Configuration.Marker.GoogleMarkerConfig(configs)
             );
         }
 
