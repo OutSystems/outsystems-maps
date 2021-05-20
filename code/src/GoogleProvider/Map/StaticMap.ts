@@ -34,6 +34,7 @@ namespace GoogleProvider.Map {
         private _getZoom() {
             if (this.config.zoom === OSFramework.Enum.OSMap.Zoom.Auto) {
                 if (this.markers.length > 0) {
+                    // If zoom is set to Auto, we son't need to set the zoom
                     return '';
                 } else {
                     return '&zoom=' + OSFramework.Enum.OSMap.Zoom.Zoom8;

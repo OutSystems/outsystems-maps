@@ -13,7 +13,9 @@ namespace OSFramework.Helper {
             child = OSFramework.Helper.GetElementByUniqueId(elem as string);
         else child = elem;
 
-        const domMap = child.closest(OSFramework.Helper.Constants.mapTag);
+        const domMap = child.closest(
+            OSFramework.Helper.Constants.outsystemsWidgetTag
+        );
 
         if (domMap) {
             const uniqueId = domMap

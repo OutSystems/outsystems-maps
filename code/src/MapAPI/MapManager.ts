@@ -180,7 +180,7 @@ namespace MapAPI.MapManager {
         //*************************************/
         if (widgetId === undefined) {
             widgetId = OSFramework.Helper.GetElementByUniqueId(mapId).closest(
-                OSFramework.Helper.Constants.mapTag
+                OSFramework.Helper.Constants.outsystemsWidgetTag
             ).id;
         }
         //*************************************/

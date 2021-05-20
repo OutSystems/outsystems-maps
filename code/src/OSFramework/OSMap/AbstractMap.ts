@@ -73,7 +73,7 @@ namespace OSFramework.OSMap {
 
         public build(): void {
             this._widgetId = Helper.GetElementByUniqueId(this.uniqueId).closest(
-                Helper.Constants.mapTag
+                Helper.Constants.outsystemsWidgetTag
             ).id;
         }
 

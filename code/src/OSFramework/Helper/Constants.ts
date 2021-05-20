@@ -5,6 +5,8 @@
 namespace OSFramework.Helper.Constants {
     /** Tag used to find Map */
     export const mapTag = '[data-block="Maps.Map"]';
+    /** Tag used to find StaticMap */
+    export const staticMapTag = '[data-block="Maps.StaticMap"]';
     /** Tag used to find a generic widget */
     export const outsystemsWidgetTag = '[data-block]';
     /** Tag used to find the container where the Map's uniqueId was defined */
