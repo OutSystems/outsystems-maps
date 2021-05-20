@@ -17,7 +17,8 @@ namespace MapAPI.MarkerManager {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
         propertyValue: any
     ): void {
-        const map = GetMapByMarkerId(markerId);
+        const marker = GetMarkerById(markerId);
+        const map = marker.map;
 
         if (map !== undefined) {
             map.changeMarkerProperty(markerId, propertyName, propertyValue);
@@ -56,11 +57,13 @@ namespace MapAPI.MarkerManager {
     }
 
     /**
+     * [Not used]
      * Gets the Map to which the Marker belongs to
      *
      * @param {string} markerId Id of the Marker that exists on the Map
      * @returns {*}  {MarkerMapper} this structure has the id of Map, and the reference to the instance of the Map
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     function GetMapByMarkerId(markerId: string): OSFramework.OSMap.IMap {
         let map: OSFramework.OSMap.IMap;
 
@@ -103,7 +106,8 @@ namespace MapAPI.MarkerManager {
      * @param {string} markerID id of the Marker that is about to be removed
      */
     export function RemoveMarker(markerId: string): void {
-        const map = GetMapByMarkerId(markerId);
+        const marker = GetMarkerById(markerId);
+        const map = marker.map;
 
         map && map.removeMarker(markerId);
         markerMap.delete(markerId);

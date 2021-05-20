@@ -6,13 +6,14 @@ namespace OSFramework.OSMap {
             Interface.IDisposable {
         /** Map configuration */
         config: Configuration.IConfigurationMap;
+        /** Exposed features of the Map */
+        features: OSFramework.Feature.ExposedFeatures;
         /** Boolean that indicates if the Map is ready */
         isReady: boolean;
-        /** Exposed features of the Map */
-        // eslint-disable-next-line @typescript-eslint/member-ordering
-        features: OSFramework.Feature.ExposedFeatures;
         /** Events from the Map */
         mapEvents: Event.OSMap.MapEventsManager;
+        /** Tag of the Map Block from OS */
+        mapTag: string;
         /** Get all Markers from the Map */
         markers: Array<OSFramework.Marker.IMarker>;
         /** Map provider */

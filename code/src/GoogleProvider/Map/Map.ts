@@ -141,6 +141,10 @@ namespace GoogleProvider.Map {
             }
         }
 
+        public get mapTag(): string {
+            return OSFramework.Helper.Constants.mapTag;
+        }
+
         public addMarker(
             marker: OSFramework.Marker.IMarker
         ): OSFramework.Marker.IMarker {

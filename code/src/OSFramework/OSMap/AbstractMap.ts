@@ -24,6 +24,7 @@ namespace OSFramework.OSMap {
             this._isReady = false;
             this._mapEvents = new Event.OSMap.MapEventsManager(this);
         }
+        public abstract get mapTag(): string;
 
         public get config(): Z {
             return this._config;
@@ -73,7 +74,7 @@ namespace OSFramework.OSMap {
 
         public build(): void {
             this._widgetId = Helper.GetElementByUniqueId(this.uniqueId).closest(
-                Helper.Constants.outsystemsWidgetTag
+                this.mapTag
             ).id;
         }
 
