@@ -16,7 +16,7 @@ namespace GoogleProvider.Map {
             );
         }
 
-        private _getCenter() {
+        private _getCenter(): string {
             let position = this.config.center;
             if (this.markers.length >= 1) {
                 position = this.markers[0].config.location;
@@ -31,7 +31,7 @@ namespace GoogleProvider.Map {
             return position;
         }
 
-        private _getMarkers() {
+        private _getMarkers(): string {
             return this.markers.reduce((acc, curr) => {
                 if (curr.config.iconUrl !== '') {
                     acc +=
@@ -52,7 +52,7 @@ namespace GoogleProvider.Map {
             }, '');
         }
 
-        private _getZoom() {
+        private _getZoom(): string {
             if (this.config.zoom === OSFramework.Enum.OSMap.Zoom.Auto) {
                 if (this.markers.length > 0) {
                     // If zoom is set to Auto, we son't need to set the zoom
