@@ -103,6 +103,11 @@ namespace GoogleProvider.Map {
         }
 
         public get mapTag(): string {
+            // To be removed
+            // If the map has been built via the deprecated input parameter (SS) -> isStaticMap
+            if (this.config.staticMap) {
+                return OSFramework.Helper.Constants.mapTag;
+            }
             return OSFramework.Helper.Constants.staticMapTag;
         }
 

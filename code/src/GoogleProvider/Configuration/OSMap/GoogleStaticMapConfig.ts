@@ -8,6 +8,8 @@ namespace GoogleProvider.Configuration.OSMap {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public center: any;
         public height: string;
+        // To be removed (staticMap)
+        public staticMap: boolean;
         public style: OSFramework.Enum.OSMap.Style;
         public type: OSFramework.Enum.OSMap.Type;
         public uniqueId: string;
