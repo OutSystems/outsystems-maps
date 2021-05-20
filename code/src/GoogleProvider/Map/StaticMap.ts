@@ -31,6 +31,27 @@ namespace GoogleProvider.Map {
             return position;
         }
 
+        private _getMarkers() {
+            return this.markers.reduce((acc, curr) => {
+                if (curr.config.iconUrl !== '') {
+                    acc +=
+                        '&markers=icon:' +
+                        encodeURIComponent(curr.config.iconUrl) +
+                        '%7C' +
+                        encodeURIComponent(
+                            curr.config.location.replace(/[^a-zA-Z0-9 ]/g, '')
+                        );
+                } else {
+                    acc +=
+                        '&markers=' +
+                        encodeURIComponent(
+                            curr.config.location.replace(/[^a-zA-Z0-9 ]/g, '')
+                        );
+                }
+                return acc;
+            }, '');
+        }
+
         private _getZoom() {
             if (this.config.zoom === OSFramework.Enum.OSMap.Zoom.Auto) {
                 if (this.markers.length > 0) {
@@ -57,10 +78,7 @@ namespace GoogleProvider.Map {
 
             const position = this._getCenter();
             const zoom = this._getZoom();
-            const markers = this.markers.reduce((acc, curr) => {
-                acc += '&markers=' + encodeURIComponent(curr.config.location);
-                return acc;
-            }, '');
+            const markers = this._getMarkers();
 
             image.src =
                 /* eslint-disable prettier/prettier */
