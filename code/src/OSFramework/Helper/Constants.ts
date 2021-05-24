@@ -19,4 +19,7 @@ namespace OSFramework.Helper.Constants {
     export const zoomAutofit = Enum.OSMap.Zoom.Zoom8;
     /** URL for GoogleMapsApi  */
     export const googleMapsApiURL = 'https://maps.googleapis.com/maps/api';
+    export const googleMapsApiGeocode = `${googleMapsApiURL}/geocode/json`;
+    export const googleMapsApiMap = `${googleMapsApiURL}/js`;
+    export const googleMapsApiStaticMap = `${googleMapsApiURL}/staticMap`;
 }

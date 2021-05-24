@@ -25,10 +25,10 @@ namespace GoogleProvider.Configuration.Marker {
                 uniqueId: this.uniqueId
             };
 
-            //Cleanning undefined properties
-            Object.keys(provider).forEach(
-                (key) => provider[key] === undefined && delete provider[key]
-            );
+            //Deleting all the undefined properties
+            Object.keys(provider).forEach((key) => {
+                if (provider[key] === undefined) delete provider[key];
+            });
 
             return provider;
         }

@@ -36,7 +36,7 @@ namespace GoogleProvider.Helper.Conversions {
         else {
             location = location.replace(/[^a-zA-Z0-9 ]/g, '');
             return fetch(
-                `https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=${apiKey}`
+                `${OSFramework.Helper.Constants.googleMapsApiGeocode}?address=${location}&key=${apiKey}`
             )
                 .then((response) => {
                     if (response.ok) {

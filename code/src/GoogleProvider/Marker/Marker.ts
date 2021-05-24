@@ -25,6 +25,7 @@ namespace GoogleProvider.Marker {
             );
         }
 
+        // This method will be removed as soon as the markers by input parameter get deprecated
         private _setMarkerEvents(events: Array<string>): void {
             if (this._listeners === undefined) this._listeners = [];
             // Make sure the listeners get removed before adding the new ones

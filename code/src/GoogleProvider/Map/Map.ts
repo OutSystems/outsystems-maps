@@ -101,7 +101,7 @@ namespace GoogleProvider.Map {
                 if (script === null) {
                     script = document.createElement('script');
                     /* eslint-disable-next-line prettier/prettier */
-                    script.src = OSFramework.Helper.Constants.googleMapsApiURL + '/js?key=' + this.config.apiKey;
+                    script.src = OSFramework.Helper.Constants.googleMapsApiMap + '?key=' + this.config.apiKey;
                     script.async = true;
                     script.defer = true;
                     script.id = 'google-maps-script';
@@ -235,23 +235,31 @@ namespace GoogleProvider.Map {
 
         public refresh(): void {
             let position = this.features.center.getCenter();
-            // If the configured center position of the map is equal to the default
             // When the position is empty, we use the default position
+            // If the configured center position of the map is equal to the default
             const isDefault =
                 position.toString() ===
                 OSFramework.Helper.Constants.defaultMapCenter.toString();
+            // If the Map has the default center position and at least 1 Marker, we want to use the first Marker position as the new center of the Map
             if (
-                isDefault &&
+                isDefault === true &&
                 this.markers.length >= 1 &&
                 this.markers[0].provider !== undefined
             ) {
                 position = this.markers[0].provider.position.toJSON();
-            } else if (
+            }
+            // If the Map has NOT the default center position and EXACTLY 1 Marker, we want to use the first Marker position as the new center of the Map
+            else if (
+                isDefault === false &&
                 this.markers.length === 1 &&
                 this.markers[0].provider !== undefined
             ) {
                 position = this.markers[0].provider.position.toJSON();
-            } else if (
+            }
+            // If the Map has NOT the default center position, 2 or more Markers and the zoom is set to be AutoFit
+            // we want to use the first Marker position as the new center of the Map
+            else if (
+                isDefault === false &&
                 this.markers.length >= 2 &&
                 this.markers[0].provider !== undefined &&
                 this.features.zoom.isAutofit

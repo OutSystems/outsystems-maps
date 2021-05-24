@@ -3,7 +3,8 @@ namespace GoogleProvider.Feature {
     export class TrafficLayer
         implements
             OSFramework.Feature.ITrafficLayer,
-            OSFramework.Interface.IBuilder {
+            OSFramework.Interface.IBuilder,
+            OSFramework.Interface.IDisposable {
         private _enabled: boolean;
         private _map: Map.IMapGoogle;
         private _trafficLayer: google.maps.TrafficLayer;
@@ -19,6 +20,9 @@ namespace GoogleProvider.Feature {
         public build(): void {
             this._trafficLayer = new google.maps.TrafficLayer();
             this.setState(this._enabled);
+        }
+        public dispose(): void {
+            this._trafficLayer = undefined;
         }
         public setState(value: boolean): void {
             this._trafficLayer.setMap(
