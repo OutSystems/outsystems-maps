@@ -22,7 +22,6 @@ namespace GoogleProvider.Feature {
         public build(): void {}
 
         public setOffset(value: OSFramework.OSStructures.OSMap.Offset): void {
-            console.log('offset');
             this._offset = {
                 offsetX: value.offsetX || 0,
                 offsetY: value.offsetY || 0

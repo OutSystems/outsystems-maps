@@ -1,3 +1,4 @@
+///<reference path="../AbstractEvent.ts"/>
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.Event.OSMap {
     /**
@@ -13,7 +14,8 @@ namespace OSFramework.Event.OSMap {
         public trigger(
             // mapObj: OSFramework.OSMap.IMap,
             mapId: string,
-            ...args
+            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+            ...args: any
         ): void {
             this.handlers.slice(0).forEach((h) => h(mapId, ...args));
         }

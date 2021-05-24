@@ -1,3 +1,5 @@
+///<reference path="../AbstractEventsManager.ts"/>
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.Event.OSMap {
     /**
