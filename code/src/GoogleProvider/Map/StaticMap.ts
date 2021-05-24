@@ -73,7 +73,7 @@ namespace GoogleProvider.Map {
                 this.uniqueId
             );
             const image = container.querySelector(
-                '.StaticMapImage'
+                OSFramework.Helper.Constants.staticMapCss
             ) as HTMLImageElement;
 
             const position = this._getCenter();

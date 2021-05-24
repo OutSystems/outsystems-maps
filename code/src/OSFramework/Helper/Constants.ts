@@ -21,5 +21,6 @@ namespace OSFramework.Helper.Constants {
     export const googleMapsApiURL = 'https://maps.googleapis.com/maps/api';
     export const googleMapsApiGeocode = `${googleMapsApiURL}/geocode/json`;
     export const googleMapsApiMap = `${googleMapsApiURL}/js`;
-    export const googleMapsApiStaticMap = `${googleMapsApiURL}/staticMap`;
+    export const googleMapsApiStaticMap = `${googleMapsApiURL}/staticmap`;
+    export const staticMapCss = '.staticMap-image';
 }
