@@ -33,6 +33,7 @@ namespace OSFramework.Event.OSMap {
                 case MapEventType.OnError:
                     event = new MapOnError();
                     break;
+                // OnEventTriggered is being deprecated, should be deleted soon
                 case MapEventType.OnEventTriggered:
                     event = new MapOnEventTriggered();
                     break;
@@ -72,6 +73,7 @@ namespace OSFramework.Event.OSMap {
                         // The value here is an error code
                         handlerEvent.trigger(this._map.widgetId, value);
                         break;
+                    // OnEventTriggered is being deprecated, should be deleted soon
                     case MapEventType.OnEventTriggered:
                         // The value here is the eventName
                         handlerEvent.trigger(

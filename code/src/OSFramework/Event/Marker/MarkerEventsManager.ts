@@ -23,7 +23,7 @@ namespace OSFramework.Event.Marker {
         ): IEvent<string> {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             let event: OSFramework.Event.IEvent<string>;
-
+            // The following events are being deprecated. They should get removed soon.
             switch (eventType) {
                 case MarkerEventType.Initialized:
                     event = new MarkerInitializedEvent();
@@ -55,7 +55,7 @@ namespace OSFramework.Event.Marker {
         public trigger(eventType: MarkerEventType, eventName?: string): void {
             if (this.handlers.has(eventType)) {
                 const handlerEvent = this.handlers.get(eventType);
-
+                // The following events are being deprecated. They should get removed soon.
                 switch (eventType) {
                     case MarkerEventType.Initialized:
                         handlerEvent.trigger(
