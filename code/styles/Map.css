@@ -1,4 +1,5 @@
 .map-wrapper {
+    height: 100%;
     -webkit-transition: opacity linear 150ms;
             transition: opacity linear 150ms;
     width: 100%;
