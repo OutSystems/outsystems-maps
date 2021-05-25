@@ -137,6 +137,8 @@ namespace OSFramework.OSMap {
                 marker.dispose();
                 this._markers.delete(markedId);
                 this._markersSet.delete(marker);
+                // After removing a marker, we need to refresh the Map to reflect the zoom, offset and center position of the Map
+                this.refresh();
 
                 console.log(`Remove Marker '${markedId}'`);
             } else {

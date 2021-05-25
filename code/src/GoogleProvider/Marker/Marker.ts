@@ -106,6 +106,13 @@ namespace GoogleProvider.Marker {
                 markerOptions.icon = this.config.iconUrl;
             }
 
+            if (
+                typeof this.config.title !== 'undefined' &&
+                this.config.title !== ''
+            ) {
+                markerOptions.title = this.config.title;
+            }
+
             // Take care of the advancedFormat options which can override the previous configuration
             this._advancedFormatObj = OSFramework.Helper.JsonFormatter(
                 this.config.advancedFormat
@@ -145,7 +152,6 @@ namespace GoogleProvider.Marker {
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         public changeProperty(propertyName: string, value: any): void {
             const propValue = OSFramework.Enum.OS_Config_Marker[propertyName];
-
             switch (propValue) {
                 case OSFramework.Enum.OS_Config_Marker.location:
                     Helper.Conversions.ConvertToCoordinates(
@@ -156,15 +162,19 @@ namespace GoogleProvider.Marker {
                             lat: response.lat,
                             lng: response.lng
                         });
+                        this.map.refresh();
                     });
                     return;
                 case OSFramework.Enum.OS_Config_Map.advancedFormat:
                     value = OSFramework.Helper.JsonFormatter(value);
                     // Make sure the MapEvents that are associated in the advancedFormat get updated
                     this._setMarkerEvents(value.markerEvents);
-                    return this._provider.setOptions(value);
+                    this._provider.setOptions(value);
+                    return this.map.refresh();
                 case OSFramework.Enum.OS_Config_Marker.iconURL:
                     return this._provider.setIcon(value);
+                case OSFramework.Enum.OS_Config_Marker.title:
+                    return this._provider.setTitle(value);
 
                 default:
                     throw Error(
@@ -177,6 +187,7 @@ namespace GoogleProvider.Marker {
             if (this.isReady) {
                 this._provider.setMap(null);
             }
+            this._provider = undefined;
             super.dispose();
         }
     }

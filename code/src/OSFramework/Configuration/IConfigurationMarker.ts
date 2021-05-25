@@ -8,6 +8,7 @@ namespace OSFramework.Configuration {
         advancedFormat: string;
         iconUrl: string;
         location: string;
+        title: string;
         uniqueId: string;
     }
 }

@@ -7,6 +7,7 @@ namespace OSFramework.Enum {
         advancedFormat,
         iconURL,
         location,
+        title,
         uniqueId
     }
 }

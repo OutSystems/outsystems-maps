@@ -8,6 +8,7 @@ namespace GoogleProvider.Configuration.Marker {
         public advancedFormat: string;
         public iconUrl: string;
         public location: string;
+        public title: string;
         public uniqueId: string;
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
@@ -22,6 +23,7 @@ namespace GoogleProvider.Configuration.Marker {
                 advancedFormat: this.advancedFormat,
                 iconURL: this.iconUrl,
                 location: this.location,
+                title: this.title,
                 uniqueId: this.uniqueId
             };
 
