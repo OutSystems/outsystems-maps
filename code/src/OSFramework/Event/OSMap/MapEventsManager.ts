@@ -92,19 +92,17 @@ namespace OSFramework.Event.OSMap {
                         handlerEvent.trigger(this._map, this._map.widgetId);
                         break;
                     case MapEventType.OnError:
-                        // The value here is an error code
                         handlerEvent.trigger(
-                            this._map,
-                            this._map.widgetId,
-                            eventInfo
+                            this._map, // Map Object that was clicked
+                            this._map.widgetId, // Id of Map block that was clicked
+                            eventInfo // Error Code
                         );
                         break;
                     case MapEventType.OnEventTriggered:
-                        // The value here is the eventName
                         handlerEvent.trigger(
-                            this._map,
-                            this._map.widgetId, // Id of Map block that was clicked.
-                            eventInfo
+                            this._map, // Map Object that triggered the event
+                            this._map.widgetId, // Id of Map block that triggered the event
+                            eventInfo // Name of the event that got raised
                         );
                         break;
                     case MapEventType.ProviderEvent:
@@ -116,10 +114,10 @@ namespace OSFramework.Event.OSMap {
                                 eventInfo as MapEventType
                             );
                             handler.trigger(
-                                this._map,
-                                this._map.widgetId, // Id of Map block that was clicked.
-                                eventInfo,
-                                ...args
+                                this._map, // Map Object that triggered the event
+                                this._map.widgetId, // Id of Map block that triggered the event
+                                eventInfo, // Name of the event that got raised
+                                ...args // Coordinates retrieved from the Map event that got triggered
                             );
                             break;
                         }

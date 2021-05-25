@@ -163,5 +163,12 @@ namespace GoogleProvider.Map {
         public refresh(): void {
             throw new Error(`Refresh method can't be used on a StaticMap`);
         }
+
+        // Refresh Provider Events method can't be used on a StaticMap because Static Maps don't have events.
+        public refreshProviderEvents(): void {
+            throw new Error(
+                "Refresh Provider Events method can't be used on a StaticMap because Static Maps don't have events."
+            );
+        }
     }
 }

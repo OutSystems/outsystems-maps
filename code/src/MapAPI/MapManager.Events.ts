@@ -43,10 +43,10 @@ namespace MapAPI.MapManager.Events {
     ): string {
         //Try to find in DOM only if not present on Map
         if (lookUpDOM && !_eventsToMapId.has(eventUniqueId)) {
-            const menuOptionElement = OSFramework.Helper.GetElementByUniqueId(
+            const eventElement = OSFramework.Helper.GetElementByUniqueId(
                 eventUniqueId
             );
-            const map = OSFramework.Helper.GetClosestMap(menuOptionElement);
+            const map = OSFramework.Helper.GetClosestMap(eventElement);
 
             if (map) {
                 _eventsToMapId.set(eventUniqueId, map.uniqueId);
@@ -58,6 +58,7 @@ namespace MapAPI.MapManager.Events {
 
     /**
      * API method to subscribe to events of a specific Map
+     * This method is being deprecated. It will get removed soon.
      *
      * @export
      * @param {string} mapId Map where the event will be attached
@@ -125,6 +126,7 @@ namespace MapAPI.MapManager.Events {
             }
         } else {
             map.mapEvents.addHandler(eventName, callback);
+            map.refreshProviderEvents();
         }
     }
 
@@ -132,19 +134,23 @@ namespace MapAPI.MapManager.Events {
      * API method to unsubscribe an event from a specific Map
      *
      * @export
-     * @param {string} mapId Map where the event will be removed
+     * @param {string} eventUniqueId Event Id that will get removed
      * @param {OSFramework.Event.Map.MapEventType} eventName name of the event to be removed
      * @param {MapAPI.Callbacks.OSMap.Event} callback callback that will be removed
      */
     export function Unsubscribe(
-        mapId: string,
+        eventUniqueId: string,
         eventName: OSFramework.Event.OSMap.MapEventType,
         // eslint-disable-next-line
         callback: OSFramework.Callbacks.OSMap.Event
     ): void {
+        const mapId = GetMapByEventUniqueId(eventUniqueId);
         const map = GetMapById(mapId, false);
+
         if (map !== undefined) {
             map.mapEvents.removeHandler(eventName, callback);
+            // Let's make sure the events get refreshed on the Map provider
+            map.refreshProviderEvents();
         } else {
             if (_pendingEvents.has(mapId)) {
                 const index = _pendingEvents.get(mapId).findIndex((element) => {

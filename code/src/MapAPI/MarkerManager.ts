@@ -48,6 +48,7 @@ namespace MapAPI.MarkerManager {
             markerArr.push(_marker);
             markerMap.set(markerId, map.uniqueId);
             map.addMarker(_marker);
+
             return _marker;
         } else {
             throw new Error(
@@ -79,6 +80,9 @@ namespace MapAPI.MarkerManager {
             markerArr.push(_marker);
             markerMap.set(markerId, map.uniqueId);
             map.addMarker(_marker);
+
+            // markers.set(markerId, _marker);
+            Events.CheckPendingEvents(_marker);
             return _marker;
         } else {
             throw new Error(

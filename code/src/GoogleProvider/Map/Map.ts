@@ -112,7 +112,7 @@ namespace GoogleProvider.Map {
         }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        private _setMapEvents(events: Array<string>): void {
+        private _setMapEvents(events?: Array<string>): void {
             if (this._listeners === undefined) this._listeners = [];
             // Make sure all the listeners get removed before adding the new ones
             this._listeners.forEach((eventListener, index) => {
@@ -320,6 +320,10 @@ namespace GoogleProvider.Map {
 
             // Refresh the offset
             this.features.offset.setOffset(this.features.offset.getOffset);
+        }
+
+        public refreshProviderEvents(): void {
+            this._setMapEvents();
         }
     }
 }

@@ -26,7 +26,7 @@ namespace GoogleProvider.Marker {
         }
 
         // This method will be removed as soon as the markers by input parameter get deprecated
-        private _setMarkerEvents(events: Array<string>): void {
+        private _setMarkerEvents(events?: Array<string>): void {
             if (this._listeners === undefined) this._listeners = [];
             // Make sure the listeners get removed before adding the new ones
             this._listeners.forEach((eventListener, index) => {
@@ -88,11 +88,51 @@ namespace GoogleProvider.Marker {
                     });
                 });
             }
+
+            // Any events that got added to the markerEvents via the API Subscribe method will have to be taken care here
+            // If the Event type of each handler is MarkerProviderEvent, we want to make sure to add that event to the listeners of the google marker provider (e.g. click, dblclick, contextmenu, etc)
+            // Otherwise, we don't want to add them to the google provider listeners (e.g. OnInitialize, OnTriggeredEvent, etc)
+            this.markerEvents.handlers.forEach(
+                (handler: OSFramework.Event.IEvent<string>, eventName) => {
+                    if (
+                        handler instanceof
+                        OSFramework.Event.Marker.MarkerProviderEvent
+                    ) {
+                        this._listeners.push(eventName);
+                        this._provider.addListener(
+                            // Name of the event (e.g. click, dblclick, contextmenu, etc)
+                            eventName,
+                            // Callback CAN have an attribute (e) which is of the type MapMouseEvent
+                            // Trigger the event by specifying the ProviderEvent MarkerType and the coords (lat, lng) if the callback has the attribute MapMouseEvent
+                            (e?: google.maps.MapMouseEvent) => {
+                                this.markerEvents.trigger(
+                                    // EventType
+                                    OSFramework.Event.Marker.MarkerEventType
+                                        .ProviderEvent,
+                                    // EventName
+                                    eventName,
+                                    // Coords
+                                    e !== undefined
+                                        ? JSON.stringify({
+                                              Lat: e.latLng.lat(),
+                                              Lng: e.latLng.lng()
+                                          })
+                                        : undefined
+                                );
+                            }
+                        );
+                    }
+                }
+            );
         }
 
         /** Checks if the Marker has associated events */
         public get hasEvents(): boolean {
             return this.markerEvents !== undefined;
+        }
+
+        public get providerEvents(): Array<string> {
+            return Constants.OSMap.Events;
         }
 
         public build(): void {
@@ -189,6 +229,10 @@ namespace GoogleProvider.Marker {
             }
             this._provider = undefined;
             super.dispose();
+        }
+
+        public refreshProviderEvents(): void {
+            this._setMarkerEvents();
         }
     }
 }

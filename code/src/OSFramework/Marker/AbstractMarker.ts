@@ -30,6 +30,9 @@ namespace OSFramework.Marker {
             this._markerEvents = new Event.Marker.MarkerEventsManager(this);
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        public abstract get providerEvents(): any;
+
         public get config(): Configuration.IConfigurationMarker {
             return this._config;
         }
@@ -88,5 +91,11 @@ namespace OSFramework.Marker {
         public getProviderConfig(): any {
             return this._config.getProviderConfig();
         }
+
+        public validateProviderEvent(eventName: string): boolean {
+            return this.providerEvents.indexOf(eventName) !== -1;
+        }
+
+        public abstract refreshProviderEvents(): void;
     }
 }

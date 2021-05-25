@@ -160,5 +160,6 @@ namespace OSFramework.OSMap {
         ): void;
 
         public abstract refresh(): void;
+        public abstract refreshProviderEvents(): void;
     }
 }

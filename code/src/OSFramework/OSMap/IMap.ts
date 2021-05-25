@@ -75,6 +75,10 @@ namespace OSFramework.OSMap {
          */
         refresh(): void;
         /**
+         * Refreshes the Events of the Map Provider after Subscribing/Unsubscribing events
+         */
+        refreshProviderEvents(): void;
+        /**
          * Remove all Markers from the Map
          */
         removeAllMarkers(): void;
