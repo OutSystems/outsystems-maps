@@ -1,3 +1,4 @@
+///<reference path="../AbstractEvent.ts"/>
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.Event.OSMap {
     /**
@@ -11,6 +12,7 @@ namespace OSFramework.Event.OSMap {
     export abstract class AbstractMapEvent extends AbstractEvent<OSFramework.OSMap.IMap> {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         public trigger(
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             mapObj: OSFramework.OSMap.IMap,
             mapId: string,
             ...args

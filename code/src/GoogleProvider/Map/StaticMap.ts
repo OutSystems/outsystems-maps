@@ -73,7 +73,7 @@ namespace GoogleProvider.Map {
                 this.uniqueId
             );
             const image = container.querySelector(
-                '.StaticMapImage'
+                OSFramework.Helper.Constants.staticMapCss
             ) as HTMLImageElement;
 
             const position = this._getCenter();
@@ -82,7 +82,7 @@ namespace GoogleProvider.Map {
 
             image.src =
                 /* eslint-disable prettier/prettier */
-                OSFramework.Helper.Constants.googleMapsApiURL + '/staticmap?' +
+                `${OSFramework.Helper.Constants.googleMapsApiStaticMap}?` +
                 'key=' + this.config.apiKey +
                 '&center=' + encodeURIComponent(position) +
                 /*'&markers=' +*/ markers +
@@ -138,7 +138,9 @@ namespace GoogleProvider.Map {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             propertyValue: any
         ): void {
-            throw new Error('Method not implemented.');
+            throw new Error(
+                `ChangeMarkerProperty method can't be used on a StaticMap`
+            );
         }
 
         // ChangeProperty method can't be used on a StaticMap
@@ -148,17 +150,18 @@ namespace GoogleProvider.Map {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             propertyValue: any
         ): void {
-            throw new Error('Method not implemented.');
+            throw new Error(
+                `ChangeProperty method can't be used on a StaticMap`
+            );
         }
 
         public dispose(): void {
             super.dispose();
-            // this._provider = undefined;
         }
 
         // Refresh method can't be used on a StaticMap
         public refresh(): void {
-            throw new Error('Method not implemented.');
+            throw new Error(`Refresh method can't be used on a StaticMap`);
         }
     }
 }

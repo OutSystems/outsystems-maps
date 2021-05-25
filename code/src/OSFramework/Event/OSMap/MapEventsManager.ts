@@ -1,3 +1,5 @@
+///<reference path="../AbstractEventsManager.ts"/>
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.Event.OSMap {
     /**
@@ -31,6 +33,7 @@ namespace OSFramework.Event.OSMap {
                 case MapEventType.OnError:
                     event = new MapOnError();
                     break;
+                // OnEventTriggered is being deprecated, should be deleted soon
                 case MapEventType.OnEventTriggered:
                     event = new MapOnEventTriggered();
                     break;
