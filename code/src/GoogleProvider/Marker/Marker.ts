@@ -232,7 +232,7 @@ namespace GoogleProvider.Marker {
         }
 
         public refreshProviderEvents(): void {
-            this._setMarkerEvents();
+            if (this.isReady) this._setMarkerEvents();
         }
     }
 }

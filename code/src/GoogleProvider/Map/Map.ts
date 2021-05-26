@@ -323,7 +323,7 @@ namespace GoogleProvider.Map {
         }
 
         public refreshProviderEvents(): void {
-            this._setMapEvents();
+            if (this.isReady) this._setMapEvents();
         }
     }
 }
