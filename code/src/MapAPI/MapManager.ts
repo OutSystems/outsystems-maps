@@ -192,7 +192,9 @@ namespace MapAPI.MapManager {
             if (height === '') {
                 let parentHeight = 0;
                 let currParent = widget.parentNode as HTMLElement;
-                // asdfads
+                // Get the parent height
+                // If the parent height is <= 200, keep trying until we reach the <body> tag.
+                // (don't use the parent height <= 200 because the DOM has some other elements from the template with smaller heights)
                 do {
                     parentHeight = currParent.offsetHeight;
                     currParent = currParent.parentNode as HTMLElement;

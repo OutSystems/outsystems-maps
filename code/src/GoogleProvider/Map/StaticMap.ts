@@ -52,6 +52,18 @@ namespace GoogleProvider.Map {
             }, '');
         }
 
+        private _getSize(): string {
+            const container = OSFramework.Helper.GetElementByUniqueId(
+                this.uniqueId
+            );
+            const width = container.offsetWidth;
+            const height = container.offsetHeight;
+            // We are using Scale = 2 (better resolution), so we need to divide the width and height by 2 as well
+            return (
+                '&size=' + Math.round(width / 2) + 'x' + Math.round(height / 2)
+            );
+        }
+
         private _getZoom(): string {
             if (this.config.zoom === OSFramework.Enum.OSMap.Zoom.Auto) {
                 if (this.markers.length > 0) {
@@ -79,6 +91,7 @@ namespace GoogleProvider.Map {
             const position = this._getCenter();
             const zoom = this._getZoom();
             const markers = this._getMarkers();
+            const size = this._getSize();
 
             image.src =
                 /* eslint-disable prettier/prettier */
@@ -88,9 +101,9 @@ namespace GoogleProvider.Map {
                 /*'&markers=' +*/ markers +
                 '&maptype=' + this.config.type +
                 /*'&maptype=' +*/ zoom +
-                '&scale=' + 1 + 
-                '&size=' + container.offsetWidth +
-                'x' + OSFramework.Helper.GetElementByWidgetId(this.widgetId).style.getPropertyValue('--map-height').replace('px', '');
+                // Scale 2 will give the Map a better resolution
+                '&scale=' + 2 + 
+                /*'&size=' +*/ size;
                 /* eslint-enable prettier/prettier */
             image.onerror = () => {
                 MapAPI.MapManager.GetActiveMap().mapEvents.trigger(
