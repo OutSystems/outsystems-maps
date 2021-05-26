@@ -70,7 +70,6 @@ namespace MapAPI.MarkerManager {
         configs: string
     ): OSFramework.Marker.IMarker {
         const map = GetMapByMarkerId(markerId);
-        console.log(map);
         if (!map.hasMarker(markerId)) {
             const _marker = GoogleProvider.Marker.MarkerFactory.MakeMarker(
                 map,
