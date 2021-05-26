@@ -132,7 +132,7 @@ namespace GoogleProvider.Marker {
         }
 
         public get providerEvents(): Array<string> {
-            return Constants.OSMap.Events;
+            return Constants.Marker.Events;
         }
 
         public build(): void {
