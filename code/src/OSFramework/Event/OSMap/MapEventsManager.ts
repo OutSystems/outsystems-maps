@@ -98,6 +98,7 @@ namespace OSFramework.Event.OSMap {
                             eventInfo // Error Code
                         );
                         break;
+                    // The following event is being deprecated. It should get removed soon.
                     case MapEventType.OnEventTriggered:
                         handlerEvent.trigger(
                             this._map, // Map Object that triggered the event
