@@ -55,7 +55,7 @@ namespace OSFramework.Event.OSMap {
             //if the Map is already ready, fire immediatly the event.
             if (eventType === MapEventType.Initialized && this._map.isReady) {
                 //make the invocation of the handler assync.
-                setTimeout(() => handler(this._map.widgetId, this._map), 0);
+                setTimeout(() => handler(this._map, this._map.widgetId), 0);
             } else {
                 super.addHandler(eventType, handler);
             }
