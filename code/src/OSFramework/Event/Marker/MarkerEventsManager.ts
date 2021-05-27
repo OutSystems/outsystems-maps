@@ -80,7 +80,7 @@ namespace OSFramework.Event.Marker {
                     case MarkerEventType.Initialized:
                         handlerEvent.trigger(
                             this._marker.map.widgetId, // Id of Map block that was initialized
-                            this._marker.widgetId, // Id of Marker block that was initialized
+                            this._marker.widgetId || this._marker.uniqueId, // Id of Marker block that was initialized
                             this._marker.index // Index of Marker block that was initialized
                         );
                         break;
@@ -89,14 +89,14 @@ namespace OSFramework.Event.Marker {
                     case MarkerEventType.OnMouseover:
                         handlerEvent.trigger(
                             this._marker.map.widgetId, // Id of Map block that was clicked
-                            this._marker.widgetId, // Id of Marker block that was clicked
+                            this._marker.widgetId || this._marker.uniqueId, // Id of Marker block that was clicked
                             this._marker.index // Index of Marker block that was clicked
                         );
                         break;
                     case MarkerEventType.OnEventTriggered:
                         handlerEvent.trigger(
                             this._marker.map.widgetId, // Id of Map block that triggered the event
-                            this._marker.widgetId, // Id of Marker block that triggered the event
+                            this._marker.widgetId || this._marker.uniqueId, // Id of Marker block that triggered the event
                             this._marker.index, // Index of Marker block that triggered the event
                             eventInfo // Name of the event that got triggered
                         );
@@ -112,7 +112,7 @@ namespace OSFramework.Event.Marker {
                             );
                             handler.trigger(
                                 this._marker.map.widgetId, // Id of Map block that triggered the event
-                                this._marker.widgetId, // Id of Marker block that triggered the event
+                                this._marker.widgetId || this._marker.uniqueId, // Id of Marker block that triggered the event
                                 eventInfo, // Name of the event that got triggered
                                 ...args // Coordinates retrieved from the marker event that got triggered
                             );

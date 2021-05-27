@@ -231,6 +231,10 @@ namespace GoogleProvider.Marker {
             super.dispose();
         }
 
+        public get markerTag(): string {
+            return OSFramework.Helper.Constants.markerTag;
+        }
+
         public refreshProviderEvents(): void {
             if (this.isReady) this._setMarkerEvents();
         }
