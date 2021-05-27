@@ -153,6 +153,10 @@ namespace GoogleProvider.Marker {
                 markerOptions.title = this.config.title;
             }
 
+            if (typeof this.config.allowDrag !== 'undefined') {
+                markerOptions.draggable = this.config.allowDrag;
+            }
+
             // Take care of the advancedFormat options which can override the previous configuration
             this._advancedFormatObj = OSFramework.Helper.JsonFormatter(
                 this.config.advancedFormat
@@ -211,6 +215,8 @@ namespace GoogleProvider.Marker {
                     this._setMarkerEvents(value.markerEvents);
                     this._provider.setOptions(value);
                     return this.map.refresh();
+                case OSFramework.Enum.OS_Config_Marker.allowDrag:
+                    return this._provider.setDraggable(value);
                 case OSFramework.Enum.OS_Config_Marker.iconURL:
                     return this._provider.setIcon(value);
                 case OSFramework.Enum.OS_Config_Marker.title:
