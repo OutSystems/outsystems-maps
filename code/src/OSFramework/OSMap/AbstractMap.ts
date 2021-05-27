@@ -8,6 +8,7 @@ namespace OSFramework.OSMap {
         private _config: Z;
         private _isReady: boolean;
         private _mapEvents: Event.OSMap.MapEventsManager;
+        private _mapType: Enum.MapType;
         private _markers: Map<string, Marker.IMarker>;
         private _markersSet: Set<Marker.IMarker>;
         private _uniqueId: string;
@@ -16,13 +17,14 @@ namespace OSFramework.OSMap {
         protected _features: Feature.ExposedFeatures;
         protected _provider: W;
 
-        constructor(uniqueId: string, config: Z) {
+        constructor(uniqueId: string, config: Z, mapType: Enum.MapType) {
             this._uniqueId = uniqueId;
             this._markers = new Map<string, Marker.IMarker>();
             this._markersSet = new Set<Marker.IMarker>();
             this._config = config;
             this._isReady = false;
             this._mapEvents = new Event.OSMap.MapEventsManager(this);
+            this._mapType = mapType;
         }
         public abstract get mapTag(): string;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -122,6 +124,9 @@ namespace OSFramework.OSMap {
         }
 
         public removeAllMarkers(): void {
+            if (this._mapType === Enum.MapType.StaticMap && this.isReady) {
+                throw new Error(`Markers can't be changed on a StaticMap`);
+            }
             this._markers.forEach((marker) => {
                 marker.dispose();
             });
@@ -131,6 +136,9 @@ namespace OSFramework.OSMap {
         }
 
         public removeMarker(markedId: string): void {
+            if (this._mapType === Enum.MapType.StaticMap && this.isReady) {
+                throw new Error(`Markers can't be changed on a StaticMap`);
+            }
             if (this._markers.has(markedId)) {
                 const marker = this._markers.get(markedId);
 

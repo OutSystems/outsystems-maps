@@ -2,30 +2,36 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace GoogleProvider.Map {
+    type Size = {
+        height: number;
+        width: number;
+    };
+
     export class StaticMap
         extends OSFramework.OSMap.AbstractMap<
             google.maps.Map,
             Configuration.OSMap.GoogleStaticMapConfig
         >
         implements IMapGoogle {
+        private _center: string;
+        private _markerString: string;
+        private _size: Size;
+        private _type: OSFramework.Enum.OSMap.Type;
+        private _zoom: number;
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         constructor(mapId: string, configs: any) {
             super(
                 mapId,
-                new Configuration.OSMap.GoogleStaticMapConfig(configs)
+                new Configuration.OSMap.GoogleStaticMapConfig(configs),
+                OSFramework.Enum.MapType.StaticMap
             );
         }
 
-        private _getCenter(): string {
-            let position = this.config.center;
+        private _getCenter(center?: string): string {
+            // If the center paramater is undefined, then use the config.center
+            let position = center === undefined ? this.config.center : center;
+            // If has markers use the first one's config location as the new position
             if (this.markers.length >= 1) {
-                position = this.markers[0].config.location;
-            } else if (this.markers.length === 1) {
-                position = this.markers[0].config.location;
-            } else if (
-                this.markers.length >= 2 &&
-                this.config.zoom === OSFramework.Enum.OSMap.Zoom.Auto
-            ) {
                 position = this.markers[0].config.location;
             }
             return position;
@@ -52,28 +58,32 @@ namespace GoogleProvider.Map {
             }, '');
         }
 
-        private _getSize(): string {
+        private _getSize(): Size {
             const container = OSFramework.Helper.GetElementByUniqueId(
                 this.uniqueId
             );
             const width = container.offsetWidth;
             const height = container.offsetHeight;
             // We are using Scale = 2 (better resolution), so we need to divide the width and height by 2 as well
-            return (
-                '&size=' + Math.round(width / 2) + 'x' + Math.round(height / 2)
-            );
+            return {
+                width: Math.round(width / 2),
+                height: Math.round(height / 2)
+            };
         }
 
-        private _getZoom(): string {
-            if (this.config.zoom === OSFramework.Enum.OSMap.Zoom.Auto) {
+        private _getZoom(level?: number): number {
+            // If level is undefined, use the config zoom as the default
+            if (level === undefined) level = this.config.zoom;
+
+            if (level === OSFramework.Enum.OSMap.Zoom.Auto) {
                 if (this.markers.length > 0) {
-                    // If zoom is set to Auto, we son't need to set the zoom
-                    return '';
+                    // If zoom is set to Auto, we don't need to set the zoom so let's use -1 to help rendering the image
+                    return -1;
                 } else {
-                    return '&zoom=' + OSFramework.Enum.OSMap.Zoom.Zoom8;
+                    return OSFramework.Enum.OSMap.Zoom.Zoom8;
                 }
             } else {
-                return '&zoom=' + this.config.zoom;
+                return level;
             }
         }
 
@@ -88,22 +98,18 @@ namespace GoogleProvider.Map {
                 OSFramework.Helper.Constants.staticMapCss
             ) as HTMLImageElement;
 
-            const position = this._getCenter();
-            const zoom = this._getZoom();
-            const markers = this._getMarkers();
-            const size = this._getSize();
-
             image.src =
                 /* eslint-disable prettier/prettier */
                 `${OSFramework.Helper.Constants.googleMapsApiStaticMap}?` +
                 'key=' + this.config.apiKey +
-                '&center=' + encodeURIComponent(position) +
-                /*'&markers=' +*/ markers +
-                '&maptype=' + this.config.type +
-                /*'&maptype=' +*/ zoom +
+                '&center=' + this._center +
+                /*'&markers=' +*/ this._markerString +
+                '&maptype=' + this._type +
+                // If the zoom = -1, then don't use the zoom parameter
+                (this._zoom > -1 ? '&zoom=' + this._zoom : '') +
                 // Scale 2 will give the Map a better resolution
                 '&scale=' + 2 + 
-                /*'&size=' +*/ size;
+                '&size=' + this._size.width + 'x' + this._size.height;
                 /* eslint-enable prettier/prettier */
             image.onerror = () => {
                 MapAPI.MapManager.GetActiveMap().mapEvents.trigger(
@@ -132,6 +138,9 @@ namespace GoogleProvider.Map {
         public addMarker(
             marker: OSFramework.Marker.IMarker
         ): OSFramework.Marker.IMarker {
+            if (this.isReady) {
+                throw new Error(`Markers can't be changed on a StaticMap`);
+            }
             super.addMarker(marker);
 
             return marker;
@@ -139,7 +148,15 @@ namespace GoogleProvider.Map {
 
         public build(): void {
             super.build();
+
+            this._center = this._getCenter();
+            this._zoom = this._getZoom();
+            this._markerString = this._getMarkers();
+            this._size = this._getSize();
+            this._type = this.config.type;
+
             this._renderImage();
+            this.finishBuild();
         }
 
         // ChangeMarkerProperty method can't be used on a StaticMap
@@ -157,15 +174,41 @@ namespace GoogleProvider.Map {
         }
 
         // ChangeProperty method can't be used on a StaticMap
-        public changeProperty(
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            propertyValue: any
-        ): void {
-            throw new Error(
-                `ChangeProperty method can't be used on a StaticMap`
-            );
+        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+        public changeProperty(propertyName: string, value: any): void {
+            if (this.isReady) {
+                throw Error(
+                    `ChangeProperty method can't be used on a StaticMap`
+                );
+            }
+
+            const propValue =
+                OSFramework.Enum.OS_Config_StaticMap[propertyName];
+
+            switch (propValue) {
+                case OSFramework.Enum.OS_Config_StaticMap.apiKey:
+                    if (this.config.apiKey !== '') {
+                        this.mapEvents.trigger(
+                            OSFramework.Event.OSMap.MapEventType.OnError,
+                            this,
+                            OSFramework.Enum.Errors.APIKeyAlreadySet
+                        );
+                    }
+                    return super.changeProperty(propertyName, value);
+                case OSFramework.Enum.OS_Config_StaticMap.center:
+                    this._center = this._getCenter(value);
+                    return;
+                case OSFramework.Enum.OS_Config_StaticMap.zoom:
+                    this._zoom = this._getZoom(value);
+                    return;
+                case OSFramework.Enum.OS_Config_StaticMap.type:
+                    this._type = value;
+                    return;
+                default:
+                    throw Error(
+                        `changeProperty - Property '${propertyName}' can't be changed.`
+                    );
+            }
         }
 
         public dispose(): void {

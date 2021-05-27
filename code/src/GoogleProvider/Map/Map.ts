@@ -16,7 +16,11 @@ namespace GoogleProvider.Map {
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         constructor(mapId: string, configs: any) {
-            super(mapId, new Configuration.OSMap.GoogleMapConfig(configs));
+            super(
+                mapId,
+                new Configuration.OSMap.GoogleMapConfig(configs),
+                OSFramework.Enum.MapType.Map
+            );
         }
 
         // eslint-disable-next-line @typescript-eslint/member-ordering

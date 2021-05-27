@@ -26,17 +26,18 @@ namespace MapAPI.MapManager {
      * Function that will create an instance of Map object with the configurations passed.
      *
      * @export
-     * @param {string} mapId Id of the Map where the change will occur.
+     * @param {string} mapId Id of the Map that is going to be created.
+     * @param {string} providerType Type of the Provider (e.g. GoogleProvider, etc)
      * @param {string} configs configurations for the Map in JSON format.
      * @returns {*}  {OSMap.IMap} instance of the Map.
      */
     export function CreateMap(
         mapId: string,
-        mapType: OSFramework.Enum.MapType,
+        providerType: OSFramework.Enum.ProviderType,
         configs: string
     ): OSFramework.OSMap.IMap {
         const _map = GoogleProvider.Map.MapFactory.MakeMap(
-            mapType,
+            providerType,
             mapId,
             JSON.parse(configs)
         );
