@@ -43,7 +43,11 @@ namespace GoogleProvider.Map {
                 const currentCenter = this.config.center;
 
                 this._provider = new google.maps.Map(
-                    OSFramework.Helper.GetElementByUniqueId(this.uniqueId),
+                    OSFramework.Helper.GetElementByUniqueId(
+                        this.uniqueId
+                    ).querySelector(
+                        OSFramework.Helper.Constants.runtimeMapUniqueIdCss
+                    ),
                     // The provider config will retrieve the default center position
                     // (this.config.center = OSFramework.Helper.Constants.defaultMapCenter)
                     // Which will get updated after the Map is rendered

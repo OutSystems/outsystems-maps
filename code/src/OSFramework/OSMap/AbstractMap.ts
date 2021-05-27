@@ -133,6 +133,9 @@ namespace OSFramework.OSMap {
 
             this._markers.clear();
             this._markersSet.clear();
+            if (this._isReady) {
+                this.refresh();
+            }
         }
 
         public removeMarker(markedId: string): void {

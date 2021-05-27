@@ -9,7 +9,7 @@ namespace OSFramework.Helper.Constants {
     /** Tag used to find Map */
     export const mapTag = '[data-block="Maps.Map"]';
     /** Tag used to find Marker */
-    export const markerTag = '[data-block="Markers.Map_Marker"]';
+    export const markerTag = '[data-block="Marker.Marker"]';
     /** Tag used to find a generic widget */
     export const outsystemsWidgetTag = '[data-block]';
     /** Tag used to find StaticMap */
@@ -18,6 +18,8 @@ namespace OSFramework.Helper.Constants {
     /************************** */
     /**        DOM Tags         */
     /************************** */
+    /** Tag used to find the container where the Map is going to be rendered in run time*/
+    export const runtimeMapUniqueIdCss = '.runtime-map-container';
     /** Tag used to find the container where the Map's uniqueId was defined */
     export const mapUniqueIdCss = '.map-container';
     /** Tag used to find the container where the Marker's uniqueId was defined */
