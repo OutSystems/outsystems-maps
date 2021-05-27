@@ -51,7 +51,7 @@ namespace GoogleProvider.Map {
                     acc +=
                         '&markers=' +
                         encodeURIComponent(
-                            curr.config.location.replace(/[^a-zA-Z0-9 ]/g, '')
+                            curr.config.location.replace(/[^.,a-zA-Z0-9 ]/g, '')
                         );
                 }
                 return acc;
