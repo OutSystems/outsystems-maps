@@ -45,13 +45,19 @@ namespace GoogleProvider.Map {
                         encodeURIComponent(curr.config.iconUrl) +
                         '%7C' +
                         encodeURIComponent(
-                            curr.config.location.replace(/[^a-zA-Z0-9 ]/g, '')
+                            curr.config.location.replace(
+                                /[^.,\-a-zA-Z0-9 ]/g,
+                                ''
+                            )
                         );
                 } else {
                     acc +=
                         '&markers=' +
                         encodeURIComponent(
-                            curr.config.location.replace(/[^.,a-zA-Z0-9 ]/g, '')
+                            curr.config.location.replace(
+                                /[^.,\-a-zA-Z0-9 ]/g,
+                                ''
+                            )
                         );
                 }
                 return acc;
