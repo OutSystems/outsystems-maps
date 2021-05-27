@@ -4,9 +4,7 @@ namespace OSFramework.Helper {
      * Returns the closest IMap based on an element
      * @param elem Element used as reference or its uniqueId
      */
-    export function GetClosestMap(
-        elem: Element | string
-    ): OSFramework.OSMap.IMap {
+    export function GetClosestMapId(elem: Element | string): string {
         let child: Element;
 
         if (typeof elem === 'string' || elem instanceof String)
@@ -21,7 +19,7 @@ namespace OSFramework.Helper {
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 .getAttribute(OSFramework.Helper.Constants.uniqueIdAttribute);
 
-            return MapAPI.MapManager.GetMapById(uniqueId);
+            return uniqueId;
         }
 
         return null;

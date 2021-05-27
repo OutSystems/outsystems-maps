@@ -6,7 +6,7 @@ namespace OSFramework.Event.Marker {
      *
      * @abstract
      * @class AbstractMarkerEvent
-     * @extends {AbstractEvent<OSFramework.Marker.IMarker>}
+     * @extends {AbstractEvent<string>}
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     export abstract class AbstractMarkerEvent extends AbstractEvent<string> {

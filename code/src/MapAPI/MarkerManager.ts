@@ -116,7 +116,8 @@ namespace MapAPI.MarkerManager {
             // If element is found, means that the DOM was rendered
             if (elem !== undefined) {
                 //Find the closest Map
-                map = OSFramework.Helper.GetClosestMap(elem);
+                const mapId = OSFramework.Helper.GetClosestMapId(elem);
+                map = MapManager.GetMapById(mapId);
             }
         }
 

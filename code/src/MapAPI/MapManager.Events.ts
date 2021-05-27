@@ -46,10 +46,11 @@ namespace MapAPI.MapManager.Events {
             const eventElement = OSFramework.Helper.GetElementByUniqueId(
                 eventUniqueId
             );
-            const map = OSFramework.Helper.GetClosestMap(eventElement);
+            const mapId = OSFramework.Helper.GetClosestMapId(eventElement);
+            const map = GetMapById(mapId);
 
             if (map) {
-                _eventsToMapId.set(eventUniqueId, map.uniqueId);
+                _eventsToMapId.set(eventUniqueId, mapId);
             }
         }
 
