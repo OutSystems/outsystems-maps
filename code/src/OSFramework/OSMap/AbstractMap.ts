@@ -69,7 +69,6 @@ namespace OSFramework.OSMap {
         }
 
         public addMarker(marker: Marker.IMarker): Marker.IMarker {
-            console.log(`Add Marker '${marker.uniqueId}'`);
             this._markers.set(marker.uniqueId, marker);
             this._markersSet.add(marker);
 
@@ -152,8 +151,6 @@ namespace OSFramework.OSMap {
                 if (this._isReady) {
                     this.refresh();
                 }
-
-                console.log(`Remove Marker '${markedId}'`);
             } else {
                 console.error(
                     `removeMarker - Marker id:${markedId} doesn't exist`
