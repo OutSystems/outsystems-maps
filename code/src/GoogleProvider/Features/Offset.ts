@@ -26,7 +26,7 @@ namespace GoogleProvider.Feature {
                 offsetX: value.offsetX || 0,
                 offsetY: value.offsetY || 0
             };
-            this._map.provider.setCenter(
+            this._map.provider.panTo(
                 this._map.features.center.getCurrentCenter()
             );
             this._map.provider.panBy(
