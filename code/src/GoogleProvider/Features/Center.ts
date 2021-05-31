@@ -34,7 +34,7 @@ namespace GoogleProvider.Feature {
         ): void {
             const coordinates = new google.maps.LatLng(value.lat, value.lng);
             this._map.provider.setCenter(coordinates);
-            this._currentCenter = coordinates;
+            this._currentCenter = coordinates.toJSON();
         }
 
         public setCurrentCenter(

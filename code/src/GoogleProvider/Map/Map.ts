@@ -291,8 +291,10 @@ namespace GoogleProvider.Map {
             // When the position is empty, we use the default position
             // If the configured center position of the map is equal to the default
             const isDefault =
-                position.toString() ===
-                OSFramework.Helper.Constants.defaultMapCenter.toString();
+                position.lat ===
+                    OSFramework.Helper.Constants.defaultMapCenter.lat &&
+                position.lng ===
+                    OSFramework.Helper.Constants.defaultMapCenter.lng;
             // If the Map has the default center position and at least 1 Marker, we want to use the first Marker position as the new center of the Map
             if (
                 isDefault === true &&
