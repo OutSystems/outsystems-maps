@@ -86,7 +86,7 @@ namespace OSFramework.OSMap {
          * Remove a Marker from the Map by giving a markerId
          * @param markerId id of the marker
          */
-        removeMarker(markedId: string): void;
+        removeMarker(markerId: string): void;
         /**
          * Check if the event name is valid for the provider events
          * @param eventName name of the event from provider

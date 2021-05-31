@@ -137,24 +137,20 @@ namespace OSFramework.OSMap {
             }
         }
 
-        public removeMarker(markedId: string): void {
+        public removeMarker(markerId: string): void {
             if (this._mapType === Enum.MapType.StaticMap && this.isReady) {
                 throw new Error(`Markers can't be changed on a StaticMap`);
             }
-            if (this._markers.has(markedId)) {
-                const marker = this._markers.get(markedId);
+            if (this._markers.has(markerId)) {
+                const marker = this._markers.get(markerId);
 
                 marker.dispose();
-                this._markers.delete(markedId);
+                this._markers.delete(markerId);
                 this._markersSet.delete(marker);
                 // After removing a marker, we need to refresh the Map to reflect the zoom, offset and center position of the Map
                 if (this._isReady) {
                     this.refresh();
                 }
-            } else {
-                console.error(
-                    `removeMarker - Marker id:${markedId} doesn't exist`
-                );
             }
         }
 
