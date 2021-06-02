@@ -31,7 +31,7 @@ namespace MapAPI.MarkerManager {
      * @export
      * @param {string} mapId Id of the Map where the change will occur
      * @param {string} configs configurations for the Map in JSON format
-     * @returns {*}  {OSMap.IMap} instance of the Map
+     * @returns {*}  {OSMap.IMarker} instance of the Map
      */
     export function CreateMarker(
         mapId: string,
@@ -48,6 +48,40 @@ namespace MapAPI.MarkerManager {
             markerArr.push(_marker);
             markerMap.set(markerId, map.uniqueId);
             map.addMarker(_marker);
+
+            return _marker;
+        } else {
+            throw new Error(
+                `There is already a Marker registered on the specified Map under id:${markerId}`
+            );
+        }
+    }
+
+    /**
+     * Function that will create an instance of Map object with the configurations passed
+     *
+     * @export
+     * @param {string} configs configurations for the Map in JSON format
+     * @returns {*}  {OSMap.IMarker} instance of the Map
+     */
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    export function CreateMarkerByUniqueID(
+        markerId: string,
+        configs: string
+    ): OSFramework.Marker.IMarker {
+        const map = GetMapByMarkerId(markerId);
+        if (!map.hasMarker(markerId)) {
+            const _marker = GoogleProvider.Marker.MarkerFactory.MakeMarker(
+                map,
+                markerId,
+                JSON.parse(configs)
+            );
+            markerArr.push(_marker);
+            markerMap.set(markerId, map.uniqueId);
+            map.addMarker(_marker);
+
+            // markers.set(markerId, _marker);
+            Events.CheckPendingEvents(_marker);
             return _marker;
         } else {
             throw new Error(
@@ -82,7 +116,8 @@ namespace MapAPI.MarkerManager {
             // If element is found, means that the DOM was rendered
             if (elem !== undefined) {
                 //Find the closest Map
-                map = OSFramework.Helper.GetClosestMap(elem);
+                const mapId = OSFramework.Helper.GetClosestMapId(elem);
+                map = MapManager.GetMapById(mapId);
             }
         }
 

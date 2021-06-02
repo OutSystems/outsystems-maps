@@ -3,12 +3,12 @@ namespace OSFramework.Enum {
     /**
      * Internal type definition
      */
-    export enum OS_Config_Marker {
-        advancedFormat,
-        allowDrag,
-        iconURL,
-        location,
-        title,
-        uniqueId
+    export enum OS_Config_StaticMap {
+        apiKey,
+        height,
+        center,
+        type,
+        uniqueId,
+        zoom
     }
 }

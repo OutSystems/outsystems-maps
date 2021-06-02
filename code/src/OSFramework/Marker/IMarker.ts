@@ -11,6 +11,9 @@ namespace OSFramework.Marker {
         markerEvents: Event.Marker.MarkerEventsManager;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         provider: any;
+        /** Events from the Marker provider */
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        providerEvents: any;
         uniqueId: string;
         widgetId: string;
 
@@ -18,7 +21,14 @@ namespace OSFramework.Marker {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         changeProperty(propertyName: string, propertyValue: any): void;
         dispose(): void;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        getProviderConfig(): any;
+        /**
+         * Refreshes the Events of the Marker Provider after Subscribing/Unsubscribing events
+         */
+        refreshProviderEvents(): void;
+        /**
+         * Check if the event name is valid for the provider events
+         * @param eventName name of the event from provider
+         */
+        validateProviderEvent(eventName: string): boolean;
     }
 }

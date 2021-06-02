@@ -26,17 +26,18 @@ namespace MapAPI.MapManager {
      * Function that will create an instance of Map object with the configurations passed.
      *
      * @export
-     * @param {string} mapId Id of the Map where the change will occur.
+     * @param {string} mapId Id of the Map that is going to be created.
+     * @param {string} providerType Type of the Provider (e.g. GoogleProvider, etc)
      * @param {string} configs configurations for the Map in JSON format.
      * @returns {*}  {OSMap.IMap} instance of the Map.
      */
     export function CreateMap(
         mapId: string,
-        mapType: OSFramework.Enum.MapType,
+        providerType: OSFramework.Enum.ProviderType,
         configs: string
     ): OSFramework.OSMap.IMap {
         const _map = GoogleProvider.Map.MapFactory.MakeMap(
-            mapType,
+            providerType,
             mapId,
             JSON.parse(configs)
         );
@@ -50,7 +51,7 @@ namespace MapAPI.MapManager {
         maps.set(mapId, _map);
         activeMap = _map;
 
-        Events.CheckPendingEvents(mapId);
+        Events.CheckPendingEvents(_map);
 
         return _map;
     }
@@ -131,6 +132,7 @@ namespace MapAPI.MapManager {
         const map = GetMapById(mapId);
 
         map.build();
+        Events.CheckPendingEvents(map);
     }
 
     /**
@@ -191,7 +193,9 @@ namespace MapAPI.MapManager {
             if (height === '') {
                 let parentHeight = 0;
                 let currParent = widget.parentNode as HTMLElement;
-                // asdfads
+                // Get the parent height
+                // If the parent height is <= 200, keep trying until we reach the <body> tag.
+                // (don't use the parent height <= 200 because the DOM has some other elements from the template with smaller heights)
                 do {
                     parentHeight = currParent.offsetHeight;
                     currParent = currParent.parentNode as HTMLElement;

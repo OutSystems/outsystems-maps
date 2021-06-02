@@ -9,6 +9,6 @@ namespace OSFramework.Callbacks.OSMap {
      * @param {OSFramework.OSMap.IMap} mapObj object of the Map which triggered the event
      */
     export type Event = {
-        (mapId: string, mapObj: OSFramework.OSMap.IMap): void;
+        (mapObj: OSFramework.OSMap.IMap, mapId: string): void;
     };
 }

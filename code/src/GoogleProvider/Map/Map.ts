@@ -16,7 +16,11 @@ namespace GoogleProvider.Map {
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         constructor(mapId: string, configs: any) {
-            super(mapId, new Configuration.OSMap.GoogleMapConfig(configs));
+            super(
+                mapId,
+                new Configuration.OSMap.GoogleMapConfig(configs),
+                OSFramework.Enum.MapType.Map
+            );
         }
 
         // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -39,26 +43,27 @@ namespace GoogleProvider.Map {
                 const currentCenter = this.config.center;
 
                 this._provider = new google.maps.Map(
-                    OSFramework.Helper.GetElementByUniqueId(this.uniqueId),
+                    OSFramework.Helper.GetElementByUniqueId(
+                        this.uniqueId
+                    ).querySelector(
+                        OSFramework.Helper.Constants.runtimeMapUniqueIdCss
+                    ),
                     // The provider config will retrieve the default center position
                     // (this.config.center = OSFramework.Helper.Constants.defaultMapCenter)
                     // Which will get updated after the Map is rendered
                     this._getProviderConfig()
                 );
-
                 // Check if the provider has been created with a valid APIKey
                 window['gm_authFailure'] = () =>
-                    MapAPI.MapManager.GetActiveMap().mapEvents.trigger(
+                    this.mapEvents.trigger(
                         OSFramework.Event.OSMap.MapEventType.OnError,
+                        this,
                         OSFramework.Enum.Errors.InvalidApiKey
                     );
 
                 this.buildFeatures();
                 this._buildMarkers();
                 this.finishBuild();
-
-                // We can only set the events on the provider after its creation
-                this._setMapEvents(this._advancedFormatObj.mapEvents);
 
                 // Make sure to change the center after the conversion of the location to coordinates
                 this.features.center.updateCenter(currentCenter);
@@ -68,6 +73,9 @@ namespace GoogleProvider.Map {
                     styles: GetStyleByStyleId(this.config.style),
                     ...this._advancedFormatObj
                 });
+
+                // We can only set the events on the provider after its creation
+                this._setMapEvents(this._advancedFormatObj.mapEvents);
             } else {
                 throw Error(`The google.maps lib has not been loaded.`);
             }
@@ -112,15 +120,18 @@ namespace GoogleProvider.Map {
         }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        private _setMapEvents(events: Array<string>): void {
+        private _setMapEvents(events?: Array<string>): void {
             if (this._listeners === undefined) this._listeners = [];
-            // Make sure the listeners get removed before adding the new ones
+            // Make sure all the listeners get removed before adding the new ones
             this._listeners.forEach((eventListener, index) => {
+                // Google maps api way of clearing listeners from the map provider
                 google.maps.event.clearListeners(this.provider, eventListener);
                 this._listeners.splice(index, 1);
             });
 
             // OnEventTriggered Event (other events that can be set on the advancedFormat of the Map)
+            // We are deprecating the advancedFormat and the OnEventTriggered as well
+            // We might need to remove the following lines inside the If Statement
             if (
                 this.mapEvents.hasHandlers(
                     OSFramework.Event.OSMap.MapEventType.OnEventTriggered
@@ -133,15 +144,57 @@ namespace GoogleProvider.Map {
                         this.mapEvents.trigger(
                             OSFramework.Event.OSMap.MapEventType
                                 .OnEventTriggered,
+                            this,
                             eventName
                         );
                     });
                 });
             }
+
+            // Any events that got added to the mapEvents via the API Subscribe method will have to be taken care here
+            // If the Event type of each handler is MapProviderEvent, we want to make sure to add that event to the listeners of the google maps provider (e.g. click, dblclick, contextmenu, etc)
+            // Otherwise, we don't want to add them to the google provider listeners (e.g. OnInitialize, OnError, OnTriggeredEvent)
+            this.mapEvents.handlers.forEach(
+                (
+                    handler: OSFramework.Event.IEvent<OSFramework.OSMap.IMap>,
+                    eventName
+                ) => {
+                    if (
+                        handler instanceof
+                        OSFramework.Event.OSMap.MapProviderEvent
+                    ) {
+                        this._listeners.push(eventName);
+                        this._provider.addListener(
+                            // Name of the event (e.g. click, dblclick, contextmenu, etc)
+                            eventName,
+                            // Callback CAN have an attribute (e) which is of the type MapMouseEvent
+                            // Trigger the event by specifying the ProviderEvent MapType and the coords (lat, lng) if the callback has the attribute MapMouseEvent
+                            (e?: google.maps.MapMouseEvent) => {
+                                this.mapEvents.trigger(
+                                    OSFramework.Event.OSMap.MapEventType
+                                        .ProviderEvent,
+                                    this,
+                                    eventName,
+                                    e !== undefined
+                                        ? JSON.stringify({
+                                              Lat: e.latLng.lat(),
+                                              Lng: e.latLng.lng()
+                                          })
+                                        : undefined
+                                );
+                            }
+                        );
+                    }
+                }
+            );
         }
 
         public get mapTag(): string {
             return OSFramework.Helper.Constants.mapTag;
+        }
+
+        public get providerEvents(): Array<string> {
+            return Constants.OSMap.Events;
         }
 
         public addMarker(
@@ -194,6 +247,7 @@ namespace GoogleProvider.Map {
                     if (this.config.apiKey !== '') {
                         this.mapEvents.trigger(
                             OSFramework.Event.OSMap.MapEventType.OnError,
+                            this,
                             OSFramework.Enum.Errors.APIKeyAlreadySet
                         );
                     }
@@ -237,8 +291,10 @@ namespace GoogleProvider.Map {
             // When the position is empty, we use the default position
             // If the configured center position of the map is equal to the default
             const isDefault =
-                position.toString() ===
-                OSFramework.Helper.Constants.defaultMapCenter.toString();
+                position.lat ===
+                    OSFramework.Helper.Constants.defaultMapCenter.lat &&
+                position.lng ===
+                    OSFramework.Helper.Constants.defaultMapCenter.lng;
             // If the Map has the default center position and at least 1 Marker, we want to use the first Marker position as the new center of the Map
             if (
                 isDefault === true &&
@@ -274,6 +330,10 @@ namespace GoogleProvider.Map {
 
             // Refresh the offset
             this.features.offset.setOffset(this.features.offset.getOffset);
+        }
+
+        public refreshProviderEvents(): void {
+            if (this.isReady) this._setMapEvents();
         }
     }
 }

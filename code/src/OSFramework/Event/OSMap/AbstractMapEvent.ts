@@ -7,17 +7,18 @@ namespace OSFramework.Event.OSMap {
      *
      * @abstract
      * @class AbstractMapEvent
-     * @extends {AbstractEvent<string>}
+     * @extends {AbstractEvent<OSFramework.OSMap.IMap>}
      */
-    export abstract class AbstractMapEvent extends AbstractEvent<string> {
+    export abstract class AbstractMapEvent extends AbstractEvent<OSFramework.OSMap.IMap> {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         public trigger(
-            // mapObj: OSFramework.OSMap.IMap,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            mapObj: OSFramework.OSMap.IMap,
             mapId: string,
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             ...args: any
         ): void {
-            this.handlers.slice(0).forEach((h) => h(mapId, ...args));
+            this.handlers.slice(0).forEach((h) => h(mapObj, mapId, ...args));
         }
     }
 }

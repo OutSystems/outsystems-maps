@@ -19,6 +19,9 @@ namespace OSFramework.OSMap {
         /** Map provider */
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         provider: any;
+        /** Events from the Map provider */
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        providerEvents: any;
         /** Id of the Map */
         uniqueId: string;
         /** Id of the Map widget */
@@ -72,6 +75,10 @@ namespace OSFramework.OSMap {
          */
         refresh(): void;
         /**
+         * Refreshes the Events of the Map Provider after Subscribing/Unsubscribing events
+         */
+        refreshProviderEvents(): void;
+        /**
          * Remove all Markers from the Map
          */
         removeAllMarkers(): void;
@@ -79,6 +86,11 @@ namespace OSFramework.OSMap {
          * Remove a Marker from the Map by giving a markerId
          * @param markerId id of the marker
          */
-        removeMarker(markedId: string): void;
+        removeMarker(markerId: string): void;
+        /**
+         * Check if the event name is valid for the provider events
+         * @param eventName name of the event from provider
+         */
+        validateProviderEvent(eventName: string): boolean;
     }
 }

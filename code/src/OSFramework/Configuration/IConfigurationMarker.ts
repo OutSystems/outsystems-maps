@@ -6,8 +6,10 @@ namespace OSFramework.Configuration {
      */
     export interface IConfigurationMarker extends IConfiguration {
         advancedFormat: string;
+        allowDrag: boolean;
         iconUrl: string;
         location: string;
+        title: string;
         uniqueId: string;
     }
 }

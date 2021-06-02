@@ -29,6 +29,9 @@ namespace OSFramework.Marker {
             this._built = false;
             this._markerEvents = new Event.Marker.MarkerEventsManager(this);
         }
+        public abstract get markerTag(): string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        public abstract get providerEvents(): any;
 
         public get config(): Configuration.IConfigurationMarker {
             return this._config;
@@ -60,6 +63,13 @@ namespace OSFramework.Marker {
         public build(): void {
             if (this._built) return;
             this._built = true;
+            // Remove in  the future (undefined part) as the Markers might be created via the parameter Markers_DEPRECATED.
+            // We only have the widgetId when the marker is created via Marker Block.
+            this._widgetId = Helper.GetElementByUniqueId(this.uniqueId, false)
+                ? Helper.GetElementByUniqueId(this.uniqueId).closest(
+                      this.markerTag
+                  ).id
+                : undefined;
 
             // this._preBuild();
         }
@@ -88,5 +98,11 @@ namespace OSFramework.Marker {
         public getProviderConfig(): any {
             return this._config.getProviderConfig();
         }
+
+        public validateProviderEvent(eventName: string): boolean {
+            return this.providerEvents.indexOf(eventName) !== -1;
+        }
+
+        public abstract refreshProviderEvents(): void;
     }
 }

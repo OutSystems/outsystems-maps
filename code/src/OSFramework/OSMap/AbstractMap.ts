@@ -8,6 +8,7 @@ namespace OSFramework.OSMap {
         private _config: Z;
         private _isReady: boolean;
         private _mapEvents: Event.OSMap.MapEventsManager;
+        private _mapType: Enum.MapType;
         private _markers: Map<string, Marker.IMarker>;
         private _markersSet: Set<Marker.IMarker>;
         private _uniqueId: string;
@@ -16,15 +17,18 @@ namespace OSFramework.OSMap {
         protected _features: Feature.ExposedFeatures;
         protected _provider: W;
 
-        constructor(uniqueId: string, config: Z) {
+        constructor(uniqueId: string, config: Z, mapType: Enum.MapType) {
             this._uniqueId = uniqueId;
             this._markers = new Map<string, Marker.IMarker>();
             this._markersSet = new Set<Marker.IMarker>();
             this._config = config;
             this._isReady = false;
             this._mapEvents = new Event.OSMap.MapEventsManager(this);
+            this._mapType = mapType;
         }
         public abstract get mapTag(): string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        public abstract get providerEvents(): any;
 
         public get config(): Z {
             return this._config;
@@ -61,11 +65,10 @@ namespace OSFramework.OSMap {
         protected finishBuild(): void {
             this._isReady = true;
 
-            this.mapEvents.trigger(Event.OSMap.MapEventType.Initialized);
+            this.mapEvents.trigger(Event.OSMap.MapEventType.Initialized, this);
         }
 
         public addMarker(marker: Marker.IMarker): Marker.IMarker {
-            console.log(`Add Marker '${marker.uniqueId}'`);
             this._markers.set(marker.uniqueId, marker);
             this._markersSet.add(marker);
 
@@ -120,28 +123,39 @@ namespace OSFramework.OSMap {
         }
 
         public removeAllMarkers(): void {
+            if (this._mapType === Enum.MapType.StaticMap && this.isReady) {
+                throw new Error(`Markers can't be changed on a StaticMap`);
+            }
             this._markers.forEach((marker) => {
                 marker.dispose();
             });
 
             this._markers.clear();
             this._markersSet.clear();
+            if (this._isReady) {
+                this.refresh();
+            }
         }
 
-        public removeMarker(markedId: string): void {
-            if (this._markers.has(markedId)) {
-                const marker = this._markers.get(markedId);
+        public removeMarker(markerId: string): void {
+            if (this._mapType === Enum.MapType.StaticMap && this.isReady) {
+                throw new Error(`Markers can't be changed on a StaticMap`);
+            }
+            if (this._markers.has(markerId)) {
+                const marker = this._markers.get(markerId);
 
                 marker.dispose();
-                this._markers.delete(markedId);
+                this._markers.delete(markerId);
                 this._markersSet.delete(marker);
-
-                console.log(`Remove Marker '${markedId}'`);
-            } else {
-                console.error(
-                    `removeMarker - Marker id:${markedId} doesn't exist`
-                );
+                // After removing a marker, we need to refresh the Map to reflect the zoom, offset and center position of the Map
+                if (this._isReady) {
+                    this.refresh();
+                }
             }
+        }
+
+        public validateProviderEvent(eventName: string): boolean {
+            return this.providerEvents.indexOf(eventName) !== -1;
         }
 
         public abstract changeMarkerProperty(
@@ -152,5 +166,6 @@ namespace OSFramework.OSMap {
         ): void;
 
         public abstract refresh(): void;
+        public abstract refreshProviderEvents(): void;
     }
 }
