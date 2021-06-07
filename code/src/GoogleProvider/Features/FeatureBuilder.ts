@@ -60,6 +60,10 @@ namespace GoogleProvider.Feature {
             this._features.center = this._makeItem(Center, center);
             return this;
         }
+        private _makeDirections(): FeatureBuilder {
+            this._features.directions = this._makeItem(Directions);
+            return this;
+        }
         private _makeOffset(
             offset: OSFramework.OSStructures.OSMap.Offset
         ): FeatureBuilder {
@@ -82,6 +86,7 @@ namespace GoogleProvider.Feature {
             this._makeTrafficLayer(config.showTraffic)
                 ._makeZoom(config.zoom)
                 ._makeCenter(config.center)
+                ._makeDirections()
                 ._makeOffset(config.offset);
 
             super.build();
