@@ -15,7 +15,7 @@ namespace GoogleProvider.Marker {
         constructor(
             map: OSFramework.OSMap.IMap,
             markerId: string,
-            type = OSFramework.Enum.MarkerType.Marker,
+            type: OSFramework.Enum.MarkerType,
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             configs: any
         ) {
