@@ -8,25 +8,88 @@ namespace GoogleProvider.Marker {
             Configuration.Marker.GoogleMarkerConfig
         >
         implements IMarkerGoogle {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        private _advancedFormatObj: any;
         private _listeners: Array<string>;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        protected _advancedFormatObj: any;
 
         constructor(
             map: OSFramework.OSMap.IMap,
             markerId: string,
+            type = OSFramework.Enum.MarkerType.Marker,
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             configs: any
         ) {
             super(
                 map,
                 markerId,
+                type,
                 new Configuration.Marker.GoogleMarkerConfig(configs)
             );
         }
 
+        protected _buildMarkerOptions(): Promise<google.maps.MarkerOptions> {
+            const markerOptions: google.maps.MarkerOptions = {};
+            // If the marker has no location at the moment of its provider creation, then throw an error
+            if (
+                typeof this.config.location === 'undefined' ||
+                this.config.location === ''
+            ) {
+                throw new Error('Invalid location');
+            } else {
+                if (
+                    typeof this.config.iconUrl !== 'undefined' &&
+                    this.config.iconUrl !== ''
+                ) {
+                    markerOptions.icon = this.config.iconUrl;
+                }
+
+                if (
+                    typeof this.config.title !== 'undefined' &&
+                    this.config.title !== ''
+                ) {
+                    markerOptions.title = this.config.title;
+                }
+
+                if (typeof this.config.allowDrag !== 'undefined') {
+                    markerOptions.draggable = this.config.allowDrag;
+                }
+
+                // Take care of the advancedFormat options which can override the previous configuration
+                this._advancedFormatObj = OSFramework.Helper.JsonFormatter(
+                    this.config.advancedFormat
+                );
+                for (const property in this._advancedFormatObj) {
+                    const value = this._advancedFormatObj[property];
+                    this.config[property] = value;
+                    markerOptions[property] = value;
+                }
+
+                if (
+                    typeof this.config.location !== 'undefined' &&
+                    this.config.location !== ''
+                ) {
+                    // Let's return a promise that will be
+                    return new Promise((resolve) => {
+                        resolve(
+                            Helper.Conversions.ConvertToCoordinates(
+                                this.config.location,
+                                this.map.config.apiKey
+                            ).then((response) => {
+                                markerOptions.position = {
+                                    lat: response.lat,
+                                    lng: response.lng
+                                };
+                                markerOptions.map = this.map.provider;
+                                return markerOptions;
+                            })
+                        );
+                    });
+                }
+            }
+        }
+
         // This method will be removed as soon as the markers by input parameter get deprecated
-        private _setMarkerEvents(events?: Array<string>): void {
+        protected _setMarkerEvents(events?: Array<string>): void {
             if (this._listeners === undefined) this._listeners = [];
             // Make sure the listeners get removed before adding the new ones
             this._listeners.forEach((eventListener, index) => {
@@ -131,6 +194,10 @@ namespace GoogleProvider.Marker {
             return this.markerEvents !== undefined;
         }
 
+        public get markerTag(): string {
+            return OSFramework.Helper.Constants.markerTag;
+        }
+
         public get providerEvents(): Array<string> {
             return Constants.Marker.Events;
         }
@@ -138,59 +205,19 @@ namespace GoogleProvider.Marker {
         public build(): void {
             super.build();
 
-            const markerOptions: google.maps.MarkerOptions = {};
-            if (
-                typeof this.config.iconUrl !== 'undefined' &&
-                this.config.iconUrl !== ''
-            ) {
-                markerOptions.icon = this.config.iconUrl;
-            }
+            // First build all MarkerOptions
+            // Then, create the provider (Google maps Marker)
+            // Then, set Marker events
+            // Finally, refresh the Map
+            this._buildMarkerOptions().then((markerOptions) => {
+                this._provider = new google.maps.Marker(markerOptions);
 
-            if (
-                typeof this.config.title !== 'undefined' &&
-                this.config.title !== ''
-            ) {
-                markerOptions.title = this.config.title;
-            }
+                // We can only set the events on the provider after its creation
+                this._setMarkerEvents(this._advancedFormatObj.markerEvents);
 
-            if (typeof this.config.allowDrag !== 'undefined') {
-                markerOptions.draggable = this.config.allowDrag;
-            }
-
-            // Take care of the advancedFormat options which can override the previous configuration
-            this._advancedFormatObj = OSFramework.Helper.JsonFormatter(
-                this.config.advancedFormat
-            );
-            for (const property in this._advancedFormatObj) {
-                const value = this._advancedFormatObj[property];
-                this.config[property] = value;
-                markerOptions[property] = value;
-            }
-
-            if (
-                typeof this.config.location !== 'undefined' &&
-                this.config.location !== ''
-            ) {
-                Helper.Conversions.ConvertToCoordinates(
-                    this.config.location,
-                    this.map.config.apiKey
-                ).then((response) => {
-                    markerOptions.position = {
-                        lat: response.lat,
-                        lng: response.lng
-                    };
-                    markerOptions.map = this.map.provider;
-                    this._provider = new google.maps.Marker(markerOptions);
-
-                    // We can only set the events on the provider after its creation
-                    this._setMarkerEvents(this._advancedFormatObj.markerEvents);
-
-                    // Trigger the new center location after creating the marker
-                    this.map.refresh();
-                });
-            } else {
-                throw new Error('Invalid location');
-            }
+                // Trigger the new center location after creating the marker
+                this.map.refresh();
+            });
         }
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
@@ -235,10 +262,6 @@ namespace GoogleProvider.Marker {
             }
             this._provider = undefined;
             super.dispose();
-        }
-
-        public get markerTag(): string {
-            return OSFramework.Helper.Constants.markerTag;
         }
 
         public refreshProviderEvents(): void {
