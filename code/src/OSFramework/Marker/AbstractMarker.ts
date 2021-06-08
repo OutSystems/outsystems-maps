@@ -9,6 +9,7 @@ namespace OSFramework.Marker {
         private _config: Configuration.IConfigurationMarker;
         private _index: number;
         private _map: OSMap.IMap;
+        private _markerType: Enum.MarkerType;
         private _uniqueId: string;
         private _widgetId: string;
 
@@ -21,6 +22,7 @@ namespace OSFramework.Marker {
         constructor(
             map: OSMap.IMap,
             uniqueId: string,
+            type: Enum.MarkerType,
             config: Configuration.IConfigurationMarker
         ) {
             this._map = map;
@@ -28,6 +30,7 @@ namespace OSFramework.Marker {
             this._config = config;
             this._built = false;
             this._markerEvents = new Event.Marker.MarkerEventsManager(this);
+            this._markerType = type;
         }
         public abstract get markerTag(): string;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

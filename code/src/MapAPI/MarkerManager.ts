@@ -25,6 +25,13 @@ namespace MapAPI.MarkerManager {
         }
     }
 
+    export function ClosePopup(markerId: string): void {
+        const marker = GetMarkerById(
+            markerId
+        ) as OSFramework.Marker.IMarkerPopup;
+        marker.closePopup();
+    }
+
     /**
      * Function that will create an instance of Map object with the configurations passed
      *
@@ -43,6 +50,7 @@ namespace MapAPI.MarkerManager {
             const _marker = GoogleProvider.Marker.MarkerFactory.MakeMarker(
                 map,
                 markerId,
+                OSFramework.Enum.MarkerType.Marker,
                 JSON.parse(configs)
             );
             markerArr.push(_marker);
@@ -67,6 +75,7 @@ namespace MapAPI.MarkerManager {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     export function CreateMarkerByUniqueID(
         markerId: string,
+        markerType: OSFramework.Enum.MarkerType,
         configs: string
     ): OSFramework.Marker.IMarker {
         const map = GetMapByMarkerId(markerId);
@@ -74,6 +83,7 @@ namespace MapAPI.MarkerManager {
             const _marker = GoogleProvider.Marker.MarkerFactory.MakeMarker(
                 map,
                 markerId,
+                markerType,
                 JSON.parse(configs)
             );
             markerArr.push(_marker);
@@ -132,6 +142,13 @@ namespace MapAPI.MarkerManager {
         markerId: string
     ): OSFramework.Marker.IMarker {
         return markerArr.find((p) => p && p.equalsToID(markerId));
+    }
+
+    export function OpenPopup(markerId: string): void {
+        const marker = GetMarkerById(
+            markerId
+        ) as OSFramework.Marker.IMarkerPopup;
+        marker.openPopup();
     }
 
     /**
