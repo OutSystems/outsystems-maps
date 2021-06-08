@@ -39,6 +39,9 @@ namespace OSFramework.Marker {
         public get config(): Configuration.IConfigurationMarker {
             return this._config;
         }
+        public get hasPopup(): boolean {
+            return false;
+        }
         public get index(): number {
             return this._map.markers.findIndex(
                 (marker) => marker.uniqueId === this.uniqueId

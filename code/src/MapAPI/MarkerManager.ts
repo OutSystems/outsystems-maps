@@ -25,11 +25,26 @@ namespace MapAPI.MarkerManager {
         }
     }
 
+    /**
+     * Close the Popup of the MarkerPopup
+     * @param markerId Id of the Marker
+     */
     export function ClosePopup(markerId: string): void {
         const marker = GetMarkerById(
             markerId
         ) as OSFramework.Marker.IMarkerPopup;
-        marker.closePopup();
+        if (marker.hasPopup) marker.closePopup();
+    }
+
+    /**
+     * Forces the refresh of the content inside the Popup of the MarkerPopup
+     * @param markerId Id of the Marker
+     */
+    export function RefreshPopup(markerId: string): void {
+        const marker = GetMarkerById(
+            markerId
+        ) as OSFramework.Marker.IMarkerPopup;
+        if (marker.hasPopup) marker.refreshPopupContent();
     }
 
     /**
@@ -144,11 +159,15 @@ namespace MapAPI.MarkerManager {
         return markerArr.find((p) => p && p.equalsToID(markerId));
     }
 
+    /**
+     * Open the Popup of the MarkerPopup
+     * @param markerId Id of the Marker
+     */
     export function OpenPopup(markerId: string): void {
         const marker = GetMarkerById(
             markerId
         ) as OSFramework.Marker.IMarkerPopup;
-        marker.openPopup();
+        if (marker.hasPopup) marker.openPopup();
     }
 
     /**

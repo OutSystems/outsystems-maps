@@ -37,6 +37,10 @@ namespace GoogleProvider.Marker {
             });
         }
 
+        public get hasPopup(): boolean {
+            return true;
+        }
+
         public get markerTag(): string {
             return OSFramework.Helper.Constants.markerPopupTag;
         }
