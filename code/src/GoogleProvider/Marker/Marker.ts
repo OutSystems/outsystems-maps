@@ -8,9 +8,9 @@ namespace GoogleProvider.Marker {
             Configuration.Marker.GoogleMarkerConfig
         >
         implements IMarkerGoogle {
-        private _listeners: Array<string>;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        protected _advancedFormatObj: any;
+        private _advancedFormatObj: any;
+        private _listeners: Array<string>;
 
         constructor(
             map: OSFramework.OSMap.IMap,
