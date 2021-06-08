@@ -8,6 +8,8 @@ namespace OSFramework.Helper.Constants {
     /************************** */
     /** Tag used to find Map */
     export const mapTag = '[data-block="Maps.Map"]';
+    /** Tag used to find Generic Markers */
+    export const markerGeneric = '[data-block*="Marker.Marker"]';
     /** Tag used to find Marker */
     export const markerTag = '[data-block="Marker.Marker"]';
     /** Tag used to find MarkerPopup */
