@@ -7,6 +7,7 @@ namespace GoogleProvider.Marker {
         extends Marker
         implements OSFramework.Marker.IMarkerPopup {
         private _infowindow: google.maps.InfoWindow;
+        private _popupIsOpened: boolean;
 
         constructor(
             map: OSFramework.OSMap.IMap,
@@ -56,19 +57,33 @@ namespace GoogleProvider.Marker {
                 content: contentString
             });
 
+            this._popupIsOpened = false;
+
             // When the element appears = domready event, refresh popup content
             this._infowindow.addListener(
                 'domready',
                 this._setPopupContent.bind(this)
             );
+
+            // Close the popup on closeClick or ESC key.
+            this._infowindow.addListener(
+                'closeclick',
+                this.closePopup.bind(this)
+            );
         }
 
         public closePopup(): void {
-            this._infowindow.close();
+            if (this._popupIsOpened) {
+                this._infowindow.close();
+                this._popupIsOpened = false;
+            }
         }
 
         public openPopup(): void {
-            this._infowindow.open(this.map.provider, this._provider);
+            if (this._popupIsOpened === false) {
+                this._infowindow.open(this.map.provider, this._provider);
+                this._popupIsOpened = true;
+            }
         }
 
         public refreshPopupContent(): void {
