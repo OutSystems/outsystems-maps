@@ -2,6 +2,7 @@
 namespace OSFramework.Feature {
     export interface IDirections {
         isEnabled: boolean;
+        removeRoute(): OSStructures.ReturnMessage;
         setRoute(
             originRoute: string,
             destinationRoute: string,
@@ -13,7 +14,7 @@ namespace OSFramework.Feature {
             avoidTolls: boolean,
             avoidHighways: boolean,
             avoidFerries: boolean
-        ): void;
+        ): Promise<OSStructures.ReturnMessage>;
         setState(value: boolean): void;
     }
 }

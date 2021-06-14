@@ -39,45 +39,63 @@ namespace GoogleProvider.Feature {
             this._directionsService = undefined;
             this._directionsRenderer = undefined;
         }
+        public removeRoute(): OSFramework.OSStructures.ReturnMessage {
+            this.setState(false);
+            return {
+                code: OSFramework.Enum.Errors.Success,
+                message: 'Success'
+            };
+        }
         public setRoute(
             originRoute: string,
             destinationRoute: string,
             travelMode: google.maps.TravelMode,
-            waypoints: Array<string> = [],
+            waypoints: string,
             optimizeWaypoints: boolean,
             avoidTolls: boolean,
             avoidHighways: boolean,
             avoidFerries: boolean
-        ): void {
+        ): Promise<OSFramework.OSStructures.ReturnMessage> {
             const waypts: google.maps.DirectionsWaypoint[] = this._waypointsCleanup(
-                waypoints
+                JSON.parse(waypoints)
             );
             this.setState(true);
-            this._directionsService.route(
-                {
-                    origin: {
-                        query: originRoute
+            return this._directionsService
+                .route(
+                    {
+                        origin: {
+                            query: originRoute
+                        },
+                        destination: {
+                            query: destinationRoute
+                        },
+                        waypoints: waypts,
+                        optimizeWaypoints,
+                        travelMode,
+                        avoidTolls,
+                        avoidHighways,
+                        avoidFerries
                     },
-                    destination: {
-                        query: destinationRoute
-                    },
-                    waypoints: waypts,
-                    optimizeWaypoints,
-                    travelMode,
-                    avoidTolls,
-                    avoidHighways,
-                    avoidFerries
-                },
-                (response, status) => {
-                    if (status === 'OK') {
-                        this._directionsRenderer.setDirections(response);
-                    } else {
-                        window.alert(
-                            'Directions request failed due to ' + status
-                        );
+                    (response, status) => {
+                        if (status === 'OK') {
+                            this._directionsRenderer.setDirections(response);
+                        }
                     }
-                }
-            );
+                )
+                .then((directionsResult) => {
+                    if (directionsResult) {
+                        return {
+                            code: OSFramework.Enum.Errors.Success,
+                            message: 'Success'
+                        };
+                    } else {
+                        return {
+                            code: OSFramework.Enum.Errors.DirectionsFailed,
+                            message:
+                                'Directions request failed due to ' + status
+                        };
+                    }
+                });
         }
         public setState(value: boolean): void {
             this._directionsRenderer.setMap(
