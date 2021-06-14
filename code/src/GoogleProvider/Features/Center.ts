@@ -48,6 +48,7 @@ namespace GoogleProvider.Feature {
                 location,
                 this._map.config.apiKey
             ).then((response) => {
+                this._map.config.center = response;
                 this._initialCenter = response;
                 this._map.refresh();
             });

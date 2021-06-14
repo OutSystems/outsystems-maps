@@ -60,9 +60,12 @@ namespace OSFramework.Marker {
             return this._widgetId;
         }
 
+        protected finishBuild(): void {
+            this._built = true;
+        }
+
         public build(): void {
             if (this._built) return;
-            this._built = true;
             // Remove in  the future (undefined part) as the Markers might be created via the parameter Markers_DEPRECATED.
             // We only have the widgetId when the marker is created via Marker Block.
             this._widgetId = Helper.GetElementByUniqueId(this.uniqueId, false)

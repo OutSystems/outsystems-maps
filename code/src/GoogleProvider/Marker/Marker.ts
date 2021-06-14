@@ -25,6 +25,57 @@ namespace GoogleProvider.Marker {
             );
         }
 
+        private _createGoogleMarker(): void {
+            const markerOptions: google.maps.MarkerOptions = {};
+            if (
+                typeof this.config.iconUrl !== 'undefined' &&
+                this.config.iconUrl !== ''
+            ) {
+                markerOptions.icon = this.config.iconUrl;
+            }
+
+            if (
+                typeof this.config.title !== 'undefined' &&
+                this.config.title !== ''
+            ) {
+                markerOptions.title = this.config.title;
+            }
+
+            if (typeof this.config.allowDrag !== 'undefined') {
+                markerOptions.draggable = this.config.allowDrag;
+            }
+
+            // Take care of the advancedFormat options which can override the previous configuration - delete this when advanced format gets deprecated
+            this._advancedFormatObj = OSFramework.Helper.JsonFormatter(
+                this.config.advancedFormat
+            );
+            for (const property in this._advancedFormatObj) {
+                const value = this._advancedFormatObj[property];
+                this.config[property] = value;
+                markerOptions[property] = value;
+            }
+
+            Helper.Conversions.ConvertToCoordinates(
+                this.config.location,
+                this.map.config.apiKey
+            ).then((response) => {
+                markerOptions.position = {
+                    lat: response.lat,
+                    lng: response.lng
+                };
+                markerOptions.map = this.map.provider;
+                this._provider = new google.maps.Marker(markerOptions);
+
+                // We can only set the events on the provider after its creation
+                this._setMarkerEvents(this._advancedFormatObj.markerEvents);
+
+                this.finishBuild();
+
+                // Trigger the new center location after creating the marker
+                this.map.refresh();
+            });
+        }
+
         // This method will be removed as soon as the markers by input parameter get deprecated
         private _setMarkerEvents(events?: Array<string>): void {
             if (this._listeners === undefined) this._listeners = [];
@@ -46,7 +97,7 @@ namespace GoogleProvider.Marker {
                     );
                 });
             }
-            // OnMouseOver Event
+            // OnMouseOver Event - being deprecated
             if (
                 this.markerEvents.hasHandlers(
                     OSFramework.Event.Marker.MarkerEventType.OnMouseover
@@ -58,7 +109,7 @@ namespace GoogleProvider.Marker {
                     );
                 });
             }
-            // OnMouseOut Event
+            // OnMouseOut Event - being deprecated
             if (
                 this.markerEvents.hasHandlers(
                     OSFramework.Event.Marker.MarkerEventType.OnMouseout
@@ -70,7 +121,7 @@ namespace GoogleProvider.Marker {
                     );
                 });
             }
-            // OnEventTriggered Event (other events that can be set on the advancedFormat of the Marker)
+            // OnEventTriggered Event (other events that can be set on the advancedFormat of the Marker) - being deprecated
             if (
                 this.markerEvents.hasHandlers(
                     OSFramework.Event.Marker.MarkerEventType.OnEventTriggered
@@ -138,94 +189,45 @@ namespace GoogleProvider.Marker {
         public build(): void {
             super.build();
 
-            const markerOptions: google.maps.MarkerOptions = {};
-            if (
-                typeof this.config.iconUrl !== 'undefined' &&
-                this.config.iconUrl !== ''
-            ) {
-                markerOptions.icon = this.config.iconUrl;
-            }
-
-            if (
-                typeof this.config.title !== 'undefined' &&
-                this.config.title !== ''
-            ) {
-                markerOptions.title = this.config.title;
-            }
-
-            if (typeof this.config.allowDrag !== 'undefined') {
-                markerOptions.draggable = this.config.allowDrag;
-            }
-
-            // Take care of the advancedFormat options which can override the previous configuration
-            this._advancedFormatObj = OSFramework.Helper.JsonFormatter(
-                this.config.advancedFormat
-            );
-            for (const property in this._advancedFormatObj) {
-                const value = this._advancedFormatObj[property];
-                this.config[property] = value;
-                markerOptions[property] = value;
-            }
-
-            if (
-                typeof this.config.location !== 'undefined' &&
-                this.config.location !== ''
-            ) {
-                Helper.Conversions.ConvertToCoordinates(
-                    this.config.location,
-                    this.map.config.apiKey
-                ).then((response) => {
-                    markerOptions.position = {
-                        lat: response.lat,
-                        lng: response.lng
-                    };
-                    markerOptions.map = this.map.provider;
-                    this._provider = new google.maps.Marker(markerOptions);
-
-                    // We can only set the events on the provider after its creation
-                    this._setMarkerEvents(this._advancedFormatObj.markerEvents);
-
-                    // Trigger the new center location after creating the marker
-                    this.map.refresh();
-                });
-            } else {
-                throw new Error('Invalid location');
-            }
+            this._createGoogleMarker();
         }
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         public changeProperty(propertyName: string, value: any): void {
             const propValue = OSFramework.Enum.OS_Config_Marker[propertyName];
-            switch (propValue) {
-                case OSFramework.Enum.OS_Config_Marker.location:
-                    Helper.Conversions.ConvertToCoordinates(
-                        value,
-                        this.map.config.apiKey
-                    ).then((response) => {
-                        this._provider.setPosition({
-                            lat: response.lat,
-                            lng: response.lng
+            super.changeProperty(propertyName, value);
+            if (this.isReady) {
+                switch (propValue) {
+                    case OSFramework.Enum.OS_Config_Marker.location:
+                        Helper.Conversions.ConvertToCoordinates(
+                            value,
+                            this.map.config.apiKey
+                        ).then((response) => {
+                            this._provider.setPosition({
+                                lat: response.lat,
+                                lng: response.lng
+                            });
+                            this.map.refresh();
                         });
-                        this.map.refresh();
-                    });
-                    return;
-                case OSFramework.Enum.OS_Config_Map.advancedFormat:
-                    value = OSFramework.Helper.JsonFormatter(value);
-                    // Make sure the MapEvents that are associated in the advancedFormat get updated
-                    this._setMarkerEvents(value.markerEvents);
-                    this._provider.setOptions(value);
-                    return this.map.refresh();
-                case OSFramework.Enum.OS_Config_Marker.allowDrag:
-                    return this._provider.setDraggable(value);
-                case OSFramework.Enum.OS_Config_Marker.iconURL:
-                    return this._provider.setIcon(value);
-                case OSFramework.Enum.OS_Config_Marker.title:
-                    return this._provider.setTitle(value);
+                        return;
+                    case OSFramework.Enum.OS_Config_Map.advancedFormat:
+                        value = OSFramework.Helper.JsonFormatter(value);
+                        // Make sure the MapEvents that are associated in the advancedFormat get updated
+                        this._setMarkerEvents(value.markerEvents);
+                        this._provider.setOptions(value);
+                        return this.map.refresh();
+                    case OSFramework.Enum.OS_Config_Marker.allowDrag:
+                        return this._provider.setDraggable(value);
+                    case OSFramework.Enum.OS_Config_Marker.iconURL:
+                        return this._provider.setIcon(value);
+                    case OSFramework.Enum.OS_Config_Marker.title:
+                        return this._provider.setTitle(value);
 
-                default:
-                    throw Error(
-                        `changeProperty - Property '${propertyName}' can't be changed.`
-                    );
+                    default:
+                        throw Error(
+                            `changeProperty - Property '${propertyName}' can't be changed.`
+                        );
+                }
             }
         }
 
