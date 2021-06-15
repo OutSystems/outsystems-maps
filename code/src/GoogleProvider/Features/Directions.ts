@@ -7,14 +7,15 @@ namespace GoogleProvider.Feature {
             OSFramework.Interface.IDisposable {
         private _directionsRenderer: google.maps.DirectionsRenderer;
         private _directionsService: google.maps.DirectionsService;
-        private _enabled: boolean;
+        private _isEnabled: boolean;
         private _map: Map.IMapGoogle;
 
         constructor(map: Map.IMapGoogle) {
             this._map = map;
-            this._enabled = false;
+            this._isEnabled = false;
         }
 
+        /** Makes sure all waypoints from a list of locations (string) gets converted into a list of {location, stopover}. */
         private _waypointsCleanup(
             waypoints: string[]
         ): google.maps.DirectionsWaypoint[] {
@@ -25,14 +26,14 @@ namespace GoogleProvider.Feature {
         }
 
         public get isEnabled(): boolean {
-            return this._enabled;
+            return this._isEnabled;
         }
         public build(): void {
             this._directionsRenderer = new google.maps.DirectionsRenderer();
             this._directionsService = new google.maps.DirectionsService();
             this._directionsRenderer.setMap(this._map.provider);
 
-            this.setState(this._enabled);
+            this.setState(this._isEnabled);
         }
         public dispose(): void {
             this.setState(false);
@@ -41,10 +42,17 @@ namespace GoogleProvider.Feature {
         }
         public removeRoute(): OSFramework.OSStructures.ReturnMessage {
             this.setState(false);
-            return {
-                code: OSFramework.Enum.Errors.Success,
-                message: 'Success'
-            };
+            if (this._directionsRenderer.getMap() === null) {
+                return {
+                    code: OSFramework.Enum.ReturnCodes.Success,
+                    message: 'Success'
+                };
+            } else {
+                return {
+                    code: OSFramework.Enum.ReturnCodes.FailedRemovingDirections,
+                    message: `Couldn't remove the Directions from the Map ${this._map.widgetId}`
+                };
+            }
         }
         public setRoute(
             originRoute: string,
@@ -60,48 +68,53 @@ namespace GoogleProvider.Feature {
                 JSON.parse(waypoints)
             );
             this.setState(true);
-            return this._directionsService
-                .route(
-                    {
-                        origin: {
-                            query: originRoute
+            return (
+                this._directionsService
+                    .route(
+                        {
+                            origin: {
+                                query: originRoute
+                            },
+                            destination: {
+                                query: destinationRoute
+                            },
+                            waypoints: waypts,
+                            optimizeWaypoints,
+                            travelMode,
+                            avoidTolls,
+                            avoidHighways,
+                            avoidFerries
                         },
-                        destination: {
-                            query: destinationRoute
-                        },
-                        waypoints: waypts,
-                        optimizeWaypoints,
-                        travelMode,
-                        avoidTolls,
-                        avoidHighways,
-                        avoidFerries
-                    },
-                    (response, status) => {
-                        if (status === 'OK') {
-                            this._directionsRenderer.setDirections(response);
+                        (response, status) => {
+                            if (status === 'OK') {
+                                this._directionsRenderer.setDirections(
+                                    response
+                                );
+                            }
                         }
-                    }
-                )
-                .then((directionsResult) => {
-                    if (directionsResult) {
+                    )
+                    // If the previous request returns status OK, then we want to return success
+                    .then(() => {
                         return {
-                            code: OSFramework.Enum.Errors.Success,
+                            code: OSFramework.Enum.ReturnCodes.Success,
                             message: 'Success'
                         };
-                    } else {
+                    })
+                    // Else, we want to return the reason
+                    .catch((reason: string) => {
                         return {
-                            code: OSFramework.Enum.Errors.DirectionsFailed,
+                            code: OSFramework.Enum.ReturnCodes.DirectionsFailed,
                             message:
-                                'Directions request failed due to ' + status
+                                'Directions request failed due to ' + reason
                         };
-                    }
-                });
+                    })
+            );
         }
         public setState(value: boolean): void {
             this._directionsRenderer.setMap(
                 value === true ? this._map.provider : null
             );
-            this._enabled = value;
+            this._isEnabled = value;
         }
     }
 }

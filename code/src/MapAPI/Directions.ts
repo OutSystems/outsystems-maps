@@ -12,7 +12,7 @@ namespace MapAPI.Directions {
      * @param avoidHighways Boolean that indicates if the calculated route should avoid highways (whenever it's possible).
      * @param avoidFerries Boolean that indicates if the calculated route should avoid ferries (whenever it's possible).
      */
-    export function SetDirections(
+    export async function SetDirections(
         mapId: string,
         origin: string,
         destination: string,
