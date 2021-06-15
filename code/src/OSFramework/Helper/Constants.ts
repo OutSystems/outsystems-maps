@@ -28,7 +28,7 @@ namespace OSFramework.Helper.Constants {
     /** Tag used to find the container where the Map's uniqueId was defined */
     export const mapUniqueIdCss = '.map-container';
     /** Tag used to find the container where the Popup of the MarkerPopup was defined */
-    export const markerPopup = '.marker-preview-popup';
+    export const markerPopup = '.marker-popup-placeholder';
     /** Tag used to find the container where the Marker's uniqueId was defined */
     export const markerUniqueIdCss = '.ss-marker';
     /** Tag used to find the container where the StaticMap Image was defined */
