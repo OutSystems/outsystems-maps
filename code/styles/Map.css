@@ -251,7 +251,7 @@
     -servicestudio-min-width: 200px;
 }
 
-.ss-marker-img{
+.ss-marker-icon{
     -servicestudio-display: flex;
     -servicestudio-justify-content: center;
     -servicestudio-padding: 10px 10px 0 10px;
@@ -274,7 +274,7 @@
 /**/
 /***********************************************************************/
 
-.marker-preview-events {
+.ss-marker-events {
     -servicestudio-background-color: rgba(200,200,200,0.3);
     -servicestudio-box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0.03);
     -servicestudio-margin: 10px;
@@ -283,7 +283,7 @@
     -servicestudio-padding-bottom: 10px
 }
 
-.marker-preview-events:empty:after{
+.ss-marker-events:empty:after{
     -servicestudio-color: lightgrey;
     -servicestudio-content: 'Drag marker events to here';
     -servicestudio-font-family: Arial;
@@ -296,40 +296,113 @@
     -servicestudio-z-index: 0;
 }
 
-.marker-preview-events .event-preview {
+.ss-marker-events .event-preview {
     margin-top: 0;
 }
 
-.marker-preview-events .event-preview > div {
+.ss-marker-events .event-preview > div {
     -servicestudio-flex-direction: column;
     -servicestudio-margin-left: 10px;
 }
 
-.marker-preview-events .event-preview > img {
+.ss-marker-events .event-preview > img {
     -servicestudio-align-self: center;
     -servicestudio-width: 20px;
 }
 
-.marker-preview-events .event-preview-origin {
+.ss-marker-events .event-preview-origin {
     -servicestudio-font-size: 11px;
     -servicestudio-font-weight: normal;
     -servicestudio-margin-bottom: 2px;
-}
-
-.marker-preview-popup {
-    -servicestudio-background-color: rgba(200,200,200,0.3);
-    -servicestudio-box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0.03);
-    -servicestudio-margin: 10px;
-    -servicestudio-min-height: 20px;
-    -servicestudio-position: relative;
-    -servicestudio-padding-top: -10px;
 }
 
 /***********************************************************************/
 /**/
 /***********************************************************************/
 
-.marker-popup-image:empty{
+.marker-popup-layout {
+    display: flex;
+    flex-direction: column;
+    max-width: 200px;
+}
+
+body.safari .marker-popup-layout,
+body.chrome .marker-popup-layout {
+    margin-left: 6px;
+}
+
+.marker-popup-placeholder {
+    -servicestudio-background: white;
+    -servicestudio-border: 1px dashed #efefef;
+    -servicestudio-margin: 15px 15px 0 15px;
+    -servicestudio-min-height: 60px;
+    -servicestudio-position: relative;
+}
+
+.marker-popup-placeholder::empty {
+    -servicestudio-background-color: rgba(200,200,200,0.3);
+    -servicestudio-box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0.03);
+}
+
+.marker-popup-placeholder::before {
+    -servicestudio-color: lightgray;
+    -servicestudio-content: 'x';
+    -servicestudio-position: absolute;
+    -servicestudio-right: -10px;
+    -servicestudio-top: -18px;
+    -servicestudio-z-index: 2;
+}
+
+.marker-layout-image {
+    height: 100px;
+    width: 100%;
+}
+
+.marker-layout-image-default,
+.marker-layout-image img {
+    border-radius: 8px;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+}
+
+.marker-layout-image-default:empty{
     width: 100%;
     content: var(--popup-default-image);
 }
+
+.marker-layout-header {
+    margin: 10px 0 5px;
+}
+
+.marker-layout-description {
+    color: var(--color-neutral-7);
+}
+
+.marker-layout-header:empty + .marker-layout-description {
+    margin-top: 10px;
+}
+
+.marker-layout-header:empty,
+.marker-layout-description:empty {
+    display: none;
+    -servicestudio-display: block;
+}
+
+.marker-layout-link {
+    padding: 10px 0 5px;
+    text-align: center;
+}
+
+.marker-layout-link a {
+    display: block;
+}
+
+.marker-layout-link a:hover, 
+.marker-layout-link a:focus {
+    text-decoration: none;
+}
+
+/***********************************************************************/
+/**/
+/***********************************************************************/
