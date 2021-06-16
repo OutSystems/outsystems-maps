@@ -241,40 +241,44 @@ namespace GoogleProvider.Map {
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         public changeProperty(propertyName: string, value: any): void {
             const propValue = OSFramework.Enum.OS_Config_Map[propertyName];
-
-            switch (propValue) {
-                case OSFramework.Enum.OS_Config_Map.apiKey:
-                    if (this.config.apiKey !== '') {
-                        this.mapEvents.trigger(
-                            OSFramework.Event.OSMap.MapEventType.OnError,
-                            this,
-                            OSFramework.Enum.ReturnCodes.APIKeyAlreadySet
+            super.changeProperty(propertyName, value);
+            if (this.isReady) {
+                switch (propValue) {
+                    case OSFramework.Enum.OS_Config_Map.apiKey:
+                        if (this.config.apiKey !== '') {
+                            this.mapEvents.trigger(
+                                OSFramework.Event.OSMap.MapEventType.OnError,
+                                this,
+                                OSFramework.Enum.ReturnCodes.APIKeyAlreadySet
+                            );
+                        }
+                        return;
+                    case OSFramework.Enum.OS_Config_Map.center:
+                        return this.features.center.updateCenter(value);
+                    case OSFramework.Enum.OS_Config_Map.offset:
+                        return this.features.offset.setOffset(
+                            JSON.parse(value)
                         );
-                    }
-                    return super.changeProperty(propertyName, value);
-                case OSFramework.Enum.OS_Config_Map.center:
-                    return this.features.center.updateCenter(value);
-                case OSFramework.Enum.OS_Config_Map.offset:
-                    return this.features.offset.setOffset(JSON.parse(value));
-                case OSFramework.Enum.OS_Config_Map.zoom:
-                    return this.features.zoom.setLevel(value);
-                case OSFramework.Enum.OS_Config_Map.type:
-                    return this._provider.setMapTypeId(value);
-                case OSFramework.Enum.OS_Config_Map.style:
-                    return this._provider.setOptions({
-                        styles: GetStyleByStyleId(value)
-                    });
-                case OSFramework.Enum.OS_Config_Map.advancedFormat:
-                    value = OSFramework.Helper.JsonFormatter(value);
-                    // Make sure the MapEvents that are associated in the advancedFormat get updated
-                    this._setMapEvents(value.mapEvents);
-                    return this._provider.setOptions(value);
-                case OSFramework.Enum.OS_Config_Map.showTraffic:
-                    return this.features.trafficLayer.setState(value);
-                default:
-                    throw Error(
-                        `changeProperty - Property '${propertyName}' can't be changed.`
-                    );
+                    case OSFramework.Enum.OS_Config_Map.zoom:
+                        return this.features.zoom.setLevel(value);
+                    case OSFramework.Enum.OS_Config_Map.type:
+                        return this._provider.setMapTypeId(value);
+                    case OSFramework.Enum.OS_Config_Map.style:
+                        return this._provider.setOptions({
+                            styles: GetStyleByStyleId(value)
+                        });
+                    case OSFramework.Enum.OS_Config_Map.advancedFormat:
+                        value = OSFramework.Helper.JsonFormatter(value);
+                        // Make sure the MapEvents that are associated in the advancedFormat get updated
+                        this._setMapEvents(value.mapEvents);
+                        return this._provider.setOptions(value);
+                    case OSFramework.Enum.OS_Config_Map.showTraffic:
+                        return this.features.trafficLayer.setState(value);
+                    default:
+                        throw Error(
+                            `changeProperty - Property '${propertyName}' can't be changed.`
+                        );
+                }
             }
         }
 
