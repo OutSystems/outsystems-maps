@@ -40,6 +40,59 @@ namespace GoogleProvider.Feature {
             this._directionsService = undefined;
             this._directionsRenderer = undefined;
         }
+        public getLegsFromDirection(): Array<OSFramework.OSStructures.Directions.DirectionLegs> {
+            // If the Map has the directions disabled return 0 (meters)
+            if (this._isEnabled === false) return [];
+
+            const legs = this._directionsRenderer
+                .getDirections()
+                .routes[0].legs.reduce(
+                    (
+                        acc: Array<OSFramework.OSStructures.Directions.DirectionLegs>,
+                        curr: google.maps.DirectionsLeg
+                    ) => {
+                        // For each leg, push an object containing the origin (coords), distination (coords), distance (in meters) and duration (in seconds)
+                        acc.push({
+                            origin: curr.start_location.toJSON(),
+                            destination: curr.end_location.toJSON(),
+                            distance: curr.distance.value,
+                            duration: curr.duration.value
+                        });
+                        return acc;
+                    },
+                    []
+                );
+
+            return legs;
+        }
+        public getTotalDistanceFromDirection(): number {
+            // If the Map has the directions disabled return 0 (meters)
+            if (this._isEnabled === false) return 0;
+
+            const distance = this._directionsRenderer
+                .getDirections()
+                .routes[0].legs.reduce((acc, curr) => {
+                    // For each leg, sum the distance values (in meters)
+                    acc += curr.distance.value;
+                    return acc;
+                }, 0);
+
+            return distance;
+        }
+        public getTotalDurationFromDirection(): number {
+            // If the Map has the directions disabled return 0 (seconds)
+            if (this._isEnabled === false) return 0;
+
+            const duration = this._directionsRenderer
+                .getDirections()
+                .routes[0].legs.reduce((acc, curr) => {
+                    // For each leg, sum the duration values (in seconds)
+                    acc += curr.duration.value;
+                    return acc;
+                }, 0);
+
+            return duration;
+        }
         public removeRoute(): OSFramework.OSStructures.ReturnMessage {
             this.setState(false);
             if (this._directionsRenderer.getMap() === null) {

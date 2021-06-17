@@ -3,6 +3,12 @@ namespace OSFramework.Feature {
     export interface IDirections {
         /** Boolean that indicates the enabled state of the Directions feature of the Map */
         isEnabled: boolean;
+        /** Get All Legs from Direction (when direction contains waypoints, each leg is one step from a point to the next)*/
+        getLegsFromDirection(): Array<OSStructures.Directions.DirectionLegs>;
+        /** Get Total Distance from Direction (sum in meters of all the distances from all legs) */
+        getTotalDistanceFromDirection(): number;
+        /** Get Total Duration from Direction (sum in seconds of all the durations from all legs) */
+        getTotalDurationFromDirection(): number;
         /** Remove any Route that has been created (remove directions from the Map)*/
         removeRoute(): OSStructures.ReturnMessage;
         /** Set a new Route based on an start and end location.

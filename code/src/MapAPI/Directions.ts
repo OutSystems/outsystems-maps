@@ -1,6 +1,33 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace MapAPI.Directions {
     /**
+     * Function that will retrieve all the legs (steps from one waypoint to the other) from the direction that is rendered on the Map.
+     * @param mapId Id of the Map to get the legs from the direction.
+     */
+    export function GetLegsFromDirection(mapId: string): string {
+        const map = MapManager.GetMapById(mapId, true);
+        return JSON.stringify(map.features.directions.getLegsFromDirection());
+    }
+
+    /**
+     * Function that will calculate the total distance of the direction that is rendered on the Map.
+     * @param mapId Id of the Map where the total distance of the direction will be calculated.
+     */
+    export function GetTotalDistanceFromDirection(mapId: string): number {
+        const map = MapManager.GetMapById(mapId, true);
+        return map.features.directions.getTotalDistanceFromDirection();
+    }
+
+    /**
+     * Function that will calculate the total duration of the direction that is rendered on the Map.
+     * @param mapId Id of the Map where the total duration of the direction will be calculated.
+     */
+    export function GetTotalDurationFromDirection(mapId: string): number {
+        const map = MapManager.GetMapById(mapId, true);
+        return map.features.directions.getTotalDurationFromDirection();
+    }
+
+    /**
      * Function that will calculate directions and create the route based on an start and end locations.
      * @param mapId Id of the Map where the direction will be calculated.
      * @param origin Defines the start location from which to calculate directions. Works with addresses and coordinates (latitude and longitude).
