@@ -331,6 +331,14 @@ body.chrome .marker-popup-layout {
     margin-left: 6px;
 }
 
+@supports (-webkit-touch-callout: none) {
+    body.safari .marker-popup-layout,
+    body.chrome .marker-popup-layout {
+        margin-left: 0px;
+        padding: 6px 18px 6px 6px;
+    }
+}
+
 .marker-popup-placeholder {
     -servicestudio-background: white;
     -servicestudio-border: 1px dashed #efefef;
