@@ -66,6 +66,8 @@ namespace OSFramework.Marker {
 
         protected finishBuild(): void {
             this._built = true;
+
+            this.markerEvents.trigger(Event.Marker.MarkerEventType.Initialized);
         }
 
         public build(): void {
