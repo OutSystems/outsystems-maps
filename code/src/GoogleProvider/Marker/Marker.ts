@@ -244,7 +244,7 @@ namespace GoogleProvider.Marker {
                     return this.map.refresh();
                 case OSFramework.Enum.OS_Config_Marker.allowDrag:
                     return this._provider.setDraggable(value);
-                case OSFramework.Enum.OS_Config_Marker.iconURL:
+                case OSFramework.Enum.OS_Config_Marker.iconUrl:
                     return this._provider.setIcon(value);
                 case OSFramework.Enum.OS_Config_Marker.title:
                     return this._provider.setTitle(value);
