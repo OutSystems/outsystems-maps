@@ -215,6 +215,9 @@ namespace GoogleProvider.Marker {
                 // We can only set the events on the provider after its creation
                 this._setMarkerEvents(this._advancedFormatObj.markerEvents);
 
+                // Finish build of Marker
+                this.finishBuild();
+
                 // Trigger the new center location after creating the marker
                 this.map.refresh();
             });
