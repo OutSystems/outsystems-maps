@@ -120,7 +120,6 @@ namespace GoogleProvider.Feature {
             const waypts: google.maps.DirectionsWaypoint[] = this._waypointsCleanup(
                 JSON.parse(waypoints)
             );
-            this.setState(true);
             return (
                 this._directionsService
                     .route(
@@ -148,6 +147,7 @@ namespace GoogleProvider.Feature {
                     )
                     // If the previous request returns status OK, then we want to return success
                     .then(() => {
+                        this.setState(true);
                         return {
                             code: OSFramework.Enum.ReturnCodes.Success,
                             message: 'Success'
@@ -155,6 +155,7 @@ namespace GoogleProvider.Feature {
                     })
                     // Else, we want to return the reason
                     .catch((reason: string) => {
+                        this.setState(false);
                         return {
                             code: OSFramework.Enum.ReturnCodes.DirectionsFailed,
                             message:
