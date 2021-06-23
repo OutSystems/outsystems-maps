@@ -21,6 +21,7 @@ namespace OSFramework.Marker {
         constructor(
             map: OSMap.IMap,
             uniqueId: string,
+            type: Enum.MarkerType,
             config: Configuration.IConfigurationMarker
         ) {
             this._map = map;
@@ -35,6 +36,9 @@ namespace OSFramework.Marker {
 
         public get config(): Configuration.IConfigurationMarker {
             return this._config;
+        }
+        public get hasPopup(): boolean {
+            return false;
         }
         public get index(): number {
             return this._map.markers.findIndex(
@@ -62,6 +66,8 @@ namespace OSFramework.Marker {
 
         protected finishBuild(): void {
             this._built = true;
+
+            this.markerEvents.trigger(Event.Marker.MarkerEventType.Initialized);
         }
 
         public build(): void {
@@ -73,8 +79,6 @@ namespace OSFramework.Marker {
                       this.markerTag
                   ).id
                 : undefined;
-
-            // this._preBuild();
         }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types

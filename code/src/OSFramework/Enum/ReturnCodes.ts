@@ -10,6 +10,8 @@ namespace OSFramework.Enum {
         APIKeyAlreadySet = 'E400',
         InvalidApiKey = 'E401',
         DirectionsFailed = 'E402',
-        FailedRemovingDirections = 'E403'
+        FailedRemovingDirections = 'E403',
+        LIB_FailedGeocodingMap = 'MAPS-LIB-01002',
+        LIB_FailedGeocodingMarker = 'MAPS-LIB-03001'
     }
 }

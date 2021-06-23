@@ -95,7 +95,8 @@ namespace OSFramework.Event.OSMap {
                         handlerEvent.trigger(
                             this._map, // Map Object that was clicked
                             this._map.widgetId, // Id of Map block that was clicked
-                            eventInfo // Error Code
+                            eventInfo, // Error Code
+                            ...args // Extra Error messages that might come from the Provider APIs (geocoding for instance)
                         );
                         break;
                     // The following event is being deprecated. It should get removed soon.
