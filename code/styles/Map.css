@@ -5,6 +5,19 @@
     width: 100%;
 }
 
+/* 
+* This pseudo element, will force the .map-wrapper to occupy all the possibly width.
+* This is specially important when insidethe map is inside an if and an inline map
+* key is passed. 
+*/
+.map-wrapper:before {
+    -servicestudio-content: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+    -servicestudio-display: block;
+    -servicestudio-height: 0;
+    -servicestudio-overflow: hidden;
+    -servicestudio-word-break: break-all;
+}
+
 .map-wrapper.is--hidden {
     opacity: 0;
     -servicestudio-opacity: 1;
