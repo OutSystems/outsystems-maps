@@ -68,21 +68,21 @@ namespace GoogleProvider.Marker {
                     typeof this.config.location !== 'undefined' &&
                     this.config.location !== ''
                 ) {
-                    // Let's return a promise that will be
-                    return new Promise((resolve) => {
-                        resolve(
-                            Helper.Conversions.ConvertToCoordinates(
-                                this.config.location,
-                                this.map.config.apiKey
-                            ).then((response) => {
+                    // Let's return a promise that will be resolved or rejected according to the result
+                    return new Promise((resolve, reject) => {
+                        Helper.Conversions.ConvertToCoordinates(
+                            this.config.location,
+                            this.map.config.apiKey
+                        )
+                            .then((response) => {
                                 markerOptions.position = {
                                     lat: response.lat,
                                     lng: response.lng
                                 };
                                 markerOptions.map = this.map.provider;
-                                return markerOptions;
+                                resolve(markerOptions);
                             })
-                        );
+                            .catch((e) => reject(e));
                     });
                 }
             }
@@ -209,18 +209,27 @@ namespace GoogleProvider.Marker {
             // Then, create the provider (Google maps Marker)
             // Then, set Marker events
             // Finally, refresh the Map
-            this._buildMarkerOptions().then((markerOptions) => {
-                this._provider = new google.maps.Marker(markerOptions);
+            this._buildMarkerOptions()
+                .then((markerOptions) => {
+                    this._provider = new google.maps.Marker(markerOptions);
 
-                // We can only set the events on the provider after its creation
-                this._setMarkerEvents(this._advancedFormatObj.markerEvents);
+                    // We can only set the events on the provider after its creation
+                    this._setMarkerEvents(this._advancedFormatObj.markerEvents);
 
-                // Finish build of Marker
-                this.finishBuild();
+                    // Finish build of Marker
+                    this.finishBuild();
 
-                // Trigger the new center location after creating the marker
-                this.map.refresh();
-            });
+                    // Trigger the new center location after creating the marker
+                    this.map.refresh();
+                })
+                .catch((error) => {
+                    this.map.mapEvents.trigger(
+                        OSFramework.Event.OSMap.MapEventType.OnError,
+                        this.map,
+                        OSFramework.Enum.ReturnCodes.LIB_FailedGeocodingMarker,
+                        error
+                    );
+                });
         }
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
