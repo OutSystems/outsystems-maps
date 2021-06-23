@@ -240,13 +240,23 @@ namespace GoogleProvider.Marker {
                     Helper.Conversions.ConvertToCoordinates(
                         value,
                         this.map.config.apiKey
-                    ).then((response) => {
-                        this._provider.setPosition({
-                            lat: response.lat,
-                            lng: response.lng
+                    )
+                        .then((response) => {
+                            this._provider.setPosition({
+                                lat: response.lat,
+                                lng: response.lng
+                            });
+                            this.map.refresh();
+                        })
+                        .catch((error) => {
+                            this.map.mapEvents.trigger(
+                                OSFramework.Event.OSMap.MapEventType.OnError,
+                                this.map,
+                                OSFramework.Enum.ReturnCodes
+                                    .LIB_FailedGeocodingMarker,
+                                error
+                            );
                         });
-                        this.map.refresh();
-                    });
                     return;
                 case OSFramework.Enum.OS_Config_Map.advancedFormat:
                     value = OSFramework.Helper.JsonFormatter(value);
