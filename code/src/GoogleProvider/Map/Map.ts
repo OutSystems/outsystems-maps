@@ -58,7 +58,7 @@ namespace GoogleProvider.Map {
                     this.mapEvents.trigger(
                         OSFramework.Event.OSMap.MapEventType.OnError,
                         this,
-                        OSFramework.Enum.ErrorCodes.LIB_InvalidApiKey
+                        OSFramework.Enum.ErrorCodes.LIB_InvalidApiKeyMap
                     );
 
                 this.buildFeatures();
@@ -250,7 +250,7 @@ namespace GoogleProvider.Map {
                                 OSFramework.Event.OSMap.MapEventType.OnError,
                                 this,
                                 OSFramework.Enum.ErrorCodes
-                                    .CONF_APIKeyAlreadySet
+                                    .CONF_APIKeyAlreadySetMap
                             );
                         }
                         return;

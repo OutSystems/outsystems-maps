@@ -121,7 +121,7 @@ namespace GoogleProvider.Map {
                 MapAPI.MapManager.GetActiveMap().mapEvents.trigger(
                     OSFramework.Event.OSMap.MapEventType.OnError,
                     this,
-                    OSFramework.Enum.ErrorCodes.LIB_InvalidApiKey
+                    OSFramework.Enum.ErrorCodes.LIB_InvalidApiKeyStaticMap
                 );
                 // Invalid API key?
                 image.alt = 'Image could not be loaded.';
@@ -197,7 +197,8 @@ namespace GoogleProvider.Map {
                         this.mapEvents.trigger(
                             OSFramework.Event.OSMap.MapEventType.OnError,
                             this,
-                            OSFramework.Enum.ErrorCodes.CONF_APIKeyAlreadySet
+                            OSFramework.Enum.ErrorCodes
+                                .CONF_APIKeyAlreadySetStaticMap
                         );
                     }
                     return super.changeProperty(propertyName, value);

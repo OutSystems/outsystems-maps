@@ -154,7 +154,9 @@ namespace GoogleProvider.Feature {
                     .catch((reason: string) => {
                         this.setState(false);
                         return {
-                            code: OSFramework.Enum.ErrorCodes.DirectionsFailed,
+                            code:
+                                OSFramework.Enum.ErrorCodes
+                                    .LIB_FailedSetDirections,
                             message:
                                 'Directions request failed due to ' + reason
                         };
