@@ -157,8 +157,7 @@ namespace GoogleProvider.Feature {
                             code:
                                 OSFramework.Enum.ErrorCodes
                                     .LIB_FailedSetDirections,
-                            message:
-                                'Directions request failed due to ' + reason
+                            message: reason
                         };
                     })
             );
