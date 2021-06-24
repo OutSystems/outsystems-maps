@@ -145,7 +145,12 @@ namespace GoogleProvider.Map {
             marker: OSFramework.Marker.IMarker
         ): OSFramework.Marker.IMarker {
             if (this.isReady) {
-                throw new Error(`Markers can't be changed on a StaticMap`);
+                this.mapEvents.trigger(
+                    OSFramework.Event.OSMap.MapEventType.OnError,
+                    this,
+                    OSFramework.Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
+                );
+                return;
             }
             super.addMarker(marker);
 
@@ -174,18 +179,25 @@ namespace GoogleProvider.Map {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             propertyValue: any
         ): void {
-            throw new Error(
-                `ChangeMarkerProperty method can't be used on a StaticMap`
+            this.mapEvents.trigger(
+                OSFramework.Event.OSMap.MapEventType.OnError,
+                this,
+                OSFramework.Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
             );
+            return;
         }
 
         // ChangeProperty method can't be used on a StaticMap
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         public changeProperty(propertyName: string, value: any): void {
+            // If the StaticMap is already rendered then throw an error
             if (this.isReady) {
-                throw Error(
-                    `ChangeProperty method can't be used on a StaticMap`
+                this.mapEvents.trigger(
+                    OSFramework.Event.OSMap.MapEventType.OnError,
+                    this,
+                    OSFramework.Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
                 );
+                return;
             }
 
             const propValue =
@@ -212,9 +224,13 @@ namespace GoogleProvider.Map {
                     this._type = value;
                     return;
                 default:
-                    throw Error(
-                        `changeProperty - Property '${propertyName}' can't be changed.`
+                    this.mapEvents.trigger(
+                        OSFramework.Event.OSMap.MapEventType.OnError,
+                        this,
+                        OSFramework.Enum.ErrorCodes
+                            .CFG_CantChangeParamsStaticMap
                     );
+                    return;
             }
         }
 
