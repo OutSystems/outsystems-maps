@@ -36,7 +36,9 @@ namespace OSFramework.Helper {
             child = OSFramework.Helper.GetElementByUniqueId(elem as string);
         else child = elem;
 
-        const domMarker = child.closest(OSFramework.Helper.Constants.markerTag);
+        const domMarker = child.closest(
+            OSFramework.Helper.Constants.markerGeneric
+        );
 
         if (domMarker) {
             const uniqueId = domMarker
