@@ -25,7 +25,7 @@ namespace GoogleProvider.Helper.Conversions {
             .then((json) => {
                 if (json.results.length === 0) {
                     throw new Error(
-                        json.error_message ?? "Server response wasn't OK"
+                        json.error_message ?? 'No results have been found.'
                     );
                 }
                 const loc = json.results[0].geometry.location;

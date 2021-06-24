@@ -87,8 +87,11 @@ namespace OSFramework.OSMap {
             if (this.config.hasOwnProperty(propertyName)) {
                 this.config[propertyName] = propertyValue;
             } else {
-                throw new Error(
-                    `changeProperty - Property '${propertyName}' can't be changed.`
+                this.mapEvents.trigger(
+                    Event.OSMap.MapEventType.OnError,
+                    this,
+                    Enum.ErrorCodes.GEN_InvalidChangePropertyMap,
+                    `${propertyName}`
                 );
             }
         }
@@ -124,7 +127,12 @@ namespace OSFramework.OSMap {
 
         public removeAllMarkers(): void {
             if (this._mapType === Enum.MapType.StaticMap && this.isReady) {
-                throw new Error(`Markers can't be changed on a StaticMap`);
+                this.mapEvents.trigger(
+                    Event.OSMap.MapEventType.OnError,
+                    this,
+                    Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
+                );
+                return;
             }
             this._markers.forEach((marker) => {
                 marker.dispose();
@@ -139,7 +147,12 @@ namespace OSFramework.OSMap {
 
         public removeMarker(markerId: string): void {
             if (this._mapType === Enum.MapType.StaticMap && this.isReady) {
-                throw new Error(`Markers can't be changed on a StaticMap`);
+                this.mapEvents.trigger(
+                    Event.OSMap.MapEventType.OnError,
+                    this,
+                    Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
+                );
+                return;
             }
             if (this._markers.has(markerId)) {
                 const marker = this._markers.get(markerId);

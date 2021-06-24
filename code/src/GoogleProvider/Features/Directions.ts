@@ -97,13 +97,11 @@ namespace GoogleProvider.Feature {
             this.setState(false);
             if (this._directionsRenderer.getMap() === null) {
                 return {
-                    code: OSFramework.Enum.ReturnCodes.Success,
-                    message: 'Success'
+                    isSuccess: true
                 };
             } else {
                 return {
-                    code: OSFramework.Enum.ReturnCodes.FailedRemovingDirections,
-                    message: `Couldn't remove the Directions from the Map ${this._map.widgetId}`
+                    code: OSFramework.Enum.ErrorCodes.API_FailedRemoveDirections
                 };
             }
         }
@@ -149,17 +147,17 @@ namespace GoogleProvider.Feature {
                     .then(() => {
                         this.setState(true);
                         return {
-                            code: OSFramework.Enum.ReturnCodes.Success,
-                            message: 'Success'
+                            isSuccess: true
                         };
                     })
                     // Else, we want to return the reason
                     .catch((reason: string) => {
                         this.setState(false);
                         return {
-                            code: OSFramework.Enum.ReturnCodes.DirectionsFailed,
-                            message:
-                                'Directions request failed due to ' + reason
+                            code:
+                                OSFramework.Enum.ErrorCodes
+                                    .LIB_FailedSetDirections,
+                            message: `${reason}`
                         };
                     })
             );

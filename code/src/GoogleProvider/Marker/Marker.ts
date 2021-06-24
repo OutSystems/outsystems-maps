@@ -34,7 +34,13 @@ namespace GoogleProvider.Marker {
                 typeof this.config.location === 'undefined' ||
                 this.config.location === ''
             ) {
-                throw new Error('Invalid location');
+                this.map.mapEvents.trigger(
+                    OSFramework.Event.OSMap.MapEventType.OnError,
+                    this.map,
+                    OSFramework.Enum.ErrorCodes.LIB_FailedGeocodingMarker,
+                    `Location of the Marker can't be empty.`
+                );
+                return;
             } else {
                 if (
                     typeof this.config.iconUrl !== 'undefined' &&
@@ -226,8 +232,8 @@ namespace GoogleProvider.Marker {
                     this.map.mapEvents.trigger(
                         OSFramework.Event.OSMap.MapEventType.OnError,
                         this.map,
-                        OSFramework.Enum.ReturnCodes.LIB_FailedGeocodingMarker,
-                        error
+                        OSFramework.Enum.ErrorCodes.LIB_FailedGeocodingMarker,
+                        `${error}`
                     );
                 });
         }
@@ -252,9 +258,9 @@ namespace GoogleProvider.Marker {
                             this.map.mapEvents.trigger(
                                 OSFramework.Event.OSMap.MapEventType.OnError,
                                 this.map,
-                                OSFramework.Enum.ReturnCodes
+                                OSFramework.Enum.ErrorCodes
                                     .LIB_FailedGeocodingMarker,
-                                error
+                                `${error}`
                             );
                         });
                     return;
@@ -272,8 +278,12 @@ namespace GoogleProvider.Marker {
                     return this._provider.setTitle(value);
 
                 default:
-                    throw Error(
-                        `changeProperty - Property '${propertyName}' can't be changed.`
+                    this.map.mapEvents.trigger(
+                        OSFramework.Event.OSMap.MapEventType.OnError,
+                        this.map,
+                        OSFramework.Enum.ErrorCodes
+                            .GEN_InvalidChangePropertyMarker,
+                        `${propertyName}`
                     );
             }
         }

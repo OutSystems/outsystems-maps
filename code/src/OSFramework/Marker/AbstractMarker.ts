@@ -87,8 +87,11 @@ namespace OSFramework.Marker {
             if (this.config.hasOwnProperty(propertyName)) {
                 this.config[propertyName] = propertyValue;
             } else {
-                throw new Error(
-                    `changeProperty - Property '${propertyName}' can't be changed.`
+                this.map.mapEvents.trigger(
+                    Event.OSMap.MapEventType.OnError,
+                    this.map,
+                    Enum.ErrorCodes.GEN_InvalidChangePropertyMarker,
+                    `${propertyName}`
                 );
             }
         }

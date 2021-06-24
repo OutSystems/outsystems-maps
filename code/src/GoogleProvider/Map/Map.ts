@@ -58,7 +58,7 @@ namespace GoogleProvider.Map {
                     this.mapEvents.trigger(
                         OSFramework.Event.OSMap.MapEventType.OnError,
                         this,
-                        OSFramework.Enum.ReturnCodes.InvalidApiKey
+                        OSFramework.Enum.ErrorCodes.LIB_InvalidApiKeyMap
                     );
 
                 this.buildFeatures();
@@ -249,7 +249,8 @@ namespace GoogleProvider.Map {
                             this.mapEvents.trigger(
                                 OSFramework.Event.OSMap.MapEventType.OnError,
                                 this,
-                                OSFramework.Enum.ReturnCodes.APIKeyAlreadySet
+                                OSFramework.Enum.ErrorCodes
+                                    .CFG_APIKeyAlreadySetMap
                             );
                         }
                         return;
@@ -275,9 +276,14 @@ namespace GoogleProvider.Map {
                     case OSFramework.Enum.OS_Config_Map.showTraffic:
                         return this.features.trafficLayer.setState(value);
                     default:
-                        throw Error(
-                            `changeProperty - Property '${propertyName}' can't be changed.`
+                        this.mapEvents.trigger(
+                            OSFramework.Event.OSMap.MapEventType.OnError,
+                            this,
+                            OSFramework.Enum.ErrorCodes
+                                .GEN_InvalidChangePropertyMap,
+                            `${propertyName}`
                         );
+                        return;
                 }
             }
         }
