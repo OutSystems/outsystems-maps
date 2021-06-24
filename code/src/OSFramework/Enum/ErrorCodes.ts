@@ -5,8 +5,8 @@ namespace OSFramework.Enum {
      */
     export enum ErrorCodes {
         // Error Codes - CONFiguration errors - Any error related with missing or wrong configuration of the application.
-        CONF_APIKeyAlreadySetMap = 'MAPS-CONF-01001',
-        CONF_APIKeyAlreadySetStaticMap = 'MAPS-CONF-02001',
+        CFG_APIKeyAlreadySetMap = 'MAPS-CFG-01001',
+        CFG_APIKeyAlreadySetStaticMap = 'MAPS-CFG-02001',
 
         // Error Codes - LIB errors - Specific errors generated when consuming a third party lib / providers
         LIB_InvalidApiKeyMap = 'MAPS-LIB-01001',
