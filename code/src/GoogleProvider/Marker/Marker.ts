@@ -283,7 +283,7 @@ namespace GoogleProvider.Marker {
                         this.map,
                         OSFramework.Enum.ErrorCodes
                             .GEN_InvalidChangePropertyMarker,
-                        `${propertyName} can't be changed.`
+                        `${propertyName}`
                     );
             }
         }

@@ -280,7 +280,8 @@ namespace GoogleProvider.Map {
                             OSFramework.Event.OSMap.MapEventType.OnError,
                             this,
                             OSFramework.Enum.ErrorCodes
-                                .GEN_InvalidChangePropertyMap
+                                .GEN_InvalidChangePropertyMap,
+                            `${propertyName}`
                         );
                         return;
                 }

@@ -91,7 +91,7 @@ namespace OSFramework.OSMap {
                     Event.OSMap.MapEventType.OnError,
                     this,
                     Enum.ErrorCodes.GEN_InvalidChangePropertyMap,
-                    `${propertyName} can't be changed.`
+                    `${propertyName}`
                 );
             }
         }

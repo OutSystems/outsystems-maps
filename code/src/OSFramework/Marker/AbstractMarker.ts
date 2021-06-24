@@ -91,7 +91,7 @@ namespace OSFramework.Marker {
                     Event.OSMap.MapEventType.OnError,
                     this.map,
                     Enum.ErrorCodes.GEN_InvalidChangePropertyMarker,
-                    `${propertyName} can't be changed.`
+                    `${propertyName}`
                 );
             }
         }
