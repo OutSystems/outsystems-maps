@@ -157,7 +157,7 @@ namespace GoogleProvider.Feature {
                             code:
                                 OSFramework.Enum.ErrorCodes
                                     .LIB_FailedSetDirections,
-                            message: reason
+                            message: `${reason}`
                         };
                     })
             );

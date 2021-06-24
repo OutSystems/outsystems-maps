@@ -58,7 +58,7 @@ namespace GoogleProvider.Feature {
                         OSFramework.Event.OSMap.MapEventType.OnError,
                         this._map,
                         OSFramework.Enum.ErrorCodes.LIB_FailedGeocodingMap,
-                        error
+                        `${error}`
                     );
                 });
         }

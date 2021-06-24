@@ -227,7 +227,7 @@ namespace GoogleProvider.Marker {
                         OSFramework.Event.OSMap.MapEventType.OnError,
                         this.map,
                         OSFramework.Enum.ErrorCodes.LIB_FailedGeocodingMarker,
-                        error
+                        `${error}`
                     );
                 });
         }
@@ -254,7 +254,7 @@ namespace GoogleProvider.Marker {
                                 this.map,
                                 OSFramework.Enum.ErrorCodes
                                     .LIB_FailedGeocodingMarker,
-                                error
+                                `${error}`
                             );
                         });
                     return;
