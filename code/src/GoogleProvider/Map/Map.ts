@@ -250,7 +250,7 @@ namespace GoogleProvider.Map {
                                 OSFramework.Event.OSMap.MapEventType.OnError,
                                 this,
                                 OSFramework.Enum.ErrorCodes
-                                    .CONF_APIKeyAlreadySetMap
+                                    .CFG_APIKeyAlreadySetMap
                             );
                         }
                         return;

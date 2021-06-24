@@ -198,7 +198,7 @@ namespace GoogleProvider.Map {
                             OSFramework.Event.OSMap.MapEventType.OnError,
                             this,
                             OSFramework.Enum.ErrorCodes
-                                .CONF_APIKeyAlreadySetStaticMap
+                                .CFG_APIKeyAlreadySetStaticMap
                         );
                     }
                     return super.changeProperty(propertyName, value);
