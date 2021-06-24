@@ -24,6 +24,5 @@ namespace OSFramework.Enum {
         GEN_InvalidChangePropertyMarker = 'MAPS-GEN-03001',
         GEN_UnsupportedEventMap = 'MAPS-GEN-01002',
         GEN_UnsupportedEventMarker = 'MAPS-GEN-03002'
-
     }
 }
