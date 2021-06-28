@@ -118,13 +118,14 @@ namespace GoogleProvider.Map {
                 '&size=' + this._size.width + 'x' + this._size.height;
                 /* eslint-enable prettier/prettier */
             image.onerror = () => {
-                MapAPI.MapManager.GetActiveMap().mapEvents.trigger(
+                // Check if needed
+                this.mapEvents.trigger(
                     OSFramework.Event.OSMap.MapEventType.OnError,
                     this,
                     OSFramework.Enum.ErrorCodes.LIB_InvalidApiKeyStaticMap
                 );
-                // Invalid API key?
-                image.alt = 'Image could not be loaded.';
+                // Invalid API key
+                image.alt = 'Image could not be loaded due to invalid APIKey.';
             };
         }
 
