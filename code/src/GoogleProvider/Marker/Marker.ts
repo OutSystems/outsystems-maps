@@ -30,10 +30,8 @@ namespace GoogleProvider.Marker {
         protected _buildMarkerOptions(): Promise<google.maps.MarkerOptions> {
             const markerOptions: google.maps.MarkerOptions = {};
             // If the marker has no location at the moment of its provider creation, then throw an error
-            if (
-                typeof this.config.location === 'undefined' ||
-                this.config.location === ''
-            ) {
+            // If the marker has its location = "" at the moment of its provider creation, then the location value will be the default -> OutSystems, Boston US
+            if (typeof this.config.location === 'undefined') {
                 this.map.mapEvents.trigger(
                     OSFramework.Event.OSMap.MapEventType.OnError,
                     this.map,
@@ -70,27 +68,22 @@ namespace GoogleProvider.Marker {
                     markerOptions[property] = value;
                 }
 
-                if (
-                    typeof this.config.location !== 'undefined' &&
-                    this.config.location !== ''
-                ) {
-                    // Let's return a promise that will be resolved or rejected according to the result
-                    return new Promise((resolve, reject) => {
-                        Helper.Conversions.ConvertToCoordinates(
-                            this.config.location,
-                            this.map.config.apiKey
-                        )
-                            .then((response) => {
-                                markerOptions.position = {
-                                    lat: response.lat,
-                                    lng: response.lng
-                                };
-                                markerOptions.map = this.map.provider;
-                                resolve(markerOptions);
-                            })
-                            .catch((e) => reject(e));
-                    });
-                }
+                // Let's return a promise that will be resolved or rejected according to the result
+                return new Promise((resolve, reject) => {
+                    Helper.Conversions.ConvertToCoordinates(
+                        this.config.location,
+                        this.map.config.apiKey
+                    )
+                        .then((response) => {
+                            markerOptions.position = {
+                                lat: response.lat,
+                                lng: response.lng
+                            };
+                            markerOptions.map = this.map.provider;
+                            resolve(markerOptions);
+                        })
+                        .catch((e) => reject(e));
+                });
             }
         }
 
@@ -215,76 +208,86 @@ namespace GoogleProvider.Marker {
             // Then, create the provider (Google maps Marker)
             // Then, set Marker events
             // Finally, refresh the Map
-            this._buildMarkerOptions()
-                .then((markerOptions) => {
-                    this._provider = new google.maps.Marker(markerOptions);
+            const markerOptions = this._buildMarkerOptions();
+            // If markerOptions is undefined (should be a promise) -> don't create the marker
+            if (markerOptions !== undefined) {
+                this._buildMarkerOptions()
+                    .then((markerOptions) => {
+                        this._provider = new google.maps.Marker(markerOptions);
 
-                    // We can only set the events on the provider after its creation
-                    this._setMarkerEvents(this._advancedFormatObj.markerEvents);
+                        // We can only set the events on the provider after its creation
+                        this._setMarkerEvents(
+                            this._advancedFormatObj.markerEvents
+                        );
 
-                    // Finish build of Marker
-                    this.finishBuild();
+                        // Finish build of Marker
+                        this.finishBuild();
 
-                    // Trigger the new center location after creating the marker
-                    this.map.refresh();
-                })
-                .catch((error) => {
-                    this.map.mapEvents.trigger(
-                        OSFramework.Event.OSMap.MapEventType.OnError,
-                        this.map,
-                        OSFramework.Enum.ErrorCodes.LIB_FailedGeocodingMarker,
-                        `${error}`
-                    );
-                });
+                        // Trigger the new center location after creating the marker
+                        this.map.refresh();
+                    })
+                    .catch((error) => {
+                        this.map.mapEvents.trigger(
+                            OSFramework.Event.OSMap.MapEventType.OnError,
+                            this.map,
+                            OSFramework.Enum.ErrorCodes
+                                .LIB_FailedGeocodingMarker,
+                            `${error}`
+                        );
+                    });
+            }
         }
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         public changeProperty(propertyName: string, value: any): void {
             const propValue = OSFramework.Enum.OS_Config_Marker[propertyName];
-            switch (propValue) {
-                case OSFramework.Enum.OS_Config_Marker.location:
-                    Helper.Conversions.ConvertToCoordinates(
-                        value,
-                        this.map.config.apiKey
-                    )
-                        .then((response) => {
-                            this._provider.setPosition({
-                                lat: response.lat,
-                                lng: response.lng
+            super.changeProperty(propertyName, value);
+            if (this.isReady) {
+                switch (propValue) {
+                    case OSFramework.Enum.OS_Config_Marker.location:
+                        Helper.Conversions.ConvertToCoordinates(
+                            value,
+                            this.map.config.apiKey
+                        )
+                            .then((response) => {
+                                this._provider.setPosition({
+                                    lat: response.lat,
+                                    lng: response.lng
+                                });
+                                this.map.refresh();
+                            })
+                            .catch((error) => {
+                                this.map.mapEvents.trigger(
+                                    OSFramework.Event.OSMap.MapEventType
+                                        .OnError,
+                                    this.map,
+                                    OSFramework.Enum.ErrorCodes
+                                        .LIB_FailedGeocodingMarker,
+                                    `${error}`
+                                );
                             });
-                            this.map.refresh();
-                        })
-                        .catch((error) => {
-                            this.map.mapEvents.trigger(
-                                OSFramework.Event.OSMap.MapEventType.OnError,
-                                this.map,
-                                OSFramework.Enum.ErrorCodes
-                                    .LIB_FailedGeocodingMarker,
-                                `${error}`
-                            );
-                        });
-                    return;
-                case OSFramework.Enum.OS_Config_Map.advancedFormat:
-                    value = OSFramework.Helper.JsonFormatter(value);
-                    // Make sure the MapEvents that are associated in the advancedFormat get updated
-                    this._setMarkerEvents(value.markerEvents);
-                    this._provider.setOptions(value);
-                    return this.map.refresh();
-                case OSFramework.Enum.OS_Config_Marker.allowDrag:
-                    return this._provider.setDraggable(value);
-                case OSFramework.Enum.OS_Config_Marker.iconUrl:
-                    return this._provider.setIcon(value);
-                case OSFramework.Enum.OS_Config_Marker.title:
-                    return this._provider.setTitle(value);
-
-                default:
-                    this.map.mapEvents.trigger(
-                        OSFramework.Event.OSMap.MapEventType.OnError,
-                        this.map,
-                        OSFramework.Enum.ErrorCodes
-                            .GEN_InvalidChangePropertyMarker,
-                        `${propertyName}`
-                    );
+                        return;
+                    case OSFramework.Enum.OS_Config_Map.advancedFormat:
+                        value = OSFramework.Helper.JsonFormatter(value);
+                        // Make sure the MapEvents that are associated in the advancedFormat get updated
+                        this._setMarkerEvents(value.markerEvents);
+                        this._provider.setOptions(value);
+                        return this.map.refresh();
+                    case OSFramework.Enum.OS_Config_Marker.allowDrag:
+                        return this._provider.setDraggable(value);
+                    case OSFramework.Enum.OS_Config_Marker.iconUrl:
+                        return this._provider.setIcon(value);
+                    case OSFramework.Enum.OS_Config_Marker.title:
+                        return this._provider.setTitle(value);
+                    default:
+                        this.map.mapEvents.trigger(
+                            OSFramework.Event.OSMap.MapEventType.OnError,
+                            this.map,
+                            OSFramework.Enum.ErrorCodes
+                                .GEN_InvalidChangePropertyMarker,
+                            `${propertyName}`
+                        );
+                }
             }
         }
 
