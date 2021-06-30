@@ -26,6 +26,28 @@ namespace MapAPI.MarkerManager {
     }
 
     /**
+     * Close the Popup of the MarkerPopup
+     * @param markerId Id of the Marker
+     */
+    export function ClosePopup(markerId: string): void {
+        const marker = GetMarkerById(
+            markerId
+        ) as OSFramework.Marker.IMarkerPopup;
+        if (marker.hasPopup) marker.closePopup();
+    }
+
+    /**
+     * Forces the refresh of the content inside the Popup of the MarkerPopup
+     * @param markerId Id of the Marker
+     */
+    export function RefreshPopup(markerId: string): void {
+        const marker = GetMarkerById(
+            markerId
+        ) as OSFramework.Marker.IMarkerPopup;
+        if (marker.hasPopup) marker.refreshPopupContent();
+    }
+
+    /**
      * Function that will create an instance of Map object with the configurations passed
      *
      * @export
@@ -43,6 +65,7 @@ namespace MapAPI.MarkerManager {
             const _marker = GoogleProvider.Marker.MarkerFactory.MakeMarker(
                 map,
                 markerId,
+                OSFramework.Enum.MarkerType.Marker,
                 JSON.parse(configs)
             );
             markerArr.push(_marker);
@@ -67,6 +90,7 @@ namespace MapAPI.MarkerManager {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     export function CreateMarkerByUniqueID(
         markerId: string,
+        markerType: OSFramework.Enum.MarkerType,
         configs: string
     ): OSFramework.Marker.IMarker {
         const map = GetMapByMarkerId(markerId);
@@ -74,6 +98,7 @@ namespace MapAPI.MarkerManager {
             const _marker = GoogleProvider.Marker.MarkerFactory.MakeMarker(
                 map,
                 markerId,
+                markerType,
                 JSON.parse(configs)
             );
             markerArr.push(_marker);
@@ -132,6 +157,17 @@ namespace MapAPI.MarkerManager {
         markerId: string
     ): OSFramework.Marker.IMarker {
         return markerArr.find((p) => p && p.equalsToID(markerId));
+    }
+
+    /**
+     * Open the Popup of the MarkerPopup
+     * @param markerId Id of the Marker
+     */
+    export function OpenPopup(markerId: string): void {
+        const marker = GetMarkerById(
+            markerId
+        ) as OSFramework.Marker.IMarkerPopup;
+        if (marker.hasPopup) marker.openPopup();
     }
 
     /**

@@ -47,10 +47,20 @@ namespace GoogleProvider.Feature {
             Helper.Conversions.ConvertToCoordinates(
                 location,
                 this._map.config.apiKey
-            ).then((response) => {
-                this._initialCenter = response;
-                this._map.refresh();
-            });
+            )
+                .then((response) => {
+                    this._map.config.center = response;
+                    this._initialCenter = response;
+                    this._map.refresh();
+                })
+                .catch((error) => {
+                    this._map.mapEvents.trigger(
+                        OSFramework.Event.OSMap.MapEventType.OnError,
+                        this._map,
+                        OSFramework.Enum.ErrorCodes.LIB_FailedGeocodingMap,
+                        `${error}`
+                    );
+                });
         }
     }
 }

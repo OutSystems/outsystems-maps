@@ -43,7 +43,13 @@ namespace OSFramework.Event.OSMap {
                         event = new MapProviderEvent();
                         break;
                     }
-                    throw `The event '${eventType}' is not supported in a Map`;
+                    this._map.mapEvents.trigger(
+                        MapEventType.OnError,
+                        this._map,
+                        Enum.ErrorCodes.GEN_UnsupportedEventMap,
+                        `${eventType}`
+                    );
+                    return;
             }
             return event;
         }
@@ -95,7 +101,8 @@ namespace OSFramework.Event.OSMap {
                         handlerEvent.trigger(
                             this._map, // Map Object that was clicked
                             this._map.widgetId, // Id of Map block that was clicked
-                            eventInfo // Error Code
+                            eventInfo, // Error Code
+                            ...args // Extra Error messages that might come from the Provider APIs (geocoding for instance)
                         );
                         break;
                     // The following event is being deprecated. It should get removed soon.
@@ -125,7 +132,13 @@ namespace OSFramework.Event.OSMap {
                     // If the event is not valid we can fall in the default case of the switch and throw an error
                     // eslint-disable-next-line no-fallthrough
                     default:
-                        throw `The event '${eventType}' is not supported in a Map`;
+                        this._map.mapEvents.trigger(
+                            MapEventType.OnError,
+                            this._map,
+                            Enum.ErrorCodes.GEN_UnsupportedEventMap,
+                            `${eventType}`
+                        );
+                        return;
                 }
             }
         }

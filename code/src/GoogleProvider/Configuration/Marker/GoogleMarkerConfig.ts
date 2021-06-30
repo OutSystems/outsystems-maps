@@ -23,7 +23,7 @@ namespace GoogleProvider.Configuration.Marker {
             let provider = {
                 advancedFormat: this.advancedFormat,
                 draggable: this.allowDrag,
-                iconURL: this.iconUrl,
+                iconUrl: this.iconUrl,
                 location: this.location,
                 title: this.title,
                 uniqueId: this.uniqueId

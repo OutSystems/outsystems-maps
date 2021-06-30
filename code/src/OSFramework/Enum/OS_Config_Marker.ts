@@ -6,7 +6,7 @@ namespace OSFramework.Enum {
     export enum OS_Config_Marker {
         advancedFormat,
         allowDrag,
-        iconURL,
+        iconUrl,
         location,
         title,
         uniqueId

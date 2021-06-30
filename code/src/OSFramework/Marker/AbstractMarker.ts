@@ -21,6 +21,7 @@ namespace OSFramework.Marker {
         constructor(
             map: OSMap.IMap,
             uniqueId: string,
+            type: Enum.MarkerType,
             config: Configuration.IConfigurationMarker
         ) {
             this._map = map;
@@ -35,6 +36,9 @@ namespace OSFramework.Marker {
 
         public get config(): Configuration.IConfigurationMarker {
             return this._config;
+        }
+        public get hasPopup(): boolean {
+            return false;
         }
         public get index(): number {
             return this._map.markers.findIndex(
@@ -60,9 +64,14 @@ namespace OSFramework.Marker {
             return this._widgetId;
         }
 
+        protected finishBuild(): void {
+            this._built = true;
+
+            this.markerEvents.trigger(Event.Marker.MarkerEventType.Initialized);
+        }
+
         public build(): void {
             if (this._built) return;
-            this._built = true;
             // Remove in  the future (undefined part) as the Markers might be created via the parameter Markers_DEPRECATED.
             // We only have the widgetId when the marker is created via Marker Block.
             this._widgetId = Helper.GetElementByUniqueId(this.uniqueId, false)
@@ -70,8 +79,6 @@ namespace OSFramework.Marker {
                       this.markerTag
                   ).id
                 : undefined;
-
-            // this._preBuild();
         }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
@@ -80,8 +87,11 @@ namespace OSFramework.Marker {
             if (this.config.hasOwnProperty(propertyName)) {
                 this.config[propertyName] = propertyValue;
             } else {
-                throw new Error(
-                    `changeProperty - Property '${propertyName}' can't be changed.`
+                this.map.mapEvents.trigger(
+                    Event.OSMap.MapEventType.OnError,
+                    this.map,
+                    Enum.ErrorCodes.GEN_InvalidChangePropertyMarker,
+                    `${propertyName}`
                 );
             }
         }

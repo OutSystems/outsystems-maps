@@ -5,6 +5,8 @@ namespace OSFramework.Marker {
             Interface.ISearchById,
             Interface.IDisposable {
         config: Configuration.IConfigurationMarker; //IConfigurationMarker
+        /** Returns True if the Marker has a popup (MarkerPopup) */
+        hasPopup: boolean;
         index: number;
         isReady: boolean;
         map: OSMap.IMap; //IMap

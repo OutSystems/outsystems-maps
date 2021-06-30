@@ -49,7 +49,13 @@ namespace OSFramework.Event.Marker {
                         event = new MarkerProviderEvent();
                         break;
                     }
-                    throw `The event '${eventType}' is not supported in a Marker`;
+                    this._marker.map.mapEvents.trigger(
+                        OSMap.MapEventType.OnError,
+                        this._marker.map,
+                        Enum.ErrorCodes.GEN_UnsupportedEventMarker,
+                        `${eventType}`
+                    );
+                    return;
             }
             return event;
         }
@@ -121,7 +127,13 @@ namespace OSFramework.Event.Marker {
                     // If the event is not valid we can fall in the default case of the switch and throw an error
                     // eslint-disable-next-line no-fallthrough
                     default:
-                        throw `The event '${eventType}' is not supported in a Marker`;
+                        this._marker.map.mapEvents.trigger(
+                            OSMap.MapEventType.OnError,
+                            this._marker.map,
+                            Enum.ErrorCodes.GEN_UnsupportedEventMarker,
+                            `${eventType}`
+                        );
+                        return;
                 }
             }
         }

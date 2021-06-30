@@ -28,8 +28,10 @@ namespace OSFramework.Event {
                 this._handlers.get(eventType).addHandler(handler);
             } else {
                 const ev = this.getInstanceOfEventType(eventType);
-                ev.addHandler(handler);
-                this._handlers.set(eventType, ev);
+                if (ev !== undefined) {
+                    ev.addHandler(handler);
+                    this._handlers.set(eventType, ev);
+                }
             }
         }
 
