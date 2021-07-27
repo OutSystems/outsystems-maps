@@ -50,8 +50,9 @@ namespace OSFramework.Event.Shape {
          */
         public trigger(
             eventType: ShapeEventType,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             eventInfo?: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
             ...args: any
         ): void {
             // Let's first check if the shape has any events associated

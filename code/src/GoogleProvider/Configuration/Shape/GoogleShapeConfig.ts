@@ -5,7 +5,6 @@ namespace GoogleProvider.Configuration.Shape {
     export class GoogleShapeConfig
         extends OSFramework.Configuration.AbstractConfiguration
         implements OSFramework.Configuration.IConfigurationShape {
-        public allowClick: boolean;
         public allowDrag: boolean;
         public allowEdit: boolean;
         public color: string;
@@ -23,7 +22,7 @@ namespace GoogleProvider.Configuration.Shape {
         public getProviderConfig(): any {
             // eslint-disable-next-line prefer-const
             let provider = {
-                clickable: this.allowClick,
+                clickable: true,
                 draggable: this.allowDrag,
                 editable: this.allowEdit,
                 strokeOpacity: this.opacity,

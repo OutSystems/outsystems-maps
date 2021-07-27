@@ -5,7 +5,6 @@ namespace OSFramework.Configuration {
      * Defines the basic structure for Map objects
      */
     export interface IConfigurationShape extends IConfiguration {
-        allowClick: boolean;
         allowDrag: boolean;
         allowEdit: boolean;
         color: string;

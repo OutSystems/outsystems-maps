@@ -111,7 +111,7 @@ namespace GoogleProvider.Shape {
                 this.shapeEvents.hasHandlers(
                     OSFramework.Event.Shape.ShapeEventType.OnClick
                 ) &&
-                this.provider.get('clickable')
+                this.provider.get('clickable') // Always true. Fallback in case this parameter gets changed in the future.
             ) {
                 this._provider.addListener('click', () => {
                     this.shapeEvents.trigger(
@@ -135,6 +135,7 @@ namespace GoogleProvider.Shape {
                             eventName,
                             // Callback CAN have an attribute (e) which is of the type MapMouseEvent
                             // Trigger the event by specifying the ProviderEvent MarkerType and the coords (lat, lng) if the callback has the attribute MapMouseEvent
+                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
                             (e?: google.maps.MapMouseEvent) => {
                                 this.shapeEvents.trigger(
                                     // EventType
@@ -232,9 +233,6 @@ namespace GoogleProvider.Shape {
                                 });
                         }
                         return;
-                    case OSFramework.Enum.OS_Config_Shape.allowClick:
-                        this._provider.setOptions({ clickable: value });
-                        return this.refreshProviderEvents();
                     case OSFramework.Enum.OS_Config_Shape.allowDrag:
                         return this._provider.setDraggable(value);
                     case OSFramework.Enum.OS_Config_Shape.allowEdit:
