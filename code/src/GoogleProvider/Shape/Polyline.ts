@@ -29,64 +29,70 @@ namespace GoogleProvider.Shape {
         protected _buildPath(
             loc: string
         ): Promise<Array<OSFramework.OSStructures.OSMap.Coordinates>> {
-            // If the marker has no location at the moment of its provider creation, then throw an error
-            if (typeof loc === 'undefined' || loc === '') {
+            // If The Polyline doesn't have at least 2 valid address/coordinates, then throw an error
+            if (
+                typeof loc !== 'string' ||
+                loc === '' ||
+                loc.trim().length === 0 ||
+                JSON.parse(loc).length < 2
+            ) {
                 this.map.mapEvents.trigger(
                     OSFramework.Event.OSMap.MapEventType.OnError,
                     this.map,
-                    OSFramework.Enum.ErrorCodes.LIB_FailedGeocodingMarker,
-                    `Location of the Shape can't be empty.`
+                    OSFramework.Enum.ErrorCodes
+                        .CFG_InvalidPolylineShapeLocations
                 );
                 return;
             } else {
                 const _locations = JSON.parse(loc);
-                if (_locations.length <= 1) {
-                    this.map.mapEvents.trigger(
-                        OSFramework.Event.OSMap.MapEventType.OnError,
-                        this.map,
-                        OSFramework.Enum.ErrorCodes.LIB_FailedGeocodingMarker,
-                        `Location of the Shape can't be empty.`
-                    );
-                    return;
-                }
-
                 // Let's return a promise that will be resolved or rejected according to the result
                 return new Promise((resolve, reject) => {
-                    _locations.reduce(
-                        (
-                            shapePath: Map<
-                                number,
-                                OSFramework.OSStructures.OSMap.Coordinates
-                            >,
-                            location: string,
-                            index: number
-                        ) => {
-                            Helper.Conversions.ConvertToCoordinates(
-                                location,
-                                this.map.config.apiKey
-                            )
-                                .then((response) => {
-                                    shapePath.set(index, {
-                                        lat: response.lat,
-                                        lng: response.lng
-                                    });
-                                    if (shapePath.size === _locations.length) {
-                                        resolve(
-                                            // This method is async
-                                            // We need to make sure the path is sorted correctly when all coordinates are retrieved
-                                            Array.from(shapePath.keys())
-                                                .sort()
-                                                .map((key) =>
-                                                    shapePath.get(key)
-                                                )
-                                        );
-                                    }
-                                })
-                                .catch((e) => reject(e));
-                            return shapePath;
-                        },
-                        new Map()
-                    );
+                    const shapePath: Map<
+                        number,
+                        OSFramework.OSStructures.OSMap.Coordinates
+                    > = new Map();
+
+                    // As soon as one location from the locations input is not valid:
+                    // Is not a string / Is empty
+                    // Throw an error for invalid Locations
+                    _locations.every((location: string, index: number) => {
+                        // Make sure the current location from the array of locations is not empty
+                        if (
+                            typeof location !== 'string' ||
+                            location === '' ||
+                            location.trim().length === 0
+                        ) {
+                            this.map.mapEvents.trigger(
+                                OSFramework.Event.OSMap.MapEventType.OnError,
+                                this.map,
+                                OSFramework.Enum.ErrorCodes
+                                    .CFG_InvalidPolylineShapeLocations
+                            );
+                            return false;
+                        }
+
+                        Helper.Conversions.ConvertToCoordinates(
+                            location,
+                            this.map.config.apiKey
+                        )
+                            .then((response) => {
+                                shapePath.set(index, {
+                                    lat: response.lat,
+                                    lng: response.lng
+                                });
+                                if (shapePath.size === _locations.length) {
+                                    resolve(
+                                        // This method is async
+                                        // We need to make sure the path is sorted correctly when all coordinates are retrieved
+                                        Array.from(shapePath.keys())
+                                            .sort()
+                                            .map((key) => shapePath.get(key))
+                                    );
+                                }
+                            })
+                            .catch((e) => reject(e));
+                        return true;
+                    });
                 });
             }
         }
@@ -192,7 +198,7 @@ namespace GoogleProvider.Shape {
                             OSFramework.Event.OSMap.MapEventType.OnError,
                             this.map,
                             OSFramework.Enum.ErrorCodes
-                                .LIB_FailedGeocodingMarker,
+                                .LIB_FailedGeocodingShapeLocations,
                             `${error}`
                         );
                     });
@@ -220,7 +226,7 @@ namespace GoogleProvider.Shape {
                                             .OnError,
                                         this.map,
                                         OSFramework.Enum.ErrorCodes
-                                            .LIB_FailedGeocodingMarker,
+                                            .LIB_FailedGeocodingShapeLocations,
                                         `${error}`
                                     );
                                 });
@@ -250,7 +256,7 @@ namespace GoogleProvider.Shape {
                             OSFramework.Event.OSMap.MapEventType.OnError,
                             this.map,
                             OSFramework.Enum.ErrorCodes
-                                .GEN_InvalidChangePropertyMarker,
+                                .GEN_InvalidChangePropertyShape,
                             `${propertyName}`
                         );
                 }
