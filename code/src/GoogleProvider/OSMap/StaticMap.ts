@@ -1,7 +1,7 @@
 /// <reference path="../../OSFramework/OSMap/AbstractMap.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.Map {
+namespace GoogleProvider.OSMap {
     type Size = {
         height: number;
         width: number;
@@ -233,6 +233,12 @@ namespace GoogleProvider.Map {
                     );
                     return;
             }
+        }
+
+        public changeShapeProperty(): void {
+            throw new Error(
+                `Change Shape Property method can't be used on a StaticMap because Static Maps don't have events.`
+            );
         }
 
         public dispose(): void {

@@ -8,9 +8,9 @@ namespace GoogleProvider.Feature {
         private _directionsRenderer: google.maps.DirectionsRenderer;
         private _directionsService: google.maps.DirectionsService;
         private _isEnabled: boolean;
-        private _map: Map.IMapGoogle;
+        private _map: OSMap.IMapGoogle;
 
-        constructor(map: Map.IMapGoogle) {
+        constructor(map: OSMap.IMapGoogle) {
             this._map = map;
             this._isEnabled = false;
         }
