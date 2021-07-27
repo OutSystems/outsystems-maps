@@ -14,6 +14,10 @@ namespace OSFramework.Helper.Constants {
     export const markerTag = '[data-block="Marker.Marker"]';
     /** Tag used to find MarkerPopup */
     export const markerPopupTag = '[data-block="Marker.MarkerPopup"]';
+    /** Tag used to find Generic Markers */
+    export const shapeGeneric = '[data-block*="Shapes."]';
+    /** Tag used to find Map */
+    export const shapePolylineTag = '[data-block="Shapes.Polyline"]';
 
     /** Tag used to find a generic widget */
     export const outsystemsWidgetTag = '[data-block]';
@@ -33,6 +37,8 @@ namespace OSFramework.Helper.Constants {
     export const markerUniqueIdCss = '.ss-marker';
     /** Tag used to find the container where the StaticMap Image was defined */
     export const staticMapCss = '.staticMap-image';
+    /** Tag used to find the container where the Shape's uniqueId was defined */
+    export const shapeUniqueIdCss = '.ss-shape';
     /** Tag used to find the uniqueId property of a DOM element */
     export const uniqueIdAttribute = 'name';
 
