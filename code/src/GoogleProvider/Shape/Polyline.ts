@@ -97,7 +97,6 @@ namespace GoogleProvider.Shape {
             }
         }
 
-        // This method will be removed as soon as the markers by input parameter get deprecated
         protected _setShapeEvents(): void {
             if (this._listeners === undefined) this._listeners = [];
             // Make sure the listeners get removed before adding the new ones
@@ -120,8 +119,8 @@ namespace GoogleProvider.Shape {
                 });
             }
 
-            // Any events that got added to the markerEvents via the API Subscribe method will have to be taken care here
-            // If the Event type of each handler is MarkerProviderEvent, we want to make sure to add that event to the listeners of the google marker provider (e.g. click, dblclick, contextmenu, etc)
+            // Any events that got added to the shapeEvents via the API Subscribe method will have to be taken care here
+            // If the Event type of each handler is ShapeProviderEvent, we want to make sure to add that event to the listeners of the google shape provider (e.g. click, dblclick, contextmenu, etc)
             // Otherwise, we don't want to add them to the google provider listeners (e.g. OnInitialize, OnTriggeredEvent, etc)
             this.shapeEvents.handlers.forEach(
                 (handler: OSFramework.Event.IEvent<string>, eventName) => {
@@ -134,7 +133,6 @@ namespace GoogleProvider.Shape {
                             // Name of the event (e.g. click, dblclick, contextmenu, etc)
                             eventName,
                             // Callback CAN have an attribute (e) which is of the type MapMouseEvent
-                            // Trigger the event by specifying the ProviderEvent MarkerType and the coords (lat, lng) if the callback has the attribute MapMouseEvent
                             // eslint-disable-next-line @typescript-eslint/no-unused-vars
                             (e?: google.maps.MapMouseEvent) => {
                                 this.shapeEvents.trigger(
@@ -158,7 +156,7 @@ namespace GoogleProvider.Shape {
             );
         }
 
-        /** Checks if the Marker has associated events */
+        /** Checks if the Shape has associated events */
         public get hasEvents(): boolean {
             return this.shapeEvents !== undefined;
         }
