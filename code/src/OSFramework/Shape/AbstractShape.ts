@@ -87,7 +87,7 @@ namespace OSFramework.Shape {
                 this.map.mapEvents.trigger(
                     Event.OSMap.MapEventType.OnError,
                     this.map,
-                    Enum.ErrorCodes.GEN_InvalidChangePropertyMarker,
+                    Enum.ErrorCodes.GEN_InvalidChangePropertyShape,
                     `${propertyName}`
                 );
             }

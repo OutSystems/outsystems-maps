@@ -12563,8 +12563,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 794,
-									"top": 680,
+									"left": 800,
+									"top": 687,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -12584,8 +12584,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 803,
-									"top": 668,
+									"left": 809,
+									"top": 675,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -12605,8 +12605,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 775,
-									"top": 703,
+									"left": 781,
+									"top": 710,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -12624,7 +12624,7 @@
 								"$ref": "AAAAAAF5E9H+36BRRX4="
 							},
 							"lineStyle": 1,
-							"points": "688:621;882:775",
+							"points": "702:636;881:775",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAF5HKkaA+tm+o0="
@@ -15441,6 +15441,23 @@
 										},
 										{
 											"_type": "UMLOperationView",
+											"_id": "AAAAAAF67FnLCXP6VQI=",
+											"_parent": {
+												"$ref": "AAAAAAF5E9H+36BY/BI="
+											},
+											"model": {
+												"$ref": "AAAAAAF67FnK3nPxkwo="
+											},
+											"font": "Arial;13;0",
+											"left": 149,
+											"top": 498,
+											"width": 647,
+											"height": 13,
+											"text": "+addShape(shape: OSFramework.Shape.IShape): OSFramework.Shape.IShape",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
 											"_id": "AAAAAAF5HJmn5eCqFxU=",
 											"_parent": {
 												"$ref": "AAAAAAF5E9H+36BY/BI="
@@ -15450,7 +15467,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 149,
-											"top": 498,
+											"top": 513,
 											"width": 647,
 											"height": 13,
 											"text": "+build(): void",
@@ -15467,7 +15484,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 149,
-											"top": 513,
+											"top": 528,
 											"width": 647,
 											"height": 13,
 											"text": "+buildFeatures(): void",
@@ -15484,7 +15501,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 149,
-											"top": 528,
+											"top": 543,
 											"width": 647,
 											"height": 13,
 											"text": "+changeMarkerProperty(markerId: string, propertyName: string, propertyValue: any): void",
@@ -15501,7 +15518,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 149,
-											"top": 543,
+											"top": 558,
 											"width": 647,
 											"height": 13,
 											"text": "+changeProperty(propertyName: string, value: any): void",
@@ -15518,7 +15535,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 149,
-											"top": 558,
+											"top": 573,
 											"width": 647,
 											"height": 13,
 											"text": "+dispose(): void",
@@ -15535,7 +15552,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 149,
-											"top": 573,
+											"top": 588,
 											"width": 647,
 											"height": 13,
 											"text": "+refresh(): void",
@@ -15552,7 +15569,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 149,
-											"top": 588,
+											"top": 603,
 											"width": 647,
 											"height": 13,
 											"text": "+refreshProviderEvents(): void",
@@ -15569,7 +15586,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 149,
-											"top": 603,
+											"top": 618,
 											"width": 647,
 											"height": 13,
 											"text": "«get»+mapTag()",
@@ -15580,7 +15597,7 @@
 									"left": 144,
 									"top": 388,
 									"width": 657,
-									"height": 233
+									"height": 248
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -15623,7 +15640,7 @@
 							"left": 144,
 							"top": 280,
 							"width": 657,
-							"height": 341,
+							"height": 356,
 							"showNamespace": true,
 							"nameCompartment": {
 								"$ref": "AAAAAAF5E9H+36BSgig="
@@ -51069,6 +51086,7 @@
 														"$ref": "AAAAAAF650FCJTgz+9Q="
 													},
 													"name": "lookUpDOM ",
+													"type": "",
 													"defaultValue": "true"
 												},
 												{
@@ -51776,6 +51794,34 @@
 													},
 													"name": "return",
 													"type": "void",
+													"direction": "return"
+												}
+											]
+										},
+										{
+											"_type": "UMLOperation",
+											"_id": "AAAAAAF67FnK3nPxkwo=",
+											"_parent": {
+												"$ref": "AAAAAAF5E9Hdw6Agss0="
+											},
+											"name": "addShape",
+											"parameters": [
+												{
+													"_type": "UMLParameter",
+													"_id": "AAAAAAF67FnWMnQlQTw=",
+													"_parent": {
+														"$ref": "AAAAAAF67FnK3nPxkwo="
+													},
+													"name": "shape",
+													"type": "OSFramework.Shape.IShape"
+												},
+												{
+													"_type": "UMLParameter",
+													"_id": "AAAAAAF67FnWNXQmYrw=",
+													"_parent": {
+														"$ref": "AAAAAAF67FnK3nPxkwo="
+													},
+													"type": "OSFramework.Shape.IShape",
 													"direction": "return"
 												}
 											]
@@ -60406,7 +60452,8 @@
 															"_parent": {
 																"$ref": "AAAAAAF651bWGGN5iQw="
 															},
-															"name": "eventInfo"
+															"name": "eventInfo",
+															"type": ""
 														},
 														{
 															"_type": "UMLParameter",
@@ -60424,7 +60471,8 @@
 															"_parent": {
 																"$ref": "AAAAAAF651bWGGN5iQw="
 															},
-															"name": "...args"
+															"name": "...args",
+															"type": ""
 														}
 													]
 												}
@@ -60906,7 +60954,8 @@
 											"_parent": {
 												"$ref": "AAAAAAF5fzfRNi55v1A="
 											},
-											"name": "shapeGeneric"
+											"name": "shapeGeneric",
+											"type": ""
 										},
 										{
 											"_type": "UMLAttribute",
@@ -60914,7 +60963,8 @@
 											"_parent": {
 												"$ref": "AAAAAAF5fzfRNi55v1A="
 											},
-											"name": "shapePolylineTag"
+											"name": "shapePolylineTag",
+											"type": ""
 										},
 										{
 											"_type": "UMLAttribute",
@@ -60922,7 +60972,8 @@
 											"_parent": {
 												"$ref": "AAAAAAF5fzfRNi55v1A="
 											},
-											"name": "shapeUniqueIdCss"
+											"name": "shapeUniqueIdCss",
+											"type": ""
 										}
 									]
 								},

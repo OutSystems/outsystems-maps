@@ -215,6 +215,18 @@ namespace GoogleProvider.OSMap {
             return marker;
         }
 
+        public addShape(
+            shape: OSFramework.Shape.IShape
+        ): OSFramework.Shape.IShape {
+            super.addShape(shape);
+
+            if (this.isReady) {
+                shape.build();
+            }
+
+            return shape;
+        }
+
         public build(): void {
             super.build();
 
