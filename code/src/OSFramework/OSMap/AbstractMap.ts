@@ -148,16 +148,8 @@ namespace OSFramework.OSMap {
             return this._markers.has(markerId);
         }
 
-        public hasMarkersDefined(): boolean {
-            throw new Error('Method not implemented.');
-        }
-
         public hasShape(shapeId: string): boolean {
             return this._shapes.has(shapeId);
-        }
-
-        public hasShapesDefined(): boolean {
-            throw new Error('Method not implemented.');
         }
 
         public removeAllMarkers(): void {
