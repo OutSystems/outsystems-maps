@@ -7,7 +7,6 @@ namespace OSFramework.Shape {
     > implements IShapeGeneric<W> {
         /** Configuration reference */
         private _config: Configuration.IConfigurationShape;
-        private _index: number;
         private _map: OSMap.IMap;
         private _uniqueId: string;
         private _widgetId: string;
@@ -36,11 +35,6 @@ namespace OSFramework.Shape {
 
         public get config(): Configuration.IConfigurationShape {
             return this._config;
-        }
-        public get index(): number {
-            return this._map.shapes.findIndex(
-                (shape) => shape.uniqueId === this.uniqueId
-            );
         }
         public get isReady(): boolean {
             return this._built;
