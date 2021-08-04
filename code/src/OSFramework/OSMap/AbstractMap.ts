@@ -113,13 +113,14 @@ namespace OSFramework.OSMap {
 
         public dispose(): void {
             this._isReady = false;
+            // Let's make sure we remove both markers and shapes from the map
             this._markers.forEach(
                 (marker: Marker.IMarker, markerId: string) => {
                     this.removeMarker(markerId);
                 }
             );
             this._shapes.forEach((shape: Shape.IShape, shapeId: string) => {
-                this.removeMarker(shapeId);
+                this.removeShape(shapeId);
             });
         }
 
