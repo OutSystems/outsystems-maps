@@ -8,10 +8,10 @@ namespace GoogleProvider.Feature {
          * (can be changed after running the changeParameter method or is set by initializing the Map)
          */
         private _initialCenter: OSFramework.OSStructures.OSMap.Coordinates;
-        private _map: Map.IMapGoogle;
+        private _map: OSMap.IMapGoogle;
 
         constructor(
-            map: Map.IMapGoogle,
+            map: OSMap.IMapGoogle,
             center: OSFramework.OSStructures.OSMap.Coordinates
         ) {
             this._map = map;

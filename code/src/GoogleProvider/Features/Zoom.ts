@@ -6,9 +6,9 @@ namespace GoogleProvider.Feature {
         private _autofitEnabled: boolean;
         /** Current Zoom level of the Map that changes whenever a marker is added or by enabling the Autofit on Zoom feature */
         private _level: OSFramework.Enum.OSMap.Zoom;
-        private _map: Map.IMapGoogle;
+        private _map: OSMap.IMapGoogle;
 
-        constructor(map: Map.IMapGoogle, level: OSFramework.Enum.OSMap.Zoom) {
+        constructor(map: OSMap.IMapGoogle, level: OSFramework.Enum.OSMap.Zoom) {
             this._map = map;
             this._level = level;
         }

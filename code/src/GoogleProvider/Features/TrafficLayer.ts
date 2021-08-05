@@ -6,10 +6,10 @@ namespace GoogleProvider.Feature {
             OSFramework.Interface.IBuilder,
             OSFramework.Interface.IDisposable {
         private _enabled: boolean;
-        private _map: Map.IMapGoogle;
+        private _map: OSMap.IMapGoogle;
         private _trafficLayer: google.maps.TrafficLayer;
 
-        constructor(map: Map.IMapGoogle, enabled: boolean) {
+        constructor(map: OSMap.IMapGoogle, enabled: boolean) {
             this._map = map;
             this._enabled = enabled;
         }
