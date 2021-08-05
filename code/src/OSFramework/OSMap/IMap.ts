@@ -66,9 +66,16 @@ namespace OSFramework.OSMap {
          */
         hasMarker(markerId: string): boolean;
         /**
+<<<<<<< Updated upstream
          * Checks if the Map has any Marker defined
          */
         hasMarkersDefined(): boolean;
+=======
+         * Checks if the Map has a specific Shape by giving a shapeId
+         * @param shapeId id of the shape
+         */
+        hasShape(shapeId: string): boolean;
+>>>>>>> Stashed changes
         /**
          * Refreshes the Map after changing zoom or center.
          * Can be used to reset to the defined zoom, center and offset configurations.

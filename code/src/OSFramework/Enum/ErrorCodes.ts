@@ -8,6 +8,11 @@ namespace OSFramework.Enum {
         CFG_APIKeyAlreadySetMap = 'MAPS-CFG-01001',
         CFG_APIKeyAlreadySetStaticMap = 'MAPS-CFG-02001',
         CFG_CantChangeParamsStaticMap = 'MAPS-CFG-02002',
+<<<<<<< Updated upstream
+=======
+        CFG_InvalidPolylineShapeLocations = 'MAPS-CFG-05001',
+        CFG_InvalidPolygonShapeLocations = 'MAPS-CFG-05002',
+>>>>>>> Stashed changes
 
         // Error Codes - LIB errors - Specific errors generated when consuming a third party lib / providers
         LIB_InvalidApiKeyMap = 'MAPS-LIB-01001',

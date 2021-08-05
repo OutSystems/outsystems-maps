@@ -30,6 +30,10 @@ namespace OSFramework.OSMap {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public abstract get providerEvents(): any;
 
+        protected get shapes(): Shape.IShape[] {
+            return Array.from(this._shapesSet);
+        }
+
         public get config(): Z {
             return this._config;
         }

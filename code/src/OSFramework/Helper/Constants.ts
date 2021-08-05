@@ -14,6 +14,15 @@ namespace OSFramework.Helper.Constants {
     export const markerTag = '[data-block="Marker.Marker"]';
     /** Tag used to find MarkerPopup */
     export const markerPopupTag = '[data-block="Marker.MarkerPopup"]';
+<<<<<<< Updated upstream
+=======
+    /** Tag used to find Generic Shapes */
+    export const shapeGeneric = '[data-block*="Shapes."]';
+    /** Tag used to find the Polyline Shape */
+    export const shapePolylineTag = '[data-block="Shapes.Polyline"]';
+    /** Tag used to find the Polygon Shape */
+    export const shapePolygonTag = '[data-block="Shapes.Polygon"]';
+>>>>>>> Stashed changes
 
     /** Tag used to find a generic widget */
     export const outsystemsWidgetTag = '[data-block]';
