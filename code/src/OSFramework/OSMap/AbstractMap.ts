@@ -54,10 +54,6 @@ namespace OSFramework.OSMap {
             return Array.from(this._markersSet);
         }
 
-        public get shapes(): Shape.IShape[] {
-            return Array.from(this._shapesSet);
-        }
-
         public get mapEvents(): Event.OSMap.MapEventsManager {
             return this._mapEvents;
         }

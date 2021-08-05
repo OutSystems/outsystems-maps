@@ -1,18 +1,17 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.Shape {
     export abstract class AbstractShape<
-        W,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        Z extends Configuration.IConfigurationShape
-    > implements IShapeGeneric<W> {
+        T extends Configuration.IConfigurationShape
+    > implements IShape {
         /** Configuration reference */
-        private _config: Configuration.IConfigurationShape;
+        private _config: T;
         private _map: OSMap.IMap;
+        private _type: Enum.ShapeType;
         private _uniqueId: string;
         private _widgetId: string;
 
         protected _built: boolean;
-        protected _provider: W;
         protected _shapeEvents: Event.Shape.ShapeEventsManager;
 
         abstract hasEvents: boolean;
@@ -21,19 +20,17 @@ namespace OSFramework.Shape {
             map: OSMap.IMap,
             uniqueId: string,
             type: Enum.ShapeType,
-            config: Configuration.IConfigurationShape
+            config: T
         ) {
             this._map = map;
             this._uniqueId = uniqueId;
             this._config = config;
             this._built = false;
             this._shapeEvents = new Event.Shape.ShapeEventsManager(this);
+            this._type = type;
         }
-        public abstract get shapeTag(): string;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public abstract get providerEvents(): any;
 
-        public get config(): Configuration.IConfigurationShape {
+        public get config(): T {
             return this._config;
         }
         public get isReady(): boolean {
@@ -42,17 +39,29 @@ namespace OSFramework.Shape {
         public get map(): OSMap.IMap {
             return this._map;
         }
+        /** Gets the minimum mandatory number of addresses/coordinates to create the path (depends on the shape) */
+        public get minPath(): number {
+            return Enum.ShapeMinPath[this._type];
+        }
         public get shapeEvents(): Event.Shape.ShapeEventsManager {
             return this._shapeEvents;
-        }
-        public get provider(): W {
-            return this._provider;
         }
         public get uniqueId(): string {
             return this._uniqueId;
         }
         public get widgetId(): string {
+            // If widgetId is undefined try to get its value from the DOM again
+            if (this._widgetId === undefined || this._widgetId === '') {
+                this._setWidgetId();
+            }
             return this._widgetId;
+        }
+        private _setWidgetId(): void {
+            this._widgetId = Helper.GetElementByUniqueId(this.uniqueId, false)
+                ? Helper.GetElementByUniqueId(this.uniqueId).closest(
+                      this.shapeTag
+                  ).id
+                : undefined;
         }
 
         protected finishBuild(): void {
@@ -63,13 +72,9 @@ namespace OSFramework.Shape {
 
         public build(): void {
             if (this._built) return;
-            // Remove in  the future (undefined part) as the Shapes might be created via the parameter Shapes_DEPRECATED.
-            // We only have the widgetId when the shape is created via Shape Block.
-            this._widgetId = Helper.GetElementByUniqueId(this.uniqueId, false)
-                ? Helper.GetElementByUniqueId(this.uniqueId).closest(
-                      this.shapeTag
-                  ).id
-                : undefined;
+
+            // Try to set the widgetId by consulting the DOM
+            this._setWidgetId();
         }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
@@ -92,7 +97,8 @@ namespace OSFramework.Shape {
         }
 
         public equalsToID(id: string): boolean {
-            return id === this._uniqueId || id === this._widgetId;
+            // using this.widgetId we make sure the widgetId gets binded if it isn't already
+            return id === this._uniqueId || id === this.widgetId;
         }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -105,5 +111,11 @@ namespace OSFramework.Shape {
         }
 
         public abstract refreshProviderEvents(): void;
+        public abstract get invalidShapeLocationErrorCode(): Enum.ErrorCodes;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        public abstract get provider(): any;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        public abstract get providerEvents(): any;
+        public abstract get shapeTag(): string;
     }
 }
