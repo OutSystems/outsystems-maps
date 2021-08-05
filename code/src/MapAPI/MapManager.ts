@@ -36,7 +36,7 @@ namespace MapAPI.MapManager {
         providerType: OSFramework.Enum.ProviderType,
         configs: string
     ): OSFramework.OSMap.IMap {
-        const _map = GoogleProvider.Map.MapFactory.MakeMap(
+        const _map = GoogleProvider.OSMap.MapFactory.MakeMap(
             providerType,
             mapId,
             JSON.parse(configs)
@@ -78,6 +78,20 @@ namespace MapAPI.MapManager {
         const map = GetMapById(mapId);
 
         return map.markers;
+    }
+
+    /**
+     * Function that will retrieve all Shapes from the Map.
+     *
+     * @export
+     * @param {string} mapId Id of the Map to get the Shapes.
+     */
+    export function GetAllShapes(
+        mapId: string
+    ): Array<OSFramework.Shape.IShape> {
+        const map = GetMapById(mapId);
+
+        return map.shapes;
     }
 
     /**

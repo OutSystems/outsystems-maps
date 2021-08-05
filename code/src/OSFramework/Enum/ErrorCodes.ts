@@ -8,11 +8,8 @@ namespace OSFramework.Enum {
         CFG_APIKeyAlreadySetMap = 'MAPS-CFG-01001',
         CFG_APIKeyAlreadySetStaticMap = 'MAPS-CFG-02001',
         CFG_CantChangeParamsStaticMap = 'MAPS-CFG-02002',
-<<<<<<< Updated upstream
-=======
         CFG_InvalidPolylineShapeLocations = 'MAPS-CFG-05001',
         CFG_InvalidPolygonShapeLocations = 'MAPS-CFG-05002',
->>>>>>> Stashed changes
 
         // Error Codes - LIB errors - Specific errors generated when consuming a third party lib / providers
         LIB_InvalidApiKeyMap = 'MAPS-LIB-01001',
@@ -20,6 +17,7 @@ namespace OSFramework.Enum {
         LIB_InvalidApiKeyStaticMap = 'MAPS-LIB-02001',
         LIB_FailedGeocodingMarker = 'MAPS-LIB-03001',
         LIB_FailedSetDirections = 'MAPS-LIB-04001',
+        LIB_FailedGeocodingShapeLocations = 'MAPS-LIB-05001',
 
         // Error Codes - API errors - Specific errors generated when exposing the component client actions API/Framework.
         API_FailedRemoveDirections = 'MAPS-API-03001',
@@ -28,6 +26,8 @@ namespace OSFramework.Enum {
         GEN_InvalidChangePropertyMap = 'MAPS-GEN-01001',
         GEN_InvalidChangePropertyMarker = 'MAPS-GEN-03001',
         GEN_UnsupportedEventMap = 'MAPS-GEN-01002',
-        GEN_UnsupportedEventMarker = 'MAPS-GEN-03002'
+        GEN_UnsupportedEventMarker = 'MAPS-GEN-03002',
+        GEN_InvalidChangePropertyShape = 'MAPS-GEN-05001',
+        GEN_UnsupportedEventShape = 'MAPS-GEN-05002'
     }
 }

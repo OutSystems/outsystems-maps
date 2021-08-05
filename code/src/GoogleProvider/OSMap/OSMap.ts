@@ -1,7 +1,7 @@
 /// <reference path="../../OSFramework/OSMap/AbstractMap.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.Map {
+namespace GoogleProvider.OSMap {
     export class Map
         extends OSFramework.OSMap.AbstractMap<
             google.maps.Map,
@@ -26,6 +26,11 @@ namespace GoogleProvider.Map {
         // eslint-disable-next-line @typescript-eslint/member-ordering
         private _buildMarkers(): void {
             this.markers.forEach((marker) => marker.build());
+        }
+
+        // eslint-disable-next-line @typescript-eslint/member-ordering
+        private _buildShapes(): void {
+            this.shapes.forEach((shape) => shape.build());
         }
 
         /**
@@ -63,6 +68,7 @@ namespace GoogleProvider.Map {
 
                 this.buildFeatures();
                 this._buildMarkers();
+                this._buildShapes();
                 this.finishBuild();
 
                 // Make sure to change the center after the conversion of the location to coordinates
@@ -209,6 +215,18 @@ namespace GoogleProvider.Map {
             return marker;
         }
 
+        public addShape(
+            shape: OSFramework.Shape.IShape
+        ): OSFramework.Shape.IShape {
+            super.addShape(shape);
+
+            if (this.isReady) {
+                shape.build();
+            }
+
+            return shape;
+        }
+
         public build(): void {
             super.build();
 
@@ -285,6 +303,23 @@ namespace GoogleProvider.Map {
                         );
                         return;
                 }
+            }
+        }
+
+        public changeShapeProperty(
+            shapeId: string,
+            propertyName: string,
+            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+            propertyValue: any
+        ): void {
+            const shape = this.getShape(shapeId);
+
+            if (!shape) {
+                console.error(
+                    `changeShapeProperty - shape id:${shapeId} not found.`
+                );
+            } else {
+                shape.changeProperty(propertyName, propertyValue);
             }
         }
 
