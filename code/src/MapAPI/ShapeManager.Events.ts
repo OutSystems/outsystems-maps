@@ -62,6 +62,24 @@ namespace MapAPI.ShapeManager.Events {
      * @param {MapAPI.Callbacks.Shape.Event} callback callback to be invoked when the event occurs
      */
     export function Subscribe(
+        shapeId: string,
+        eventName: OSFramework.Event.Shape.ShapeEventType,
+        // eslint-disable-next-line
+        callback: OSFramework.Callbacks.Shape.Event
+    ): void {
+        const shape = GetShapeById(shapeId);
+        shape.shapeEvents.addHandler(eventName, callback);
+    }
+
+    /**
+     * API method to subscribe to events of a specific Marker by EventUniqueId
+     *
+     * @export
+     * @param {string} eventUniqueId Id of the Event to be attached
+     * @param {OSFramework.Event.Map.MapEventType} eventName name fo the event to be attached
+     * @param {MapAPI.Callbacks.OSMap.Event} callback callback to be invoked when the event occurs
+     */
+    export function SubscribeByEventUniqueId(
         eventUniqueId: string,
         eventName: OSFramework.Event.Shape.ShapeEventType,
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any

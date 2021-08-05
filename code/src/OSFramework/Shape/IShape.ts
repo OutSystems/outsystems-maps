@@ -5,7 +5,6 @@ namespace OSFramework.Shape {
             Interface.ISearchById,
             Interface.IDisposable {
         config: Configuration.IConfigurationShape; //IConfigurationShape
-        index: number;
         isReady: boolean;
         map: OSMap.IMap; //IMap
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -81,20 +81,6 @@ namespace MapAPI.MapManager {
     }
 
     /**
-     * Function that will retrieve all Shapes from the Map.
-     *
-     * @export
-     * @param {string} mapId Id of the Map to get the Shapes.
-     */
-    export function GetAllShapes(
-        mapId: string
-    ): Array<OSFramework.Shape.IShape> {
-        const map = GetMapById(mapId);
-
-        return map.shapes;
-    }
-
-    /**
      * Function that will get the instance of a Map, by a given Id.
      *
      * @export

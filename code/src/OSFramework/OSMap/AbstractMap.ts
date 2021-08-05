@@ -34,6 +34,10 @@ namespace OSFramework.OSMap {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public abstract get providerEvents(): any;
 
+        protected get shapes(): Shape.IShape[] {
+            return Array.from(this._shapesSet);
+        }
+
         public get config(): Z {
             return this._config;
         }
@@ -48,10 +52,6 @@ namespace OSFramework.OSMap {
 
         public get markers(): Marker.IMarker[] {
             return Array.from(this._markersSet);
-        }
-
-        public get shapes(): Shape.IShape[] {
-            return Array.from(this._shapesSet);
         }
 
         public get mapEvents(): Event.OSMap.MapEventsManager {

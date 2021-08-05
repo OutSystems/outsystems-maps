@@ -22,8 +22,6 @@ namespace OSFramework.OSMap {
         /** Events from the Map provider */
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         providerEvents: any;
-        /** Get all Shapes from the Map */
-        shapes: Array<OSFramework.Shape.IShape>;
         /** Id of the Map */
         uniqueId: string;
         /** Id of the Map widget */
@@ -92,18 +90,10 @@ namespace OSFramework.OSMap {
          */
         hasMarker(markerId: string): boolean;
         /**
-         * Checks if the Map has any Marker defined
-         */
-        hasMarkersDefined(): boolean;
-        /**
          * Checks if the Map has a specific Shape by giving a shapeId
          * @param shapeId id of the shape
          */
         hasShape(shapeId: string): boolean;
-        /**
-         * Checks if the Map has any Shape defined
-         */
-        hasShapesDefined(): boolean;
         /**
          * Refreshes the Map after changing zoom or center.
          * Can be used to reset to the defined zoom, center and offset configurations.

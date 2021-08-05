@@ -16,6 +16,7 @@ namespace GoogleProvider.Constants.Shape {
         'mouseup',
         'position_changed',
         'rightclick',
-        'shape_changed'
+        'shape_changed',
+        'bounds_changed'
     ];
 }

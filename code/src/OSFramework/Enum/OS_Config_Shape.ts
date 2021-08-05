@@ -6,10 +6,12 @@ namespace OSFramework.Enum {
     export enum OS_Config_Shape {
         allowDrag,
         allowEdit,
-        color,
+        fillColor,
+        fillOpacity,
         locations,
-        opacity,
-        uniqueId,
-        weight
+        strokeColor,
+        strokeOpacity,
+        strokeWeight,
+        uniqueId
     }
 }

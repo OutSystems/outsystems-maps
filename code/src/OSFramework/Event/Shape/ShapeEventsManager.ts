@@ -32,10 +32,15 @@ namespace OSFramework.Event.Shape {
                     event = new ShapeOnClickEvent();
                     break;
                 default:
+                    // Validate if google provider has this event before creating the instance of ShapeProviderEvent
+                    if (this._shape.validateProviderEvent(eventType) === true) {
+                        event = new ShapeProviderEvent();
+                        break;
+                    }
                     this._shape.map.mapEvents.trigger(
                         OSMap.MapEventType.OnError,
                         this._shape.map,
-                        Enum.ErrorCodes.GEN_UnsupportedEventMarker,
+                        Enum.ErrorCodes.GEN_UnsupportedEventShape,
                         `${eventType}`
                     );
                     return;
@@ -58,7 +63,10 @@ namespace OSFramework.Event.Shape {
             // Let's first check if the shape has any events associated
             // If the event type is ProviderEvent than we need to get the handlers for the eventInfo -> name of the event
             // If the event type is not ProviderEvent than we need to get the handlers for the eventType (Initialized, OnError, OnEventTriggered)
-            const hasEvents = this.handlers.has(eventType);
+            const hasEvents =
+                eventType === ShapeEventType.ProviderEvent
+                    ? this.handlers.has(eventInfo as ShapeEventType)
+                    : this.handlers.has(eventType);
             if (hasEvents) {
                 const handlerEvent = this.handlers.get(eventType);
 
@@ -66,17 +74,32 @@ namespace OSFramework.Event.Shape {
                     case ShapeEventType.Initialized:
                         handlerEvent.trigger(
                             this._shape.map.widgetId, // Id of Map block that was initialized
-                            this._shape.widgetId || this._shape.uniqueId, // Id of Shape block that was initialized
-                            this._shape.index // Index of Shape block that was initialized
+                            this._shape.widgetId || this._shape.uniqueId // Id of Shape block that was initialized
                         );
                         break;
                     case ShapeEventType.OnClick:
                         handlerEvent.trigger(
                             this._shape.map.widgetId, // Id of Map block that was clicked
-                            this._shape.widgetId || this._shape.uniqueId, // Id of Shape block that was clicked
-                            this._shape.index // Index of Shape block that was clicked
+                            this._shape.widgetId || this._shape.uniqueId // Id of Shape block that was clicked
                         );
                         break;
+                    case ShapeEventType.ProviderEvent:
+                        // If the event type is ProviderEvent we need to first check if the event info (name of the event) is a valid one for the provider events
+                        if (
+                            this._shape.validateProviderEvent(eventInfo) ===
+                            true
+                        ) {
+                            const handler = this.handlers.get(
+                                eventInfo as ShapeEventType
+                            );
+                            handler.trigger(
+                                this._shape.map.widgetId, // Id of Map block that triggered the event
+                                this._shape.widgetId || this._shape.uniqueId, // Id of Marker block that triggered the event
+                                eventInfo, // Name of the event that got triggered
+                                ...args // Coordinates retrieved from the marker event that got triggered
+                            );
+                            break;
+                        }
                     // If the event is not valid we can fall in the default case of the switch and throw an error
                     // eslint-disable-next-line no-fallthrough
                     default:

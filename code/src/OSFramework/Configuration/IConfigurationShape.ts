@@ -7,10 +7,10 @@ namespace OSFramework.Configuration {
     export interface IConfigurationShape extends IConfiguration {
         allowDrag: boolean;
         allowEdit: boolean;
-        color: string;
         locations: string;
-        opacity: number;
+        strokeColor: string;
+        strokeOpacity: number;
+        strokeWeight: number;
         uniqueId: string;
-        weight: number;
     }
 }

@@ -2,16 +2,16 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace GoogleProvider.Configuration.Shape {
-    export class GoogleShapeConfig
+    export class BasicShapeConfig
         extends OSFramework.Configuration.AbstractConfiguration
         implements OSFramework.Configuration.IConfigurationShape {
         public allowDrag: boolean;
         public allowEdit: boolean;
-        public color: string;
         public locations: string;
-        public opacity: number;
+        public strokeColor: string;
+        public strokeOpacity: number;
+        public strokeWeight: number;
         public uniqueId: string;
-        public weight: number;
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         constructor(config: any) {
@@ -25,9 +25,9 @@ namespace GoogleProvider.Configuration.Shape {
                 clickable: true,
                 draggable: this.allowDrag,
                 editable: this.allowEdit,
-                strokeOpacity: this.opacity,
-                strokeColor: this.color,
-                strokeWeight: this.weight
+                strokeOpacity: this.strokeOpacity,
+                strokeColor: this.strokeColor,
+                strokeWeight: this.strokeWeight
             };
 
             //Deleting all the undefined properties
