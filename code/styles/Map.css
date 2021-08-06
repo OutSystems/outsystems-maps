@@ -34,6 +34,10 @@
     object-fit: cover;
 }
 
+html[data-uieditorversion^="1"] .map-wrapper .staticMap-image {
+    -servicestudio-height: auto
+}  
+
 .map-container {   
     -servicestudio-background: var(--map-container-image);
     -servicestudio-background-repeat: no-repeat;
@@ -424,6 +428,53 @@ body.chrome .marker-popup-layout {
     text-decoration: none;
 }
 
+/***********************************************************************/
+/*                          SS Hybrid version                          */
+/***********************************************************************/
+
+/* MAKE IF FULLWIDTH
+This is to make the first and only if, directly inside the
+map-preview block to be fullwidth. We rather not apply this
+to all IFs in the page or even in the map placeholder due
+to the potential side effect.
+*/
+html[data-uieditorversion^="1"] .map-preview > .uieditor-if-widget-container {
+    -servicestudio-width: 100%!important;
+}
+
+/* MAKE THE IF's TRUE BRANCH HIDDEN
+This condition enable us to completely hide the true branch
+in development time, to improve the code readability.
+*/
+html[data-uieditorversion^="1"] .hide-true-branch > .uieditor-if-widget-container > :first-child {
+    -servicestudio-display: none!important;
+}
+
+/* MAKE THE IF's FALSE BRANCH HIDDEN
+This condition enable us to completely hide the true .hide-true-branch
+in development time, to improve the code readability.
+*/
+html[data-uieditorversion^="1"] .hide-false-branch > .uieditor-if-widget-container > :last-child {
+    -servicestudio-display: none!important;
+}
+
+/* MAKE THE CUSTOM PLACEHOLDER MESSAGES DISAPPEAR ON MOUSE HOVER
+We are using custom placeholders messages, set by CSS - in
+order to improve the developer experience, however in SS hybrid
+is actually overlapping with the default placeholder message, that
+appears once the mouse is over the drawing canvas.
+This rule, will make our custom messages disappear once the developer
+has the mouse over the canvas.
+*/
+html[data-uieditorversion^="1"]:hover .ss-marker-events:empty:after,
+html[data-uieditorversion^="1"]:hover .map-preview-addons:empty:after,
+html[data-uieditorversion^="1"]:hover .map-preview-events:empty:after {
+    -servicestudio-display: none!important;
+}
+
+.map-wrapper .force-hide {
+    -servicestudio-display: none!important;
+}
 /***********************************************************************/
 /**/
 /***********************************************************************/
