@@ -35,7 +35,7 @@
 }
 
 html[data-uieditorversion^="1"] .map-wrapper .staticMap-image {
-    -servicestudio-height: auto
+    -servicestudio-height: auto;
 }  
 
 .map-container {   
@@ -197,10 +197,6 @@ html[data-uieditorversion^="1"] .map-wrapper .staticMap-image {
 /***********************************************************************/
 .map-preview > span {
     -servicestudio-width: 100%;
-}
-
-.map-preview > span > span{
-    --servicestudio-min-height: calc(var(--map-height) - 80px);
 }
 
 .map-preview-addons {
