@@ -28,7 +28,7 @@ namespace GoogleProvider.Shape {
                     // Throw an error for invalid Locations
                     _locations.every((location: string, index: number) => {
                         // Make sure the current location from the array of locations is not empty
-                        if (this._isEmptyString(location)) {
+                        if (OSFramework.Helper.IsEmptyString(location)) {
                             this.map.mapEvents.trigger(
                                 OSFramework.Event.OSMap.MapEventType.OnError,
                                 this.map,
@@ -63,14 +63,23 @@ namespace GoogleProvider.Shape {
             }
         }
 
-        /** Validates if the string is empty */
-        private _isEmptyString(loc: string): boolean {
-            return (
-                typeof loc !== 'string' || loc === '' || loc.trim().length === 0
-            );
+        /** Validates if the locations are accepted for the Shape's path considering the minimum valid address/coordinates */
+        private _validateLocations(loc: string): boolean {
+            if (
+                OSFramework.Helper.IsEmptyString(loc) ||
+                JSON.parse(loc).length < this.minPath
+            ) {
+                this.map.mapEvents.trigger(
+                    OSFramework.Event.OSMap.MapEventType.OnError,
+                    this.map,
+                    this.invalidShapeLocationErrorCode
+                );
+                return false;
+            }
+            return true;
         }
 
-        private _setShapeEvents(): void {
+        protected _setShapeEvents(): void {
             if (this._listeners === undefined) this._listeners = [];
             // Make sure the listeners get removed before adding the new ones
             this._listeners.forEach((eventListener, index) => {
@@ -120,22 +129,6 @@ namespace GoogleProvider.Shape {
             );
         }
 
-        /** Validates if the locations are accepted for the Shape's path considering the minimum valid address/coordinates */
-        private _validateLocations(loc: string): boolean {
-            if (
-                this._isEmptyString(loc) ||
-                JSON.parse(loc).length < this.minPath
-            ) {
-                this.map.mapEvents.trigger(
-                    OSFramework.Event.OSMap.MapEventType.OnError,
-                    this.map,
-                    this.invalidShapeLocationErrorCode
-                );
-                return false;
-            }
-            return true;
-        }
-
         /** Checks if the Shape has associated events */
         public get hasEvents(): boolean {
             return this.shapeEvents !== undefined;
@@ -149,19 +142,21 @@ namespace GoogleProvider.Shape {
             return Constants.Shape.Events;
         }
 
-        public build(): void {
-            super.build();
-
-            // First build Path from locations
+        public _buildProvider(
+            coordinates:
+                | Promise<OSFramework.OSStructures.OSMap.Coordinates>
+                | Promise<Array<OSFramework.OSStructures.OSMap.Coordinates>>
+        ): void {
+            // First build coords from locations
             // Then, create the provider (Google maps Shape)
             // Finally, set Shape events
-            const shapePath = this._buildPath(this.config.locations);
-            // If path is undefined (should be a promise) -> don't create the shape
-            if (shapePath !== undefined) {
-                shapePath
-                    .then((path) => {
-                        // Create the provider with the respective path
-                        this._provider = this._createProvider(path);
+
+            // If coords is undefined (should be a promise) -> don't create the shape
+            if (coordinates !== undefined) {
+                coordinates
+                    .then((coords) => {
+                        // Create the provider with the respective coords
+                        this._provider = this._createProvider(coords);
 
                         // We can only set the events on the provider after its creation
                         this._setShapeEvents();
@@ -178,6 +173,15 @@ namespace GoogleProvider.Shape {
                             `${error}`
                         );
                     });
+            }
+        }
+
+        public build(): void {
+            super.build();
+
+            if (this.provider === undefined) {
+                const shapePath = this._buildPath(this.config.locations);
+                this._buildProvider(shapePath);
             }
         }
 
@@ -239,7 +243,9 @@ namespace GoogleProvider.Shape {
         public abstract get shapeTag(): string;
 
         protected abstract _createProvider(
-            path: Array<OSFramework.OSStructures.OSMap.Coordinates>
+            locations:
+                | Array<OSFramework.OSStructures.OSMap.Coordinates>
+                | OSFramework.OSStructures.OSMap.Coordinates
         ): W;
         protected abstract _setProviderPath(
             path: Array<OSFramework.OSStructures.OSMap.Coordinates>
