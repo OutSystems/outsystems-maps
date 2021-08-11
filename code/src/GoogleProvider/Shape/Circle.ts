@@ -85,7 +85,7 @@ namespace GoogleProvider.Shape {
         }
 
         public get invalidShapeLocationErrorCode(): OSFramework.Enum.ErrorCodes {
-            return OSFramework.Enum.ErrorCodes.CFG_InvalidCirclehapeLocations;
+            return OSFramework.Enum.ErrorCodes.CFG_InvalidCircleShapeCenter;
         }
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any

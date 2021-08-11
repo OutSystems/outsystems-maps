@@ -10,7 +10,7 @@ namespace OSFramework.Enum {
         CFG_CantChangeParamsStaticMap = 'MAPS-CFG-02002',
         CFG_InvalidPolylineShapeLocations = 'MAPS-CFG-05001',
         CFG_InvalidPolygonShapeLocations = 'MAPS-CFG-05002',
-        CFG_InvalidCirclehapeLocations = 'MAPS-CFG-05003',
+        CFG_InvalidCircleShapeCenter = 'MAPS-CFG-05003',
 
         // Error Codes - LIB errors - Specific errors generated when consuming a third party lib / providers
         LIB_InvalidApiKeyMap = 'MAPS-LIB-01001',
@@ -19,6 +19,7 @@ namespace OSFramework.Enum {
         LIB_FailedGeocodingMarker = 'MAPS-LIB-03001',
         LIB_FailedSetDirections = 'MAPS-LIB-04001',
         LIB_FailedGeocodingShapeLocations = 'MAPS-LIB-05001',
+        LIB_FailedGeocodingShapeCenter = 'MAPS-LIB-05002',
 
         // Error Codes - API errors - Specific errors generated when exposing the component client actions API/Framework.
         API_FailedRemoveDirections = 'MAPS-API-03001',
