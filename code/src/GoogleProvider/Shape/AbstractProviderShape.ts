@@ -129,20 +129,7 @@ namespace GoogleProvider.Shape {
             return true;
         }
 
-        /** Checks if the Shape has associated events */
-        public get hasEvents(): boolean {
-            return this.shapeEvents !== undefined;
-        }
-
-        public get provider(): W {
-            return this._provider;
-        }
-
-        public get providerEvents(): Array<string> {
-            return Constants.Shape.Events;
-        }
-
-        public _buildProvider(
+        protected _buildProvider(
             coordinates:
                 | Promise<OSFramework.OSStructures.OSMap.Coordinates>
                 | Promise<Array<OSFramework.OSStructures.OSMap.Coordinates>>
@@ -176,9 +163,23 @@ namespace GoogleProvider.Shape {
             }
         }
 
+        /** Checks if the Shape has associated events */
+        public get hasEvents(): boolean {
+            return this.shapeEvents !== undefined;
+        }
+
+        public get provider(): W {
+            return this._provider;
+        }
+
+        public get providerEvents(): Array<string> {
+            return Constants.Shape.Events;
+        }
+
         public build(): void {
             super.build();
 
+            // Only if the provider has not been defined by any child (e.g. Circle shape) we want to create the provider by using the default and generic builder
             if (this.provider === undefined) {
                 const shapePath = this._buildPath(this.config.locations);
                 this._buildProvider(shapePath);
