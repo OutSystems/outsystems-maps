@@ -63,23 +63,7 @@ namespace GoogleProvider.Shape {
             }
         }
 
-        /** Validates if the locations are accepted for the Shape's path considering the minimum valid address/coordinates */
-        private _validateLocations(loc: string): boolean {
-            if (
-                OSFramework.Helper.IsEmptyString(loc) ||
-                JSON.parse(loc).length < this.minPath
-            ) {
-                this.map.mapEvents.trigger(
-                    OSFramework.Event.OSMap.MapEventType.OnError,
-                    this.map,
-                    this.invalidShapeLocationErrorCode
-                );
-                return false;
-            }
-            return true;
-        }
-
-        protected _setShapeEvents(): void {
+        private _setShapeEvents(): void {
             if (this._listeners === undefined) this._listeners = [];
             // Make sure the listeners get removed before adding the new ones
             this._listeners.forEach((eventListener, index) => {
@@ -127,6 +111,22 @@ namespace GoogleProvider.Shape {
                     }
                 }
             );
+        }
+
+        /** Validates if the locations are accepted for the Shape's path considering the minimum valid address/coordinates */
+        private _validateLocations(loc: string): boolean {
+            if (
+                OSFramework.Helper.IsEmptyString(loc) ||
+                JSON.parse(loc).length < this.minPath
+            ) {
+                this.map.mapEvents.trigger(
+                    OSFramework.Event.OSMap.MapEventType.OnError,
+                    this.map,
+                    this.invalidShapeLocationErrorCode
+                );
+                return false;
+            }
+            return true;
         }
 
         /** Checks if the Shape has associated events */
