@@ -67,8 +67,8 @@ namespace MapAPI.ShapeManager {
     export function GetCircle(shapeId: string): string {
         const shape = GetShapeById(shapeId);
         const properties = {
-            center: undefined,
-            radius: undefined
+            Center: { Lat: undefined, Lng: undefined },
+            Radius: undefined
         };
         if (shape.type !== OSFramework.Enum.ShapeType.Circle) {
             OSFramework.Helper.ThrowError(
@@ -76,8 +76,11 @@ namespace MapAPI.ShapeManager {
                 OSFramework.Enum.ErrorCodes.API_FailedGettingCircleShape
             );
         } else {
-            properties.center = shape.providerCenter;
-            properties.radius = shape.providerRadius;
+            properties.Center = {
+                Lat: shape.providerCenter.lat,
+                Lng: shape.providerCenter.lng
+            };
+            properties.Radius = shape.providerRadius;
         }
         return JSON.stringify(properties);
     }
@@ -130,7 +133,12 @@ namespace MapAPI.ShapeManager {
      */
     export function GetShapePath(shapeId: string): string {
         const shape = GetShapeById(shapeId);
-        return JSON.stringify(shape.providerPath);
+        const shapePath = shape.providerPath.map(
+            (coords: OSFramework.OSStructures.OSMap.Coordinates) => {
+                return { Lat: coords.lat, Lng: coords.lng };
+            }
+        );
+        return JSON.stringify(shapePath);
     }
 
     /**
