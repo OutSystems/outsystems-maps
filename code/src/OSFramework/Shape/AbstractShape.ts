@@ -46,6 +46,9 @@ namespace OSFramework.Shape {
         public get shapeEvents(): Event.Shape.ShapeEventsManager {
             return this._shapeEvents;
         }
+        public get type(): Enum.ShapeType {
+            return this._type;
+        }
         public get uniqueId(): string {
             return this._uniqueId;
         }
@@ -114,8 +117,11 @@ namespace OSFramework.Shape {
         public abstract get invalidShapeLocationErrorCode(): Enum.ErrorCodes;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public abstract get provider(): any;
+        public abstract get providerCenter(): OSStructures.OSMap.Coordinates;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public abstract get providerEvents(): any;
+        public abstract get providerPath(): Array<OSStructures.OSMap.Coordinates>;
+        public abstract get providerRadius(): number;
         public abstract get shapeTag(): string;
     }
 }

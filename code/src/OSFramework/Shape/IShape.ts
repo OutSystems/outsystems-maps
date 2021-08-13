@@ -9,10 +9,18 @@ namespace OSFramework.Shape {
         map: OSMap.IMap; //IMap
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         provider: any;
+        /** Center from the current shape */
+        providerCenter: OSStructures.OSMap.Coordinates;
         /** Events from the Shape provider */
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         providerEvents: any;
+        /** Path that defines the current shape */
+        providerPath: Array<OSStructures.OSMap.Coordinates>;
+        /** Radius from the current shape (circle shape) */
+        providerRadius: number;
         shapeEvents: Event.Shape.ShapeEventsManager;
+        /** Gets the type of the Shape */
+        type: Enum.ShapeType;
         uniqueId: string;
         widgetId: string;
 

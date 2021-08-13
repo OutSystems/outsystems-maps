@@ -61,6 +61,28 @@ namespace MapAPI.ShapeManager {
     }
 
     /**
+     * Returns a set of properties from the Circle shape based on its WidgetId
+     * @param shapeId Id of the Shape
+     */
+    export function GetCircle(shapeId: string): string {
+        const shape = GetShapeById(shapeId);
+        const properties = {
+            center: undefined,
+            radius: undefined
+        };
+        if (shape.type !== OSFramework.Enum.ShapeType.Circle) {
+            OSFramework.Helper.ThrowError(
+                shape.map,
+                OSFramework.Enum.ErrorCodes.API_FailedGettingCircleShape
+            );
+        } else {
+            properties.center = shape.providerCenter;
+            properties.radius = shape.providerRadius;
+        }
+        return JSON.stringify(properties);
+    }
+
+    /**
      * Gets the Map to which the Shape belongs to
      *
      * @param {string} shapeId Id of the Shape that exists on the Map
@@ -99,6 +121,16 @@ namespace MapAPI.ShapeManager {
      */
     export function GetShapeById(shapeId: string): OSFramework.Shape.IShape {
         return shapeArr.find((p) => p && p.equalsToID(shapeId));
+    }
+
+    /**
+     * Returns a Shape path based on the WidgetId of the shape
+     * Doesn't work for shapes like the Circle
+     * @param shapeId Id of the Shape
+     */
+    export function GetShapePath(shapeId: string): string {
+        const shape = GetShapeById(shapeId);
+        return JSON.stringify(shape.providerPath);
     }
 
     /**

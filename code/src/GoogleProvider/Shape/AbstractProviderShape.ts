@@ -29,8 +29,7 @@ namespace GoogleProvider.Shape {
                     _locations.every((location: string, index: number) => {
                         // Make sure the current location from the array of locations is not empty
                         if (OSFramework.Helper.IsEmptyString(location)) {
-                            this.map.mapEvents.trigger(
-                                OSFramework.Event.OSMap.MapEventType.OnError,
+                            OSFramework.Helper.ThrowError(
                                 this.map,
                                 this.invalidShapeLocationErrorCode
                             );
@@ -119,8 +118,7 @@ namespace GoogleProvider.Shape {
                 OSFramework.Helper.IsEmptyString(loc) ||
                 JSON.parse(loc).length < this.minPath
             ) {
-                this.map.mapEvents.trigger(
-                    OSFramework.Event.OSMap.MapEventType.OnError,
+                OSFramework.Helper.ThrowError(
                     this.map,
                     this.invalidShapeLocationErrorCode
                 );
@@ -129,6 +127,7 @@ namespace GoogleProvider.Shape {
             return true;
         }
 
+        /** Builds the provider (asynchronously) by receving a set of multiple coordinates (creating a path for the shape) or just one (creating the center of the shape) */
         protected _buildProvider(
             coordinates:
                 | Promise<OSFramework.OSStructures.OSMap.Coordinates>
@@ -152,12 +151,11 @@ namespace GoogleProvider.Shape {
                         this.finishBuild();
                     })
                     .catch((error) => {
-                        this.map.mapEvents.trigger(
-                            OSFramework.Event.OSMap.MapEventType.OnError,
+                        OSFramework.Helper.ThrowError(
                             this.map,
                             OSFramework.Enum.ErrorCodes
                                 .LIB_FailedGeocodingShapeLocations,
-                            `${error}`
+                            error
                         );
                     });
             }
@@ -174,6 +172,41 @@ namespace GoogleProvider.Shape {
 
         public get providerEvents(): Array<string> {
             return Constants.Shape.Events;
+        }
+
+        public get providerPath(): Array<OSFramework.OSStructures.OSMap.Coordinates> {
+            // Same as getPath()
+            const path = this.provider.get('latLngs');
+            if (path === undefined) {
+                OSFramework.Helper.ThrowError(
+                    this.map,
+                    OSFramework.Enum.ErrorCodes.API_FailedGettingShapePath
+                );
+                return [];
+            }
+
+            return path
+                .getAt(0)
+                .getArray()
+                .map((coords: google.maps.LatLng) => coords.toJSON());
+        }
+
+        public get providerCenter(): OSFramework.OSStructures.OSMap.Coordinates {
+            // Throws error unless one of the shapes overrides this method
+            OSFramework.Helper.ThrowError(
+                this.map,
+                OSFramework.Enum.ErrorCodes.API_FailedGettingShapeCenter
+            );
+            return;
+        }
+
+        public get providerRadius(): number {
+            // Throws error unless one of the shapes overrides this method
+            OSFramework.Helper.ThrowError(
+                this.map,
+                OSFramework.Enum.ErrorCodes.API_FailedGettingShapeRadius
+            );
+            return;
         }
 
         public build(): void {
@@ -202,13 +235,11 @@ namespace GoogleProvider.Shape {
                                     this._setProviderPath(path);
                                 })
                                 .catch((error) => {
-                                    this.map.mapEvents.trigger(
-                                        OSFramework.Event.OSMap.MapEventType
-                                            .OnError,
+                                    OSFramework.Helper.ThrowError(
                                         this.map,
                                         OSFramework.Enum.ErrorCodes
                                             .LIB_FailedGeocodingShapeLocations,
-                                        `${error}`
+                                        error
                                     );
                                 });
                         }

@@ -19,10 +19,17 @@ namespace OSFramework.Enum {
         LIB_FailedGeocodingMarker = 'MAPS-LIB-03001',
         LIB_FailedSetDirections = 'MAPS-LIB-04001',
         LIB_FailedGeocodingShapeLocations = 'MAPS-LIB-05001',
-        LIB_FailedGeocodingShapeCenter = 'MAPS-LIB-05002',
 
         // Error Codes - API errors - Specific errors generated when exposing the component client actions API/Framework.
         API_FailedRemoveDirections = 'MAPS-API-03001',
+        // It was not possible to get the path from the Shape
+        API_FailedGettingShapePath = 'MAPS-API-05001',
+        // It was not possible to get the Circle
+        API_FailedGettingCircleShape = 'MAPS-API-05002',
+        // It was not possible to get the shape center
+        API_FailedGettingShapeCenter = 'MAPS-API-05003',
+        // It was not possible to get the shape radius
+        API_FailedGettingShapeRadius = 'MAPS-API-05004',
 
         // Error Codes - GENeral error - General or internal Errors of the component. In the situation of simple components without different features/sections inside it, the GEN acronym should be used.
         GEN_InvalidChangePropertyMap = 'MAPS-GEN-01001',

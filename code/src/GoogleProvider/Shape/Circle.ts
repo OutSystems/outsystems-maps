@@ -30,8 +30,7 @@ namespace GoogleProvider.Shape {
         ): Promise<OSFramework.OSStructures.OSMap.Coordinates> {
             // If the Shape doesn't have the minimum valid address/coordinates, then throw an error
             if (OSFramework.Helper.IsEmptyString(location)) {
-                this.map.mapEvents.trigger(
-                    OSFramework.Event.OSMap.MapEventType.OnError,
+                OSFramework.Helper.ThrowError(
                     this.map,
                     this.invalidShapeLocationErrorCode
                 );
@@ -71,6 +70,30 @@ namespace GoogleProvider.Shape {
             );
         }
 
+        public get providerCenter(): OSFramework.OSStructures.OSMap.Coordinates {
+            const center = this.provider.get('center');
+            if (center === undefined) {
+                OSFramework.Helper.ThrowError(
+                    this.map,
+                    OSFramework.Enum.ErrorCodes.API_FailedGettingShapeCenter
+                );
+            }
+
+            return center.toJSON();
+        }
+
+        public get providerRadius(): number {
+            const center = this.provider.get('radius');
+            if (center === undefined) {
+                OSFramework.Helper.ThrowError(
+                    this.map,
+                    OSFramework.Enum.ErrorCodes.API_FailedGettingShapeRadius
+                );
+            }
+
+            return center;
+        }
+
         public build(): void {
             // First build center coordinates based on the location
             // Then, create the provider (Google maps Shape)
@@ -104,13 +127,11 @@ namespace GoogleProvider.Shape {
                                     this.provider.setCenter(center);
                                 })
                                 .catch((error) => {
-                                    this.map.mapEvents.trigger(
-                                        OSFramework.Event.OSMap.MapEventType
-                                            .OnError,
+                                    OSFramework.Helper.ThrowError(
                                         this.map,
                                         OSFramework.Enum.ErrorCodes
                                             .LIB_FailedGeocodingShapeLocations,
-                                        `${error}`
+                                        error
                                     );
                                 });
                         }
