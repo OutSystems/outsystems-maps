@@ -7,7 +7,7 @@ namespace GoogleProvider.Shape {
         W extends google.maps.MVCObject
     > extends OSFramework.Shape.AbstractShape<T> {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        private _listeners: Array<string>;
+        protected _listeners: Array<string>;
         protected _provider: W;
 
         private _buildPath(
@@ -63,6 +63,7 @@ namespace GoogleProvider.Shape {
             }
         }
 
+<<<<<<< Updated upstream
         /** Validates if the string is empty */
         private _isEmptyString(loc: string): boolean {
             return (
@@ -120,6 +121,8 @@ namespace GoogleProvider.Shape {
             );
         }
 
+=======
+>>>>>>> Stashed changes
         /** Validates if the locations are accepted for the Shape's path considering the minimum valid address/coordinates */
         private _validateLocations(loc: string): boolean {
             if (
@@ -136,6 +139,105 @@ namespace GoogleProvider.Shape {
             return true;
         }
 
+<<<<<<< Updated upstream
+=======
+        /** Builds the provider (asynchronously) by receving a set of multiple coordinates (creating a path for the shape) or just one (creating the center of the shape) */
+        protected _buildProvider(
+            coordinates:
+                | Promise<OSFramework.OSStructures.OSMap.Coordinates>
+                | Promise<Array<OSFramework.OSStructures.OSMap.Coordinates>>
+        ): void {
+            // First build coords from locations
+            // Then, create the provider (Google maps Shape)
+            // Finally, set Shape events
+
+            // If coords is undefined (should be a promise) -> don't create the shape
+            if (coordinates !== undefined) {
+                coordinates
+                    .then((coords) => {
+                        // Create the provider with the respective coords
+                        this._provider = this._createProvider(coords);
+
+                        // We can only set the events on the provider after its creation
+                        this._setShapeEvents();
+
+                        // Finish build of Shape
+                        this.finishBuild();
+                    })
+                    .catch((error) => {
+                        OSFramework.Helper.ThrowError(
+                            this.map,
+                            OSFramework.Enum.ErrorCodes
+                                .LIB_FailedGeocodingShapeLocations,
+                            error
+                        );
+                    });
+            }
+        }
+
+        protected _setShapeEvents(): void {
+            if (this._listeners === undefined) this._listeners = [];
+            // Make sure the listeners get removed before adding the new ones
+            this._listeners.forEach((eventListener, index) => {
+                google.maps.event.clearListeners(this.provider, eventListener);
+                this._listeners.splice(index, 1);
+            });
+
+            // OnClick Event
+            if (
+                this.shapeEvents.hasHandlers(
+                    OSFramework.Event.Shape.ShapeEventType.OnClick
+                ) &&
+                this.provider.get('clickable') // Always true. Fallback in case this parameter gets changed in the future.
+            ) {
+                this.provider.addListener('click', () => {
+                    this.shapeEvents.trigger(
+                        OSFramework.Event.Shape.ShapeEventType.OnClick
+                    );
+                });
+            }
+
+            // Any events that got added to the shapeEvents via the API Subscribe method will have to be taken care here
+            // If the Event type of each handler is ShapeProviderEvent, we want to make sure to add that event to the listeners of the google shape provider (e.g. dblclick, dragend, etc)
+            // Otherwise, we don't want to add them to the google provider listeners (e.g. OnInitialize, OnClick, etc)
+            this.shapeEvents.handlers.forEach(
+                (
+                    handler: OSFramework.Event.IEvent<string>,
+                    eventName: string
+                ) => {
+                    if (
+                        handler instanceof
+                        OSFramework.Event.Shape.ShapeProviderEvent
+                    ) {
+                        // If the eventName is not included inside the ProviderSpecialEvents then add the listener
+                        // Otherwise, the Shape will take care of that event
+                        if (
+                            Constants.Shape.ProviderSpecialEvents.indexOf(
+                                eventName
+                            ) === -1
+                        ) {
+                            this._listeners.push(eventName);
+
+                            this.provider.addListener(
+                                // Name of the event (e.g. dblclick, dragend, etc)
+                                eventName,
+                                () => {
+                                    this.shapeEvents.trigger(
+                                        // EventType
+                                        OSFramework.Event.Shape.ShapeEventType
+                                            .ProviderEvent,
+                                        // EventName
+                                        eventName
+                                    );
+                                }
+                            );
+                        }
+                    }
+                }
+            );
+        }
+
+>>>>>>> Stashed changes
         /** Checks if the Shape has associated events */
         public get hasEvents(): boolean {
             return this.shapeEvents !== undefined;

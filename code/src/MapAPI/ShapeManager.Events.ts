@@ -105,6 +105,7 @@ namespace MapAPI.ShapeManager.Events {
             }
         } else {
             shape.shapeEvents.addHandler(eventName, callback);
+            shape.refreshProviderEvents();
         }
     }
 

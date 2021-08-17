@@ -16,7 +16,21 @@ namespace GoogleProvider.Constants.Shape {
         'mouseup',
         'position_changed',
         'rightclick',
+        'insert_at',
+        'remove_at',
+        'set_at',
+        'radius_changed',
+        'center_changed',
+        'shape_changed'
+    ];
+
+    export const ProviderPolyshapeEvents = ['insert_at', 'remove_at', 'set_at'];
+
+    export const ProviderCircleEvents = ['radius_changed', 'center_changed'];
+
+    export const ProviderSpecialEvents = [
         'shape_changed',
-        'bounds_changed'
+        ...ProviderPolyshapeEvents,
+        ...ProviderCircleEvents
     ];
 }
