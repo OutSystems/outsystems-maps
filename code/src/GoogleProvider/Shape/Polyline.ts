@@ -1,9 +1,9 @@
-/// <reference path="AbstractProviderShape.ts" />
+/// <reference path="AbstractPolyshape.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace GoogleProvider.Shape {
     export class Polyline
-        extends AbstractProviderShape<
+        extends AbstractPolyshape<
             Configuration.Shape.BasicShapeConfig,
             google.maps.Polyline
         >
@@ -31,12 +31,6 @@ namespace GoogleProvider.Shape {
                 path,
                 ...this.getProviderConfig()
             });
-        }
-
-        protected _setProviderPath(
-            path: Array<OSFramework.OSStructures.OSMap.Coordinates>
-        ): void {
-            this._provider.setPath(path);
         }
 
         public get shapeTag(): string {

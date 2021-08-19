@@ -16,6 +16,8 @@ namespace GoogleProvider.Configuration.Shape {
             const provider = super.getProviderConfig();
             provider.radius = this.radius;
 
+            // Circle doesn't have locations on its configurations
+            // We can remove it from the provider configs
             delete provider.locations;
 
             return provider;

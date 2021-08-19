@@ -66,10 +66,8 @@ namespace MapAPI.ShapeManager {
      */
     export function GetCircle(shapeId: string): string {
         const shape = GetShapeById(shapeId);
-        const properties = {
-            Center: { Lat: undefined, Lng: undefined },
-            Radius: undefined
-        };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const properties: any = {};
         if (shape.type !== OSFramework.Enum.ShapeType.Circle) {
             OSFramework.Helper.ThrowError(
                 shape.map,
@@ -123,7 +121,15 @@ namespace MapAPI.ShapeManager {
      * @param shapeId Id of the Shape
      */
     export function GetShapeById(shapeId: string): OSFramework.Shape.IShape {
-        return shapeArr.find((p) => p && p.equalsToID(shapeId));
+        const shape: OSFramework.Shape.IShape = shapeArr.find(
+            (p) => p && p.equalsToID(shapeId)
+        );
+
+        if (shape === undefined) {
+            throw new Error(`Shape id:${shapeId} not found`);
+        }
+
+        return shape;
     }
 
     /**

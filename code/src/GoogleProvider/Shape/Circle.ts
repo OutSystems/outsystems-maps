@@ -70,6 +70,10 @@ namespace GoogleProvider.Shape {
             );
         }
 
+        public get invalidShapeLocationErrorCode(): OSFramework.Enum.ErrorCodes {
+            return OSFramework.Enum.ErrorCodes.CFG_InvalidCircleShapeCenter;
+        }
+
         public get providerCenter(): OSFramework.OSStructures.OSMap.Coordinates {
             const center = this.provider.get('center');
             if (center === undefined) {
@@ -94,6 +98,10 @@ namespace GoogleProvider.Shape {
             return center;
         }
 
+        public get shapeTag(): string {
+            return OSFramework.Helper.Constants.shapeCircleTag;
+        }
+
         public build(): void {
             // First build center coordinates based on the location
             // Then, create the provider (Google maps Shape)
@@ -101,14 +109,6 @@ namespace GoogleProvider.Shape {
             super._buildProvider(shapeCenter);
 
             super.build();
-        }
-
-        public get shapeTag(): string {
-            return OSFramework.Helper.Constants.shapeCircleTag;
-        }
-
-        public get invalidShapeLocationErrorCode(): OSFramework.Enum.ErrorCodes {
-            return OSFramework.Enum.ErrorCodes.CFG_InvalidCircleShapeCenter;
         }
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any

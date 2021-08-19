@@ -175,20 +175,11 @@ namespace GoogleProvider.Shape {
         }
 
         public get providerPath(): Array<OSFramework.OSStructures.OSMap.Coordinates> {
-            // Same as getPath()
-            const path = this.provider.get('latLngs');
-            if (path === undefined) {
-                OSFramework.Helper.ThrowError(
-                    this.map,
-                    OSFramework.Enum.ErrorCodes.API_FailedGettingShapePath
-                );
-                return [];
-            }
-
-            return path
-                .getAt(0)
-                .getArray()
-                .map((coords: google.maps.LatLng) => coords.toJSON());
+            OSFramework.Helper.ThrowError(
+                this.map,
+                OSFramework.Enum.ErrorCodes.API_FailedGettingShapePath
+            );
+            return [];
         }
 
         public get providerCenter(): OSFramework.OSStructures.OSMap.Coordinates {
@@ -196,15 +187,6 @@ namespace GoogleProvider.Shape {
             OSFramework.Helper.ThrowError(
                 this.map,
                 OSFramework.Enum.ErrorCodes.API_FailedGettingShapeCenter
-            );
-            return;
-        }
-
-        public get providerRadius(): number {
-            // Throws error unless one of the shapes overrides this method
-            OSFramework.Helper.ThrowError(
-                this.map,
-                OSFramework.Enum.ErrorCodes.API_FailedGettingShapeRadius
             );
             return;
         }
