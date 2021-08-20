@@ -14,6 +14,8 @@ namespace GoogleProvider.Shape {
                     return new Polyline(map, shapeId, type, configs);
                 case OSFramework.Enum.ShapeType.Circle:
                     return new Circle(map, shapeId, type, configs);
+                case OSFramework.Enum.ShapeType.Rectangle:
+                    return new Rectangle(map, shapeId, type, configs);
                 default:
                     throw `There is no factory for this type of Shape (${type})`;
             }

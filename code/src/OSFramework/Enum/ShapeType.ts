@@ -3,6 +3,7 @@ namespace OSFramework.Enum {
     export enum ShapeType {
         Circle = 'Circle',
         Polygon = 'Polygon',
-        Polyline = 'Polyline'
+        Polyline = 'Polyline',
+        Rectangle = 'Rectangle'
     }
 }

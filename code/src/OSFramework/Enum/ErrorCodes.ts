@@ -11,6 +11,7 @@ namespace OSFramework.Enum {
         CFG_InvalidPolylineShapeLocations = 'MAPS-CFG-05001',
         CFG_InvalidPolygonShapeLocations = 'MAPS-CFG-05002',
         CFG_InvalidCircleShapeCenter = 'MAPS-CFG-05003',
+        CFG_InvalidRectangleShapeCenter = 'MAPS-CFG-05004',
 
         // Error Codes - LIB errors - Specific errors generated when consuming a third party lib / providers
         LIB_InvalidApiKeyMap = 'MAPS-LIB-01001',

@@ -132,6 +132,7 @@ namespace GoogleProvider.Shape {
             coordinates:
                 | Promise<OSFramework.OSStructures.OSMap.Coordinates>
                 | Promise<Array<OSFramework.OSStructures.OSMap.Coordinates>>
+                | Promise<OSFramework.OSStructures.OSMap.Bounds>
         ): void {
             // First build coords from locations
             // Then, create the provider (Google maps Shape)
@@ -260,6 +261,7 @@ namespace GoogleProvider.Shape {
             locations:
                 | Array<OSFramework.OSStructures.OSMap.Coordinates>
                 | OSFramework.OSStructures.OSMap.Coordinates
+                | OSFramework.OSStructures.OSMap.Bounds
         ): W;
         protected abstract _setProviderPath(
             path: Array<OSFramework.OSStructures.OSMap.Coordinates>
