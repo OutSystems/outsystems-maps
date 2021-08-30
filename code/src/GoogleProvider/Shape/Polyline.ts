@@ -7,7 +7,7 @@ namespace GoogleProvider.Shape {
             Configuration.Shape.BasicShapeConfig,
             google.maps.Polyline
         >
-        implements IPolyline {
+        implements OSFramework.Shape.IShapePolyshape {
         constructor(
             map: OSFramework.OSMap.IMap,
             shapeId: string,
