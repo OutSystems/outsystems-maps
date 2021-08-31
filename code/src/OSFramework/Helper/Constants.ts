@@ -20,6 +20,8 @@ namespace OSFramework.Helper.Constants {
     export const shapePolylineTag = '[data-block="Shapes.Polyline"]';
     /** Tag used to find the Polygon Shape */
     export const shapePolygonTag = '[data-block="Shapes.Polygon"]';
+    /** Tag used to find the Circle Shape */
+    export const shapeCircleTag = '[data-block="Shapes.Circle"]';
 
     /** Tag used to find a generic widget */
     export const outsystemsWidgetTag = '[data-block]';

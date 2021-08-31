@@ -13,6 +13,8 @@ namespace OSFramework.Shape {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         providerEvents: any;
         shapeEvents: Event.Shape.ShapeEventsManager;
+        /** Gets the type of the Shape */
+        type: Enum.ShapeType;
         uniqueId: string;
         widgetId: string;
 
