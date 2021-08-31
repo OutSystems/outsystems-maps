@@ -46,6 +46,9 @@ namespace OSFramework.Shape {
         public get shapeEvents(): Event.Shape.ShapeEventsManager {
             return this._shapeEvents;
         }
+        public get type(): Enum.ShapeType {
+            return this._type;
+        }
         public get uniqueId(): string {
             return this._uniqueId;
         }

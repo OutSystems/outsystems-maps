@@ -61,6 +61,29 @@ namespace MapAPI.ShapeManager {
     }
 
     /**
+     * Returns a set of properties from the Circle shape based on its WidgetId
+     * @param shapeId Id of the Shape
+     */
+    export function GetCircle(shapeId: string): string {
+        const shape = GetShapeById(shapeId) as OSFramework.Shape.IShapeCircle;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        let properties: OSFramework.OSStructures.API.CircleProperties;
+        if (shape.type === OSFramework.Enum.ShapeType.Circle) {
+            properties.Center = {
+                Lat: shape.providerCenter.lat,
+                Lng: shape.providerCenter.lng
+            };
+            properties.Radius = shape.providerRadius;
+        } else {
+            OSFramework.Helper.ThrowError(
+                shape.map,
+                OSFramework.Enum.ErrorCodes.API_FailedGettingCircleShape
+            );
+        }
+        return JSON.stringify(properties);
+    }
+
+    /**
      * Gets the Map to which the Shape belongs to
      *
      * @param {string} shapeId Id of the Shape that exists on the Map
@@ -98,7 +121,42 @@ namespace MapAPI.ShapeManager {
      * @param shapeId Id of the Shape
      */
     export function GetShapeById(shapeId: string): OSFramework.Shape.IShape {
-        return shapeArr.find((p) => p && p.equalsToID(shapeId));
+        const shape: OSFramework.Shape.IShape = shapeArr.find(
+            (p) => p && p.equalsToID(shapeId)
+        );
+
+        if (shape === undefined) {
+            throw new Error(`Shape id:${shapeId} not found`);
+        }
+
+        return shape;
+    }
+
+    /**
+     * Returns a Shape path based on the WidgetId of the shape
+     * Doesn't work for shapes like the Circle
+     * @param shapeId Id of the Shape
+     */
+    export function GetShapePath(shapeId: string): string {
+        const shape = GetShapeById(
+            shapeId
+        ) as OSFramework.Shape.IShapePolyshape;
+        const providerPath = shape.providerPath;
+        let shapePath = [];
+        if (providerPath !== undefined) {
+            shapePath = providerPath.map(
+                (coords: OSFramework.OSStructures.OSMap.Coordinates) => {
+                    return { Lat: coords.lat, Lng: coords.lng };
+                }
+            );
+        } else {
+            OSFramework.Helper.ThrowError(
+                shape.map,
+                OSFramework.Enum.ErrorCodes.API_FailedGettingShapePath
+            );
+        }
+
+        return JSON.stringify(shapePath);
     }
 
     /**

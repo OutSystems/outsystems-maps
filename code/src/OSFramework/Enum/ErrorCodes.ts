@@ -10,6 +10,7 @@ namespace OSFramework.Enum {
         CFG_CantChangeParamsStaticMap = 'MAPS-CFG-02002',
         CFG_InvalidPolylineShapeLocations = 'MAPS-CFG-05001',
         CFG_InvalidPolygonShapeLocations = 'MAPS-CFG-05002',
+        CFG_InvalidCircleShapeCenter = 'MAPS-CFG-05003',
 
         // Error Codes - LIB errors - Specific errors generated when consuming a third party lib / providers
         LIB_InvalidApiKeyMap = 'MAPS-LIB-01001',
@@ -21,6 +22,10 @@ namespace OSFramework.Enum {
 
         // Error Codes - API errors - Specific errors generated when exposing the component client actions API/Framework.
         API_FailedRemoveDirections = 'MAPS-API-03001',
+        API_FailedGettingShapePath = 'MAPS-API-05001',
+        API_FailedGettingCircleShape = 'MAPS-API-05002',
+        API_FailedGettingShapeCenter = 'MAPS-API-05003',
+        API_FailedGettingShapeRadius = 'MAPS-API-05004',
 
         // Error Codes - GENeral error - General or internal Errors of the component. In the situation of simple components without different features/sections inside it, the GEN acronym should be used.
         GEN_InvalidChangePropertyMap = 'MAPS-GEN-01001',
