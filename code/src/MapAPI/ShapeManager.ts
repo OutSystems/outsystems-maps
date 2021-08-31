@@ -67,7 +67,7 @@ namespace MapAPI.ShapeManager {
     export function GetCircle(shapeId: string): string {
         const shape = GetShapeById(shapeId) as OSFramework.Shape.IShapeCircle;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const properties: any = {};
+        let properties: OSFramework.OSStructures.API.CircleProperties;
         if (shape.type === OSFramework.Enum.ShapeType.Circle) {
             properties.Center = {
                 Lat: shape.providerCenter.lat,
