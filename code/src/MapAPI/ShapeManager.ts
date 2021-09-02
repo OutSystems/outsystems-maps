@@ -120,12 +120,15 @@ namespace MapAPI.ShapeManager {
      * Returns a Shape based on Id
      * @param shapeId Id of the Shape
      */
-    export function GetShapeById(shapeId: string): OSFramework.Shape.IShape {
+    export function GetShapeById(
+        shapeId: string,
+        raiseError = true
+    ): OSFramework.Shape.IShape {
         const shape: OSFramework.Shape.IShape = shapeArr.find(
             (p) => p && p.equalsToID(shapeId)
         );
 
-        if (shape === undefined) {
+        if (shape === undefined && raiseError) {
             throw new Error(`Shape id:${shapeId} not found`);
         }
 

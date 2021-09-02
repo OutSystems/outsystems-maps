@@ -8,7 +8,7 @@ namespace GoogleProvider.Shape {
             google.maps.Circle
         >
         implements OSFramework.Shape.IShapeCircle {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        private _shapeChangedEventTimeout: number;
 
         constructor(
             map: OSFramework.OSMap.IMap,
@@ -83,13 +83,23 @@ namespace GoogleProvider.Shape {
                             Constants.Shape.ProviderCircleEvents.forEach(
                                 (event) =>
                                     this.provider.addListener(event, () => {
-                                        this.shapeEvents.trigger(
-                                            // EventType
-                                            OSFramework.Event.Shape
-                                                .ShapeEventType.ProviderEvent,
-                                            // EventName
-                                            OSFramework.Helper.Constants
-                                                .shapeChangedEvent
+                                        if (this._shapeChangedEventTimeout) {
+                                            clearTimeout(
+                                                this._shapeChangedEventTimeout
+                                            );
+                                        }
+                                        this._shapeChangedEventTimeout = setTimeout(
+                                            () =>
+                                                this.shapeEvents.trigger(
+                                                    // EventType
+                                                    OSFramework.Event.Shape
+                                                        .ShapeEventType
+                                                        .ProviderEvent,
+                                                    // EventName
+                                                    OSFramework.Helper.Constants
+                                                        .shapeChangedEvent
+                                                ),
+                                            500
                                         );
                                     })
                             );

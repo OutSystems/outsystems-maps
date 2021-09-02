@@ -92,7 +92,7 @@ namespace MapAPI.MarkerManager.Events {
     ): void {
         // Let's make sure that if the Map doesn't exist, we don't throw and exception but instead add the handler to the pendingEvents
         const markerId = GetMarkerIdByEventUniqueId(eventUniqueId);
-        const marker = GetMarkerById(markerId);
+        const marker = GetMarkerById(markerId, false);
 
         if (marker === undefined) {
             if (_pendingEvents.has(markerId)) {

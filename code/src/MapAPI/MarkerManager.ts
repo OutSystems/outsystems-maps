@@ -154,9 +154,18 @@ namespace MapAPI.MarkerManager {
      * @param markerId Id of the Marker
      */
     export function GetMarkerById(
-        markerId: string
+        markerId: string,
+        raiseError = true
     ): OSFramework.Marker.IMarker {
-        return markerArr.find((p) => p && p.equalsToID(markerId));
+        const marker: OSFramework.Marker.IMarker = markerArr.find(
+            (p) => p && p.equalsToID(markerId)
+        );
+
+        if (marker === undefined && raiseError) {
+            throw new Error(`Marker id:${markerId} not found`);
+        }
+
+        return marker;
     }
 
     /**
