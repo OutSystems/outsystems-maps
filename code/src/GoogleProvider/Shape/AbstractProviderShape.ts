@@ -123,8 +123,6 @@ namespace GoogleProvider.Shape {
                         return this.provider.set('strokeColor', value);
                     case OSFramework.Enum.OS_Config_Shape.strokeWeight:
                         return this.provider.set('strokeWeight', value);
-                    default:
-                        super.changeProperty(propertyName, value);
                 }
             }
         }

@@ -80,7 +80,8 @@ namespace MapAPI.ShapeManager {
                 OSFramework.Enum.ErrorCodes.API_FailedGettingCircleShape
             );
         }
-        return JSON.stringify(properties);
+        // If properties are empty/undefined, then we want to stringify an empty string
+        return JSON.stringify(properties || '');
     }
 
     /**
