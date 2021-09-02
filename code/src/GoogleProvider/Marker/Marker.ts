@@ -279,14 +279,6 @@ namespace GoogleProvider.Marker {
                         return this._provider.setIcon(value);
                     case OSFramework.Enum.OS_Config_Marker.title:
                         return this._provider.setTitle(value);
-                    default:
-                        this.map.mapEvents.trigger(
-                            OSFramework.Event.OSMap.MapEventType.OnError,
-                            this.map,
-                            OSFramework.Enum.ErrorCodes
-                                .GEN_InvalidChangePropertyMarker,
-                            `${propertyName}`
-                        );
                 }
             }
         }
