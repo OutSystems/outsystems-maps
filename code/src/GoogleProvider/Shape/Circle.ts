@@ -7,7 +7,7 @@ namespace GoogleProvider.Shape {
             Configuration.Shape.CircleShapeConfig,
             google.maps.Circle
         >
-        implements ICircle {
+        implements OSFramework.Shape.IShapeCircle {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
         constructor(
@@ -63,13 +63,6 @@ namespace GoogleProvider.Shape {
             });
         }
 
-        protected _setProviderPath(): void {
-            throw new Error(
-                `Set Provider Path method can't be used on a Circle Shape because this type of shape doesn't have a path. 
-                Try to set the center or radius instead.`
-            );
-        }
-
         public get invalidShapeLocationErrorCode(): OSFramework.Enum.ErrorCodes {
             return OSFramework.Enum.ErrorCodes.CFG_InvalidCircleShapeCenter;
         }
@@ -103,12 +96,11 @@ namespace GoogleProvider.Shape {
         }
 
         public build(): void {
+            super.build();
             // First build center coordinates based on the location
             // Then, create the provider (Google maps Shape)
             const shapeCenter = this._buildCenter(this.config.center);
             super._buildProvider(shapeCenter);
-
-            super.build();
         }
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any

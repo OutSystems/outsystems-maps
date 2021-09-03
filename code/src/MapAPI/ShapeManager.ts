@@ -65,20 +65,20 @@ namespace MapAPI.ShapeManager {
      * @param shapeId Id of the Shape
      */
     export function GetCircle(shapeId: string): string {
-        const shape = GetShapeById(shapeId);
+        const shape = GetShapeById(shapeId) as OSFramework.Shape.IShapeCircle;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const properties: any = {};
-        if (shape.type !== OSFramework.Enum.ShapeType.Circle) {
-            OSFramework.Helper.ThrowError(
-                shape.map,
-                OSFramework.Enum.ErrorCodes.API_FailedGettingCircleShape
-            );
-        } else {
+        let properties: OSFramework.OSStructures.API.CircleProperties;
+        if (shape.type === OSFramework.Enum.ShapeType.Circle) {
             properties.Center = {
                 Lat: shape.providerCenter.lat,
                 Lng: shape.providerCenter.lng
             };
             properties.Radius = shape.providerRadius;
+        } else {
+            OSFramework.Helper.ThrowError(
+                shape.map,
+                OSFramework.Enum.ErrorCodes.API_FailedGettingCircleShape
+            );
         }
         return JSON.stringify(properties);
     }
@@ -138,12 +138,24 @@ namespace MapAPI.ShapeManager {
      * @param shapeId Id of the Shape
      */
     export function GetShapePath(shapeId: string): string {
-        const shape = GetShapeById(shapeId);
-        const shapePath = shape.providerPath.map(
-            (coords: OSFramework.OSStructures.OSMap.Coordinates) => {
-                return { Lat: coords.lat, Lng: coords.lng };
-            }
-        );
+        const shape = GetShapeById(
+            shapeId
+        ) as OSFramework.Shape.IShapePolyshape;
+        const providerPath = shape.providerPath;
+        let shapePath = [];
+        if (providerPath !== undefined) {
+            shapePath = providerPath.map(
+                (coords: OSFramework.OSStructures.OSMap.Coordinates) => {
+                    return { Lat: coords.lat, Lng: coords.lng };
+                }
+            );
+        } else {
+            OSFramework.Helper.ThrowError(
+                shape.map,
+                OSFramework.Enum.ErrorCodes.API_FailedGettingShapePath
+            );
+        }
+
         return JSON.stringify(shapePath);
     }
 
