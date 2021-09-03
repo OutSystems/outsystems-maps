@@ -8,8 +8,6 @@ namespace GoogleProvider.Shape {
             google.maps.Circle
         >
         implements OSFramework.Shape.IShapeCircle {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-
         constructor(
             map: OSFramework.OSMap.IMap,
             shapeId: string,

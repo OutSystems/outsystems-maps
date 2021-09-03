@@ -1,4 +1,4 @@
-/// <reference path="AbstractPolyshape.ts" />
+/// <reference path="AbstractProviderShape.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace GoogleProvider.Shape {
@@ -7,7 +7,7 @@ namespace GoogleProvider.Shape {
             Configuration.Shape.RectangleShapeConfig,
             google.maps.Rectangle
         >
-        implements IRectangle {
+        implements OSFramework.Shape.IShapeRectangle {
         constructor(
             map: OSFramework.OSMap.IMap,
             shapeId: string,
@@ -109,37 +109,33 @@ namespace GoogleProvider.Shape {
             });
         }
 
-        protected _setProviderPath(): void {
-            throw new Error(
-                `Set Provider Path method can't be used on a Circle Shape because this type of shape doesn't have a path. 
-                Try to set the center or radius instead.`
-            );
-        }
+        public get bounds(): OSFramework.OSStructures.OSMap.Bounds {
+            const providerBounds: google.maps.LatLngBounds = this.provider.getBounds();
+            const bounds = new OSFramework.OSStructures.OSMap.Bounds();
 
-        public get shapeTag(): string {
-            return OSFramework.Helper.Constants.shapeRectangleTag;
+            // Map providerBounds into OSFramework bounds structure
+            bounds.east = providerBounds.getNorthEast().lat();
+            bounds.north = providerBounds.getNorthEast().lng();
+            bounds.west = providerBounds.getSouthWest().lat();
+            bounds.south = providerBounds.getSouthWest().lng();
+            return bounds;
         }
 
         public get invalidShapeLocationErrorCode(): OSFramework.Enum.ErrorCodes {
             return OSFramework.Enum.ErrorCodes.CFG_InvalidRectangleShapeCenter;
         }
 
-        public get providerRadius(): number {
-            // Throws error unless one of the shapes overrides this method
-            OSFramework.Helper.ThrowError(
-                this.map,
-                OSFramework.Enum.ErrorCodes.API_FailedGettingShapeRadius
-            );
-            return;
+        public get shapeTag(): string {
+            return OSFramework.Helper.Constants.shapeRectangleTag;
         }
 
         public build(): void {
+            super.build();
+
             // First build center coordinates based on the location
             // Then, create the provider (Google maps Shape)
             const bounds = this._buildBounds(this.config.bounds);
             super._buildProvider(bounds);
-
-            super.build();
         }
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
@@ -170,8 +166,6 @@ namespace GoogleProvider.Shape {
                                 });
                         }
                         return;
-                    default:
-                        super.changeProperty(propertyName, value);
                 }
             }
         }
