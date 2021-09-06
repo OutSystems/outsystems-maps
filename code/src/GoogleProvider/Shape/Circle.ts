@@ -8,8 +8,6 @@ namespace GoogleProvider.Shape {
             google.maps.Circle
         >
         implements OSFramework.Shape.IShapeCircle {
-        private _shapeChangedEventTimeout: number;
-
         constructor(
             map: OSFramework.OSMap.IMap,
             shapeId: string,
@@ -63,67 +61,6 @@ namespace GoogleProvider.Shape {
             });
         }
 
-        protected _setShapeEvents(): void {
-            super._setShapeEvents();
-
-            this.shapeEvents.handlers.forEach(
-                (
-                    handler: OSFramework.Event.IEvent<string>,
-                    eventName: string
-                ) => {
-                    if (
-                        handler instanceof
-                        OSFramework.Event.Shape.ShapeProviderEvent
-                    ) {
-                        if (
-                            eventName ===
-                            OSFramework.Helper.Constants.shapeChangedEvent
-                        ) {
-                            this._listeners.push(eventName);
-                            Constants.Shape.ProviderCircleEvents.forEach(
-                                (event) =>
-                                    this.provider.addListener(event, () => {
-                                        if (this._shapeChangedEventTimeout) {
-                                            clearTimeout(
-                                                this._shapeChangedEventTimeout
-                                            );
-                                        }
-                                        this._shapeChangedEventTimeout = setTimeout(
-                                            () =>
-                                                this.shapeEvents.trigger(
-                                                    // EventType
-                                                    OSFramework.Event.Shape
-                                                        .ShapeEventType
-                                                        .ProviderEvent,
-                                                    // EventName
-                                                    OSFramework.Helper.Constants
-                                                        .shapeChangedEvent
-                                                ),
-                                            500
-                                        );
-                                    })
-                            );
-                        } else if (
-                            // If the eventName is included inside the ProviderSpecialEvents then add the listener
-                            Constants.Shape.ProviderSpecialEvents.indexOf(
-                                eventName
-                            ) !== -1
-                        ) {
-                            this.provider.addListener(eventName, () => {
-                                this.shapeEvents.trigger(
-                                    // EventType
-                                    OSFramework.Event.Shape.ShapeEventType
-                                        .ProviderEvent,
-                                    // EventName
-                                    eventName
-                                );
-                            });
-                        }
-                    }
-                }
-            );
-        }
-
         public get invalidShapeLocationErrorCode(): OSFramework.Enum.ErrorCodes {
             return OSFramework.Enum.ErrorCodes.CFG_InvalidCircleShapeCenter;
         }
@@ -138,6 +75,14 @@ namespace GoogleProvider.Shape {
             }
 
             return center.toJSON();
+        }
+
+        public get providerEventsList(): Array<string> {
+            return Constants.Shape.ProviderCircleEvents;
+        }
+
+        public get providerObjectListener(): google.maps.Circle {
+            return this.provider;
         }
 
         public get providerRadius(): number {

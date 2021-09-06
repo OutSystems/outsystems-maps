@@ -6,9 +6,18 @@ namespace GoogleProvider.Shape {
         T extends OSFramework.Configuration.IConfigurationShape,
         W extends google.maps.MVCObject
     > extends OSFramework.Shape.AbstractShape<T> {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        private _shapeChangedEventTimeout: number;
+
         protected _listeners: Array<string>;
         protected _provider: W;
+
+        private _resetShapeEvents(): void {
+            // Make sure the listeners get removed before adding the new ones
+            this._listeners.forEach((eventListener, index) => {
+                google.maps.event.clearListeners(this.provider, eventListener);
+                this._listeners.splice(index, 1);
+            });
+        }
 
         /** Builds the provider (asynchronously) by receving a set of multiple coordinates (creating a path for the shape) or just one (creating the center of the shape) */
         protected _buildProvider(
@@ -47,10 +56,7 @@ namespace GoogleProvider.Shape {
         protected _setShapeEvents(): void {
             if (this._listeners === undefined) this._listeners = [];
             // Make sure the listeners get removed before adding the new ones
-            this._listeners.forEach((eventListener, index) => {
-                google.maps.event.clearListeners(this.provider, eventListener);
-                this._listeners.splice(index, 1);
-            });
+            this._resetShapeEvents();
 
             // OnClick Event
             if (
@@ -70,7 +76,10 @@ namespace GoogleProvider.Shape {
             // If the Event type of each handler is ShapeProviderEvent, we want to make sure to add that event to the listeners of the google shape provider (e.g. dblclick, dragend, etc)
             // Otherwise, we don't want to add them to the google provider listeners (e.g. OnInitialize, OnClick, etc)
             this.shapeEvents.handlers.forEach(
-                (handler: OSFramework.Event.IEvent<string>, eventName) => {
+                (
+                    handler: OSFramework.Event.IEvent<string>,
+                    eventName: string
+                ) => {
                     if (
                         handler instanceof
                         OSFramework.Event.Shape.ShapeProviderEvent
@@ -89,6 +98,57 @@ namespace GoogleProvider.Shape {
                                 );
                             }
                         );
+
+                        // Take care of the provider events
+                        if (
+                            eventName ===
+                            OSFramework.Helper.Constants.shapeChangedEvent
+                        ) {
+                            this._listeners.push(eventName);
+                            this.providerEventsList.forEach((event) =>
+                                this.providerObjectListener.addListener(
+                                    event,
+                                    () => {
+                                        if (this._shapeChangedEventTimeout) {
+                                            clearTimeout(
+                                                this._shapeChangedEventTimeout
+                                            );
+                                        }
+                                        this._shapeChangedEventTimeout = setTimeout(
+                                            () =>
+                                                this.shapeEvents.trigger(
+                                                    // EventType
+                                                    OSFramework.Event.Shape
+                                                        .ShapeEventType
+                                                        .ProviderEvent,
+                                                    // EventName
+                                                    OSFramework.Helper.Constants
+                                                        .shapeChangedEvent
+                                                ),
+                                            500
+                                        );
+                                    }
+                                )
+                            );
+                        } else if (
+                            // If the eventName is included inside the ProviderSpecialEvents then add the listener
+                            Constants.Shape.ProviderSpecialEvents.indexOf(
+                                eventName
+                            ) !== -1
+                        ) {
+                            this.providerObjectListener.addListener(
+                                eventName,
+                                () => {
+                                    this.shapeEvents.trigger(
+                                        // EventType
+                                        OSFramework.Event.Shape.ShapeEventType
+                                            .ProviderEvent,
+                                        // EventName
+                                        eventName
+                                    );
+                                }
+                            );
+                        }
                     }
                 }
             );
@@ -103,7 +163,7 @@ namespace GoogleProvider.Shape {
             return this._provider;
         }
 
-        public get providerEvents(): Array<string> {
+        public get shapeProviderEvents(): Array<string> {
             return Constants.Shape.Events;
         }
 
@@ -138,6 +198,11 @@ namespace GoogleProvider.Shape {
         public refreshProviderEvents(): void {
             if (this.isReady) this._setShapeEvents();
         }
+
+        public abstract get providerEventsList(): Array<string>;
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        public abstract get providerObjectListener(): any;
 
         public abstract get shapeTag(): string;
 

@@ -110,15 +110,14 @@ namespace OSFramework.Shape {
         }
 
         public validateProviderEvent(eventName: string): boolean {
-            return this.providerEvents.indexOf(eventName) !== -1;
+            return this.shapeProviderEvents.indexOf(eventName) !== -1;
         }
 
         public abstract refreshProviderEvents(): void;
         public abstract get invalidShapeLocationErrorCode(): Enum.ErrorCodes;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public abstract get provider(): any;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public abstract get providerEvents(): any;
+        public abstract get shapeProviderEvents(): Array<string>;
         public abstract get shapeTag(): string;
     }
 }
