@@ -126,7 +126,7 @@ namespace GoogleProvider.Shape {
         }
 
         public get providerEventsList(): Array<string> {
-            return Constants.Shape.ProviderCircleEvents;
+            return Constants.Shape.ProviderRectangleEvents;
         }
 
         public get providerObjectListener(): google.maps.Rectangle {
