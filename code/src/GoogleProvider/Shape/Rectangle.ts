@@ -125,6 +125,14 @@ namespace GoogleProvider.Shape {
             return OSFramework.Enum.ErrorCodes.CFG_InvalidRectangleShapeCenter;
         }
 
+        public get providerEventsList(): Array<string> {
+            return Constants.Shape.ProviderCircleEvents;
+        }
+
+        public get providerObjectListener(): google.maps.Rectangle {
+            return this.provider;
+        }
+
         public get shapeTag(): string {
             return OSFramework.Helper.Constants.shapeRectangleTag;
         }

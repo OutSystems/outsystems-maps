@@ -54,7 +54,6 @@ namespace GoogleProvider.Shape {
             }
         }
 
-
         protected _setShapeEvents(): void {
             if (this._listeners === undefined) this._listeners = [];
             // Make sure the listeners get removed before adding the new ones
