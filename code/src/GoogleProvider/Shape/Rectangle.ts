@@ -140,7 +140,7 @@ namespace GoogleProvider.Shape {
         public build(): void {
             super.build();
 
-            // First build center coordinates based on the location
+            // First build the bounds with the coordinates
             // Then, create the provider (Google maps Shape)
             const bounds = this._buildBounds(this.config.bounds);
             super._buildProvider(bounds);
