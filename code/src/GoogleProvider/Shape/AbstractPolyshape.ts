@@ -79,6 +79,15 @@ namespace GoogleProvider.Shape {
             this._provider.setPath(path);
         }
 
+        public get providerEventsList(): Array<string> {
+            return Constants.Shape.ProviderPolyshapeEvents;
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        public get providerObjectListener(): google.maps.MVCArray<any> {
+            return this.provider.getPath();
+        }
+
         public get providerPath(): Array<OSFramework.OSStructures.OSMap.Coordinates> {
             const path = this.provider.getPath();
             if (path === undefined) {
@@ -129,8 +138,6 @@ namespace GoogleProvider.Shape {
                     case OSFramework.Enum.OS_Config_Shape.fillColor:
                     case OSFramework.Enum.OS_Config_Shape.fillOpacity:
                         return this.provider.set(propertyName, value);
-                    default:
-                        super.changeProperty(propertyName, value);
                 }
             }
         }

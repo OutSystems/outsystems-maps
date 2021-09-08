@@ -67,7 +67,7 @@ namespace MapAPI.ShapeManager {
     export function GetCircle(shapeId: string): string {
         const shape = GetShapeById(shapeId) as OSFramework.Shape.IShapeCircle;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let properties: OSFramework.OSStructures.API.CircleProperties;
+        const properties = new OSFramework.OSStructures.API.CircleProperties();
         if (shape.type === OSFramework.Enum.ShapeType.Circle) {
             properties.Center = {
                 Lat: shape.providerCenter.lat,
@@ -80,7 +80,8 @@ namespace MapAPI.ShapeManager {
                 OSFramework.Enum.ErrorCodes.API_FailedGettingCircleShape
             );
         }
-        return JSON.stringify(properties);
+        // If properties are empty/undefined, then we want to stringify an empty string
+        return JSON.stringify(properties || '');
     }
 
     /**
@@ -120,12 +121,15 @@ namespace MapAPI.ShapeManager {
      * Returns a Shape based on Id
      * @param shapeId Id of the Shape
      */
-    export function GetShapeById(shapeId: string): OSFramework.Shape.IShape {
+    export function GetShapeById(
+        shapeId: string,
+        raiseError = true
+    ): OSFramework.Shape.IShape {
         const shape: OSFramework.Shape.IShape = shapeArr.find(
             (p) => p && p.equalsToID(shapeId)
         );
 
-        if (shape === undefined) {
+        if (shape === undefined && raiseError) {
             throw new Error(`Shape id:${shapeId} not found`);
         }
 
