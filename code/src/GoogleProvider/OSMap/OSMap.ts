@@ -293,15 +293,6 @@ namespace GoogleProvider.OSMap {
                         return this._provider.setOptions(value);
                     case OSFramework.Enum.OS_Config_Map.showTraffic:
                         return this.features.trafficLayer.setState(value);
-                    default:
-                        this.mapEvents.trigger(
-                            OSFramework.Event.OSMap.MapEventType.OnError,
-                            this,
-                            OSFramework.Enum.ErrorCodes
-                                .GEN_InvalidChangePropertyMap,
-                            `${propertyName}`
-                        );
-                        return;
                 }
             }
         }

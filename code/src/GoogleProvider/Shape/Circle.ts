@@ -8,8 +8,6 @@ namespace GoogleProvider.Shape {
             google.maps.Circle
         >
         implements OSFramework.Shape.IShapeCircle {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-
         constructor(
             map: OSFramework.OSMap.IMap,
             shapeId: string,
@@ -79,6 +77,14 @@ namespace GoogleProvider.Shape {
             return center.toJSON();
         }
 
+        public get providerEventsList(): Array<string> {
+            return Constants.Shape.ProviderCircleEvents;
+        }
+
+        public get providerObjectListener(): google.maps.Circle {
+            return this.provider;
+        }
+
         public get providerRadius(): number {
             const center = this.provider.get('radius');
             if (center === undefined) {
@@ -133,8 +139,6 @@ namespace GoogleProvider.Shape {
                     case OSFramework.Enum.OS_Config_Shape.fillColor:
                     case OSFramework.Enum.OS_Config_Shape.fillOpacity:
                         return this.provider.set(propertyName, value);
-                    default:
-                        super.changeProperty(propertyName, value);
                 }
             }
         }

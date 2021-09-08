@@ -87,7 +87,7 @@ namespace MapAPI.ShapeManager.Events {
     ): void {
         // Let's make sure that if the Map doesn't exist, we don't throw and exception but instead add the handler to the pendingEvents
         const shapeId = GetShapeIdByEventUniqueId(eventUniqueId);
-        const shape = GetShapeById(shapeId);
+        const shape = GetShapeById(shapeId, false);
 
         if (shape === undefined) {
             if (_pendingEvents.has(shapeId)) {
@@ -105,6 +105,7 @@ namespace MapAPI.ShapeManager.Events {
             }
         } else {
             shape.shapeEvents.addHandler(eventName, callback);
+            shape.refreshProviderEvents();
         }
     }
 
