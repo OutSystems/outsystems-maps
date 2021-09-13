@@ -22,6 +22,8 @@ namespace OSFramework.Helper.Constants {
     export const shapePolygonTag = '[data-block="Shapes.Polygon"]';
     /** Tag used to find the Circle Shape */
     export const shapeCircleTag = '[data-block="Shapes.Circle"]';
+    /** Tag used to find the Rectangle Shape */
+    export const shapeRectangleTag = '[data-block="Shapes.Rectangle"]';
 
     /** Tag used to find a generic widget */
     export const outsystemsWidgetTag = '[data-block]';

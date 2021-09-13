@@ -3,13 +3,14 @@ namespace OSFramework.Helper {
     export function ThrowError(
         map: OSMap.IMap,
         errorCode: Enum.ErrorCodes,
-        extra?: string
+        extraMessage?: string | Error
     ): void {
         map.mapEvents.trigger(
             Event.OSMap.MapEventType.OnError,
             map,
             errorCode,
-            extra
+            // If extraMessage is undefined then we want to return an empty string
+            `${extraMessage || ''}`
         );
     }
 }

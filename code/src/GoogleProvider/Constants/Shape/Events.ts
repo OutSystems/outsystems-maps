@@ -28,9 +28,12 @@ namespace GoogleProvider.Constants.Shape {
 
     export const ProviderCircleEvents = ['radius_changed', 'center_changed'];
 
+    export const ProviderRectangleEvents = ['bounds_changed'];
+
     export const ProviderSpecialEvents = [
         'shape_changed',
         ...ProviderPolyshapeEvents,
-        ...ProviderCircleEvents
+        ...ProviderCircleEvents,
+        ...ProviderRectangleEvents
     ];
 }

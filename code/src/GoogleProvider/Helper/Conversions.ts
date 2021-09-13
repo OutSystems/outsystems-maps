@@ -52,7 +52,8 @@ namespace GoogleProvider.Helper.Conversions {
         }
 
         // Regex that validates if string is a set of coordinates
-        const regexValidator = /^-{0,1}\d*\.{0,1}\d*,-{0,1}\d*\.{0,1}\d*$/;
+        // Accepts "12.300,-8.220" and "12.300, -8.220"
+        const regexValidator = /^-{0,1}\d*\.{0,1}\d*,( )?-{0,1}\d*\.{0,1}\d*$/;
         // If the provided location is a set of coordinates
         if (regexValidator.test(location)) {
             let latitude: number;
