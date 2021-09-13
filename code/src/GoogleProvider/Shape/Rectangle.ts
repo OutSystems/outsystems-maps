@@ -121,10 +121,10 @@ namespace GoogleProvider.Shape {
             const bounds = new OSFramework.OSStructures.OSMap.Bounds();
 
             // Map providerBounds into OSFramework bounds structure
-            bounds.east = providerBounds.getNorthEast().lat();
-            bounds.north = providerBounds.getNorthEast().lng();
-            bounds.west = providerBounds.getSouthWest().lat();
-            bounds.south = providerBounds.getSouthWest().lng();
+            bounds.east = providerBounds.getNorthEast().lng();
+            bounds.north = providerBounds.getNorthEast().lat();
+            bounds.west = providerBounds.getSouthWest().lng();
+            bounds.south = providerBounds.getSouthWest().lat();
             return bounds;
         }
 
