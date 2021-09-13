@@ -32,7 +32,7 @@ namespace GoogleProvider.Shape {
                 boundsString
             );
             // If the Shape doesn't have the minimum valid address/coordinates, then throw an error
-            if (this._isEmptyBounds(bounds)) {
+            if (this._hasAnyEmptyBound(bounds)) {
                 OSFramework.Helper.ThrowError(
                     this.map,
                     this.invalidShapeLocationErrorCode
@@ -40,9 +40,16 @@ namespace GoogleProvider.Shape {
                 return;
             }
 
+            // make sure the provided bounds (string) have the correct format
+            // this method will then return a promise that will be resolved on the _buildProvider
             return this._convertStringToBounds(bounds);
         }
 
+        /** This method will help converting the bounds (string) into the respective coordinates that will be used on the bounds
+         * It returns a promise because bounds will get converted into coordinates
+         * The method resposible for this conversion (Helper.Conversions.ConvertToCoordinates) also returns a Promise
+         * This Promise will only get resolved after the provider gets built (asynchronously)
+         */
         private _convertStringToBounds(
             bounds: OSFramework.OSStructures.OSMap.BoundsString
         ): Promise<OSFramework.OSStructures.OSMap.Bounds> {
@@ -88,7 +95,7 @@ namespace GoogleProvider.Shape {
         }
 
         /** Check if any of the bounds (north, south, east or west) is empty. If one or more are empty, then return True */
-        private _isEmptyBounds(
+        private _hasAnyEmptyBound(
             location: OSFramework.OSStructures.OSMap.BoundsString
         ): boolean {
             return (
