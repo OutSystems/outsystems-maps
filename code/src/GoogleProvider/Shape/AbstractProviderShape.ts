@@ -213,5 +213,7 @@ namespace GoogleProvider.Shape {
                 | OSFramework.OSStructures.OSMap.Coordinates
                 | OSFramework.OSStructures.OSMap.Bounds
         ): W;
+
+        protected abstract get invalidShapeLocationErrorCode(): OSFramework.Enum.ErrorCodes;
     }
 }

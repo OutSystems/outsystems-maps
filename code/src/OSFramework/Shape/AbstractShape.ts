@@ -113,8 +113,9 @@ namespace OSFramework.Shape {
             return this.shapeProviderEvents.indexOf(eventName) !== -1;
         }
 
+        protected abstract get invalidShapeLocationErrorCode(): Enum.ErrorCodes;
+
         public abstract refreshProviderEvents(): void;
-        public abstract get invalidShapeLocationErrorCode(): Enum.ErrorCodes;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public abstract get provider(): any;
         public abstract get shapeProviderEvents(): Array<string>;

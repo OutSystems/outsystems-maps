@@ -35,12 +35,12 @@ namespace GoogleProvider.Shape {
             });
         }
 
-        public get shapeTag(): string {
-            return OSFramework.Helper.Constants.shapePolygonTag;
+        protected get invalidShapeLocationErrorCode(): OSFramework.Enum.ErrorCodes {
+            return OSFramework.Enum.ErrorCodes.CFG_InvalidPolygonShapeLocations;
         }
 
-        public get invalidShapeLocationErrorCode(): OSFramework.Enum.ErrorCodes {
-            return OSFramework.Enum.ErrorCodes.CFG_InvalidPolygonShapeLocations;
+        public get shapeTag(): string {
+            return OSFramework.Helper.Constants.shapePolygonTag;
         }
     }
 }

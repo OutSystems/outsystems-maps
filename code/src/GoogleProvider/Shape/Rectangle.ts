@@ -116,6 +116,10 @@ namespace GoogleProvider.Shape {
             });
         }
 
+        protected get invalidShapeLocationErrorCode(): OSFramework.Enum.ErrorCodes {
+            return OSFramework.Enum.ErrorCodes.CFG_InvalidRectangleShapeCenter;
+        }
+
         public get bounds(): OSFramework.OSStructures.OSMap.Bounds {
             const providerBounds: google.maps.LatLngBounds = this.provider.getBounds();
             const bounds = new OSFramework.OSStructures.OSMap.Bounds();
@@ -126,10 +130,6 @@ namespace GoogleProvider.Shape {
             bounds.west = providerBounds.getSouthWest().lng();
             bounds.south = providerBounds.getSouthWest().lat();
             return bounds;
-        }
-
-        public get invalidShapeLocationErrorCode(): OSFramework.Enum.ErrorCodes {
-            return OSFramework.Enum.ErrorCodes.CFG_InvalidRectangleShapeCenter;
         }
 
         public get providerEventsList(): Array<string> {

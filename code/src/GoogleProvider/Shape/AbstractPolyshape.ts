@@ -147,6 +147,5 @@ namespace GoogleProvider.Shape {
         ): W;
 
         public abstract get shapeTag(): string;
-        public abstract get invalidShapeLocationErrorCode(): OSFramework.Enum.ErrorCodes;
     }
 }

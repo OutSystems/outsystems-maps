@@ -61,7 +61,7 @@ namespace GoogleProvider.Shape {
             });
         }
 
-        public get invalidShapeLocationErrorCode(): OSFramework.Enum.ErrorCodes {
+        protected get invalidShapeLocationErrorCode(): OSFramework.Enum.ErrorCodes {
             return OSFramework.Enum.ErrorCodes.CFG_InvalidCircleShapeCenter;
         }
 
