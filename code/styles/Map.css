@@ -574,7 +574,7 @@ html[data-uieditorversion^="1"]:hover .map-preview-events:empty:after {
 
 .ss-drawingTools-placeholder:empty:after {
     -servicestudio-color: lightgrey;
-    -servicestudio-content: 'Drag draw block here';
+    -servicestudio-content: 'Drag draw blocks here';
     -servicestudio-font-family: Arial;
     -servicestudio-font-size: 11px;
     -servicestudio-left: 50%;
