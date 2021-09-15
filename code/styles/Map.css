@@ -540,6 +540,7 @@ html[data-uieditorversion^="1"]:hover .map-preview-events:empty:after {
 /**/
 /***********************************************************************/
 
+
 .ss-drawingTools {
     -servicestudio-background: white;
     -servicestudio-border-radius: 3px;
@@ -560,26 +561,20 @@ html[data-uieditorversion^="1"]:hover .map-preview-events:empty:after {
     -servicestudio-display: flex;    
     -servicestudio-padding: 10px 10px 0px 10px;
 }
+
 .ss-drawingTools-placeholder {
     -servicestudio-flex: 1;
+    -servicestudio-border: 1px dashed #efefef;
+    -servicestudio-position: relative;
 }
 
 .ss-drawingTools-placeholder * {
     -servicestudio-display: inline-block;
 }
 
-.ss-drawingTools-events {
-    -servicestudio-background-color: rgba(200,200,200,0.3);
-    -servicestudio-box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0.03);
-    -servicestudio-margin: 10px;
-    -servicestudio-min-height: 20px;
-    -servicestudio-padding-bottom: 10px;
-    -servicestudio-position: relative;
-}
-
-.ss-drawingTools-events:empty:after {
+.ss-drawingTools-placeholder:empty:after {
     -servicestudio-color: lightgrey;
-    -servicestudio-content: 'Drag shape events here';
+    -servicestudio-content: 'Drag draw block here';
     -servicestudio-font-family: Arial;
     -servicestudio-font-size: 11px;
     -servicestudio-left: 50%;
@@ -588,24 +583,4 @@ html[data-uieditorversion^="1"]:hover .map-preview-events:empty:after {
     -servicestudio-transform: translate(-50%, -50%);
     -servicestudio-white-space: nowrap;
     -servicestudio-z-index: 0;
-}
-
-.ss-drawingTools-events .event-preview {
-    -servicestudio-margin-top: 0;
-}
-
-.ss-drawingTools-events .event-preview > div {
-    -servicestudio-flex-direction: column;
-    -servicestudio-margin-left: 10px;
-}
-
-.ss-drawingTools-events .event-preview > img {
-    -servicestudio-align-self: center;
-    -servicestudio-width: 20px;
-}
-
-.ss-drawingTools-events .event-preview-origin {
-    -servicestudio-font-size: 11px;
-    -servicestudio-font-weight: normal;
-    -servicestudio-margin-bottom: 2px;
 }
