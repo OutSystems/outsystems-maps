@@ -6,6 +6,8 @@ namespace OSFramework.OSMap {
             Interface.IDisposable {
         /** Map configuration */
         config: Configuration.IConfigurationMap;
+        /** Get the DrawingTools from the Map */
+        drawingTools: OSFramework.DrawingTools.IDrawingTools;
         /** Exposed features of the Map */
         features: OSFramework.Feature.ExposedFeatures;
         /** Boolean that indicates if the Map is ready */
@@ -28,6 +30,14 @@ namespace OSFramework.OSMap {
         widgetId: string;
 
         /**
+         * Add new DrawingTools Element to the Map
+         * @param shape DrawingTools that will be added to the Map
+         * @returns DrawingTools that has been created
+         */
+        addDrawingTools(
+            drawingTools: OSFramework.DrawingTools.IDrawingTools
+        ): OSFramework.DrawingTools.IDrawingTools;
+        /**
          * Add new Marker to the Map
          * @param marker Marker that will be added to the Map
          * @returns Marker that has been created
@@ -41,6 +51,18 @@ namespace OSFramework.OSMap {
          * @returns Shape that has been created
          */
         addShape(shape: OSFramework.Shape.IShape): OSFramework.Shape.IShape;
+        /**
+         * Change property of a drawingTools from the DrawingTools by specifying the property name and the new value
+         * @param drawingToolsId id of the DrawingTools
+         * @param propertyName name of the property
+         * @param propertyValue new value of the property
+         */
+        changeDrawingToolsProperty(
+            drawingToolsId: string,
+            propertyName: string,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            propertyValue: any
+        ): void;
         /**
          * Change property of a marker from the Map by specifying the property name and the new value
          * @param markerId id of the Marker
@@ -111,6 +133,11 @@ namespace OSFramework.OSMap {
          * Remove all Shapes from the Map
          */
         removeAllShapes(): void;
+        /**
+         * Remove a DrawingTools from the Map by giving a drawingToolsId
+         * @param drawingToolsId id of the DrawingTools
+         */
+        removeDrawingTools(drawingToolsId: string): void;
         /**
          * Remove a Marker from the Map by giving a markerId
          * @param markerId id of the marker

@@ -172,6 +172,23 @@ namespace GoogleProvider.OSMap {
         }
 
         // ChangeMarkerProperty method can't be used on a StaticMap
+        public changeDrawingToolsProperty(
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            drawingToolsId: string,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            propertyName: string,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+            propertyValue: any
+        ): void {
+            this.mapEvents.trigger(
+                OSFramework.Event.OSMap.MapEventType.OnError,
+                this,
+                OSFramework.Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
+            );
+            return;
+        }
+
+        // ChangeMarkerProperty method can't be used on a StaticMap
         public changeMarkerProperty(
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             markerId: string,
@@ -235,10 +252,20 @@ namespace GoogleProvider.OSMap {
             }
         }
 
-        public changeShapeProperty(): void {
-            throw new Error(
-                `Change Shape Property method can't be used on a StaticMap because Static Maps don't have events.`
+        public changeShapeProperty(
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            shapeId: string,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            propertyName: string,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+            propertyValue: any
+        ): void {
+            this.mapEvents.trigger(
+                OSFramework.Event.OSMap.MapEventType.OnError,
+                this,
+                OSFramework.Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
             );
+            return;
         }
 
         public dispose(): void {

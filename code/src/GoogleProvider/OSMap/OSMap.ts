@@ -23,12 +23,15 @@ namespace GoogleProvider.OSMap {
             );
         }
 
-        // eslint-disable-next-line @typescript-eslint/member-ordering
+        private _buildDrawingTools(): void {
+            // There is only one drawingTools per map
+            this.drawingTools.build();
+        }
+
         private _buildMarkers(): void {
             this.markers.forEach((marker) => marker.build());
         }
 
-        // eslint-disable-next-line @typescript-eslint/member-ordering
         private _buildShapes(): void {
             this.shapes.forEach((shape) => shape.build());
         }
@@ -69,6 +72,7 @@ namespace GoogleProvider.OSMap {
                 this.buildFeatures();
                 this._buildMarkers();
                 this._buildShapes();
+                this._buildDrawingTools();
                 this.finishBuild();
 
                 // Make sure to change the center after the conversion of the location to coordinates
@@ -114,7 +118,12 @@ namespace GoogleProvider.OSMap {
                 if (script === null) {
                     script = document.createElement('script');
                     /* eslint-disable-next-line prettier/prettier */
-                    script.src = OSFramework.Helper.Constants.googleMapsApiMap + '?key=' + this.config.apiKey;
+                    script.src =
+                        OSFramework.Helper.Constants.googleMapsApiMap +
+                        '?key=' +
+                        this.config.apiKey +
+                        // In order to use the drawingTools we need to add it into the libraries via the URL
+                        '&libraries=drawing';
                     script.async = true;
                     script.defer = true;
                     script.id = 'google-maps-script';
@@ -203,6 +212,18 @@ namespace GoogleProvider.OSMap {
             return Constants.OSMap.Events;
         }
 
+        public addDrawingTools(
+            drawingTools: OSFramework.DrawingTools.IDrawingTools
+        ): OSFramework.DrawingTools.IDrawingTools {
+            super.addDrawingTools(drawingTools);
+
+            if (this.isReady) {
+                drawingTools.build();
+            }
+
+            return drawingTools;
+        }
+
         public addMarker(
             marker: OSFramework.Marker.IMarker
         ): OSFramework.Marker.IMarker {
@@ -237,6 +258,27 @@ namespace GoogleProvider.OSMap {
             this._fBuilder = new Feature.FeatureBuilder(this);
             this._features = this._fBuilder.features;
             this._fBuilder.build();
+        }
+
+        public changeDrawingToolsProperty(
+            drawingToolsId: string,
+            propertyName: string,
+            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+            propertyValue: any
+        ): void {
+            // There is only one (max) drawingTools element per map
+            const drawingTools = this.drawingTools;
+
+            if (
+                drawingTools === undefined ||
+                drawingTools.uniqueId !== drawingToolsId
+            ) {
+                console.error(
+                    `changeDrawingToolsProperty - drawingToold id:${drawingToolsId} not found.`
+                );
+            } else {
+                drawingTools.changeProperty(propertyName, propertyValue);
+            }
         }
 
         public changeMarkerProperty(

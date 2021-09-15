@@ -30,6 +30,11 @@ namespace OSFramework.Helper.Constants {
     /** Tag used to find StaticMap */
     export const staticMapTag = '[data-block="Maps.StaticMap"]';
 
+    /** Tag used to find the DrawingTools */
+    export const drawingToolsTag = '[data-block="Drawing_Tools.Drawing_Tools"]';
+    /** Tag used to find Generic Tools from DrawingTools */
+    export const drawingToolsGeneric = '[data-block*="Drawing_Tools.Draw"]';
+
     /************************** */
     /**        DOM Tags         */
     /************************** */
@@ -45,6 +50,8 @@ namespace OSFramework.Helper.Constants {
     export const staticMapCss = '.staticMap-image';
     /** Tag used to find the container where the Shape's uniqueId was defined */
     export const shapeUniqueIdCss = '.ss-shape';
+    /** Tag used to find the container where the DrawingTools's uniqueId was defined */
+    export const drawingToolsUniqueIdCss = '.ss-drawingTools';
     /** Tag used to find the uniqueId property of a DOM element */
     export const uniqueIdAttribute = 'name';
 
@@ -57,6 +64,12 @@ namespace OSFramework.Helper.Constants {
     export const zoomAutofit = Enum.OSMap.Zoom.Zoom8;
     /** Default name for the shape changed event */
     export const shapeChangedEvent = 'shape_changed';
+    /** Default name for the drawing completed event */
+    export const drawingMarkerCompleted = 'markercomplete';
+    export const drawingPolylineCompleted = 'polylinecomplete';
+    export const drawingPolygonCompleted = 'polygoncomplete';
+    export const drawingCircleCompleted = 'circlecomplete';
+    export const drawingRectangleCompleted = 'rectanglecomplete';
 
     /************************** */
     /** URL for GoogleMapsApis  */
