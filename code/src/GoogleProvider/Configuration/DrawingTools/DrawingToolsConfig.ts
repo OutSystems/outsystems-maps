@@ -6,7 +6,7 @@ namespace GoogleProvider.Configuration.DrawingTools {
         extends OSFramework.Configuration.AbstractConfiguration
         implements OSFramework.Configuration.IConfigurationDrawingTools {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public position: any;
+        public position: string;
         public uniqueId: string;
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
@@ -20,11 +20,6 @@ namespace GoogleProvider.Configuration.DrawingTools {
             let provider = {
                 position: this.position
             };
-
-            //Deleting all the undefined properties
-            Object.keys(provider).forEach((key) => {
-                if (provider[key] === undefined) delete provider[key];
-            });
 
             return provider;
         }
