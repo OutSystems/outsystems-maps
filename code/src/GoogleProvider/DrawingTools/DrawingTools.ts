@@ -47,36 +47,6 @@ namespace GoogleProvider.DrawingTools {
 
             // Add the handler that will create the shape/marker element and remove the overlay created by the drawing tool on the map
             this.tools.forEach((tool) => tool.addCompletedEvent());
-
-            // Any events that got added to the drawingTools via the API Subscribe method will have to be taken care here
-            // If the Event type of each handler is drawingToolsProviderEvent, we want to make sure to add that event to the listeners of the google drawingTools provider
-            this.drawingToolsEvents.handlers.forEach(
-                (handler: OSFramework.Event.IEvent<string>, eventName) => {
-                    if (
-                        handler instanceof
-                        OSFramework.Event.DrawingTools.DrawingToolsProviderEvent
-                    ) {
-                        this.provider.addListener(
-                            // Name of the event (e.g. dblclick, dragend, etc)
-                            eventName,
-                            () => {
-                                this.drawingToolsEvents.trigger(
-                                    // EventType
-                                    OSFramework.Event.DrawingTools
-                                        .DrawingToolsEventType.ProviderEvent,
-                                    // EventName
-                                    eventName,
-                                    {
-                                        uniqueId: this.createdElements[
-                                            this.createdElements.length - 1
-                                        ].uniqueId
-                                    }
-                                );
-                            }
-                        );
-                    }
-                }
-            );
         }
 
         protected get controlOptions(): google.maps.drawing.DrawingControlOptions {
