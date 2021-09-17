@@ -117,7 +117,7 @@ namespace GoogleProvider.Shape {
         }
 
         protected get invalidShapeLocationErrorCode(): OSFramework.Enum.ErrorCodes {
-            return OSFramework.Enum.ErrorCodes.CFG_InvalidRectangleShapeCenter;
+            return OSFramework.Enum.ErrorCodes.CFG_InvalidRectangleShapeBounds;
         }
 
         public get bounds(): OSFramework.OSStructures.OSMap.Bounds {
