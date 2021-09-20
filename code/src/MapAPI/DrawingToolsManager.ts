@@ -40,6 +40,43 @@ namespace MapAPI.DrawingToolsManager {
         return map;
     }
 
+    // TODO
+    export function AddTool(
+        toolId: string,
+        type: OSFramework.Enum.DrawingToolsTypes,
+        configs: string
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ): any {
+        // Let's make sure that if the Map doesn't exist, we don't throw and exception but instead add the handler to the pendingEvents
+        const drawingToolsId = GetDrawingToolsByToolUniqueId(toolId);
+        setTimeout(() => {
+            const drawingTools = GetDrawingToolsById(drawingToolsId, false);
+            if (drawingTools !== undefined) {
+                if (
+                    !drawingTools.hasTool(toolId) &&
+                    !drawingTools.toolAlreadyExists(type)
+                ) {
+                    const _tool = GoogleProvider.DrawingTools.DrawingToolsFactory.MakeTool(
+                        drawingTools.map,
+                        drawingTools,
+                        toolId,
+                        type,
+                        JSON.parse(configs)
+                    );
+                    drawingTools.addTool(_tool);
+                    Events.CheckPendingEvents(drawingTools);
+                    return _tool;
+                } else {
+                    OSFramework.Helper.ThrowError(
+                        drawingTools.map,
+                        OSFramework.Enum.ErrorCodes.GEN_ToolTypeAlreadyExists,
+                        type
+                    );
+                }
+            }
+        }, 500);
+    }
+
     /**
      * Changes the property value of a given DrawingTools.
      *
@@ -60,6 +97,32 @@ namespace MapAPI.DrawingToolsManager {
         if (map !== undefined) {
             map.changeDrawingToolsProperty(
                 drawingToolsId,
+                propertyName,
+                propertyValue
+            );
+        }
+    }
+
+    /**
+     * Changes the property value of a given Tool from the DrawingTools it belongs to
+     *
+     * @export
+     * @param {string} toolId Id of the Tool to be changed
+     * @param {string} propertyName name of the property to be changed - some properties of the provider might not work out of be box
+     * @param {*} propertyValue value to which the property should be changed to.
+     */
+    export function ChangeToolProperty(
+        toolId: string,
+        propertyName: string,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+        propertyValue: any
+    ): void {
+        const drawingToolsId = GetDrawingToolsByToolUniqueId(toolId);
+        const drawingTools = GetDrawingToolsById(drawingToolsId, false);
+
+        if (drawingTools !== undefined) {
+            drawingTools.changeToolProperty(
+                toolId,
                 propertyName,
                 propertyValue
             );
@@ -120,6 +183,24 @@ namespace MapAPI.DrawingToolsManager {
     }
 
     /**
+     * Gets the DrawingTools element by the toolId
+     *
+     * @param {string} toolUniqueId Id of the tool
+     */
+    export function GetDrawingToolsByToolUniqueId(
+        toolUniqueId: string
+    ): string {
+        //Try to find in DOM only if not present on Map
+        const toolElement = OSFramework.Helper.GetElementByUniqueId(
+            toolUniqueId
+        );
+        const drawingToolsId = OSFramework.Helper.GetClosestDrawingToolsId(
+            toolElement
+        );
+        return drawingToolsId;
+    }
+
+    /**
      * Function that will destroy the DrawingTools from the map it belongs to
      * @export
      * @param {string} drawingToolsId id of the DrawingTools that is about to be removed
@@ -131,5 +212,18 @@ namespace MapAPI.DrawingToolsManager {
         map && map.removeDrawingTools(drawingToolsId);
         drawingToolsMap.delete(drawingToolsId);
         drawingToolsElement = undefined;
+    }
+
+    /**
+     * Function that will destroy a specific Tool from the DrawingTools element it belongs to
+     *
+     * @export
+     * @param {string} toolId id of the Tool that is about to be removed
+     */
+    export function RemoveTool(toolId: string): void {
+        const drawingToolsId = GetDrawingToolsByToolUniqueId(toolId);
+        const drawingTools = GetDrawingToolsById(drawingToolsId, false);
+
+        drawingTools && drawingTools.removeTool(toolId);
     }
 }
