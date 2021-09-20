@@ -85,8 +85,6 @@ namespace OSFramework.DrawingTools {
             this._tools.set(tool.uniqueId, tool);
             this._toolsSet.add(tool);
 
-            tool.build();
-
             return tool;
         }
 

@@ -13,5 +13,27 @@ namespace GoogleProvider.DrawingTools {
                 configs as Configuration.DrawingTools.DrawingToolsConfig
             );
         }
+
+        export function MakeTool(
+            map: OSFramework.OSMap.IMap,
+            drawingTools: OSFramework.DrawingTools.IDrawingTools,
+            toolId: string,
+            type: OSFramework.Enum.DrawingToolsTypes,
+            configs: OSFramework.Configuration.IConfiguration
+        ): OSFramework.DrawingTools.ITool {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            switch (type) {
+                case OSFramework.Enum.DrawingToolsTypes.Marker:
+                    return new DrawMarker(
+                        map,
+                        drawingTools,
+                        toolId,
+                        type,
+                        configs as Configuration.DrawingTools.DrawMarkerConfig
+                    );
+                default:
+                    throw `There is no factory for this type of DrawingTool (${type})`;
+            }
+        }
     }
 }
