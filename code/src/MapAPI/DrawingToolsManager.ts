@@ -206,7 +206,7 @@ namespace MapAPI.DrawingToolsManager {
             );
             drawingToolsElement = _drawingTools;
             drawingToolsMap.set(drawingToolsId, map.uniqueId);
-            map.addDrawingTools(drawingTools);
+            map.addDrawingTools(_drawingTools);
 
             CheckPendingTools(_drawingTools);
 
