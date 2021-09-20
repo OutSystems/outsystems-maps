@@ -2,7 +2,7 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace GoogleProvider.DrawingTools {
-    export abstract class DrawShape<
+    export abstract class AbstractDrawShape<
         W extends Configuration.DrawingTools.DrawConfig
     > extends AbstractProviderTool<W> {
         constructor(

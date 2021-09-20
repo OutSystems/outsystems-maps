@@ -1,12 +1,12 @@
-/// <reference path="DrawShape.ts" />
+/// <reference path="AbstractDrawShape.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace GoogleProvider.DrawingTools {
-    export abstract class DrawPolyshape<
+    export abstract class AbstractDrawPolyshape<
         W extends
             | Configuration.DrawingTools.DrawBasicShapeConfig
             | Configuration.DrawingTools.DrawFilledShapeConfig
-    > extends DrawShape<W> {
+    > extends AbstractDrawShape<W> {
         constructor(
             map: OSFramework.OSMap.IMap,
             drawingTools: OSFramework.DrawingTools.IDrawingTools,
