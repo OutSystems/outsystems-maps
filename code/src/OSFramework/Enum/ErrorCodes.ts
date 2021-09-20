@@ -11,7 +11,7 @@ namespace OSFramework.Enum {
         CFG_InvalidPolylineShapeLocations = 'MAPS-CFG-05001',
         CFG_InvalidPolygonShapeLocations = 'MAPS-CFG-05002',
         CFG_InvalidCircleShapeCenter = 'MAPS-CFG-05003',
-        CFG_InvalidRectangleShapeCenter = 'MAPS-CFG-05004',
+        CFG_InvalidRectangleShapeBounds = 'MAPS-CFG-05004',
 
         // Error Codes - LIB errors - Specific errors generated when consuming a third party lib / providers
         LIB_InvalidApiKeyMap = 'MAPS-LIB-01001',
@@ -34,6 +34,10 @@ namespace OSFramework.Enum {
         GEN_UnsupportedEventMap = 'MAPS-GEN-01002',
         GEN_UnsupportedEventMarker = 'MAPS-GEN-03002',
         GEN_InvalidChangePropertyShape = 'MAPS-GEN-05001',
-        GEN_UnsupportedEventShape = 'MAPS-GEN-05002'
+        GEN_InvalidChangePropertyDrawingTools = 'MAPS-GEN-06001',
+        GEN_InvalidChangePropertyTools = 'MAPS-GEN-06002',
+        GEN_UnsupportedEventShape = 'MAPS-GEN-05002',
+        GEN_UnsupportedEventDrawingTools = 'MAPS-GEN-06003',
+        GEN_ToolTypeAlreadyExists = 'MAPS-GEN-06004'
     }
 }

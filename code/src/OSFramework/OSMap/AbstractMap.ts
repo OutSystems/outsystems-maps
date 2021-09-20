@@ -6,6 +6,7 @@ namespace OSFramework.OSMap {
     > implements IMapGeneric<W> {
         /** Configuration reference */
         private _config: Z;
+        private _drawingTools: DrawingTools.IDrawingTools;
         private _isReady: boolean;
         private _mapEvents: Event.OSMap.MapEventsManager;
         private _mapType: Enum.MapType;
@@ -50,6 +51,10 @@ namespace OSFramework.OSMap {
             return this._isReady;
         }
 
+        public get drawingTools(): DrawingTools.IDrawingTools {
+            return this._drawingTools;
+        }
+
         public get markers(): Marker.IMarker[] {
             return Array.from(this._markersSet);
         }
@@ -74,6 +79,14 @@ namespace OSFramework.OSMap {
             this._isReady = true;
 
             this.mapEvents.trigger(Event.OSMap.MapEventType.Initialized, this);
+        }
+
+        public addDrawingTools(
+            drawingTools: DrawingTools.IDrawingTools
+        ): DrawingTools.IDrawingTools {
+            this._drawingTools = drawingTools;
+
+            return drawingTools;
         }
 
         public addMarker(marker: Marker.IMarker): Marker.IMarker {
@@ -122,6 +135,8 @@ namespace OSFramework.OSMap {
             this._shapes.forEach((shape: Shape.IShape, shapeId: string) => {
                 this.removeShape(shapeId);
             });
+            // Let's make sure we remove the DrawingTools from the map
+            this.removeDrawingTools(this.drawingTools.uniqueId);
         }
 
         public equalsToID(mapId: string): boolean {
@@ -192,6 +207,21 @@ namespace OSFramework.OSMap {
             }
         }
 
+        public removeDrawingTools(drawingToolsId: string): void {
+            if (this._mapType === Enum.MapType.StaticMap && this.isReady) {
+                this.mapEvents.trigger(
+                    Event.OSMap.MapEventType.OnError,
+                    this,
+                    Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
+                );
+                return;
+            }
+            if (this._drawingTools.uniqueId === drawingToolsId) {
+                this._drawingTools.dispose();
+                this._drawingTools = undefined;
+            }
+        }
+
         public removeMarker(markerId: string): void {
             if (this._mapType === Enum.MapType.StaticMap && this.isReady) {
                 this.mapEvents.trigger(
@@ -239,6 +269,13 @@ namespace OSFramework.OSMap {
         public validateProviderEvent(eventName: string): boolean {
             return this.providerEvents.indexOf(eventName) !== -1;
         }
+
+        public abstract changeDrawingToolsProperty(
+            drawingToolsId: string,
+            propertyName: string,
+            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+            propertyValue: any
+        ): void;
 
         public abstract changeMarkerProperty(
             markerId: string,

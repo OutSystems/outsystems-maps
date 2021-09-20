@@ -535,3 +535,52 @@ html[data-uieditorversion^="1"]:hover .map-preview-events:empty:after {
     -servicestudio-font-weight: normal;
     -servicestudio-margin-bottom: 2px;
 }
+
+/***********************************************************************/
+/**/
+/***********************************************************************/
+
+
+.ss-drawingTools {
+    -servicestudio-background: white;
+    -servicestudio-border-radius: 3px;
+    -servicestudio-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    -servicestudio-margin: 3px;
+    -servicestudio-max-width: 200px;
+    -servicestudio-min-height: 50px;
+    -servicestudio-min-width: 200px;
+}
+
+.ss-drawingTools-hand,
+.ss-drawingTools-icon {
+    -servicestudio-height: 25px;
+    -servicestudio-width: 25px;
+}
+
+.ss-drawingTools-tools {
+    -servicestudio-display: flex;    
+    -servicestudio-padding: 10px 10px 0px 10px;
+}
+
+.ss-drawingTools-placeholder {
+    -servicestudio-flex: 1;
+    -servicestudio-border: 1px dashed #efefef;
+    -servicestudio-position: relative;
+}
+
+.ss-drawingTools-placeholder * {
+    -servicestudio-display: inline-block;
+}
+
+.ss-drawingTools-placeholder:empty:after {
+    -servicestudio-color: lightgrey;
+    -servicestudio-content: 'Drag draw blocks here';
+    -servicestudio-font-family: Arial;
+    -servicestudio-font-size: 11px;
+    -servicestudio-left: 50%;
+    -servicestudio-position: absolute;
+    -servicestudio-top: 50%;
+    -servicestudio-transform: translate(-50%, -50%);
+    -servicestudio-white-space: nowrap;
+    -servicestudio-z-index: 0;
+}
