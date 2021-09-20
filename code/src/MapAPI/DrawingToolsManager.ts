@@ -206,6 +206,7 @@ namespace MapAPI.DrawingToolsManager {
             );
             drawingToolsElement = _drawingTools;
             drawingToolsMap.set(drawingToolsId, map.uniqueId);
+            map.addDrawingTools(drawingTools);
 
             CheckPendingTools(_drawingTools);
 
@@ -215,18 +216,6 @@ namespace MapAPI.DrawingToolsManager {
                 `There is already a DrawingTools registered on the specified Map under id:${drawingToolsId}`
             );
         }
-    }
-
-    /**
-     * Function that will initialize the provider DrawingTools in the page.
-     * @export
-     * @param {string} drawingToolsId Id of the DrawingTools that is going to be initialized.
-     */
-    export function InitializeDrawingTools(drawingToolsId: string): void {
-        const drawingTools = GetDrawingToolsById(drawingToolsId);
-        const map = GetMapByDrawingToolsId(drawingToolsId);
-
-        map.addDrawingTools(drawingTools);
     }
 
     /**
