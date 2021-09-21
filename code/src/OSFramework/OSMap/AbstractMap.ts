@@ -7,6 +7,8 @@ namespace OSFramework.OSMap {
         /** Configuration reference */
         private _config: Z;
         private _drawingTools: DrawingTools.IDrawingTools;
+        private _fileLayers: Map<string, FileLayer.IFileLayer>;
+        private _fileLayersSet: Set<FileLayer.IFileLayer>;
         private _isReady: boolean;
         private _mapEvents: Event.OSMap.MapEventsManager;
         private _mapType: Enum.MapType;
@@ -22,8 +24,10 @@ namespace OSFramework.OSMap {
 
         constructor(uniqueId: string, config: Z, mapType: Enum.MapType) {
             this._uniqueId = uniqueId;
+            this._fileLayers = new Map<string, FileLayer.IFileLayer>();
             this._markers = new Map<string, Marker.IMarker>();
             this._shapes = new Map<string, Shape.IShape>();
+            this._fileLayersSet = new Set<FileLayer.IFileLayer>();
             this._markersSet = new Set<Marker.IMarker>();
             this._shapesSet = new Set<Shape.IShape>();
             this._config = config;
@@ -53,6 +57,10 @@ namespace OSFramework.OSMap {
 
         public get drawingTools(): DrawingTools.IDrawingTools {
             return this._drawingTools;
+        }
+
+        public get fileLayers(): FileLayer.IFileLayer[] {
+            return Array.from(this._fileLayersSet);
         }
 
         public get markers(): Marker.IMarker[] {
@@ -87,6 +95,15 @@ namespace OSFramework.OSMap {
             this._drawingTools = drawingTools;
 
             return drawingTools;
+        }
+
+        public addFileLayer(
+            fileLayer: FileLayer.IFileLayer
+        ): FileLayer.IFileLayer {
+            this._fileLayers.set(fileLayer.uniqueId, fileLayer);
+            this._fileLayersSet.add(fileLayer);
+
+            return fileLayer;
         }
 
         public addMarker(marker: Marker.IMarker): Marker.IMarker {
@@ -143,6 +160,16 @@ namespace OSFramework.OSMap {
             return mapId === this._uniqueId || mapId === this._widgetId;
         }
 
+        public getFileLayer(fileLayerId: string): FileLayer.IFileLayer {
+            if (this._fileLayers.has(fileLayerId)) {
+                return this._fileLayers.get(fileLayerId);
+            } else {
+                return this.fileLayers.find(
+                    (p) => p && p.equalsToID(fileLayerId)
+                );
+            }
+        }
+
         public getMarker(markerId: string): Marker.IMarker {
             if (this._markers.has(markerId)) {
                 return this._markers.get(markerId);
@@ -159,12 +186,36 @@ namespace OSFramework.OSMap {
             }
         }
 
+        public hasFileLayer(fileLayerId: string): boolean {
+            return this._fileLayers.has(fileLayerId);
+        }
+
         public hasMarker(markerId: string): boolean {
             return this._markers.has(markerId);
         }
 
         public hasShape(shapeId: string): boolean {
             return this._shapes.has(shapeId);
+        }
+
+        public removeAllFileLayers(): void {
+            if (this._mapType === Enum.MapType.StaticMap && this.isReady) {
+                this.mapEvents.trigger(
+                    Event.OSMap.MapEventType.OnError,
+                    this,
+                    Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
+                );
+                return;
+            }
+            this._fileLayers.forEach((marker) => {
+                marker.dispose();
+            });
+
+            this._fileLayers.clear();
+            this._fileLayersSet.clear();
+            if (this._isReady) {
+                this.refresh();
+            }
         }
 
         public removeAllMarkers(): void {
@@ -222,6 +273,24 @@ namespace OSFramework.OSMap {
             }
         }
 
+        public removeFileLayer(fileLayerId: string): void {
+            if (this._mapType === Enum.MapType.StaticMap && this.isReady) {
+                this.mapEvents.trigger(
+                    Event.OSMap.MapEventType.OnError,
+                    this,
+                    Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
+                );
+                return;
+            }
+            if (this._fileLayers.has(fileLayerId)) {
+                const fileLayer = this._fileLayers.get(fileLayerId);
+
+                fileLayer.dispose();
+                this._fileLayers.delete(fileLayerId);
+                this._fileLayersSet.delete(fileLayer);
+            }
+        }
+
         public removeMarker(markerId: string): void {
             if (this._mapType === Enum.MapType.StaticMap && this.isReady) {
                 this.mapEvents.trigger(
@@ -272,6 +341,13 @@ namespace OSFramework.OSMap {
 
         public abstract changeDrawingToolsProperty(
             drawingToolsId: string,
+            propertyName: string,
+            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+            propertyValue: any
+        ): void;
+
+        public abstract changeFileLayerProperty(
+            fileLayerId: string,
             propertyName: string,
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             propertyValue: any

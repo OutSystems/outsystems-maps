@@ -10,6 +10,8 @@ namespace OSFramework.OSMap {
         drawingTools: OSFramework.DrawingTools.IDrawingTools;
         /** Exposed features of the Map */
         features: OSFramework.Feature.ExposedFeatures;
+        /** Get all FileLayers from the Map */
+        fileLayers: Array<OSFramework.FileLayer.IFileLayer>;
         /** Boolean that indicates if the Map is ready */
         isReady: boolean;
         /** Events from the Map */
@@ -31,12 +33,20 @@ namespace OSFramework.OSMap {
 
         /**
          * Add new DrawingTools Element to the Map
-         * @param shape DrawingTools that will be added to the Map
+         * @param drawingTools DrawingTools that will be added to the Map
          * @returns DrawingTools that has been created
          */
         addDrawingTools(
             drawingTools: OSFramework.DrawingTools.IDrawingTools
         ): OSFramework.DrawingTools.IDrawingTools;
+        /**
+         * Add new FileLayer Element to the Map
+         * @param fileLayer FileLayer that will be added to the Map
+         * @returns FileLayer that has been created
+         */
+        addFileLayer(
+            fileLayer: OSFramework.FileLayer.IFileLayer
+        ): OSFramework.FileLayer.IFileLayer;
         /**
          * Add new Marker to the Map
          * @param marker Marker that will be added to the Map
@@ -59,6 +69,18 @@ namespace OSFramework.OSMap {
          */
         changeDrawingToolsProperty(
             drawingToolsId: string,
+            propertyName: string,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            propertyValue: any
+        ): void;
+        /**
+         * Change property of a fileLayer from the FileLayer by specifying the property name and the new value
+         * @param fileLayerId id of the FileLayer
+         * @param propertyName name of the property
+         * @param propertyValue new value of the property
+         */
+        changeFileLayerProperty(
+            fileLayerId: string,
             propertyName: string,
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             propertyValue: any
@@ -95,6 +117,12 @@ namespace OSFramework.OSMap {
             propertyValue: any
         ): void;
         /**
+         * Get the FileLayer from the Map by giving a fileLayerId
+         * @param fileLayerId id of the FileLayer
+         * @returns FileLayer found via the specified fileLayerId
+         */
+        getFileLayer(fileLayerId: string): OSFramework.FileLayer.IFileLayer;
+        /**
          * Get the Marker from the Map by giving a markerId
          * @param markerId id of the marker
          * @returns Marker found via the specified markerId
@@ -106,6 +134,11 @@ namespace OSFramework.OSMap {
          * @returns Shape found via the specified shapeId
          */
         getShape(shapeId: string): OSFramework.Shape.IShape;
+        /**
+         * Checks if the Map has a specific FileLayer by giving a fileLayerId
+         * @param fileLayerId id of the fileLayer
+         */
+        hasFileLayer(fileLayerId: string): boolean;
         /**
          * Checks if the Map has a specific Marker by giving a markerId
          * @param markerId id of the marker
@@ -126,6 +159,10 @@ namespace OSFramework.OSMap {
          */
         refreshProviderEvents(): void;
         /**
+         * Remove all FileLayers from the Map
+         */
+        removeAllFileLayers(): void;
+        /**
          * Remove all Markers from the Map
          */
         removeAllMarkers(): void;
@@ -138,6 +175,11 @@ namespace OSFramework.OSMap {
          * @param drawingToolsId id of the DrawingTools
          */
         removeDrawingTools(drawingToolsId: string): void;
+        /**
+         * Remove a FileLayer from the Map by giving a fileLayerId
+         * @param fileLayerId id of the FileLayer
+         */
+        removeFileLayer(fileLayerId: string): void;
         /**
          * Remove a Marker from the Map by giving a markerId
          * @param markerId id of the marker
