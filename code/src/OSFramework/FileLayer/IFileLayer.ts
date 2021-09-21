@@ -8,14 +8,14 @@ namespace OSFramework.FileLayer {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         createdElements: Array<any>;
         /** Events from the FileLayer */
-        // FileLayerEvents: Event.FileLayer.FileLayerEventsManager;
+        fileLayerEvents: Event.FileLayer.FileLayersEventsManager;
         isReady: boolean;
         map: OSMap.IMap; //IMap
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         provider: any;
         /** Events from the FileLayer provider */
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // providerEvents: any;
+        providerEvents: any;
         uniqueId: string;
         widgetId: string;
 
@@ -24,7 +24,7 @@ namespace OSFramework.FileLayer {
         /**
          * Refreshes the Events of the FileLayer Provider after Subscribing/Unsubscribing events
          */
-        // refreshProviderEvents(): void;
+        refreshProviderEvents(): void;
         /**
          * Check if the event name is valid for the provider events
          * @param eventName name of the event from provider

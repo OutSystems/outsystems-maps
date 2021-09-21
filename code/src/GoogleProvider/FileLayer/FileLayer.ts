@@ -23,11 +23,25 @@ namespace GoogleProvider.FileLayer {
         private _setFileLayerEvents(): void {
             // Make sure the listeners get removed before adding the new ones
             google.maps.event.clearInstanceListeners(this.provider);
+
+            // OnClick Event
+            if (
+                this.fileLayerEvents.hasHandlers(
+                    OSFramework.Event.FileLayer.FileLayersEventType.OnClick
+                ) &&
+                this.provider.get('clickable') // Always true. Fallback in case this parameter gets changed in the future.
+            ) {
+                this.provider.addListener('click', () => {
+                    this.fileLayerEvents.trigger(
+                        OSFramework.Event.FileLayer.FileLayersEventType.OnClick
+                    );
+                });
+            }
         }
 
-        // public get providerEvents(): Array<string> {
-        //     return Constants.FileLayer.Events;
-        // }
+        public get providerEvents(): Array<string> {
+            return Constants.FileLayer.Events;
+        }
 
         public build(): void {
             super.build();
@@ -73,6 +87,10 @@ namespace GoogleProvider.FileLayer {
             }
             this._provider = undefined;
             super.dispose();
+        }
+
+        public refreshProviderEvents(): void {
+            if (this.isReady) this._setFileLayerEvents();
         }
     }
 }

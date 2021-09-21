@@ -14,7 +14,7 @@ namespace OSFramework.FileLayer {
         protected _built: boolean;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         protected _createElements: Array<any>;
-        // protected _FileLayerEvents: Event.FileLayer.FileLayerEventsManager;
+        protected _fileLayerEvents: Event.FileLayer.FileLayersEventsManager;
         protected _provider: W;
 
         constructor(map: OSMap.IMap, uniqueId: string, config: T) {
@@ -22,9 +22,9 @@ namespace OSFramework.FileLayer {
             this._uniqueId = uniqueId;
             this._config = config;
             this._built = false;
-            // this._FileLayerEvents = new Event.FileLayer.FileLayerEventsManager(
-            //     this
-            // );
+            this._fileLayerEvents = new Event.FileLayer.FileLayersEventsManager(
+                this
+            );
             this._createElements = [];
         }
 
@@ -35,9 +35,9 @@ namespace OSFramework.FileLayer {
         public get createdElements(): Array<any> {
             return this._createElements;
         }
-        // public get FileLayerEvents(): Event.FileLayer.FileLayerEventsManager {
-        //     return this._FileLayerEvents;
-        // }
+        public get fileLayerEvents(): Event.FileLayer.FileLayersEventsManager {
+            return this._fileLayerEvents;
+        }
         public get isReady(): boolean {
             return this._built;
         }
@@ -69,9 +69,9 @@ namespace OSFramework.FileLayer {
         protected finishBuild(): void {
             this._built = true;
 
-            // this.FileLayerEvents.trigger(
-            //     Event.FileLayer.FileLayerEventType.Initialized
-            // );
+            this.fileLayerEvents.trigger(
+                Event.FileLayer.FileLayersEventType.Initialized
+            );
         }
 
         public build(): void {
@@ -112,13 +112,12 @@ namespace OSFramework.FileLayer {
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         public validateProviderEvent(eventName: string): boolean {
-            return true;
-            // return this.providerEvents.indexOf(eventName) !== -1;
+            return this.providerEvents.indexOf(eventName) !== -1;
         }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // public abstract get providerEvents(): any;
+        public abstract get providerEvents(): any;
 
-        // public abstract refreshProviderEvents(): void;
+        public abstract refreshProviderEvents(): void;
     }
 }
