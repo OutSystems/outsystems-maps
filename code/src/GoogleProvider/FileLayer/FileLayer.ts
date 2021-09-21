@@ -31,11 +31,31 @@ namespace GoogleProvider.FileLayer {
                 ) &&
                 this.provider.get('clickable') // Always true. Fallback in case this parameter gets changed in the future.
             ) {
-                this.provider.addListener('click', () => {
-                    this.fileLayerEvents.trigger(
-                        OSFramework.Event.FileLayer.FileLayersEventType.OnClick
-                    );
-                });
+                this.provider.addListener(
+                    'click',
+                    (event: google.maps.KmlMouseEvent) => {
+                        this.fileLayerEvents.trigger(
+                            OSFramework.Event.FileLayer.FileLayersEventType
+                                .OnClick,
+                            'click',
+                            // Extra parameters to be passed as arguments on the callback of the OnClick event handler
+                            {
+                                // Coordinates from the event that was triggered (by the click)
+                                coordinates: JSON.stringify({
+                                    Lat: event.latLng.lat(),
+                                    Lng: event.latLng.lng()
+                                }),
+                                // GoogleMaps description for featureData:
+                                //  -> Data for a single KML feature in JSON format, returned when a KML feature is clicked.
+                                //  -> The data contained in this object mirrors that associated with the feature in the KML or GeoRSS markup in which it is declared.
+                                // We need this data stringified in order to return it to the handler
+                                featureData: JSON.stringify(
+                                    event.featureData as google.maps.KmlFeatureData
+                                )
+                            }
+                        );
+                    }
+                );
             }
         }
 

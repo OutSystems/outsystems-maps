@@ -83,7 +83,10 @@ namespace OSFramework.Event.FileLayer {
                     case FileLayersEventType.OnClick:
                         handlerEvent.trigger(
                             this._fileLayer.map.widgetId, // Id of Map block that was clicked
-                            this._fileLayer.widgetId || this._fileLayer.uniqueId // Id of Shape block that was clicked
+                            this._fileLayer.widgetId ||
+                                this._fileLayer.uniqueId, // Id of Shape block that was clicked
+                            args[0].coordinates, // LatLng from the click event
+                            args[0].featureData // FeatureData from the FileLayer that was clicked
                         );
                         break;
                     case FileLayersEventType.ProviderEvent:
