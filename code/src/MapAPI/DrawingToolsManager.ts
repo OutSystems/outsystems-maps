@@ -3,6 +3,41 @@ namespace MapAPI.DrawingToolsManager {
     const drawingToolsMap = new Map<string, string>(); //drawingTools.uniqueId -> map.uniqueId
     let drawingToolsElement = undefined;
 
+    /* pending tools map holds the tools to be created if the drawing tools block is not ready to add new tools */
+    const _pendingTools = new Map<
+        string,
+        Array<OSFramework.OSStructures.API.PendingTools>
+    >(); //drawingTools.uniqueId -> Array<tool.uniqueId, tool.type, tool.configs>
+
+    function CreateTool(
+        drawingTools: OSFramework.DrawingTools.IDrawingTools,
+        toolId: string,
+        type: OSFramework.Enum.DrawingToolsTypes,
+        configs: string
+    ): OSFramework.DrawingTools.ITool {
+        if (
+            !drawingTools.hasTool(toolId) &&
+            !drawingTools.toolAlreadyExists(type)
+        ) {
+            const _tool = GoogleProvider.DrawingTools.DrawingToolsFactory.MakeTool(
+                drawingTools.map,
+                drawingTools,
+                toolId,
+                type,
+                JSON.parse(configs)
+            );
+            drawingTools.addTool(_tool);
+            Events.CheckPendingEvents(drawingTools);
+            return _tool;
+        } else {
+            OSFramework.Helper.ThrowError(
+                drawingTools.map,
+                OSFramework.Enum.ErrorCodes.GEN_ToolTypeAlreadyExists,
+                type
+            );
+        }
+    }
+
     /**
      * Gets the Map to which the DrawingTools belongs to
      *
@@ -41,6 +76,37 @@ namespace MapAPI.DrawingToolsManager {
     }
 
     /**
+     * Function that will create an instance of a Tool object with the configurations passed
+     * (If the DrawingTools Block to which the Tool belongs is not created, adds the tool into a pending list)
+     *
+     * @param toolId identifier of the new tool
+     * @param type type of the new tool (OSFramework.Enum.DrawingToolsTypes)
+     * @param configs stringified configuration for the new tool
+     */
+    export function AddTool(
+        toolId: string,
+        type: OSFramework.Enum.DrawingToolsTypes,
+        configs: string
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ): OSFramework.DrawingTools.ITool {
+        // Let's make sure that if the Map doesn't exist, we don't throw and exception but instead add the handler to the pendingEvents
+        const drawingToolsId = GetDrawingToolsByToolUniqueId(toolId);
+        const drawingTools = GetDrawingToolsById(drawingToolsId, false);
+        if (drawingTools !== undefined) {
+            return CreateTool(drawingTools, toolId, type, configs);
+        } else {
+            // If the drawingTools block is not created then add the tool into a pendingTools Map.
+            if (_pendingTools.has(drawingToolsId)) {
+                _pendingTools
+                    .get(drawingToolsId)
+                    .push({ toolId, type, configs });
+            } else {
+                _pendingTools.set(drawingToolsId, [{ toolId, type, configs }]);
+            }
+        }
+    }
+
+    /**
      * Changes the property value of a given DrawingTools.
      *
      * @export
@@ -67,6 +133,59 @@ namespace MapAPI.DrawingToolsManager {
     }
 
     /**
+     * Changes the property value of a given Tool from the DrawingTools it belongs to
+     *
+     * @export
+     * @param {string} toolId Id of the Tool to be changed
+     * @param {string} propertyName name of the property to be changed - some properties of the provider might not work out of be box
+     * @param {*} propertyValue value to which the property should be changed to.
+     */
+    export function ChangeToolProperty(
+        toolId: string,
+        propertyName: string,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+        propertyValue: any
+    ): void {
+        const drawingToolsId = GetDrawingToolsByToolUniqueId(toolId);
+        const drawingTools = GetDrawingToolsById(drawingToolsId, false);
+
+        if (drawingTools !== undefined) {
+            drawingTools.changeToolProperty(
+                toolId,
+                propertyName,
+                propertyValue
+            );
+        }
+    }
+
+    /**
+     * API method to check if there are pending tools waiting for a specific DrawingTools
+     *
+     * @export
+     * @param {string} drawingTools DrawingTools that is ready for events
+     */
+    export function CheckPendingTools(
+        drawingTools: OSFramework.DrawingTools.IDrawingTools
+    ): void {
+        // For each key of the pendingEvents check if the shape has the key as a widgetId or uniqueId and add the new handler
+        for (const key of _pendingTools.keys()) {
+            if (drawingTools.equalsToID(key)) {
+                _pendingTools.get(key).forEach((tool) => {
+                    CreateTool(
+                        drawingTools,
+                        tool.toolId,
+                        tool.type,
+                        tool.configs
+                    );
+                });
+                drawingTools.refreshProviderEvents();
+                // Make sure to delete the entry from the pendingEvents
+                _pendingTools.delete(key);
+            }
+        }
+    }
+
+    /**
      * Function that will create an instance of DrawingTools object with the configurations passed
      *
      * @export
@@ -88,6 +207,8 @@ namespace MapAPI.DrawingToolsManager {
             drawingToolsElement = _drawingTools;
             drawingToolsMap.set(drawingToolsId, map.uniqueId);
             map.addDrawingTools(_drawingTools);
+
+            CheckPendingTools(_drawingTools);
 
             return _drawingTools;
         } else {
@@ -120,6 +241,24 @@ namespace MapAPI.DrawingToolsManager {
     }
 
     /**
+     * Gets the DrawingTools element by the toolId
+     *
+     * @param {string} toolUniqueId Id of the tool
+     */
+    export function GetDrawingToolsByToolUniqueId(
+        toolUniqueId: string
+    ): string {
+        //Try to find in DOM only if not present on Map
+        const toolElement = OSFramework.Helper.GetElementByUniqueId(
+            toolUniqueId
+        );
+        const drawingToolsId = OSFramework.Helper.GetClosestDrawingToolsId(
+            toolElement
+        );
+        return drawingToolsId;
+    }
+
+    /**
      * Function that will destroy the DrawingTools from the map it belongs to
      * @export
      * @param {string} drawingToolsId id of the DrawingTools that is about to be removed
@@ -131,5 +270,18 @@ namespace MapAPI.DrawingToolsManager {
         map && map.removeDrawingTools(drawingToolsId);
         drawingToolsMap.delete(drawingToolsId);
         drawingToolsElement = undefined;
+    }
+
+    /**
+     * Function that will destroy a specific Tool from the DrawingTools element it belongs to
+     *
+     * @export
+     * @param {string} toolId id of the Tool that is about to be removed
+     */
+    export function RemoveTool(toolId: string): void {
+        const drawingToolsId = GetDrawingToolsByToolUniqueId(toolId);
+        const drawingTools = GetDrawingToolsById(drawingToolsId, false);
+
+        drawingTools && drawingTools.removeTool(toolId);
     }
 }

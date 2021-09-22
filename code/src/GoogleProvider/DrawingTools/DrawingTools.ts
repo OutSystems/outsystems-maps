@@ -71,9 +71,10 @@ namespace GoogleProvider.DrawingTools {
         ): OSFramework.DrawingTools.ITool {
             super.addTool(tool);
 
-            // Set all the events for the DrawingTools provider and the events for the tools that are contained on the DrawingTools box
-            // After adding a new Tool we need to refresh the drawingModes to add the new tool into the drawingtools box
-            this._refreshDrawingTools();
+            if (this.isReady) {
+                tool.build();
+                this._refreshDrawingTools();
+            }
 
             return tool;
         }
@@ -99,6 +100,10 @@ namespace GoogleProvider.DrawingTools {
             });
 
             this._provider.setMap(this.map.provider);
+            this.tools.forEach((tool) => tool.build());
+            // Set all the events for the DrawingTools provider and the events for the tools that are contained on the DrawingTools box
+            // After adding a new Tool we need to refresh the drawingModes to add the new tool into the drawingtools box
+            this._refreshDrawingTools();
             this.finishBuild();
         }
 
