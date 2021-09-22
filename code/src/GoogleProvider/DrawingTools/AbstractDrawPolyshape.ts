@@ -22,11 +22,12 @@ namespace GoogleProvider.DrawingTools {
         protected createConfigsElement(
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             shape: google.maps.Polyline | google.maps.Polygon,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ): any {
-            // DrawShap
+            configs:
+                | Configuration.Shape.BasicShapeConfig
+                | Configuration.Shape.FilledShapeConfig
+        ):
+            | Configuration.Shape.BasicShapeConfig
+            | Configuration.Shape.FilledShapeConfig {
             const locations = shape
                 .getPath()
                 .getArray()
@@ -37,7 +38,9 @@ namespace GoogleProvider.DrawingTools {
                 ...configs,
                 locations: JSON.stringify(locations)
             };
-            return finalConfigs;
+            return finalConfigs as
+                | Configuration.Shape.BasicShapeConfig
+                | Configuration.Shape.FilledShapeConfig;
         }
     }
 }
