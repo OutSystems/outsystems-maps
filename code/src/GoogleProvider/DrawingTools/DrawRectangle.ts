@@ -24,8 +24,7 @@ namespace GoogleProvider.DrawingTools {
             shape: google.maps.Rectangle,
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             configs: Configuration.Shape.RectangleShapeConfig
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ): any {
+        ): Configuration.Shape.RectangleShapeConfig {
             const providerBounds = shape.getBounds();
             const bounds: OSFramework.OSStructures.OSMap.BoundsString = {
                 north: providerBounds.getNorthEast().lat().toString(),
