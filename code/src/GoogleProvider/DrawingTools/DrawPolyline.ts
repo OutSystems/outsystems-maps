@@ -45,6 +45,7 @@ namespace GoogleProvider.DrawingTools {
             configs: any
         ): OSFramework.Shape.IShape {
             // we need to clean the provided configs and add the locations in order to create the new element
+            // DrawPolyline and DrawPolygon use the following method to add the locations into the initial configs
             const finalConfigs = super.createConfigsElement(shape, configs);
 
             return super.createShapeElement(
