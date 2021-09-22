@@ -540,7 +540,6 @@ html[data-uieditorversion^="1"]:hover .map-preview-events:empty:after {
 /**/
 /***********************************************************************/
 
-
 .ss-drawingTools {
     -servicestudio-background: white;
     -servicestudio-border-radius: 3px;
@@ -551,20 +550,29 @@ html[data-uieditorversion^="1"]:hover .map-preview-events:empty:after {
     -servicestudio-min-width: 200px;
 }
 
+.ss-drawingTools-hand {
+    -servicestudio-margin-top: 1px;
+}
+
 .ss-drawingTools-hand,
 .ss-drawingTools-icon {
-    -servicestudio-height: 25px;
-    -servicestudio-width: 25px;
+    -servicestudio-height: 27px;
+    -servicestudio-width: 27px;
+}
+
+.ss-drawingTools-icon img {
+    -servicestudio-height: 27px;
 }
 
 .ss-drawingTools-tools {
     -servicestudio-display: flex;    
-    -servicestudio-padding: 10px 10px 0px 10px;
+    -servicestudio-padding: 10px 10px 10px 10px;
 }
 
 .ss-drawingTools-placeholder {
-    -servicestudio-flex: 1;
     -servicestudio-border: 1px dashed #efefef;
+    -servicestudio-flex: 1;
+    -servicestudio-min-height: 30px;
     -servicestudio-position: relative;
 }
 
@@ -574,7 +582,7 @@ html[data-uieditorversion^="1"]:hover .map-preview-events:empty:after {
 
 .ss-drawingTools-placeholder:empty:after {
     -servicestudio-color: lightgrey;
-    -servicestudio-content: 'Drag draw blocks here';
+    -servicestudio-content: 'Drag draw block here';
     -servicestudio-font-family: Arial;
     -servicestudio-font-size: 11px;
     -servicestudio-left: 50%;
