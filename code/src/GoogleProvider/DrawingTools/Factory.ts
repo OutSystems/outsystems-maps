@@ -23,14 +23,14 @@ namespace GoogleProvider.DrawingTools {
         ): OSFramework.DrawingTools.ITool {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             switch (type) {
-                // case OSFramework.Enum.DrawingToolsTypes.Marker:
-                //     return new DrawMarker(
-                //         map,
-                //         drawingTools,
-                //         toolId,
-                //         type,
-                //         configs as Configuration.DrawingTools.DrawMarkerConfig
-                //     );
+                case OSFramework.Enum.DrawingToolsTypes.Marker:
+                    return new DrawMarker(
+                        map,
+                        drawingTools,
+                        toolId,
+                        type,
+                        configs as Configuration.DrawingTools.DrawMarkerConfig
+                    );
                 case OSFramework.Enum.DrawingToolsTypes.Polyline:
                     return new DrawPolyline(
                         map,
