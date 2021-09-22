@@ -23,7 +23,7 @@ namespace GoogleProvider.DrawingTools {
         private _createConfigsElement(
             shape: google.maps.Rectangle,
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
+            configs: Configuration.Shape.RectangleShapeConfig
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ): any {
             const providerBounds = shape.getBounds();
@@ -39,7 +39,7 @@ namespace GoogleProvider.DrawingTools {
                 ...configs,
                 bounds: JSON.stringify(bounds)
             };
-            return finalConfigs;
+            return finalConfigs as Configuration.Shape.RectangleShapeConfig;
         }
 
         /** Get the constant for the event polygoncomplete */
@@ -62,7 +62,7 @@ namespace GoogleProvider.DrawingTools {
             uniqueId: string,
             shape: google.maps.Rectangle,
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
+            configs: Configuration.Shape.RectangleShapeConfig
         ): OSFramework.Shape.IShape {
             const finalConfigs = this._createConfigsElement(shape, configs);
 
