@@ -70,8 +70,7 @@ namespace GoogleProvider.DrawingTools {
         public build(): void {
             super.build();
 
-            const configs = this.getProviderConfig();
-            this.options = configs;
+            this.options = this.getProviderConfig();
 
             this.finishBuild();
         }

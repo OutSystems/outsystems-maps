@@ -44,7 +44,7 @@ namespace GoogleProvider.DrawingTools {
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             configs: any
         ): OSFramework.Shape.IShape {
-            // we need to clean the provided configs in order to create the new element
+            // we need to clean the provided configs and add the locations in order to create the new element
             const finalConfigs = super.createConfigsElement(shape, configs);
 
             return super.createShapeElement(
