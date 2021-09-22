@@ -39,14 +39,14 @@ namespace GoogleProvider.DrawingTools {
                         type,
                         configs as Configuration.DrawingTools.DrawBasicShapeConfig
                     );
-                // case OSFramework.Enum.DrawingToolsTypes.Polygon:
-                //     return new DrawPolygon(
-                //         map,
-                //         drawingTools,
-                //         toolId,
-                //         type,
-                //         configs as Configuration.DrawingTools.DrawPolygonConfig
-                //     );
+                case OSFramework.Enum.DrawingToolsTypes.Polygon:
+                    return new DrawPolygon(
+                        map,
+                        drawingTools,
+                        toolId,
+                        type,
+                        configs as Configuration.DrawingTools.DrawFilledShapeConfig
+                    );
                 // case OSFramework.Enum.DrawingToolsTypes.Circle:
                 //     return new DrawCircle(
                 //         map,
