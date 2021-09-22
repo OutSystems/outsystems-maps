@@ -4,6 +4,7 @@ namespace GoogleProvider.Constants.DrawingTools {
      * Array of strings that define the available Provider Events
      */
     export const Events = [
+        'circlecomplete',
         'markercomplete',
         'polylinecomplete',
         'polygoncomplete'

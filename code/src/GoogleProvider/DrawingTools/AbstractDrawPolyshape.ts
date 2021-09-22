@@ -24,7 +24,8 @@ namespace GoogleProvider.DrawingTools {
             shape: google.maps.Polyline | google.maps.Polygon,
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             configs: any
-        ): OSFramework.Shape.IShapePolyshape {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ): any {
             // DrawShap
             const locations = shape
                 .getPath()
