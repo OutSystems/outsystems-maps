@@ -31,6 +31,38 @@ namespace GoogleProvider.DrawingTools {
                         type,
                         configs as Configuration.DrawingTools.DrawMarkerConfig
                     );
+                case OSFramework.Enum.DrawingToolsTypes.Polyline:
+                    return new DrawPolyline(
+                        map,
+                        drawingTools,
+                        toolId,
+                        type,
+                        configs as Configuration.DrawingTools.DrawBasicShapeConfig
+                    );
+                // case OSFramework.Enum.DrawingToolsTypes.Polygon:
+                //     return new DrawPolygon(
+                //         map,
+                //         drawingTools,
+                //         toolId,
+                //         type,
+                //         configs as Configuration.DrawingTools.DrawPolygonConfig
+                //     );
+                // case OSFramework.Enum.DrawingToolsTypes.Circle:
+                //     return new DrawCircle(
+                //         map,
+                //         drawingTools,
+                //         toolId,
+                //         type,
+                //         configs as Configuration.DrawingTools.DrawCircleConfig
+                //     );
+                // case OSFramework.Enum.DrawingToolsTypes.Rectangle:
+                //     return new DrawRectangle(
+                //         map,
+                //         drawingTools,
+                //         toolId,
+                //         type,
+                //         configs as Configuration.DrawingTools.DrawRectangleConfig
+                //     );
                 default:
                     throw `There is no factory for this type of DrawingTool (${type})`;
             }
