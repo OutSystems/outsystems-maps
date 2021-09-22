@@ -55,14 +55,14 @@ namespace GoogleProvider.DrawingTools {
                 //         type,
                 //         configs as Configuration.DrawingTools.DrawCircleConfig
                 //     );
-                // case OSFramework.Enum.DrawingToolsTypes.Rectangle:
-                //     return new DrawRectangle(
-                //         map,
-                //         drawingTools,
-                //         toolId,
-                //         type,
-                //         configs as Configuration.DrawingTools.DrawRectangleConfig
-                //     );
+                case OSFramework.Enum.DrawingToolsTypes.Rectangle:
+                    return new DrawRectangle(
+                        map,
+                        drawingTools,
+                        toolId,
+                        type,
+                        configs as Configuration.DrawingTools.DrawFilledShapeConfig
+                    );
                 default:
                     throw `There is no factory for this type of DrawingTool (${type})`;
             }

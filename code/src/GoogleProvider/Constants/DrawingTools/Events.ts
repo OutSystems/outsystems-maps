@@ -6,6 +6,7 @@ namespace GoogleProvider.Constants.DrawingTools {
     export const Events = [
         'markercomplete',
         'polylinecomplete',
-        'polygoncomplete'
+        'polygoncomplete',
+        'rectanglecomplete'
     ];
 }
