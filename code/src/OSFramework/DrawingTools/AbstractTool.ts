@@ -64,8 +64,6 @@ namespace OSFramework.DrawingTools {
 
         protected finishBuild(): void {
             this._built = true;
-
-            // this.shapeEvents.trigger(Event.Shape.ShapeEventType.Initialized);
         }
 
         public build(): void {
