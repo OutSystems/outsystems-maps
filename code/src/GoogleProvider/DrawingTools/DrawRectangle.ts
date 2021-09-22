@@ -22,7 +22,6 @@ namespace GoogleProvider.DrawingTools {
 
         private _createConfigsElement(
             shape: google.maps.Rectangle,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             configs: Configuration.Shape.RectangleShapeConfig
         ): Configuration.Shape.RectangleShapeConfig {
             const providerBounds = shape.getBounds();
