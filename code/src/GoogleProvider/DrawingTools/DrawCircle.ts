@@ -26,7 +26,6 @@ namespace GoogleProvider.DrawingTools {
             configs: any
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ): any {
-            // DrawShap
             const providerCenter = shape.getCenter();
             const center = `${providerCenter.lat()},${providerCenter.lng()}`;
             const radius = shape.getRadius();
