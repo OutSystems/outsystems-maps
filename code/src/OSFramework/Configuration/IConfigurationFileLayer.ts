@@ -5,7 +5,6 @@ namespace OSFramework.Configuration {
      * Defines the basic structure for DrawingTools objects
      */
     export interface IConfigurationFileLayer extends IConfiguration {
-        allowClick: boolean;
         layerUrl: string;
         preserveViewport: boolean;
         suppressPopups: boolean;

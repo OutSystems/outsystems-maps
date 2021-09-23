@@ -6,7 +6,6 @@ namespace GoogleProvider.Configuration.FileLayer {
         extends OSFramework.Configuration.AbstractConfiguration
         implements OSFramework.Configuration.IConfigurationFileLayer {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public allowClick: boolean;
         public layerUrl: string;
         public preserveViewport: boolean;
         public suppressPopups: boolean;
