@@ -39,10 +39,10 @@ namespace GoogleProvider.DrawingTools {
         protected createElement(
             uniqueId: string,
             shape: google.maps.Polygon,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
+            configs: Configuration.Shape.FilledShapeConfig
         ): OSFramework.Shape.IShape {
-            // we need to clean the provided configs in order to create the new element
+            // we need to clean the provided configs and add the locations in order to create the new element
+            // DrawPolyline and DrawPolygon use the following method to add the locations into the initial configs
             const finalConfigs = super.createConfigsElement(shape, configs);
 
             return super.createShapeElement(

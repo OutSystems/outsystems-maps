@@ -41,8 +41,7 @@ namespace GoogleProvider.DrawingTools {
         protected createElement(
             uniqueId: string,
             shape: google.maps.Polyline,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
+            configs: Configuration.Shape.BasicShapeConfig
         ): OSFramework.Shape.IShape {
             // we need to clean the provided configs and add the locations in order to create the new element
             // DrawPolyline and DrawPolygon use the following method to add the locations into the initial configs
