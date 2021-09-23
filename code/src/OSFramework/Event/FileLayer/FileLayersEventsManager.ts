@@ -32,14 +32,6 @@ namespace OSFramework.Event.FileLayer {
                     event = new FileLayersOnClickEvent();
                     break;
                 default:
-                    // Validate if google provider has this event before creating the instance of FileLayerProviderEvent
-                    if (
-                        this._fileLayer.validateProviderEvent(eventType) ===
-                        true
-                    ) {
-                        event = new FileLayersProviderEvent();
-                        break;
-                    }
                     this._fileLayer.map.mapEvents.trigger(
                         OSMap.MapEventType.OnError,
                         this._fileLayer.map,
@@ -89,25 +81,6 @@ namespace OSFramework.Event.FileLayer {
                             args[0].featureData // FeatureData from the FileLayer that was clicked
                         );
                         break;
-                    case FileLayersEventType.ProviderEvent:
-                        // If the event type is ProviderEvent we need to first check if the event info (name of the event) is a valid one for the provider events
-                        if (
-                            this._fileLayer.validateProviderEvent(eventInfo) ===
-                            true
-                        ) {
-                            const handler = this.handlers.get(
-                                eventInfo as FileLayersEventType
-                            );
-                            handler.trigger(
-                                this._fileLayer.map.widgetId, // Id of Map block that triggered the event
-                                args[0].uniqueId ||
-                                    this._fileLayer.widgetId ||
-                                    this._fileLayer.uniqueId, // Id of marker/shape block (once created by the FileLayer) that triggered the event
-                                // eventInfo, // Name of the event that got triggered
-                                args[0].isNewElement // IsNewShape/IsNewMarker default is true
-                            );
-                            break;
-                        }
                     // If the event is not valid we can fall in the default case of the switch and throw an error
                     // eslint-disable-next-line no-fallthrough
                     default:

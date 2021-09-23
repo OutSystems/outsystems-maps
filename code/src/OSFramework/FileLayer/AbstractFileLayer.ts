@@ -109,5 +109,7 @@ namespace OSFramework.FileLayer {
         public getProviderConfig(): Configuration.IConfigurationFileLayer {
             return this._config.getProviderConfig();
         }
+
+        public abstract refreshProviderEvents(): void;
     }
 }

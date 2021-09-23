@@ -104,5 +104,9 @@ namespace GoogleProvider.FileLayer {
             this._provider = undefined;
             super.dispose();
         }
+
+        public refreshProviderEvents(): void {
+            if (this.isReady) this._setFileLayerEvents();
+        }
     }
 }

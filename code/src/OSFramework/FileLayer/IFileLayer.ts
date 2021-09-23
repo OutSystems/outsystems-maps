@@ -18,5 +18,9 @@ namespace OSFramework.FileLayer {
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         changeProperty(propertyName: string, propertyValue: any): void;
+        /**
+         * Refreshes the Events of the FileLayer Provider after Subscribing/Unsubscribing events
+         */
+        refreshProviderEvents(): void;
     }
 }
