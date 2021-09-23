@@ -47,14 +47,14 @@ namespace GoogleProvider.DrawingTools {
                         type,
                         configs as Configuration.DrawingTools.DrawFilledShapeConfig
                     );
-                // case OSFramework.Enum.DrawingToolsTypes.Circle:
-                //     return new DrawCircle(
-                //         map,
-                //         drawingTools,
-                //         toolId,
-                //         type,
-                //         configs as Configuration.DrawingTools.DrawCircleConfig
-                //     );
+                case OSFramework.Enum.DrawingToolsTypes.Circle:
+                    return new DrawCircle(
+                        map,
+                        drawingTools,
+                        toolId,
+                        type,
+                        configs as Configuration.DrawingTools.DrawFilledShapeConfig
+                    );
                 case OSFramework.Enum.DrawingToolsTypes.Rectangle:
                     return new DrawRectangle(
                         map,
