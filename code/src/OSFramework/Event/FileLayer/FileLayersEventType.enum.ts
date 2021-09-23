@@ -8,7 +8,6 @@ namespace OSFramework.Event.FileLayer {
      */
     export enum FileLayersEventType {
         Initialized = 'Initialized',
-        OnClick = 'OnClick',
-        ProviderEvent = 'ProviderEvent'
+        OnClick = 'OnClick'
     }
 }

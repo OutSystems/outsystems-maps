@@ -37,7 +37,6 @@ namespace GoogleProvider.FileLayer {
                         this.fileLayerEvents.trigger(
                             OSFramework.Event.FileLayer.FileLayersEventType
                                 .OnClick,
-                            'click',
                             // Extra parameters to be passed as arguments on the callback of the OnClick event handler
                             {
                                 // Coordinates from the event that was triggered (by the click)

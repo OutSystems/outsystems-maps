@@ -50,19 +50,11 @@ namespace OSFramework.Event.FileLayer {
          */
         public trigger(
             eventType: FileLayersEventType,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            eventInfo?: string,
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
             ...args: any
         ): void {
-            // Let's first check if the FileLayer has any events associated
-            // If the event type is ProviderEvent than we need to get the handlers for the eventInfo -> name of the event
-            // If the event type is not ProviderEvent than we need to get the handlers for the eventType (Initialized, OnError, OnEventTriggered)
-            const hasEvents =
-                eventType === FileLayersEventType.ProviderEvent
-                    ? this.handlers.has(eventInfo as FileLayersEventType)
-                    : this.handlers.has(eventType);
-            if (hasEvents) {
+            // Check if the FileLayer has any events associated
+            if (this.handlers.has(eventType)) {
                 const handlerEvent = this.handlers.get(eventType);
 
                 switch (eventType) {
