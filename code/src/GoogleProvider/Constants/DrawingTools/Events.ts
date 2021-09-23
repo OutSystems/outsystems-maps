@@ -7,6 +7,7 @@ namespace GoogleProvider.Constants.DrawingTools {
         'circlecomplete',
         'markercomplete',
         'polylinecomplete',
-        'polygoncomplete'
+        'polygoncomplete',
+        'rectanglecomplete'
     ];
 }
