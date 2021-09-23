@@ -109,15 +109,5 @@ namespace OSFramework.FileLayer {
         public getProviderConfig(): Configuration.IConfigurationFileLayer {
             return this._config.getProviderConfig();
         }
-
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        public validateProviderEvent(eventName: string): boolean {
-            return this.providerEvents.indexOf(eventName) !== -1;
-        }
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public abstract get providerEvents(): any;
-
-        public abstract refreshProviderEvents(): void;
     }
 }

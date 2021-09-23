@@ -59,10 +59,6 @@ namespace GoogleProvider.FileLayer {
             }
         }
 
-        public get providerEvents(): Array<string> {
-            return Constants.FileLayer.Events;
-        }
-
         public build(): void {
             super.build();
 
