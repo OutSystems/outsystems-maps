@@ -62,13 +62,13 @@ namespace GoogleProvider.FileLayer {
         public build(): void {
             super.build();
 
-            const configs: OSFramework.Configuration.IConfigurationFileLayer = this.getProviderConfig();
-
+            // Creates the provider KMLLayer
             this._provider = new google.maps.KmlLayer({
-                ...configs,
+                ...this.getProviderConfig(),
                 map: this.map.provider
             });
 
+            // Set the FileLayerEvents (includes the onClick event listener)
             this._setFileLayerEvents();
 
             this.finishBuild();
