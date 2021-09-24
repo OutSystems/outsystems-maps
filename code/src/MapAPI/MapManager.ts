@@ -23,6 +23,18 @@ namespace MapAPI.MapManager {
     }
 
     /**
+     * Close all Popups from the markers on the map
+     * @param {string} mapId Id of the Map to close all the marker popups.
+     */
+    export function CloseAllMarkerPopups(mapId: string): void {
+        const map = GetMapById(mapId);
+        const markersWithPopup = map.markers.filter(
+            (marker) => marker.hasPopup
+        ) as Array<OSFramework.Marker.IMarkerPopup>;
+        markersWithPopup.forEach((marker) => marker.closePopup());
+    }
+
+    /**
      * Function that will create an instance of Map object with the configurations passed.
      *
      * @export
