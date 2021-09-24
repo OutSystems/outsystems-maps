@@ -25,7 +25,7 @@ namespace GoogleProvider.OSMap {
 
         private _buildDrawingTools(): void {
             // There is only one drawingTools per map
-            this.drawingTools.build();
+            this.drawingTools && this.drawingTools.build();
         }
 
         private _buildMarkers(): void {
