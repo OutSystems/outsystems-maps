@@ -8,16 +8,6 @@ namespace GoogleProvider.Marker {
         implements OSFramework.Marker.IMarkerPopup {
         private _contentString: string;
 
-        constructor(
-            map: OSFramework.OSMap.IMap,
-            markerId: string,
-            type: OSFramework.Enum.MarkerType,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: Configuration.Marker.GoogleMarkerConfig
-        ) {
-            super(map, markerId, type, configs);
-        }
-
         protected _setMarkerEvents(events?: Array<string>): void {
             super._setMarkerEvents(events);
 
@@ -36,10 +26,6 @@ namespace GoogleProvider.Marker {
 
         public get markerTag(): string {
             return OSFramework.Helper.Constants.markerPopupTag;
-        }
-
-        public build(): void {
-            super.build();
         }
 
         public closePopup(): void {
