@@ -40,24 +40,6 @@ namespace GoogleProvider.Marker {
                 );
                 return;
             } else {
-                if (
-                    typeof this.config.iconUrl !== 'undefined' &&
-                    this.config.iconUrl !== ''
-                ) {
-                    markerOptions.icon = this.config.iconUrl;
-                }
-
-                if (
-                    typeof this.config.title !== 'undefined' &&
-                    this.config.title !== ''
-                ) {
-                    markerOptions.title = this.config.title;
-                }
-
-                if (typeof this.config.allowDrag !== 'undefined') {
-                    markerOptions.draggable = this.config.allowDrag;
-                }
-
                 // Take care of the advancedFormat options which can override the previous configuration
                 this._advancedFormatObj = OSFramework.Helper.JsonFormatter(
                     this.config.advancedFormat
@@ -79,7 +61,6 @@ namespace GoogleProvider.Marker {
                                 lat: response.lat,
                                 lng: response.lng
                             };
-                            markerOptions.map = this.map.provider;
                             resolve(markerOptions);
                         })
                         .catch((e) => reject(e));
@@ -213,7 +194,11 @@ namespace GoogleProvider.Marker {
             if (markerOptions !== undefined) {
                 this._buildMarkerOptions()
                     .then((markerOptions) => {
-                        this._provider = new google.maps.Marker(markerOptions);
+                        this._provider = new google.maps.Marker({
+                            ...this.getProviderConfig(),
+                            ...markerOptions,
+                            map: this.map.provider
+                        });
 
                         // We can only set the events on the provider after its creation
                         this._setMarkerEvents(
@@ -277,6 +262,8 @@ namespace GoogleProvider.Marker {
                         return this._provider.setDraggable(value);
                     case OSFramework.Enum.OS_Config_Marker.iconUrl:
                         return this._provider.setIcon(value);
+                    case OSFramework.Enum.OS_Config_Marker.label:
+                        return this._provider.setLabel(value);
                     case OSFramework.Enum.OS_Config_Marker.title:
                         return this._provider.setTitle(value);
                 }

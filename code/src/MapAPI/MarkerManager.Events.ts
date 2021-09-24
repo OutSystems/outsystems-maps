@@ -147,7 +147,7 @@ namespace MapAPI.MarkerManager.Events {
         callback: OSFramework.Callbacks.Marker.Event
     ): void {
         const markerId = GetMarkerIdByEventUniqueId(eventUniqueId);
-        const marker = GetMarkerById(markerId);
+        const marker = GetMarkerById(markerId, false);
         if (marker !== undefined) {
             marker.markerEvents.removeHandler(eventName, callback);
             // Let's make sure the events get refreshed on the Marker provider
