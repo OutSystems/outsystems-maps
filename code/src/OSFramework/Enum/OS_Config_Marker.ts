@@ -7,6 +7,7 @@ namespace OSFramework.Enum {
         advancedFormat,
         allowDrag,
         iconUrl,
+        label,
         location,
         title,
         uniqueId
