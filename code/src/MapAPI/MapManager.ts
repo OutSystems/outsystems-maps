@@ -167,6 +167,18 @@ namespace MapAPI.MapManager {
     }
 
     /**
+     * Function that will remove all File Layers from a given Map.
+     *
+     * @export
+     * @param {string} mapId Id of the Map to have markers removed.
+     */
+    export function RemoveFileLayers(mapId: string): void {
+        const map = GetMapById(mapId);
+
+        map.removeAllFileLayers();
+    }
+
+    /**
      * Function that will set the height of a given Map.
      *
      * @export

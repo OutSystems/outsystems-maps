@@ -28,6 +28,10 @@ namespace GoogleProvider.OSMap {
             this.drawingTools && this.drawingTools.build();
         }
 
+        private _buildFileLayers(): void {
+            this.fileLayers.forEach((fileLayer) => fileLayer.build());
+        }
+
         private _buildMarkers(): void {
             this.markers.forEach((marker) => marker.build());
         }
@@ -73,6 +77,7 @@ namespace GoogleProvider.OSMap {
                 this._buildMarkers();
                 this._buildShapes();
                 this._buildDrawingTools();
+                this._buildFileLayers();
                 this.finishBuild();
 
                 // Make sure to change the center after the conversion of the location to coordinates
@@ -224,6 +229,18 @@ namespace GoogleProvider.OSMap {
             return drawingTools;
         }
 
+        public addFileLayer(
+            fileLayer: OSFramework.FileLayer.IFileLayer
+        ): OSFramework.FileLayer.IFileLayer {
+            super.addFileLayer(fileLayer);
+
+            if (this.isReady) {
+                fileLayer.build();
+            }
+
+            return fileLayer;
+        }
+
         public addMarker(
             marker: OSFramework.Marker.IMarker
         ): OSFramework.Marker.IMarker {
@@ -278,6 +295,24 @@ namespace GoogleProvider.OSMap {
                 );
             } else {
                 drawingTools.changeProperty(propertyName, propertyValue);
+            }
+        }
+
+        public changeFileLayerProperty(
+            fileLayerId: string,
+            propertyName: string,
+            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+            propertyValue: any
+        ): void {
+            // There is only one (max) drawingTools element per map
+            const fileLayer = this.getFileLayer(fileLayerId);
+
+            if (!fileLayer) {
+                console.error(
+                    `changeFileLayerProperty - fileLayer id:${fileLayerId} not found.`
+                );
+            } else {
+                fileLayer.changeProperty(propertyName, propertyValue);
             }
         }
 
