@@ -605,6 +605,7 @@ html[data-uieditorversion^="1"]:hover .map-preview-events:empty:after {
     -servicestudio-margin: 3px;
     -servicestudio-max-width: 200px;
     -servicestudio-min-width: 200px;
+    -servicestudio-padding-bottom: 10px;
 }
 
 .ss-fileLayer-icon{
