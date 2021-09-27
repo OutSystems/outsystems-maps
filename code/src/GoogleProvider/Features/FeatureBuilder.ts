@@ -64,6 +64,10 @@ namespace GoogleProvider.Feature {
             this._features.directions = this._makeItem(Directions);
             return this;
         }
+        private _makeInfoWindow(): FeatureBuilder {
+            this._features.infoWindow = this._makeItem(InfoWindow);
+            return this;
+        }
         private _makeOffset(
             offset: OSFramework.OSStructures.OSMap.Offset
         ): FeatureBuilder {
@@ -87,7 +91,8 @@ namespace GoogleProvider.Feature {
                 ._makeZoom(config.zoom)
                 ._makeCenter(config.center)
                 ._makeDirections()
-                ._makeOffset(config.offset);
+                ._makeOffset(config.offset)
+                ._makeInfoWindow();
 
             super.build();
         }
