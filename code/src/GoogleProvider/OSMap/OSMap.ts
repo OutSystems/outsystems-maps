@@ -28,6 +28,10 @@ namespace GoogleProvider.OSMap {
             this.drawingTools && this.drawingTools.build();
         }
 
+        private _buildFileLayers(): void {
+            this.fileLayers.forEach((fileLayer) => fileLayer.build());
+        }
+
         private _buildMarkers(): void {
             this.markers.forEach((marker) => marker.build());
         }

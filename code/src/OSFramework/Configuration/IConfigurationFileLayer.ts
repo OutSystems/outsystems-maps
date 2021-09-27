@@ -8,6 +8,5 @@ namespace OSFramework.Configuration {
         layerUrl: string;
         preserveViewport: boolean;
         suppressPopups: boolean;
-        uniqueId: string;
     }
 }

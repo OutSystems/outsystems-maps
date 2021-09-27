@@ -9,7 +9,6 @@ namespace GoogleProvider.Configuration.FileLayer {
         public layerUrl: string;
         public preserveViewport: boolean;
         public suppressPopups: boolean;
-        public uniqueId: string;
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         constructor(config: any) {

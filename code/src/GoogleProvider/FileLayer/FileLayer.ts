@@ -6,7 +6,6 @@ namespace GoogleProvider.FileLayer {
         google.maps.KmlLayer,
         OSFramework.Configuration.IConfigurationFileLayer
     > {
-        protected _provider: google.maps.KmlLayer;
         constructor(
             map: OSFramework.OSMap.IMap,
             FileLayerId: string,
