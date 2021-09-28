@@ -264,12 +264,14 @@ namespace MapAPI.DrawingToolsManager {
      * @param {string} drawingToolsId id of the DrawingTools that is about to be removed
      */
     export function RemoveDrawingTools(drawingToolsId: string): void {
-        const drawingTools = GetDrawingToolsById(drawingToolsId);
-        const map = drawingTools.map;
+        const drawingTools = GetDrawingToolsById(drawingToolsId, false);
+        if (drawingTools !== undefined) {
+            const map = drawingTools.map;
 
-        map && map.removeDrawingTools(drawingToolsId);
-        drawingToolsMap.delete(drawingToolsId);
-        drawingToolsElement = undefined;
+            map && map.removeDrawingTools(drawingToolsId);
+            drawingToolsMap.delete(drawingToolsId);
+            drawingToolsElement = undefined;
+        }
     }
 
     /**

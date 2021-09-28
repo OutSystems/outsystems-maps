@@ -11,6 +11,8 @@ namespace GoogleProvider.Helper.Conversions {
         location: string,
         apiKey: string
     ): Promise<OSFramework.OSStructures.OSMap.Coordinates> {
+        // Encodes a location string into a valid format
+        location = encodeURIComponent(location);
         return fetch(
             `${OSFramework.Helper.Constants.googleMapsApiGeocode}?address=${location}&key=${apiKey}`
         )
