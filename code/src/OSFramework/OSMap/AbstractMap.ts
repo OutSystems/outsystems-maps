@@ -153,7 +153,8 @@ namespace OSFramework.OSMap {
                 this.removeShape(shapeId);
             });
             // Let's make sure we remove the DrawingTools from the map
-            this.removeDrawingTools(this.drawingTools.uniqueId);
+            this.drawingTools &&
+                this.removeDrawingTools(this.drawingTools.uniqueId);
         }
 
         public equalsToID(mapId: string): boolean {
