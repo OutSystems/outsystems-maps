@@ -25,7 +25,9 @@ namespace OSFramework.Event.OSMap {
         ): void {
             this.handlers
                 .slice(0)
-                .forEach((h) => h(mapObj, mapId, eventName, coords));
+                .forEach((h) =>
+                    Helper.AsyncInvocation(h, mapObj, mapId, eventName, coords)
+                );
         }
     }
 }

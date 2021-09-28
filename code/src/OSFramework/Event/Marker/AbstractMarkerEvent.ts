@@ -17,7 +17,11 @@ namespace OSFramework.Event.Marker {
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             ...args: any
         ): void {
-            this.handlers.slice(0).forEach((h) => h(mapId, markerId, ...args));
+            this.handlers
+                .slice(0)
+                .forEach((h) =>
+                    Helper.AsyncInvocation(h, mapId, markerId, ...args)
+                );
         }
     }
 }
