@@ -21,7 +21,11 @@ namespace OSFramework.Event.Shape {
             shapeId: string,
             eventName: string
         ): void {
-            this.handlers.slice(0).forEach((h) => h(mapId, shapeId, eventName));
+            this.handlers
+                .slice(0)
+                .forEach((h) =>
+                    Helper.AsyncInvocation(h, mapId, shapeId, eventName)
+                );
         }
     }
 }

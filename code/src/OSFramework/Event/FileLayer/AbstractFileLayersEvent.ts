@@ -19,7 +19,9 @@ namespace OSFramework.Event.FileLayer {
         ): void {
             this.handlers
                 .slice(0)
-                .forEach((h) => h(mapId, fileLayerId, ...args));
+                .forEach((h) =>
+                    Helper.AsyncInvocation(h, mapId, fileLayerId, ...args)
+                );
         }
     }
 }

@@ -19,7 +19,9 @@ namespace OSFramework.Event.DrawingTools {
         ): void {
             this.handlers
                 .slice(0)
-                .forEach((h) => h(mapId, drawingToolsId, ...args));
+                .forEach((h) =>
+                    Helper.AsyncInvocation(h, mapId, drawingToolsId, ...args)
+                );
         }
     }
 }
