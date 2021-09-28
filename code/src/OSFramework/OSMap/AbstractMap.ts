@@ -268,7 +268,10 @@ namespace OSFramework.OSMap {
                 );
                 return;
             }
-            if (this._drawingTools.uniqueId === drawingToolsId) {
+            if (
+                this._drawingTools &&
+                this._drawingTools.uniqueId === drawingToolsId
+            ) {
                 this._drawingTools.dispose();
                 this._drawingTools = undefined;
             }
