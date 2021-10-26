@@ -626,7 +626,6 @@ html[data-uieditorversion^="1"]:hover .map-preview-events:empty:after {
 .custom-clustericon-1::before,
 .custom-clustericon-2::before,
 .custom-clustericon-3::before{
-    background: var(--cluster-default-image) no-repeat center;
     content: "";
     height: 100%;
     left: 50%;
