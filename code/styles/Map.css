@@ -613,3 +613,26 @@ html[data-uieditorversion^="1"]:hover .map-preview-events:empty:after {
     -servicestudio-justify-content: center;
     -servicestudio-padding: 10px 10px 0 10px;
 }
+
+/***********************/
+
+.custom-clustericon {
+    align-items: center;
+    color: #fff;
+    display: flex;
+    font-size: 14px;
+}
+
+.custom-clustericon::before{
+    background: var(--cluster-default-image) no-repeat center;
+    content: "";
+    height: 100%;
+    left: 50%;
+    opacity: 1;
+    padding: 15px;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    width: 100%;
+}
+    
