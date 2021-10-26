@@ -642,10 +642,10 @@ html[data-uieditorversion^="1"]:hover .map-preview-events:empty:after {
     background: var(--cluster-default-image-1) no-repeat center;
 }
 
-.custom-clustericon-1::before {
+.custom-clustericon-2::before {
     background: var(--cluster-default-image-2) no-repeat center;
 }
 
-.custom-clustericon-1::before {
+.custom-clustericon-3::before {
     background: var(--cluster-default-image-3) no-repeat center;
 }
