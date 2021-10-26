@@ -58,6 +58,7 @@ namespace GoogleProvider.Feature {
                 maxZoom: configs.maxZoom || 2,
                 minClusterSize: configs.minClusterSize,
                 zoomOnClick: configs.zoomOnClick,
+                clusterClass: 'custom-clustericon',
                 styles: ClustererStyle
             };
         }
