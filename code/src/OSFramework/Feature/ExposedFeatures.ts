@@ -5,6 +5,7 @@ namespace OSFramework.Feature {
         public center: ICenter;
         public directions: IDirections;
         public infoWindow: IInfoWindow;
+        public markerClusterer: IMarkerClusterer;
         public offset: IOffset;
         public trafficLayer: ITrafficLayer;
         public zoom: IZoom;

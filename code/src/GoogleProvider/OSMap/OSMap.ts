@@ -7,7 +7,8 @@ namespace GoogleProvider.OSMap {
             google.maps.Map,
             Configuration.OSMap.GoogleMapConfig
         >
-        implements IMapGoogle {
+        implements IMapGoogle
+    {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         private _advancedFormatObj: any;
         private _fBuilder: Feature.FeatureBuilder;
@@ -370,6 +371,10 @@ namespace GoogleProvider.OSMap {
                         return this._provider.setOptions(value);
                     case OSFramework.Enum.OS_Config_Map.showTraffic:
                         return this.features.trafficLayer.setState(value);
+                    case OSFramework.Enum.OS_Config_Map.markerClusterer:
+                        return this.features.markerClusterer.setMarkerClusterer(
+                            JSON.parse(value)
+                        );
                 }
             }
         }
