@@ -8,6 +8,7 @@ namespace OSFramework.Enum {
         apiKey,
         height,
         center,
+        markerClusterer,
         offset,
         showTraffic,
         staticMap,

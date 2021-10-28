@@ -20,6 +20,9 @@ namespace OSFramework.OSMap {
         mapTag: string;
         /** Get all Markers from the Map */
         markers: Array<OSFramework.Marker.IMarker>;
+        /** Get all Markers that have finished building its provider */
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        markersReady: Array<any>;
         /** Map provider */
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         provider: any;

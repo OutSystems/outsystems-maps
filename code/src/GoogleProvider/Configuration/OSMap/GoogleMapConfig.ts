@@ -2,12 +2,14 @@
 namespace GoogleProvider.Configuration.OSMap {
     export class GoogleMapConfig
         extends OSFramework.Configuration.AbstractConfiguration
-        implements OSFramework.Configuration.IConfigurationMap {
+        implements OSFramework.Configuration.IConfigurationMap
+    {
         public advancedFormat: string;
         public apiKey: string;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public center: any;
         public height: string;
+        public markerClusterer: OSFramework.OSStructures.OSMap.MarkerClusterer;
         public offset: OSFramework.OSStructures.OSMap.Offset;
         public showTraffic: boolean;
         public staticMap: boolean;
