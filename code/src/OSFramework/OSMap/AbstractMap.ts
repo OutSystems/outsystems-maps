@@ -3,7 +3,8 @@ namespace OSFramework.OSMap {
     export abstract class AbstractMap<
         W,
         Z extends Configuration.IConfigurationMap
-    > implements IMapGeneric<W> {
+    > implements IMapGeneric<W>
+    {
         /** Configuration reference */
         private _config: Z;
         private _drawingTools: DrawingTools.IDrawingTools;
@@ -65,6 +66,14 @@ namespace OSFramework.OSMap {
 
         public get markers(): Marker.IMarker[] {
             return Array.from(this._markersSet);
+        }
+
+        public get markersReady(): W[] {
+            // We need to go through all the markers and only get the ones that are ready (or have the provider defined)
+            // Then we need to return the providers inside a list
+            return this.markers
+                .filter((marker) => marker.isReady)
+                .map((marker) => marker.provider);
         }
 
         public get mapEvents(): Event.OSMap.MapEventsManager {

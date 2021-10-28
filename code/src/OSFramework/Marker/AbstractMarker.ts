@@ -4,7 +4,8 @@ namespace OSFramework.Marker {
         W,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         Z extends Configuration.IConfigurationMarker
-    > implements IMarkerGeneric<W> {
+    > implements IMarkerGeneric<W>
+    {
         /** Configuration reference */
         private _config: Configuration.IConfigurationMarker;
         private _index: number;
@@ -66,8 +67,11 @@ namespace OSFramework.Marker {
 
         protected finishBuild(): void {
             this._built = true;
-
             this.markerEvents.trigger(Event.Marker.MarkerEventType.Initialized);
+
+            // If the marker is ready (has the provider defined) we need to add it into the marker cluster.
+            // The validation to guarantee that the clusterer is activated for the map is being done inside the addMarker method from markerClusterer feature.
+            this._map.features.markerClusterer.addMarker(this);
         }
 
         public build(): void {
