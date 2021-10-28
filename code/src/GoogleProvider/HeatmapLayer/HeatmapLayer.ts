@@ -24,6 +24,7 @@ namespace GoogleProvider.HeatmapLayer {
             );
         }
 
+        /** In case the gradient is not defined, use the default from GoogleProvider */
         private _gradientColors(gradient: string[]) {
             if (gradient.length === 0) {
                 return OSFramework.Helper.Constants.gradientHeatmapColors;
@@ -31,6 +32,7 @@ namespace GoogleProvider.HeatmapLayer {
             return gradient;
         }
 
+        /** Convert array of points from OS format into the data points from GoogleProvider */
         private _pointsToData(
             points: Array<OSFramework.OSStructures.HeatmapLayer.Points>
         ) {
@@ -51,7 +53,9 @@ namespace GoogleProvider.HeatmapLayer {
             // Creates the provider HeatmapLayer
             this._provider = new google.maps.visualization.HeatmapLayer({
                 ...configs,
+                // first we need to convert the points from OS format to data GoogleProvider format
                 data: this._pointsToData(configs.points),
+                // then, we need to make sure if the gradient is empty, we set it with the GoogleProvider default values
                 gradient: this._gradientColors(configs.gradient),
                 map: this.map.provider
             });
