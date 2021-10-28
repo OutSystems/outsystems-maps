@@ -9,8 +9,7 @@ namespace OSFramework.Configuration {
         gradient: Array<string>;
         maxIntensity: number;
         opacity: number;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        points: Array<any>;
+        points: Array<OSStructures.HeatmapLayer.Points>;
         radius: number;
     }
 }
