@@ -14,7 +14,6 @@ namespace OSFramework.HeatmapLayer {
 
         protected _built: boolean;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        protected _createElements: Array<any>;
         protected _provider: W;
 
         constructor(map: OSMap.IMap, uniqueId: string, config: T) {
@@ -22,15 +21,10 @@ namespace OSFramework.HeatmapLayer {
             this._uniqueId = uniqueId;
             this._config = config;
             this._built = false;
-            this._createElements = [];
         }
 
         public get config(): T {
             return this._config;
-        }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public get createdElements(): Array<any> {
-            return this._createElements;
         }
         public get isReady(): boolean {
             return this._built;
@@ -62,10 +56,6 @@ namespace OSFramework.HeatmapLayer {
 
         protected finishBuild(): void {
             this._built = true;
-
-            // this.heatmapLayerEvents.trigger(
-            //     Event.HeatmapLayer.HeatmapLayersEventType.Initialized
-            // );
         }
 
         public build(): void {

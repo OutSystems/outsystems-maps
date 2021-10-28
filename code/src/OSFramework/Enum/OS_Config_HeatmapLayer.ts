@@ -7,6 +7,7 @@ namespace OSFramework.Enum {
         dissipateOnZoom,
         gradient,
         maxIntensity,
+        points,
         opacity,
         radius
     }

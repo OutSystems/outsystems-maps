@@ -4,7 +4,8 @@
 namespace GoogleProvider.Configuration.FileLayer {
     export class FileLayerConfig
         extends OSFramework.Configuration.AbstractConfiguration
-        implements OSFramework.Configuration.IConfigurationFileLayer {
+        implements OSFramework.Configuration.IConfigurationFileLayer
+    {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public layerUrl: string;
         public preserveViewport: boolean;

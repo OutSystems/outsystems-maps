@@ -2,6 +2,10 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace GoogleProvider.HeatmapLayer {
+    export type data = {
+        location: google.maps.LatLng;
+        weight: number;
+    };
     export class HeatmapLayer extends OSFramework.HeatmapLayer
         .AbstractHeatmapLayer<
         google.maps.visualization.HeatmapLayer,
@@ -20,9 +24,17 @@ namespace GoogleProvider.HeatmapLayer {
             );
         }
 
-        private _pointsToData() {
-            const points = this.getProviderConfig().points;
-            const data = points.map((point) => {
+        private _gradientColors(gradient: string[]) {
+            if (gradient.length === 0) {
+                return OSFramework.Helper.Constants.gradientHeatmapColors;
+            }
+            return gradient;
+        }
+
+        private _pointsToData(
+            points: Array<OSFramework.OSStructures.HeatmapLayer.Points>
+        ) {
+            const data: Array<HeatmapLayer.data> = points.map((point) => {
                 return {
                     location: new google.maps.LatLng(point.Lat, point.Lng),
                     weight: point.Weight
@@ -35,14 +47,12 @@ namespace GoogleProvider.HeatmapLayer {
             super.build();
 
             const configs = this.getProviderConfig();
-            if(configs.gradient.length === 0) {
-                delete configs.gradient;
-            }
 
-            // Creates the provider KMLLayer
+            // Creates the provider HeatmapLayer
             this._provider = new google.maps.visualization.HeatmapLayer({
                 ...configs,
-                data: this._pointsToData(),
+                data: this._pointsToData(configs.points),
+                gradient: this._gradientColors(configs.gradient),
                 map: this.map.provider
             });
 
@@ -56,6 +66,10 @@ namespace GoogleProvider.HeatmapLayer {
             super.changeProperty(propertyName, value);
             if (this.isReady) {
                 switch (propValue) {
+                    case OSFramework.Enum.OS_Config_HeatmapLayer.points:
+                        return this.provider.setData(
+                            this._pointsToData(JSON.parse(value))
+                        );
                     case OSFramework.Enum.OS_Config_HeatmapLayer
                         .dissipateOnZoom:
                         return this.provider.setOptions({
@@ -63,7 +77,7 @@ namespace GoogleProvider.HeatmapLayer {
                         });
                     case OSFramework.Enum.OS_Config_HeatmapLayer.gradient:
                         return this.provider.setOptions({
-                            gradient: value
+                            gradient: this._gradientColors(JSON.parse(value))
                         });
                     case OSFramework.Enum.OS_Config_HeatmapLayer.maxIntensity:
                         return this.provider.setOptions({

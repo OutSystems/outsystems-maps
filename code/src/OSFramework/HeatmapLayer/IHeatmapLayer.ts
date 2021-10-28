@@ -5,8 +5,6 @@ namespace OSFramework.HeatmapLayer {
             Interface.ISearchById,
             Interface.IDisposable {
         config: Configuration.IConfigurationHeatmapLayer; //IConfigurationHeatmapLayer
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        createdElements: Array<any>;
         isReady: boolean;
         map: OSMap.IMap; //IMap
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -10,8 +10,7 @@ namespace GoogleProvider.Configuration.HeatmapLayer {
         public gradient: Array<string>;
         public maxIntensity: number;
         public opacity: number;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public points: Array<any>;
+        public points: Array<OSFramework.OSStructures.HeatmapLayer.Points>;
         public radius: number;
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
