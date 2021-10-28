@@ -133,7 +133,8 @@ namespace GoogleProvider.OSMap {
                         OSFramework.Helper.Constants.googleMapsApiMap +
                         '?key=' +
                         this.config.apiKey +
-                        // In order to use the drawingTools we need to add it into the libraries via the URL
+                        // In order to use the drawingTools we need to add it into the libraries via the URL = drawing
+                        // In order to use the heatmap we need to add it into the libraries via the URL = visualization
                         '&libraries=drawing,visualization';
                     script.async = true;
                     script.defer = true;
