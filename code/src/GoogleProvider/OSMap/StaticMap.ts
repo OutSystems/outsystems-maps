@@ -205,6 +205,23 @@ namespace GoogleProvider.OSMap {
             return;
         }
 
+        // ChangeHeatmapLayerProperty method can't be used on a StaticMap
+        public changeHeatmapLayerProperty(
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            heatmapLayerId: string,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            propertyName: string,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+            propertyValue: any
+        ): void {
+            this.mapEvents.trigger(
+                OSFramework.Event.OSMap.MapEventType.OnError,
+                this,
+                OSFramework.Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
+            );
+            return;
+        }
+
         // ChangeMarkerProperty method can't be used on a StaticMap
         public changeMarkerProperty(
             // eslint-disable-next-line @typescript-eslint/no-unused-vars

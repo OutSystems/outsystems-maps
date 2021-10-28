@@ -26,6 +26,8 @@ namespace OSFramework.Helper.Constants {
     export const shapeRectangleTag = '[data-block="Shapes.Rectangle"]';
     /** Tag used to find the FileLayer */
     export const fileLayerTag = '[data-block="FileLayer.FileLayer"]';
+    /** Tag used to find the HeatmapLayer */
+    export const heatmapLayerTag = '[data-block="HeatmapLayer.HeatmapLayer"]';
 
     /** Tag used to find a generic widget */
     export const outsystemsWidgetTag = '[data-block]';
