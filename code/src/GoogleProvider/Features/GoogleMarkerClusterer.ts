@@ -18,9 +18,7 @@ namespace GoogleProvider.Feature {
         ) {
             this._map = map;
             // Set the clusterer configs
-            this._markerClusterOptions =
-                new OSFramework.OSStructures.OSMap.MarkerClusterer();
-            this._setConfigs(markerClustererConfigs);
+            this.setMarkerClusterer(markerClustererConfigs);
         }
 
         public get markerClusterer(): MarkerClusterer {
@@ -55,10 +53,6 @@ namespace GoogleProvider.Feature {
         private _setConfigs(
             configs: OSFramework.OSStructures.OSMap.MarkerClusterer
         ): void {
-            if (configs === undefined) {
-                this._markerClusterOptions.active = false;
-                return;
-            }
             this._markerClusterOptions = {
                 active: configs.active,
                 maxZoom: configs.maxZoom || 2,
@@ -73,9 +67,6 @@ namespace GoogleProvider.Feature {
             this._markerClusterer.setMap(
                 value === true ? this._map.provider : null
             );
-            if (value === true) {
-                this._markerClusterer.addMarkers(this._map.markersReady);
-            }
             this._markerClusterOptions.active = value;
         }
 
