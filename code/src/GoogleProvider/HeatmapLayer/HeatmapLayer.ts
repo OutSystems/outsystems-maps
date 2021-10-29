@@ -36,12 +36,16 @@ namespace GoogleProvider.HeatmapLayer {
         private _pointsToData(
             points: Array<OSFramework.OSStructures.HeatmapLayer.Points>
         ) {
-            const data: Array<HeatmapLayer.data> = points.map((point) => {
-                return {
-                    location: new google.maps.LatLng(point.Lat, point.Lng),
-                    weight: point.Weight
-                };
-            });
+            const data: Array<HeatmapLayer.data | google.maps.LatLng> =
+                points.map((point) => {
+                    if (point.Weight === undefined) {
+                        return new google.maps.LatLng(point.Lat, point.Lng);
+                    }
+                    return {
+                        location: new google.maps.LatLng(point.Lat, point.Lng),
+                        weight: point.Weight
+                    };
+                });
             return data;
         }
 

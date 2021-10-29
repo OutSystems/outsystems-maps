@@ -3,6 +3,6 @@ namespace OSFramework.OSStructures.HeatmapLayer {
     export type Points = {
         Lat: number;
         Lng: number;
-        Weight: number;
+        Weight?: number;
     };
 }
