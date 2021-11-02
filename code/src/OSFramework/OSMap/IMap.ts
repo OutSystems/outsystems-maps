@@ -51,6 +51,14 @@ namespace OSFramework.OSMap {
             fileLayer: OSFramework.FileLayer.IFileLayer
         ): OSFramework.FileLayer.IFileLayer;
         /**
+         * Add new HeatmapLayer Element to the Map
+         * @param heatmapLayer HeatmapLayer that will be added to the Map
+         * @returns HeatmapLayer that has been created
+         */
+        addHeatmapLayer(
+            heatmapLayer: OSFramework.HeatmapLayer.IHeatmapLayer
+        ): OSFramework.HeatmapLayer.IHeatmapLayer;
+        /**
          * Add new Marker to the Map
          * @param marker Marker that will be added to the Map
          * @returns Marker that has been created
@@ -84,6 +92,18 @@ namespace OSFramework.OSMap {
          */
         changeFileLayerProperty(
             fileLayerId: string,
+            propertyName: string,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            propertyValue: any
+        ): void;
+        /**
+         * Change property of a heatmapLayer from the HeatmapLayer by specifying the property name and the new value
+         * @param heatmapLayerId id of the HeatmapLayer
+         * @param propertyName name of the property
+         * @param propertyValue new value of the property
+         */
+        changeHeatmapLayerProperty(
+            heatmapLayerId: string,
             propertyName: string,
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             propertyValue: any
@@ -143,6 +163,11 @@ namespace OSFramework.OSMap {
          */
         hasFileLayer(fileLayerId: string): boolean;
         /**
+         * Checks if the Map has a specific HeatmapLayer by giving a heatmapLayerId
+         * @param heatmapLayerId id of the heatmapLayer
+         */
+        hasHeatmapLayer(heatmapLayerId: string): boolean;
+        /**
          * Checks if the Map has a specific Marker by giving a markerId
          * @param markerId id of the marker
          */
@@ -183,6 +208,11 @@ namespace OSFramework.OSMap {
          * @param fileLayerId id of the FileLayer
          */
         removeFileLayer(fileLayerId: string): void;
+        /**
+         * Remove a HeatmapLayer from the Map by giving a heatmapLayerId
+         * @param heatmapLayerId id of the HeatmapLayer
+         */
+        removeHeatmapLayer(heatmapLayerId: string): void;
         /**
          * Remove a Marker from the Map by giving a markerId
          * @param markerId id of the marker

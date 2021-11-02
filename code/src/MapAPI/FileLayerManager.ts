@@ -75,11 +75,12 @@ namespace MapAPI.FileLayerManager {
     ): OSFramework.FileLayer.IFileLayer {
         const map = GetMapByFileLayerId(fileLayerId);
         if (!map.hasFileLayer(fileLayerId)) {
-            const _fileLayer = GoogleProvider.FileLayer.FileLayerFactory.MakeFileLayer(
-                map,
-                fileLayerId,
-                JSON.parse(configs)
-            );
+            const _fileLayer =
+                GoogleProvider.FileLayer.FileLayerFactory.MakeFileLayer(
+                    map,
+                    fileLayerId,
+                    JSON.parse(configs)
+                );
             fileLayerArr.push(_fileLayer);
             fileLayerMap.set(fileLayerId, map.uniqueId);
             map.addFileLayer(_fileLayer);

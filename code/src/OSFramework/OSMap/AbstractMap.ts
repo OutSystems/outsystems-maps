@@ -10,6 +10,8 @@ namespace OSFramework.OSMap {
         private _drawingTools: DrawingTools.IDrawingTools;
         private _fileLayers: Map<string, FileLayer.IFileLayer>;
         private _fileLayersSet: Set<FileLayer.IFileLayer>;
+        private _heatmapLayers: Map<string, HeatmapLayer.IHeatmapLayer>;
+        private _heatmapLayersSet: Set<HeatmapLayer.IHeatmapLayer>;
         private _isReady: boolean;
         private _mapEvents: Event.OSMap.MapEventsManager;
         private _mapType: Enum.MapType;
@@ -26,9 +28,11 @@ namespace OSFramework.OSMap {
         constructor(uniqueId: string, config: Z, mapType: Enum.MapType) {
             this._uniqueId = uniqueId;
             this._fileLayers = new Map<string, FileLayer.IFileLayer>();
+            this._heatmapLayers = new Map<string, HeatmapLayer.IHeatmapLayer>();
             this._markers = new Map<string, Marker.IMarker>();
             this._shapes = new Map<string, Shape.IShape>();
             this._fileLayersSet = new Set<FileLayer.IFileLayer>();
+            this._heatmapLayersSet = new Set<HeatmapLayer.IHeatmapLayer>();
             this._markersSet = new Set<Marker.IMarker>();
             this._shapesSet = new Set<Shape.IShape>();
             this._config = config;
@@ -62,6 +66,10 @@ namespace OSFramework.OSMap {
 
         public get fileLayers(): FileLayer.IFileLayer[] {
             return Array.from(this._fileLayersSet);
+        }
+
+        public get heatmapLayers(): HeatmapLayer.IHeatmapLayer[] {
+            return Array.from(this._heatmapLayersSet);
         }
 
         public get markers(): Marker.IMarker[] {
@@ -113,6 +121,15 @@ namespace OSFramework.OSMap {
             this._fileLayersSet.add(fileLayer);
 
             return fileLayer;
+        }
+
+        public addHeatmapLayer(
+            heatmapLayer: HeatmapLayer.IHeatmapLayer
+        ): HeatmapLayer.IHeatmapLayer {
+            this._heatmapLayers.set(heatmapLayer.uniqueId, heatmapLayer);
+            this._heatmapLayersSet.add(heatmapLayer);
+
+            return heatmapLayer;
         }
 
         public addMarker(marker: Marker.IMarker): Marker.IMarker {
@@ -180,6 +197,18 @@ namespace OSFramework.OSMap {
             }
         }
 
+        public getHeatmapLayer(
+            heatmapLayerId: string
+        ): HeatmapLayer.IHeatmapLayer {
+            if (this._heatmapLayers.has(heatmapLayerId)) {
+                return this._heatmapLayers.get(heatmapLayerId);
+            } else {
+                return this.heatmapLayers.find(
+                    (p) => p && p.equalsToID(heatmapLayerId)
+                );
+            }
+        }
+
         public getMarker(markerId: string): Marker.IMarker {
             if (this._markers.has(markerId)) {
                 return this._markers.get(markerId);
@@ -198,6 +227,10 @@ namespace OSFramework.OSMap {
 
         public hasFileLayer(fileLayerId: string): boolean {
             return this._fileLayers.has(fileLayerId);
+        }
+
+        public hasHeatmapLayer(heatmapLayerId: string): boolean {
+            return this._heatmapLayers.has(heatmapLayerId);
         }
 
         public hasMarker(markerId: string): boolean {
@@ -304,6 +337,24 @@ namespace OSFramework.OSMap {
             }
         }
 
+        public removeHeatmapLayer(heatmapLayerId: string): void {
+            if (this._mapType === Enum.MapType.StaticMap && this.isReady) {
+                this.mapEvents.trigger(
+                    Event.OSMap.MapEventType.OnError,
+                    this,
+                    Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
+                );
+                return;
+            }
+            if (this._heatmapLayers.has(heatmapLayerId)) {
+                const fileLayer = this._heatmapLayers.get(heatmapLayerId);
+
+                fileLayer.dispose();
+                this._heatmapLayers.delete(heatmapLayerId);
+                this._heatmapLayersSet.delete(fileLayer);
+            }
+        }
+
         public removeMarker(markerId: string): void {
             if (this._mapType === Enum.MapType.StaticMap && this.isReady) {
                 this.mapEvents.trigger(
@@ -361,6 +412,13 @@ namespace OSFramework.OSMap {
 
         public abstract changeFileLayerProperty(
             fileLayerId: string,
+            propertyName: string,
+            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+            propertyValue: any
+        ): void;
+
+        public abstract changeHeatmapLayerProperty(
+            heatmapLayerId: string,
             propertyName: string,
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             propertyValue: any
