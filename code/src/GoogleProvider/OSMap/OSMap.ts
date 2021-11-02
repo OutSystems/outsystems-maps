@@ -33,6 +33,10 @@ namespace GoogleProvider.OSMap {
             this.fileLayers.forEach((fileLayer) => fileLayer.build());
         }
 
+        private _buildHeatmapLayers(): void {
+            this.heatmapLayers.forEach((heatmapLayer) => heatmapLayer.build());
+        }
+
         private _buildMarkers(): void {
             this.markers.forEach((marker) => marker.build());
         }
@@ -79,6 +83,7 @@ namespace GoogleProvider.OSMap {
                 this._buildShapes();
                 this._buildDrawingTools();
                 this._buildFileLayers();
+                this._buildHeatmapLayers();
                 this.finishBuild();
 
                 // Make sure to change the center after the conversion of the location to coordinates
@@ -128,8 +133,9 @@ namespace GoogleProvider.OSMap {
                         OSFramework.Helper.Constants.googleMapsApiMap +
                         '?key=' +
                         this.config.apiKey +
-                        // In order to use the drawingTools we need to add it into the libraries via the URL
-                        '&libraries=drawing';
+                        // In order to use the drawingTools we need to add it into the libraries via the URL = drawing
+                        // In order to use the heatmap we need to add it into the libraries via the URL = visualization
+                        '&libraries=drawing,visualization';
                     script.async = true;
                     script.defer = true;
                     script.id = 'google-maps-script';
@@ -242,6 +248,18 @@ namespace GoogleProvider.OSMap {
             return fileLayer;
         }
 
+        public addHeatmapLayer(
+            fileLayer: OSFramework.HeatmapLayer.IHeatmapLayer
+        ): OSFramework.HeatmapLayer.IHeatmapLayer {
+            super.addHeatmapLayer(fileLayer);
+
+            if (this.isReady) {
+                fileLayer.build();
+            }
+
+            return fileLayer;
+        }
+
         public addMarker(
             marker: OSFramework.Marker.IMarker
         ): OSFramework.Marker.IMarker {
@@ -314,6 +332,23 @@ namespace GoogleProvider.OSMap {
                 );
             } else {
                 fileLayer.changeProperty(propertyName, propertyValue);
+            }
+        }
+
+        public changeHeatmapLayerProperty(
+            heatmapLayerId: string,
+            propertyName: string,
+            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+            propertyValue: any
+        ): void {
+            const heatmapLayer = this.getHeatmapLayer(heatmapLayerId);
+
+            if (!heatmapLayer) {
+                console.error(
+                    `changeHeatmapLayerProperty - heatmapLayer id:${heatmapLayerId} not found.`
+                );
+            } else {
+                heatmapLayer.changeProperty(propertyName, propertyValue);
             }
         }
 

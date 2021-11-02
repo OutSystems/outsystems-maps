@@ -26,6 +26,8 @@ namespace OSFramework.Helper.Constants {
     export const shapeRectangleTag = '[data-block="Shapes.Rectangle"]';
     /** Tag used to find the FileLayer */
     export const fileLayerTag = '[data-block="FileLayer.FileLayer"]';
+    /** Tag used to find the HeatmapLayer */
+    export const heatmapLayerTag = '[data-block="HeatmapLayer.HeatmapLayer"]';
 
     /** Tag used to find a generic widget */
     export const outsystemsWidgetTag = '[data-block]';
@@ -72,6 +74,20 @@ namespace OSFramework.Helper.Constants {
     export const drawingPolygonCompleted = 'polygoncomplete';
     export const drawingCircleCompleted = 'circlecomplete';
     export const drawingRectangleCompleted = 'rectanglecomplete';
+    /** Default gradient heatmap colors from google provider */
+    export const gradientHeatmapColors = [
+        'rgba(102, 255, 0, 0)',
+        'rgba(102, 255, 0, 1)',
+        'rgba(147, 255, 0, 1)',
+        'rgba(193, 255, 0, 1)',
+        'rgba(238, 255, 0, 1)',
+        'rgba(244, 227, 0, 1)',
+        'rgba(249, 198, 0, 1)',
+        'rgba(255, 170, 0, 1)',
+        'rgba(255, 113, 0, 1)',
+        'rgba(255, 57, 0, 1)',
+        'rgba(255, 0, 0, 1)'
+    ];
 
     /** Default/Custom cluster icon CSS class */
     export const clusterIconCSSClass = 'custom-clustericon';
