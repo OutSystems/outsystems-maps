@@ -7,7 +7,8 @@ namespace GoogleProvider.Marker {
             google.maps.Marker,
             Configuration.Marker.GoogleMarkerConfig
         >
-        implements IMarkerGoogle {
+        implements IMarkerGoogle
+    {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         private _advancedFormatObj: any;
         private _listeners: Array<string>;
@@ -267,6 +268,7 @@ namespace GoogleProvider.Marker {
                     case OSFramework.Enum.OS_Config_Marker.title:
                         return this._provider.setTitle(value);
                 }
+                this.map.features.markerClusterer.repaint();
             }
         }
 
