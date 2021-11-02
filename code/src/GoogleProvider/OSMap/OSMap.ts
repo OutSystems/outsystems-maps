@@ -371,9 +371,15 @@ namespace GoogleProvider.OSMap {
                         return this._provider.setOptions(value);
                     case OSFramework.Enum.OS_Config_Map.showTraffic:
                         return this.features.trafficLayer.setState(value);
-                    case OSFramework.Enum.OS_Config_Map.markerClusterer:
-                        return this.features.markerClusterer.setMarkerClusterer(
-                            JSON.parse(value)
+                    case OSFramework.Enum.OS_Config_Map.markerClustererActive:
+                    case OSFramework.Enum.OS_Config_Map.markerClustererMaxZoom:
+                    case OSFramework.Enum.OS_Config_Map
+                        .markerClustererMinClusterSize:
+                    case OSFramework.Enum.OS_Config_Map
+                        .markerClustererZoomOnClick:
+                        return this.features.markerClusterer.changeProperty(
+                            propertyName,
+                            value
                         );
                 }
             }

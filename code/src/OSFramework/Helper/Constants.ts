@@ -73,6 +73,9 @@ namespace OSFramework.Helper.Constants {
     export const drawingCircleCompleted = 'circlecomplete';
     export const drawingRectangleCompleted = 'rectanglecomplete';
 
+    /** Default/Custom cluster icon CSS class */
+    export const clusterIconCSSClass = 'custom-clustericon';
+
     /************************** */
     /** URL for GoogleMapsApis  */
     /************************** */

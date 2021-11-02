@@ -40,6 +40,7 @@ namespace OSFramework.Enum {
         GEN_UnsupportedEventDrawingTools = 'MAPS-GEN-06003',
         GEN_ToolTypeAlreadyExists = 'MAPS-GEN-06004',
         GEN_InvalidChangePropertyFileLayer = 'MAPS-GEN-07001',
-        GEN_UnsupportedEventFileLayer = 'MAPS-GEN-07002'
+        GEN_UnsupportedEventFileLayer = 'MAPS-GEN-07002',
+        GEN_InvalidChangePropertyMarkerClusterer = 'MAPS-GEN-09001'
     }
 }

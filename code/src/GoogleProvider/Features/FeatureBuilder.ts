@@ -70,7 +70,7 @@ namespace GoogleProvider.Feature {
             return this;
         }
         private _makeMarkerClusterer(
-            markerClusterer: OSFramework.OSStructures.OSMap.MarkerClusterer
+            markerClusterer: OSFramework.Configuration.IConfigurationMarkerClusterer
         ): FeatureBuilder {
             this._features.markerClusterer = this._makeItem(
                 GoogleMarkerClusterer,

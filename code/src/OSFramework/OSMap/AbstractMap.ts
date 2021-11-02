@@ -316,6 +316,8 @@ namespace OSFramework.OSMap {
             if (this._markers.has(markerId)) {
                 const marker = this._markers.get(markerId);
 
+                // Make sure the marker is removed from any existent cluster
+                this.features.markerClusterer.removeMarker(marker);
                 marker.dispose();
                 this._markers.delete(markerId);
                 this._markersSet.delete(marker);
