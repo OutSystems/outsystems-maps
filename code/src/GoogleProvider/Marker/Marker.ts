@@ -268,7 +268,6 @@ namespace GoogleProvider.Marker {
                     case OSFramework.Enum.OS_Config_Marker.title:
                         return this._provider.setTitle(value);
                 }
-                this.map.features.markerClusterer.repaint();
             }
         }
 
