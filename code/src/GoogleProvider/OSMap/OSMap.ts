@@ -135,7 +135,8 @@ namespace GoogleProvider.OSMap {
                         this.config.apiKey +
                         // In order to use the drawingTools we need to add it into the libraries via the URL = drawing
                         // In order to use the heatmap we need to add it into the libraries via the URL = visualization
-                        '&libraries=drawing,visualization';
+                        // In order to use the searchplaces we need to add it into the libraries via the URL = places (in case the Map is the first to import the scripts)
+                        '&libraries=drawing,visualization,places';
                     script.async = true;
                     script.defer = true;
                     script.id = 'google-maps-script';
