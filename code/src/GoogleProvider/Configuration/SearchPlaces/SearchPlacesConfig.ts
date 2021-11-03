@@ -21,7 +21,7 @@ namespace GoogleProvider.Configuration.SearchPlaces {
             // eslint-disable-next-line prefer-const
             let provider = {
                 bounds: this.searchArea,
-                strictBounds: this.searchArea ?? false,
+                strictBounds: !!this.searchArea,
                 componentRestrictions: this.countries
                     ? { country: this.countries }
                     : undefined,
