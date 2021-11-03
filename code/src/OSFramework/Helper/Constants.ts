@@ -93,6 +93,9 @@ namespace OSFramework.Helper.Constants {
         'rgba(255, 0, 0, 1)'
     ];
 
+    /** Default/Custom cluster icon CSS class */
+    export const clusterIconCSSClass = 'custom-clustericon';
+
     /************************** */
     /** URL for GoogleMapsApis  */
     /************************** */

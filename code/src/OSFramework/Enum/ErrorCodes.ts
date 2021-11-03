@@ -42,6 +42,7 @@ namespace OSFramework.Enum {
         GEN_InvalidChangePropertyFileLayer = 'MAPS-GEN-07001',
         GEN_UnsupportedEventFileLayer = 'MAPS-GEN-07002',
         GEN_InvalidChangePropertyHeatmapLayer = 'MAPS-GEN-08001',
+        GEN_InvalidChangePropertyMarkerClusterer = 'MAPS-GEN-09001',
         GEN_InvalidChangePropertySearchPlaces = 'MAPS-GEN-10001'
     }
 }

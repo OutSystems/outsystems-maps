@@ -7,7 +7,8 @@ namespace GoogleProvider.Marker {
             google.maps.Marker,
             Configuration.Marker.GoogleMarkerConfig
         >
-        implements IMarkerGoogle {
+        implements IMarkerGoogle
+    {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         private _advancedFormatObj: any;
         private _listeners: Array<string>;
