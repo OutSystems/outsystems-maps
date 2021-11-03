@@ -28,6 +28,8 @@ namespace OSFramework.Helper.Constants {
     export const fileLayerTag = '[data-block="FileLayer.FileLayer"]';
     /** Tag used to find the HeatmapLayer */
     export const heatmapLayerTag = '[data-block="HeatmapLayer.HeatmapLayer"]';
+    /** Tag used to find the SearchPlaces */
+    export const searchPlacesTag = '[data-block="SearchPlaces.SearchPlaces"]';
 
     /** Tag used to find a generic widget */
     export const outsystemsWidgetTag = '[data-block]';
@@ -58,6 +60,8 @@ namespace OSFramework.Helper.Constants {
     export const drawingToolsUniqueIdCss = '.ss-drawingTools';
     /** Tag used to find the uniqueId property of a DOM element */
     export const uniqueIdAttribute = 'name';
+    /** Tag used to find the container where the SearchPlaces is going to be rendered in run time*/
+    export const runtimeSearchPlacesUniqueIdCss = '.ss-searchPlaces';
 
     /************************** */
     /**       DEF VALUES        */
