@@ -9,7 +9,7 @@ namespace GoogleProvider.Configuration.OSMap {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public center: any;
         public height: string;
-        public markerClusterer: OSFramework.OSStructures.OSMap.MarkerClusterer;
+        public markerClusterer: OSFramework.Configuration.IConfigurationMarkerClusterer;
         public offset: OSFramework.OSStructures.OSMap.Offset;
         public showTraffic: boolean;
         public staticMap: boolean;

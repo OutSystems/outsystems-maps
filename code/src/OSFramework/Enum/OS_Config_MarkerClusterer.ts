@@ -4,9 +4,9 @@ namespace OSFramework.Enum {
      * Internal type definition
      */
     export enum OS_Config_MarkerClusterer {
-        active,
-        minClusterSize,
-        maxZoom,
-        zoomOnClick
+        markerClustererActive,
+        markerClustererMinClusterSize,
+        markerClustererMaxZoom,
+        markerClustererZoomOnClick
     }
 }
