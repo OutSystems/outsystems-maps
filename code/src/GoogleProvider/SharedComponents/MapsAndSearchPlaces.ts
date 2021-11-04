@@ -67,33 +67,46 @@ namespace GoogleProvider.SharedComponents {
         const cardinalDirections = ['north', 'south', 'east', 'west'];
         return new Promise((resolve, reject) => {
             let boundsLength = 0;
-            const newBounds = new OSFramework.OSStructures.OSMap.Bounds();
+            const finalBounds = new OSFramework.OSStructures.OSMap.Bounds();
+            // forEach ['north', 'south', 'east', 'west'] cardinal direction
             cardinalDirections.forEach((cd) => {
-                // Regex that validates if string is a coordinate (latitude or longitude)
+                // Use Regex to validate if string is a single coordinate (latitude or longitude)
+                // If the string is a coordinate, we just need to set the value to the finalBounds object
+                // Else, convert the string to coordinates and then set its value on the respective object property
                 const regexValidator = /^-{0,1}\d*\.{0,1}\d*$/;
                 if (regexValidator.test(bounds[cd])) {
+                    // Make sure to increment the boundsLength to validate whether the bounds structure has all the cardinal directions or not.
                     boundsLength++;
-                    newBounds[cd] = parseFloat(bounds[cd]);
+                    finalBounds[cd] = parseFloat(bounds[cd]);
+                    // Because this is a cycle we need to ensure if we already have all the cardinal directions to resolve the promise
+                    // If boundsLength === 4, the bounds structure has all the cardinal directions (north, south, east and west)
+                    // And the promise is ready -> resolve()
                     if (boundsLength === 4) {
-                        resolve(newBounds);
+                        resolve(finalBounds);
                     }
                 } else {
                     Helper.Conversions.ConvertToCoordinates(bounds[cd], apiKey)
                         .then((response) => {
+                            // Make sure to increment the boundsLength to validate whether the bounds structure has all the cardinal directions or not.
                             boundsLength++;
                             switch (cd) {
                                 case 'north':
                                 case 'south':
-                                    newBounds[cd] = response.lat;
+                                    // If the currenct cardinalDirection is north or south, just use the latitude from the response
+                                    finalBounds[cd] = response.lat;
                                     break;
                                 case 'east':
                                 case 'west':
                                 default:
-                                    newBounds[cd] = response.lng;
+                                    // If the currenct cardinalDirection is east or west use the longitude from the response
+                                    finalBounds[cd] = response.lng;
                                     break;
                             }
+                            // Because this is a cycle we need to ensure if we already have all the cardinal directions to resolve the promise
+                            // If boundsLength === 4, the bounds structure has all the cardinal directions (north, south, east and west)
+                            // And the promise is ready -> resolve()
                             if (boundsLength === 4) {
-                                resolve(newBounds);
+                                resolve(finalBounds);
                             }
                         })
                         .catch((e) => reject(e));

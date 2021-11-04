@@ -101,7 +101,7 @@ namespace GoogleProvider.SearchPlaces {
                     const bounds = this._convertStringToBounds(configs.bounds);
                     // If countries > 5 than throw an error
                     if (
-                        this._validCountriesLength(this.config.countries) &&
+                        this._validCountriesMaxLength(this.config.countries) &&
                         bounds !== undefined
                     ) {
                         bounds
@@ -188,8 +188,8 @@ namespace GoogleProvider.SearchPlaces {
             }
         }
 
-        /** If countries > 5 than throw an error an return false */
-        private _validCountriesLength(countries: Array<string>): boolean {
+        /** If countries > 5 (as required by google maps api), throw an error an return false */
+        private _validCountriesMaxLength(countries: Array<string>): boolean {
             if (countries.length > 5) {
                 this.searchPlacesEvents.trigger(
                     OSFramework.Event.SearchPlaces.SearchPlacesEventType
@@ -296,7 +296,7 @@ namespace GoogleProvider.SearchPlaces {
                         // If validation returns false -> do nothing
                         // Else set restrictions to component (apply countries)
                         return (
-                            this._validCountriesLength(countries) &&
+                            this._validCountriesMaxLength(countries) &&
                             this.provider.setComponentRestrictions({
                                 country: countries
                             })
