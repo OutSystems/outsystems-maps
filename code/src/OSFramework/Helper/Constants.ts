@@ -106,13 +106,4 @@ namespace OSFramework.Helper.Constants {
     export const googleMapsApiMap = `${googleMapsApiURL}/js`;
     /** URL for GoogleMaps API to make use of the Google StaticMap */
     export const googleMapsApiStaticMap = `${googleMapsApiURL}/staticmap`;
-    
-    /****************************/
-    /**   SCRIPT/ LIB imports  **/
-    /****************************/
-    export const googleMaps_MapBlock_dataBlock = 'google-maps-mapBlock';
-    export const googleMaps_SearchPlacesBlock_dataBlock =
-        'google-maps-searchPlacesBlock';
-    export const googleMaps_MapBlock_ScriptElement = `#google-maps-script[data-block="${googleMaps_MapBlock_dataBlock}"]`;
-    export const googleMaps_SearchPlaces_ScriptElement = `#google-maps-script[data-block="${googleMaps_SearchPlacesBlock_dataBlock}"]`;
 }
