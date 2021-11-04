@@ -8,7 +8,7 @@ namespace OSFramework.SearchPlaces {
         isReady: boolean;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         provider: any;
-        /** Events from the Map */
+        /** Events from the SearchPlaces */
         searchPlacesEvents: Event.SearchPlaces.SearchPlacesEventsManager;
         uniqueId: string;
         widgetId: string;
