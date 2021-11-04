@@ -101,7 +101,7 @@ namespace GoogleProvider.SearchPlaces {
                     const bounds = this._convertStringToBounds(configs.bounds);
                     // If countries > 5 than throw an error
                     if (
-                        this._validateCountriesLength(this.config.countries) &&
+                        this._validCountriesLength(this.config.countries) &&
                         bounds !== undefined
                     ) {
                         bounds
@@ -131,13 +131,17 @@ namespace GoogleProvider.SearchPlaces {
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         private _createProvider(configs: any) {
-            // SearchPlaces(input, options)
-            this._provider = new google.maps.places.Autocomplete(
+            const input: HTMLInputElement =
                 OSFramework.Helper.GetElementByUniqueId(
                     this.uniqueId
                 ).querySelector(
                     `${OSFramework.Helper.Constants.runtimeSearchPlacesUniqueIdCss} input`
-                ),
+                );
+            if (this._validInput(input) === false) return;
+
+            // SearchPlaces(input, options)
+            this._provider = new google.maps.places.Autocomplete(
+                input,
                 configs
             );
             // Check if the provider has been created with a valid APIKey
@@ -185,13 +189,28 @@ namespace GoogleProvider.SearchPlaces {
         }
 
         /** If countries > 5 than throw an error an return false */
-        private _validateCountriesLength(countries: Array<string>): boolean {
+        private _validCountriesLength(countries: Array<string>): boolean {
             if (countries.length > 5) {
                 this.searchPlacesEvents.trigger(
                     OSFramework.Event.SearchPlaces.SearchPlacesEventType
                         .OnError,
                     this,
                     OSFramework.Enum.ErrorCodes.CFG_MaximumCountriesNumber
+                );
+                return false;
+            }
+
+            return true;
+        }
+
+        /** If input is not valid (doesn't exist) throw an error and return false */
+        private _validInput(input: HTMLInputElement): boolean {
+            if (input === undefined) {
+                this.searchPlacesEvents.trigger(
+                    OSFramework.Event.SearchPlaces.SearchPlacesEventType
+                        .OnError,
+                    this,
+                    OSFramework.Enum.ErrorCodes.CFG_InvalidInputSearchPlaces
                 );
                 return false;
             }
@@ -277,7 +296,7 @@ namespace GoogleProvider.SearchPlaces {
                         // If validation returns false -> do nothing
                         // Else set restrictions to component (apply countries)
                         return (
-                            this._validateCountriesLength(countries) &&
+                            this._validCountriesLength(countries) &&
                             this.provider.setComponentRestrictions({
                                 country: countries
                             })

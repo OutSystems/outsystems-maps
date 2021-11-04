@@ -16,6 +16,7 @@ namespace OSFramework.Enum {
         CFG_APIKeyAlreadySetSearchPlaces = 'MAPS-CFG-10001',
         CFG_InvalidSearchPlacesSearchArea = 'MAPS-CFG-10002',
         CFG_MaximumCountriesNumber = 'MAPS-CFG-10003',
+        CFG_InvalidInputSearchPlaces = 'MAPS-CFG-10004',
 
         // Error Codes - LIB errors - Specific errors generated when consuming a third party lib / providers
         LIB_InvalidApiKeyMap = 'MAPS-LIB-01001',

@@ -210,8 +210,6 @@ namespace GoogleProvider.OSMap {
             return this._scriptCallback;
         }
 
-
-
         public set scriptCallback(cb: () => void) {
             this._scriptCallback = cb;
         }
