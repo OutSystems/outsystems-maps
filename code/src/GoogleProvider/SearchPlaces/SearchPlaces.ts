@@ -199,6 +199,22 @@ namespace GoogleProvider.SearchPlaces {
             return true;
         }
 
+        public get listeners(): Array<string> {
+            return this._listeners;
+        }
+
+        public get scriptCallback(): () => void {
+            return this._scriptCallback;
+        }
+
+        public set listeners(listeners: Array<string>) {
+            this._listeners = listeners;
+        }
+
+        public set scriptCallback(cb: () => void) {
+            this._scriptCallback = cb;
+        }
+
         public build(): void {
             super.build();
 

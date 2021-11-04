@@ -190,12 +190,28 @@ namespace GoogleProvider.OSMap {
             );
         }
 
+        public get listeners(): Array<string> {
+            return this._listeners;
+        }
+
         public get mapTag(): string {
             return OSFramework.Helper.Constants.mapTag;
         }
 
         public get providerEvents(): Array<string> {
             return Constants.OSMap.Events;
+        }
+
+        public get scriptCallback(): () => void {
+            return this._scriptCallback;
+        }
+
+        public set listeners(listeners: Array<string>) {
+            this._listeners = listeners;
+        }
+
+        public set scriptCallback(cb: () => void) {
+            this._scriptCallback = cb;
         }
 
         public addDrawingTools(

@@ -31,19 +31,19 @@ namespace GoogleProvider.SharedComponents {
                 script.id = 'google-maps-script';
                 document.head.appendChild(script);
             }
-            object._scriptCallback = cb.bind(object);
-            script.addEventListener('load', object._scriptCallback);
+            object.scriptCallback = cb.bind(object);
+            script.addEventListener('load', object.scriptCallback);
         }
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
     export function RemoveEventsFromProvider(object: any): void {
-        if (object._listeners === undefined) object._listeners = [];
+        if (object.listeners === undefined) object.listeners = [];
         // Make sure all the listeners get removed before adding the new ones
-        object._listeners.forEach((eventListener, index) => {
+        object.listeners.forEach((eventListener, index) => {
             // Google maps api way of clearing listeners from the map provider
             google.maps.event.clearListeners(object.provider, eventListener);
-            object._listeners.splice(index, 1);
+            object.listeners.splice(index, 1);
         });
     }
 
