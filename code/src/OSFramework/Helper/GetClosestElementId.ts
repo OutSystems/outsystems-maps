@@ -117,6 +117,6 @@ namespace OSFramework.Helper {
             return uniqueId;
         }
 
-        return null;
+        throw new Error("The SearchPlaces element doesn't exist on the DOM");
     }
 }
