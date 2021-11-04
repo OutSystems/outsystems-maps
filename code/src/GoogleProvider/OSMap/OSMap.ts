@@ -194,6 +194,10 @@ namespace GoogleProvider.OSMap {
             return this._listeners;
         }
 
+        public set listeners(listeners: Array<string>) {
+            this._listeners = listeners;
+        }
+
         public get mapTag(): string {
             return OSFramework.Helper.Constants.mapTag;
         }
@@ -206,9 +210,7 @@ namespace GoogleProvider.OSMap {
             return this._scriptCallback;
         }
 
-        public set listeners(listeners: Array<string>) {
-            this._listeners = listeners;
-        }
+
 
         public set scriptCallback(cb: () => void) {
             this._scriptCallback = cb;

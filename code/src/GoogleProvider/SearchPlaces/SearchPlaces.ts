@@ -203,12 +203,12 @@ namespace GoogleProvider.SearchPlaces {
             return this._listeners;
         }
 
-        public get scriptCallback(): () => void {
-            return this._scriptCallback;
-        }
-
         public set listeners(listeners: Array<string>) {
             this._listeners = listeners;
+        }
+
+        public get scriptCallback(): () => void {
+            return this._scriptCallback;
         }
 
         public set scriptCallback(cb: () => void) {
