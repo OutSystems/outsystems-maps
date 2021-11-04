@@ -126,48 +126,9 @@ namespace GoogleProvider.OSMap {
             return this.config.getProviderConfig();
         }
 
-        /**
-         * Initializes the Google Map.
-         * 1) Add the script from GoogleAPIS to the header of the page
-         * 2) Creates the Map via GoogleMap API
-         */
-        private _initializeGoogleMap(): void {
-            if (typeof google === 'object' && typeof google.maps === 'object') {
-                this._createGoogleMap();
-            } else {
-                let script = document.getElementById(
-                    'google-maps-script'
-                ) as HTMLScriptElement;
-                if (script === null) {
-                    script = document.createElement('script');
-                    /* eslint-disable-next-line prettier/prettier */
-                    script.src =
-                        OSFramework.Helper.Constants.googleMapsApiMap +
-                        '?key=' +
-                        this.config.apiKey +
-                        // In order to use the drawingTools we need to add it into the libraries via the URL = drawing
-                        // In order to use the heatmap we need to add it into the libraries via the URL = visualization
-                        // In order to use the searchplaces we need to add it into the libraries via the URL = places (in case the Map is the first to import the scripts)
-                        '&libraries=drawing,visualization,places';
-                    script.async = true;
-                    script.defer = true;
-                    script.id = 'google-maps-script';
-                    document.head.appendChild(script);
-                }
-                this._scriptCallback = this._createGoogleMap.bind(this);
-                script.addEventListener('load', this._scriptCallback);
-            }
-        }
-
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         private _setMapEvents(events?: Array<string>): void {
-            if (this._listeners === undefined) this._listeners = [];
-            // Make sure all the listeners get removed before adding the new ones
-            this._listeners.forEach((eventListener, index) => {
-                // Google maps api way of clearing listeners from the map provider
-                google.maps.event.clearListeners(this.provider, eventListener);
-                this._listeners.splice(index, 1);
-            });
+            SharedComponents.RemoveEventsFromProvider(this);
 
             // OnEventTriggered Event (other events that can be set on the advancedFormat of the Map)
             // We are deprecating the advancedFormat and the OnEventTriggered as well
@@ -300,7 +261,12 @@ namespace GoogleProvider.OSMap {
         public build(): void {
             super.build();
 
-            this._initializeGoogleMap();
+            /**
+             * Initializes the Google Map.
+             * 1) Add the script from GoogleAPIS to the header of the page
+             * 2) Creates the Map via GoogleMap API
+             */
+            SharedComponents.InitializeScripts(this, this._createGoogleMap);
         }
 
         public buildFeatures(): void {

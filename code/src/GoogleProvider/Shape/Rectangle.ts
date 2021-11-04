@@ -7,7 +7,8 @@ namespace GoogleProvider.Shape {
             Configuration.Shape.RectangleShapeConfig,
             google.maps.Rectangle
         >
-        implements OSFramework.Shape.IShapeRectangle {
+        implements OSFramework.Shape.IShapeRectangle
+    {
         constructor(
             map: OSFramework.OSMap.IMap,
             shapeId: string,
@@ -28,11 +29,10 @@ namespace GoogleProvider.Shape {
         private _buildBounds(
             boundsString: string
         ): Promise<OSFramework.OSStructures.OSMap.Bounds> {
-            const bounds: OSFramework.OSStructures.OSMap.BoundsString = JSON.parse(
-                boundsString
-            );
+            const bounds: OSFramework.OSStructures.OSMap.BoundsString =
+                JSON.parse(boundsString);
             // If the Shape doesn't have the minimum valid address/coordinates, then throw an error
-            if (this._hasAnyEmptyBound(bounds)) {
+            if (OSFramework.Helper.HasAnyEmptyBound(bounds)) {
                 OSFramework.Helper.ThrowError(
                     this.map,
                     this.invalidShapeLocationErrorCode
@@ -94,18 +94,6 @@ namespace GoogleProvider.Shape {
             });
         }
 
-        /** Check if any of the bounds (north, south, east or west) is empty. If one or more are empty, then return True */
-        private _hasAnyEmptyBound(
-            location: OSFramework.OSStructures.OSMap.BoundsString
-        ): boolean {
-            return (
-                OSFramework.Helper.IsEmptyString(location.north) ||
-                OSFramework.Helper.IsEmptyString(location.south) ||
-                OSFramework.Helper.IsEmptyString(location.east) ||
-                OSFramework.Helper.IsEmptyString(location.west)
-            );
-        }
-
         protected _createProvider(
             bounds: OSFramework.OSStructures.OSMap.Bounds
         ): google.maps.Rectangle {
@@ -121,7 +109,8 @@ namespace GoogleProvider.Shape {
         }
 
         public get bounds(): OSFramework.OSStructures.OSMap.Bounds {
-            const providerBounds: google.maps.LatLngBounds = this.provider.getBounds();
+            const providerBounds: google.maps.LatLngBounds =
+                this.provider.getBounds();
             const bounds = new OSFramework.OSStructures.OSMap.Bounds();
 
             // Map providerBounds into OSFramework bounds structure
