@@ -49,10 +49,22 @@ namespace GoogleProvider.OSMap {
          * Creates the Map via GoogleMap API
          */
         private _createGoogleMap(): void {
+            const script = document.getElementById(
+                'google-maps-script'
+            ) as HTMLScriptElement;
+
+            // Make sure the GoogleMaps script in the <head> of the html page contains the same apiKey as the one in the configs.
+            const apiKey = /key=(.*)&libraries/.exec(script.src)[1];
+            if (this.config.apiKey !== apiKey) {
+                return OSFramework.Helper.ThrowError(
+                    this,
+                    OSFramework.Enum.ErrorCodes
+                        .CFG_APIKeyDiffersFromPlacesToMaps
+                );
+            }
+
             if (this._scriptCallback !== undefined) {
-                document
-                    .getElementById('google-maps-script')
-                    .removeEventListener('load', this._scriptCallback);
+                script.removeEventListener('load', this._scriptCallback);
             }
             if (typeof google === 'object' && typeof google.maps === 'object') {
                 // Make sure the center is saved before setting a default value which is going to be used
@@ -135,7 +147,8 @@ namespace GoogleProvider.OSMap {
                         this.config.apiKey +
                         // In order to use the drawingTools we need to add it into the libraries via the URL = drawing
                         // In order to use the heatmap we need to add it into the libraries via the URL = visualization
-                        '&libraries=drawing,visualization';
+                        // In order to use the searchplaces we need to add it into the libraries via the URL = places (in case the Map is the first to import the scripts)
+                        '&libraries=drawing,visualization,places';
                     script.async = true;
                     script.defer = true;
                     script.id = 'google-maps-script';

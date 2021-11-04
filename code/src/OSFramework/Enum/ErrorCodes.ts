@@ -12,6 +12,10 @@ namespace OSFramework.Enum {
         CFG_InvalidPolygonShapeLocations = 'MAPS-CFG-05002',
         CFG_InvalidCircleShapeCenter = 'MAPS-CFG-05003',
         CFG_InvalidRectangleShapeBounds = 'MAPS-CFG-05004',
+        CFG_APIKeyDiffersFromPlacesToMaps = 'MAPS-CFG-01002',
+        CFG_APIKeyAlreadySetSearchPlaces = 'MAPS-CFG-10001',
+        CFG_InvalidSearchPlacesSearchArea = 'MAPS-CFG-10002',
+        CFG_MaximumCountriesNumber = 'MAPS-CFG-10003',
 
         // Error Codes - LIB errors - Specific errors generated when consuming a third party lib / providers
         LIB_InvalidApiKeyMap = 'MAPS-LIB-01001',
@@ -20,6 +24,8 @@ namespace OSFramework.Enum {
         LIB_FailedGeocodingMarker = 'MAPS-LIB-03001',
         LIB_FailedSetDirections = 'MAPS-LIB-04001',
         LIB_FailedGeocodingShapeLocations = 'MAPS-LIB-05001',
+        LIB_InvalidApiKeySearchPlaces = 'MAPS-LIB-10001',
+        LIB_FailedGeocodingSearchAreaLocations = 'MAPS-LIB-10002',
 
         // Error Codes - API errors - Specific errors generated when exposing the component client actions API/Framework.
         API_FailedRemoveDirections = 'MAPS-API-03001',
@@ -42,6 +48,8 @@ namespace OSFramework.Enum {
         GEN_InvalidChangePropertyFileLayer = 'MAPS-GEN-07001',
         GEN_UnsupportedEventFileLayer = 'MAPS-GEN-07002',
         GEN_InvalidChangePropertyHeatmapLayer = 'MAPS-GEN-08001',
-        GEN_InvalidChangePropertyMarkerClusterer = 'MAPS-GEN-09001'
+        GEN_InvalidChangePropertyMarkerClusterer = 'MAPS-GEN-09001',
+        GEN_InvalidChangePropertySearchPlaces = 'MAPS-GEN-10001',
+        GEN_UnsupportedEventSearchPlaces = 'MAPS-GEN-10002'
     }
 }
