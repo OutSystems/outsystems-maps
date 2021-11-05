@@ -50,7 +50,7 @@ namespace GoogleProvider.OSMap {
          */
         private _createGoogleMap(): void {
             const script = document.getElementById(
-                'google-maps-script'
+                OSFramework.Helper.Constants.googleMapsScript
             ) as HTMLScriptElement;
 
             // Make sure the GoogleMaps script in the <head> of the html page contains the same apiKey as the one in the configs.
@@ -83,12 +83,13 @@ namespace GoogleProvider.OSMap {
                     this._getProviderConfig()
                 );
                 // Check if the provider has been created with a valid APIKey
-                window['gm_authFailure'] = () =>
-                    this.mapEvents.trigger(
-                        OSFramework.Event.OSMap.MapEventType.OnError,
-                        this,
-                        OSFramework.Enum.ErrorCodes.LIB_InvalidApiKeyMap
-                    );
+                window[OSFramework.Helper.Constants.googleMapsAuthFailure] =
+                    () =>
+                        this.mapEvents.trigger(
+                            OSFramework.Event.OSMap.MapEventType.OnError,
+                            this,
+                            OSFramework.Enum.ErrorCodes.LIB_InvalidApiKeyMap
+                        );
 
                 this.buildFeatures();
                 this._buildMarkers();

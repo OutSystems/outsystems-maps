@@ -2,10 +2,6 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace GoogleProvider.SearchPlaces {
-    export type data = {
-        location: google.maps.LatLng;
-        weight: number;
-    };
     export class SearchPlaces extends OSFramework.SearchPlaces
         .AbstractSearchPlaces<
         google.maps.places.Autocomplete,
@@ -71,7 +67,7 @@ namespace GoogleProvider.SearchPlaces {
          */
         private _createGooglePlaces(): void {
             const script = document.getElementById(
-                'google-maps-script'
+                OSFramework.Helper.Constants.googleMapsScript
             ) as HTMLScriptElement;
 
             // Make sure the GoogleMaps script in the <head> of the html page contains the same apiKey as the one in the configs.
@@ -130,7 +126,9 @@ namespace GoogleProvider.SearchPlaces {
         }
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        private _createProvider(configs: any) {
+        private _createProvider(
+            configs: google.maps.places.AutocompleteOptions
+        ): void {
             const input: HTMLInputElement =
                 OSFramework.Helper.GetElementByUniqueId(
                     this.uniqueId
@@ -145,7 +143,7 @@ namespace GoogleProvider.SearchPlaces {
                 configs
             );
             // Check if the provider has been created with a valid APIKey
-            window['gm_authFailure'] = () =>
+            window[OSFramework.Helper.Constants.googleMapsAuthFailure] = () =>
                 this.searchPlacesEvents.trigger(
                     OSFramework.Event.SearchPlaces.SearchPlacesEventType
                         .OnError,
@@ -247,11 +245,9 @@ namespace GoogleProvider.SearchPlaces {
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
         public changeProperty(propertyName: string, value: any): void {
-            const propValue =
-                OSFramework.Enum.OS_Config_SearchPlaces[propertyName];
             super.changeProperty(propertyName, value);
             if (this.isReady) {
-                switch (propValue) {
+                switch (OSFramework.Enum.OS_Config_SearchPlaces[propertyName]) {
                     case OSFramework.Enum.OS_Config_SearchPlaces.apiKey:
                         if (this.config.apiKey !== '') {
                             this.searchPlacesEvents.trigger(
