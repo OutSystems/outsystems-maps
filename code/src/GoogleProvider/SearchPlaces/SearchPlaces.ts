@@ -165,24 +165,27 @@ namespace GoogleProvider.SearchPlaces {
                         .OnPlaceSelect
                 )
             ) {
-                this._provider.addListener('place_changed', () => {
-                    const place = this._provider.getPlace();
-                    this.searchPlacesEvents.trigger(
-                        OSFramework.Event.SearchPlaces.SearchPlacesEventType
-                            .OnPlaceSelect,
-                        this, // searchPlacesObj
-                        'place_changed', // event name (eventInfo)
-                        // Extra parameters to be passed as arguments on the callback of the OnPlaceSelect event handler
-                        {
-                            name: place.name,
-                            coordinates: JSON.stringify({
-                                Lat: place.geometry.location.lat(),
-                                Lng: place.geometry.location.lng()
-                            }),
-                            address: place.formatted_address
-                        }
-                    );
-                });
+                this._provider.addListener(
+                    Constants.SearchPlaces.Events.OnPlaceSelect,
+                    () => {
+                        const place = this._provider.getPlace();
+                        this.searchPlacesEvents.trigger(
+                            OSFramework.Event.SearchPlaces.SearchPlacesEventType
+                                .OnPlaceSelect,
+                            this, // searchPlacesObj
+                            Constants.SearchPlaces.Events.OnPlaceSelect, // event name (eventInfo)
+                            // Extra parameters to be passed as arguments on the callback of the OnPlaceSelect event handler
+                            {
+                                name: place.name,
+                                coordinates: JSON.stringify({
+                                    Lat: place.geometry.location.lat(),
+                                    Lng: place.geometry.location.lng()
+                                }),
+                                address: place.formatted_address
+                            }
+                        );
+                    }
+                );
             }
         }
 
