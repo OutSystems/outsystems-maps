@@ -18,19 +18,19 @@
 }
 
 .ss-searchPlaces-dropdown-image {
-    font-size: 14px;
-    margin: 5px 10px 5px 5px;
+    -servicestudio-font-size: 14px;
+    -servicestudio-margin: 5px 10px 5px 5px;
 }
 
 .ss-searchPlaces-dropdown-bold {
-    font-size: 14px;
+    -servicestudio-font-size: 14px;
 }
 
 .ss-searchPlaces-dropdown-text {
-    color: rgba(155,155,155,1);
-    font-size: 13px;
-    margin-left: 5px;
-    margin-right: 10px;
+    -servicestudio-color: rgba(155,155,155,1);
+    -servicestudio-font-size: 13px;
+    -servicestudio-margin-left: 5px;
+    -servicestudio-margin-right: 10px;
 }
 
 .ss-searchPlaces-styles {

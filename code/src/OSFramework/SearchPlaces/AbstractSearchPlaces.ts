@@ -15,6 +15,8 @@ namespace OSFramework.SearchPlaces {
         protected _built: boolean;
         protected _provider: W;
 
+        public abstract addedEvents: Array<string>;
+
         constructor(uniqueId: string, config: T) {
             this._uniqueId = uniqueId;
             this._config = config;

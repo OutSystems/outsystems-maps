@@ -42,7 +42,7 @@ namespace OSFramework.OSMap {
         }
         public abstract get mapTag(): string;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public abstract get providerEvents(): any;
+        public abstract get supportedProviderEvents(): any;
 
         protected get shapes(): Shape.IShape[] {
             return Array.from(this._shapesSet);
@@ -402,7 +402,7 @@ namespace OSFramework.OSMap {
         }
 
         public validateProviderEvent(eventName: string): boolean {
-            return this.providerEvents.indexOf(eventName) !== -1;
+            return this.supportedProviderEvents.indexOf(eventName) !== -1;
         }
 
         public abstract changeDrawingToolsProperty(

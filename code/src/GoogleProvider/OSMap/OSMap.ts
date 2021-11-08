@@ -9,11 +9,11 @@ namespace GoogleProvider.OSMap {
         >
         implements IMapGoogle
     {
+        private _addedEvents: Array<string>;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         private _advancedFormatObj: any;
         private _fBuilder: Feature.FeatureBuilder;
-        private _listeners: Array<string>;
-        private _scriptCallback: () => void;
+        private _scriptCallback: OSFramework.Callbacks.Generic;
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         constructor(mapId: string, configs: any) {
@@ -22,6 +22,8 @@ namespace GoogleProvider.OSMap {
                 new Configuration.OSMap.GoogleMapConfig(configs),
                 OSFramework.Enum.MapType.Map
             );
+            this._addedEvents = [];
+            this._scriptCallback = this._createGoogleMap.bind(this);
         }
 
         private _buildDrawingTools(): void {
@@ -141,7 +143,7 @@ namespace GoogleProvider.OSMap {
                 events !== undefined
             ) {
                 events.forEach((eventName: string) => {
-                    this._listeners.push(eventName);
+                    this._addedEvents.push(eventName);
                     this._provider.addListener(eventName, () => {
                         this.mapEvents.trigger(
                             OSFramework.Event.OSMap.MapEventType
@@ -165,7 +167,7 @@ namespace GoogleProvider.OSMap {
                         handler instanceof
                         OSFramework.Event.OSMap.MapProviderEvent
                     ) {
-                        this._listeners.push(eventName);
+                        this._addedEvents.push(eventName);
                         this._provider.addListener(
                             // Name of the event (e.g. click, dblclick, contextmenu, etc)
                             eventName,
@@ -191,28 +193,16 @@ namespace GoogleProvider.OSMap {
             );
         }
 
-        public get listeners(): Array<string> {
-            return this._listeners;
-        }
-
-        public set listeners(listeners: Array<string>) {
-            this._listeners = listeners;
+        public get addedEvents(): Array<string> {
+            return this._addedEvents;
         }
 
         public get mapTag(): string {
             return OSFramework.Helper.Constants.mapTag;
         }
 
-        public get providerEvents(): Array<string> {
+        public get supportedProviderEvents(): Array<string> {
             return Constants.OSMap.Events;
-        }
-
-        public get scriptCallback(): () => void {
-            return this._scriptCallback;
-        }
-
-        public set scriptCallback(cb: () => void) {
-            this._scriptCallback = cb;
         }
 
         public addDrawingTools(
@@ -283,7 +273,10 @@ namespace GoogleProvider.OSMap {
              * 1) Add the script from GoogleAPIS to the header of the page
              * 2) Creates the Map via GoogleMap API
              */
-            SharedComponents.InitializeScripts(this, this._createGoogleMap);
+            SharedComponents.InitializeScripts(
+                this.config.apiKey,
+                this._scriptCallback
+            );
         }
 
         public buildFeatures(): void {

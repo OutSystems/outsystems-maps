@@ -4,16 +4,12 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace GoogleProvider.SharedComponents {
-    export function InitializeScripts(
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        object: any,
-        cb: () => void
-    ): void {
+    export function InitializeScripts(apiKey: string, cb: () => void): void {
         let script = document.getElementById(
             'google-maps-script'
         ) as HTMLScriptElement;
         if (typeof google === 'object' && typeof google.maps === 'object') {
-            cb.bind(object)();
+            cb();
         } else {
             if (script === null) {
                 script = document.createElement('script');
@@ -21,7 +17,7 @@ namespace GoogleProvider.SharedComponents {
                     script.src =
                     OSFramework.Helper.Constants.googleMapsApiMap +
                     '?key=' +
-                    object.config.apiKey +
+                    apiKey +
                     // In order to use the drawingTools we need to add it into the libraries via the URL = drawing
                     // In order to use the heatmap we need to add it into the libraries via the URL = visualization
                     // In order to use the searchplaces we need to add it into the libraries via the URL = places (in case the Map is the first to import the scripts)
@@ -31,19 +27,22 @@ namespace GoogleProvider.SharedComponents {
                 script.id = 'google-maps-script';
                 document.head.appendChild(script);
             }
-            object.scriptCallback = cb.bind(object);
-            script.addEventListener('load', object.scriptCallback);
+            script.addEventListener('load', cb);
         }
     }
 
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-    export function RemoveEventsFromProvider(object: any): void {
-        if (object.listeners === undefined) object.listeners = [];
+    /**
+     * Remove... balbal
+     * @param object
+     */
+    export function RemoveEventsFromProvider(
+        object: OSMap.IMapGoogle | OSFramework.SearchPlaces.ISearchPlaces
+    ): void {
         // Make sure all the listeners get removed before adding the new ones
-        object.listeners.forEach((eventListener, index) => {
+        object.addedEvents.forEach((eventListener, index) => {
             // Google maps api way of clearing listeners from the map provider
             google.maps.event.clearListeners(object.provider, eventListener);
-            object.listeners.splice(index, 1);
+            object.addedEvents.splice(index, 1);
         });
     }
 

@@ -12,7 +12,8 @@ namespace GoogleProvider.OSMap {
             google.maps.Map,
             Configuration.OSMap.GoogleStaticMapConfig
         >
-        implements IMapGoogle {
+        implements IMapGoogle
+    {
         private _center: string;
         private _markerString: string;
         private _size: Size;
@@ -138,8 +139,12 @@ namespace GoogleProvider.OSMap {
             return OSFramework.Helper.Constants.staticMapTag;
         }
 
-        public get providerEvents(): Array<string> {
+        public get addedEvents(): Array<string> {
             throw new Error('StaticMap provider has no events');
+        }
+
+        public get supportedProviderEvents(): Array<string> {
+            throw new Error('StaticMap provider has no supported events');
         }
 
         public addMarker(

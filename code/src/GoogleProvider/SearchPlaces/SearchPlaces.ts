@@ -7,8 +7,8 @@ namespace GoogleProvider.SearchPlaces {
         google.maps.places.Autocomplete,
         OSFramework.Configuration.IConfigurationSearchPlaces
     > {
-        private _listeners: Array<string>;
-        private _scriptCallback: () => void;
+        private _addedEvents: Array<string>;
+        private _scriptCallback: OSFramework.Callbacks.Generic;
 
         constructor(
             searchPlacesId: string,
@@ -19,6 +19,8 @@ namespace GoogleProvider.SearchPlaces {
                 searchPlacesId,
                 new Configuration.SearchPlaces.SearchPlacesConfig(configs)
             );
+            this._addedEvents = [];
+            this._scriptCallback = this._createGooglePlaces.bind(this);
         }
 
         // From the structure Bounds (north, south, east, weast) we need to convert the locations into the correct format of bounds
@@ -219,20 +221,8 @@ namespace GoogleProvider.SearchPlaces {
             return true;
         }
 
-        public get listeners(): Array<string> {
-            return this._listeners;
-        }
-
-        public set listeners(listeners: Array<string>) {
-            this._listeners = listeners;
-        }
-
-        public get scriptCallback(): () => void {
-            return this._scriptCallback;
-        }
-
-        public set scriptCallback(cb: () => void) {
-            this._scriptCallback = cb;
+        public get addedEvents(): Array<string> {
+            return this._addedEvents;
         }
 
         public build(): void {
@@ -243,7 +233,10 @@ namespace GoogleProvider.SearchPlaces {
              * 1) Add the script from GoogleAPIS to the header of the page
              * 2) Creates the SearchPlaces via GoogleMap API
              */
-            SharedComponents.InitializeScripts(this, this._createGooglePlaces);
+            SharedComponents.InitializeScripts(
+                this.config.apiKey,
+                this._scriptCallback
+            );
         }
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
