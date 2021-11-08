@@ -6,7 +6,7 @@
 namespace GoogleProvider.SharedComponents {
     export function InitializeScripts(apiKey: string, cb: () => void): void {
         let script = document.getElementById(
-            'google-maps-script'
+            OSFramework.Helper.Constants.googleMapsScript
         ) as HTMLScriptElement;
         if (typeof google === 'object' && typeof google.maps === 'object') {
             cb();
@@ -24,7 +24,7 @@ namespace GoogleProvider.SharedComponents {
                     '&libraries=drawing,visualization,places';
                 script.async = true;
                 script.defer = true;
-                script.id = 'google-maps-script';
+                script.id = OSFramework.Helper.Constants.googleMapsScript;
                 document.head.appendChild(script);
             }
             script.addEventListener('load', cb);
