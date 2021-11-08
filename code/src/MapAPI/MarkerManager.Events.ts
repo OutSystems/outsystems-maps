@@ -45,12 +45,10 @@ namespace MapAPI.MarkerManager.Events {
     ): string {
         //Try to find in DOM only if not present on Map
         if (lookUpDOM && !_eventsToMarkerId.has(eventUniqueId)) {
-            const eventElement = OSFramework.Helper.GetElementByUniqueId(
-                eventUniqueId
-            );
-            const markerId = OSFramework.Helper.GetClosestMarkerId(
-                eventElement
-            );
+            const eventElement =
+                OSFramework.Helper.GetElementByUniqueId(eventUniqueId);
+            const markerId =
+                OSFramework.Helper.GetClosestMarkerId(eventElement);
             _eventsToMarkerId.set(eventUniqueId, markerId);
         }
 
