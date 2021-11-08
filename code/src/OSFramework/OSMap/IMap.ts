@@ -26,9 +26,8 @@ namespace OSFramework.OSMap {
         /** Map provider */
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         provider: any;
-        /** Events from the Map provider */
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        providerEvents: any;
+        /** Supported events from the Map provider */
+        supportedProviderEvents: Array<string>;
         /** Id of the Map */
         uniqueId: string;
         /** Id of the Map widget */

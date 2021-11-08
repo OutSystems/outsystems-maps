@@ -19,13 +19,14 @@ namespace MapAPI.DrawingToolsManager {
             !drawingTools.hasTool(toolId) &&
             !drawingTools.toolAlreadyExists(type)
         ) {
-            const _tool = GoogleProvider.DrawingTools.DrawingToolsFactory.MakeTool(
-                drawingTools.map,
-                drawingTools,
-                toolId,
-                type,
-                JSON.parse(configs)
-            );
+            const _tool =
+                GoogleProvider.DrawingTools.DrawingToolsFactory.MakeTool(
+                    drawingTools.map,
+                    drawingTools,
+                    toolId,
+                    type,
+                    JSON.parse(configs)
+                );
             drawingTools.addTool(_tool);
             Events.CheckPendingEvents(drawingTools);
             return _tool;
@@ -199,11 +200,12 @@ namespace MapAPI.DrawingToolsManager {
     ): OSFramework.DrawingTools.IDrawingTools {
         const map = GetMapByDrawingToolsId(drawingToolsId);
         if (!map.drawingTools) {
-            const _drawingTools = GoogleProvider.DrawingTools.DrawingToolsFactory.MakeDrawingTools(
-                map,
-                drawingToolsId,
-                JSON.parse(configs)
-            );
+            const _drawingTools =
+                GoogleProvider.DrawingTools.DrawingToolsFactory.MakeDrawingTools(
+                    map,
+                    drawingToolsId,
+                    JSON.parse(configs)
+                );
             drawingToolsElement = _drawingTools;
             drawingToolsMap.set(drawingToolsId, map.uniqueId);
             map.addDrawingTools(_drawingTools);
@@ -249,12 +251,10 @@ namespace MapAPI.DrawingToolsManager {
         toolUniqueId: string
     ): string {
         //Try to find in DOM only if not present on Map
-        const toolElement = OSFramework.Helper.GetElementByUniqueId(
-            toolUniqueId
-        );
-        const drawingToolsId = OSFramework.Helper.GetClosestDrawingToolsId(
-            toolElement
-        );
+        const toolElement =
+            OSFramework.Helper.GetElementByUniqueId(toolUniqueId);
+        const drawingToolsId =
+            OSFramework.Helper.GetClosestDrawingToolsId(toolElement);
         return drawingToolsId;
     }
 

@@ -62,6 +62,8 @@ namespace OSFramework.Helper.Constants {
     export const uniqueIdAttribute = 'name';
     /** Tag used to find the container where the SearchPlaces is going to be rendered in run time*/
     export const runtimeSearchPlacesUniqueIdCss = '.ss-searchPlaces';
+    /** Tag used to find the google-maps-script */
+    export const googleMapsScript = 'google-maps-script';
 
     /************************** */
     /**       DEF VALUES        */
@@ -95,6 +97,8 @@ namespace OSFramework.Helper.Constants {
 
     /** Default/Custom cluster icon CSS class */
     export const clusterIconCSSClass = 'custom-clustericon';
+    /** Default Failure auth code */
+    export const googleMapsAuthFailure = 'gm_authFailure';
 
     /************************** */
     /** URL for GoogleMapsApis  */

@@ -9,11 +9,11 @@ namespace GoogleProvider.OSMap {
         >
         implements IMapGoogle
     {
+        private _addedEvents: Array<string>;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         private _advancedFormatObj: any;
         private _fBuilder: Feature.FeatureBuilder;
-        private _listeners: Array<string>;
-        private _scriptCallback: () => void;
+        private _scriptCallback: OSFramework.Callbacks.Generic;
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         constructor(mapId: string, configs: any) {
@@ -22,6 +22,8 @@ namespace GoogleProvider.OSMap {
                 new Configuration.OSMap.GoogleMapConfig(configs),
                 OSFramework.Enum.MapType.Map
             );
+            this._addedEvents = [];
+            this._scriptCallback = this._createGoogleMap.bind(this);
         }
 
         private _buildDrawingTools(): void {
@@ -50,7 +52,7 @@ namespace GoogleProvider.OSMap {
          */
         private _createGoogleMap(): void {
             const script = document.getElementById(
-                'google-maps-script'
+                OSFramework.Helper.Constants.googleMapsScript
             ) as HTMLScriptElement;
 
             // Make sure the GoogleMaps script in the <head> of the html page contains the same apiKey as the one in the configs.
@@ -83,12 +85,13 @@ namespace GoogleProvider.OSMap {
                     this._getProviderConfig()
                 );
                 // Check if the provider has been created with a valid APIKey
-                window['gm_authFailure'] = () =>
-                    this.mapEvents.trigger(
-                        OSFramework.Event.OSMap.MapEventType.OnError,
-                        this,
-                        OSFramework.Enum.ErrorCodes.LIB_InvalidApiKeyMap
-                    );
+                window[OSFramework.Helper.Constants.googleMapsAuthFailure] =
+                    () =>
+                        this.mapEvents.trigger(
+                            OSFramework.Event.OSMap.MapEventType.OnError,
+                            this,
+                            OSFramework.Enum.ErrorCodes.LIB_InvalidApiKeyMap
+                        );
 
                 this.buildFeatures();
                 this._buildMarkers();
@@ -126,48 +129,9 @@ namespace GoogleProvider.OSMap {
             return this.config.getProviderConfig();
         }
 
-        /**
-         * Initializes the Google Map.
-         * 1) Add the script from GoogleAPIS to the header of the page
-         * 2) Creates the Map via GoogleMap API
-         */
-        private _initializeGoogleMap(): void {
-            if (typeof google === 'object' && typeof google.maps === 'object') {
-                this._createGoogleMap();
-            } else {
-                let script = document.getElementById(
-                    'google-maps-script'
-                ) as HTMLScriptElement;
-                if (script === null) {
-                    script = document.createElement('script');
-                    /* eslint-disable-next-line prettier/prettier */
-                    script.src =
-                        OSFramework.Helper.Constants.googleMapsApiMap +
-                        '?key=' +
-                        this.config.apiKey +
-                        // In order to use the drawingTools we need to add it into the libraries via the URL = drawing
-                        // In order to use the heatmap we need to add it into the libraries via the URL = visualization
-                        // In order to use the searchplaces we need to add it into the libraries via the URL = places (in case the Map is the first to import the scripts)
-                        '&libraries=drawing,visualization,places';
-                    script.async = true;
-                    script.defer = true;
-                    script.id = 'google-maps-script';
-                    document.head.appendChild(script);
-                }
-                this._scriptCallback = this._createGoogleMap.bind(this);
-                script.addEventListener('load', this._scriptCallback);
-            }
-        }
-
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         private _setMapEvents(events?: Array<string>): void {
-            if (this._listeners === undefined) this._listeners = [];
-            // Make sure all the listeners get removed before adding the new ones
-            this._listeners.forEach((eventListener, index) => {
-                // Google maps api way of clearing listeners from the map provider
-                google.maps.event.clearListeners(this.provider, eventListener);
-                this._listeners.splice(index, 1);
-            });
+            SharedComponents.RemoveEventsFromProvider(this);
 
             // OnEventTriggered Event (other events that can be set on the advancedFormat of the Map)
             // We are deprecating the advancedFormat and the OnEventTriggered as well
@@ -179,7 +143,7 @@ namespace GoogleProvider.OSMap {
                 events !== undefined
             ) {
                 events.forEach((eventName: string) => {
-                    this._listeners.push(eventName);
+                    this._addedEvents.push(eventName);
                     this._provider.addListener(eventName, () => {
                         this.mapEvents.trigger(
                             OSFramework.Event.OSMap.MapEventType
@@ -203,7 +167,7 @@ namespace GoogleProvider.OSMap {
                         handler instanceof
                         OSFramework.Event.OSMap.MapProviderEvent
                     ) {
-                        this._listeners.push(eventName);
+                        this._addedEvents.push(eventName);
                         this._provider.addListener(
                             // Name of the event (e.g. click, dblclick, contextmenu, etc)
                             eventName,
@@ -229,11 +193,15 @@ namespace GoogleProvider.OSMap {
             );
         }
 
+        public get addedEvents(): Array<string> {
+            return this._addedEvents;
+        }
+
         public get mapTag(): string {
             return OSFramework.Helper.Constants.mapTag;
         }
 
-        public get providerEvents(): Array<string> {
+        public get supportedProviderEvents(): Array<string> {
             return Constants.OSMap.Events;
         }
 
@@ -300,7 +268,15 @@ namespace GoogleProvider.OSMap {
         public build(): void {
             super.build();
 
-            this._initializeGoogleMap();
+            /**
+             * Initializes the Google Map.
+             * 1) Add the script from GoogleAPIS to the header of the page
+             * 2) Creates the Map via GoogleMap API
+             */
+            SharedComponents.InitializeScripts(
+                this.config.apiKey,
+                this._scriptCallback
+            );
         }
 
         public buildFeatures(): void {

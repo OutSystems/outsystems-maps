@@ -43,9 +43,8 @@ namespace MapAPI.ShapeManager.Events {
     ): string {
         //Try to find in DOM only if not present on Shape
         if (lookUpDOM && !_eventsToShapeId.has(eventUniqueId)) {
-            const eventElement = OSFramework.Helper.GetElementByUniqueId(
-                eventUniqueId
-            );
+            const eventElement =
+                OSFramework.Helper.GetElementByUniqueId(eventUniqueId);
             const shapeId = OSFramework.Helper.GetClosestShapeId(eventElement);
             _eventsToShapeId.set(eventUniqueId, shapeId);
         }

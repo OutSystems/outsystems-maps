@@ -82,7 +82,8 @@ namespace GoogleProvider.DrawingTools {
         public build(): void {
             super.build();
 
-            const configs: OSFramework.Configuration.IConfigurationDrawingTools = this.getProviderConfig();
+            const configs: OSFramework.Configuration.IConfigurationDrawingTools =
+                this.getProviderConfig();
 
             this._provider = new google.maps.drawing.DrawingManager({
                 drawingMode: null,
