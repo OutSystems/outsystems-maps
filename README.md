@@ -2,19 +2,23 @@
 Add maps to your applications **OutSystems Reactive Web apps** with a single or multiple locations. Fully customizable and adaptable, allows you to change map behaviors, customize your map, add markers and customize each of them, according to your use case.
 
 ## About the component
-- _TODO_
+Maps made easy, from developers to developers.
+Use the OutSystems Maps to create visual rich enterprise-grade interfaces that help the user to quickly have map-based insights of the data.
 
 #### Key features 
-* Display a google map
-* Add markers
-* Select the map theme 
+* Built for Web and Mobile apps
+* Simple to use and extend
+* Add Markers, and Directions
+* **No javascript knowledge required**
 
 ### Where can you find the component?
-The OutSystems component, like all components, can be found in [OutSystems forge](https://www.outsystems.com/forge/component-overview/9909/outsystems-maps). 
+The OutSystems component, like all components, can be found in [OutSystems forge](https://www.outsystems.com/forge/component-overview/9909/outsystems-maps). There you can also find a [sample application](https://www.outsystems.com/forge/component-overview/10984/outsystems-maps-sample) that show-cases several uses of the component.
 The documentation for the component can be found in the [official page](https://success.outsystems.com/Documentation/11/Developing_an_Application/Design_UI/Patterns/Using_Mobile_and_Reactive_Patterns/Map).
 
 ### Why use this component?
-- _TODO_
+If you're using OutSystems, this is how you can use this component in your application: 
+![map-experience-forge](https://user-images.githubusercontent.com/10534623/141264477-8eca6b22-e0ad-480d-9747-b0b866af73dd.gif)
+
 
 ## About this repository
 This repository contains the code that enable the usage of an external provider **google maps** to which you're required to [obtain a license](https://developers.google.com/maps/documentation/javascript/get-api-key).
@@ -71,6 +75,8 @@ To be accepted, a Pull Request needs to:
 
 ## Useful Links
 * Download latest version in [OutSystems forge](https://www.outsystems.com/forge/component-versions/9909)
+* Test the latest changes in the [sample app](https://www.outsystems.com/forge/component-overview/10984/outsystems-maps-sample)
+* [Component living documentation](https://outsystemsui.outsystems.com/OutSystemsMapsSample/)
 * Component [documentation](https://success.outsystems.com/Documentation/11/Developing_an_Application/Design_UI/Patterns/Using_Mobile_and_Reactive_Patterns/Map)
 
 
