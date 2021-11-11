@@ -1,20 +1,24 @@
-# OutSystems Maps [![GitHub license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](https://github.com/OutSystems/outsystems-maps/blob/master/LICENSE) ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg) 
+# OutSystems Maps · [![GitHub license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](https://github.com/OutSystems/outsystems-maps/blob/master/LICENSE) ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg) [![Build Status](https://dev.azure.com/OutSystemsRD/Data%20Grid/_apis/build/status/OutSystems.outsystems-maps?branchName=dev&stageName=Build)](https://dev.azure.com/OutSystemsRD/Data%20Grid/_build/latest?definitionId=800&branchName=dev) ![Release Status](https://vsrm.dev.azure.com/OutSystemsRD/_apis/public/Release/badge/a4246f2c-63f1-4b1a-8070-9328d5d3ea38/5/5)
 Add maps to your applications **OutSystems Reactive Web apps** with a single or multiple locations. Fully customizable and adaptable, allows you to change map behaviors, customize your map, add markers and customize each of them, according to your use case.
 
 ## About the component
-- _TODO_
+Maps made easy, from developers to developers.
+Use the OutSystems Maps to create visual rich enterprise-grade interfaces that help the user to quickly have map-based insights of the data.
 
 #### Key features 
-* Display a google map
-* Add markers
-* Select the map theme 
+* Built for Web and Mobile apps
+* Simple to use and extend
+* Add Markers, and Directions
+* **No javascript knowledge required**
 
 ### Where can you find the component?
-The OutSystems component, like all components, can be found in [OutSystems forge](https://www.outsystems.com/forge/component-overview/9909/outsystems-maps). 
-The documentation for the component can be found in the [official page](https://success.outsystems.com/Documentation/11/Developing_an_Application/Design_UI/Patterns/Using_Mobile_and_Reactive_Patterns/Map).
+The OutSystems component, like all components, can be found in [OutSystems forge](https://www.outsystems.com/forge/component-overview/9909/outsystems-maps). There you can also find a [sample application](https://www.outsystems.com/forge/component-overview/10984/outsystems-maps-sample) that show-cases several uses of the component.
+The documentation for the component can be found in the [official page](https://success.outsystems.com/Documentation/11/Developing_an_Application/Design_UI/Patterns/Using_Mobile_and_Reactive_Patterns/Map), as well as, in a more interactive way in the [Component living documentation](https://outsystemsui.outsystems.com/OutSystemsMapsSample/).
 
 ### Why use this component?
-- _TODO_
+If you're using OutSystems, this is how you can use this component in your application: 
+![map-experience-forge](https://user-images.githubusercontent.com/10534623/141264477-8eca6b22-e0ad-480d-9747-b0b866af73dd.gif)
+
 
 ## About this repository
 This repository contains the code that enable the usage of an external provider **google maps** to which you're required to [obtain a license](https://developers.google.com/maps/documentation/javascript/get-api-key).
@@ -36,8 +40,8 @@ We highly recommend the usage of the following tools:
 5. **Document your code** (with the extension "Document This", start typing `/**` and the extension will give you a good starting point
 6. Compile and fix errors and warnings (in Visual Code terminal: `npm run build`)
 7. Check if the code format is following our conventions (in Visual Code terminal: `npm run lint`)
-7.1 Some of the conventions can be fixed automatically by lint (in Visual Code terminal: `npm run lintfix`)
-7.2 Although the script above execute the prettier conventions, you may want to run it over all project files (in Visual Code terminal: `npm run prettier`)
+   - Some of the conventions can be fixed automatically by lint (in Visual Code terminal: `npm run lintfix`)
+   - Although the script above execute the prettier conventions, you may want to run it over all project files (in Visual Code terminal: `npm run prettier`)
 8. Fix all errors & warnings! :)
 9. Create a PR, describing what was the (mis)behavior, what you changed and please provide a sample 
 
@@ -71,6 +75,8 @@ To be accepted, a Pull Request needs to:
 
 ## Useful Links
 * Download latest version in [OutSystems forge](https://www.outsystems.com/forge/component-versions/9909)
+* Test the latest changes in the [sample app](https://www.outsystems.com/forge/component-overview/10984/outsystems-maps-sample)
+* [Component living documentation](https://outsystemsui.outsystems.com/OutSystemsMapsSample/)
 * Component [documentation](https://success.outsystems.com/Documentation/11/Developing_an_Application/Design_UI/Patterns/Using_Mobile_and_Reactive_Patterns/Map)
 
 
