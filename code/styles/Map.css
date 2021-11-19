@@ -48,6 +48,12 @@ html[data-uieditorversion^="1"] .map-wrapper .staticMap-image {
     width: 100%;
 }
 
+.map-container.provider-leaflet {   
+    -servicestudio-background: var(--map-container-image-leaflet) center;
+    -servicestudio-background-repeat: no-repeat;
+    -servicestudio-background-size: cover;
+}
+
 /***********************************************************************/
 /**/
 /***********************************************************************/
