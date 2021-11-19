@@ -115,19 +115,21 @@ namespace GoogleProvider.Shape {
                                                 this._shapeChangedEventTimeout
                                             );
                                         }
-                                        this._shapeChangedEventTimeout = setTimeout(
-                                            () =>
-                                                this.shapeEvents.trigger(
-                                                    // EventType
-                                                    OSFramework.Event.Shape
-                                                        .ShapeEventType
-                                                        .ProviderEvent,
-                                                    // EventName
-                                                    OSFramework.Helper.Constants
-                                                        .shapeChangedEvent
-                                                ),
-                                            500
-                                        );
+                                        this._shapeChangedEventTimeout =
+                                            setTimeout(
+                                                () =>
+                                                    this.shapeEvents.trigger(
+                                                        // EventType
+                                                        OSFramework.Event.Shape
+                                                            .ShapeEventType
+                                                            .ProviderEvent,
+                                                        // EventName
+                                                        OSFramework.Helper
+                                                            .Constants
+                                                            .shapeChangedEvent
+                                                    ),
+                                                500
+                                            );
                                     }
                                 )
                             );
