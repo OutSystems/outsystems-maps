@@ -424,6 +424,18 @@ body.chrome .marker-popup-layout {
     text-decoration: none;
 }
 
+.marker-leaflet-icon {
+    background: var(--marker-leaflet-icon);
+    text-align: center;
+}
+
+.leaflet-tooltip.marker-leaflet-transparent-tooltip,
+.leaflet-tooltip.marker-leaflet-transparent-tooltip::before  {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
 /***********************************************************************/
 /*                          SS Hybrid version                          */
 /***********************************************************************/
