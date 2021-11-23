@@ -43,9 +43,8 @@ namespace MapAPI.MapManager.Events {
     ): string {
         //Try to find in DOM only if not present on Map
         if (lookUpDOM && !_eventsToMapId.has(eventUniqueId)) {
-            const eventElement = OSFramework.Helper.GetElementByUniqueId(
-                eventUniqueId
-            );
+            const eventElement =
+                OSFramework.Helper.GetElementByUniqueId(eventUniqueId);
             const mapId = OSFramework.Helper.GetClosestMapId(eventElement);
             const map = GetMapById(mapId);
 

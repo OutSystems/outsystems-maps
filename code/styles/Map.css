@@ -34,6 +34,10 @@
     object-fit: cover;
 }
 
+html[data-uieditorversion^="1"] .map-wrapper .staticMap-image {
+    -servicestudio-height: auto;
+}  
+
 .map-container {   
     -servicestudio-background: var(--map-container-image);
     -servicestudio-background-repeat: no-repeat;
@@ -42,6 +46,12 @@
     height: var(--map-height);
     max-width: 100%;
     width: 100%;
+}
+
+.map-container.provider-leaflet {   
+    -servicestudio-background: var(--map-container-image-leaflet) center;
+    -servicestudio-background-repeat: no-repeat;
+    -servicestudio-background-size: cover;
 }
 
 /***********************************************************************/
@@ -195,10 +205,6 @@
     -servicestudio-width: 100%;
 }
 
-.map-preview > span > span{
-    --servicestudio-min-height: calc(var(--map-height) - 80px);
-}
-
 .map-preview-addons {
     -servicestudio-align-items: flex-start;
     -servicestudio-position: relative;
@@ -211,7 +217,7 @@
     -servicestudio-align-self: center;
     -servicestudio-background: #ffffffa0;
     -servicestudio-border-radius: 5px;
-    -servicestudio-content: 'Drag markers here';
+    -servicestudio-content: 'Drag AddOns here';
     -servicestudio-padding: 15px 25px;
 }
 
@@ -424,6 +430,241 @@ body.chrome .marker-popup-layout {
     text-decoration: none;
 }
 
+.marker-leaflet-icon {
+    background: var(--marker-leaflet-icon);
+    text-align: center;
+}
+
+.leaflet-tooltip.marker-leaflet-transparent-tooltip,
+.leaflet-tooltip.marker-leaflet-transparent-tooltip::before  {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+/***********************************************************************/
+/*                          SS Hybrid version                          */
+/***********************************************************************/
+
+/* MAKE IF FULLWIDTH
+This is to make the first and only if, directly inside the
+map-preview block to be fullwidth. We rather not apply this
+to all IFs in the page or even in the map placeholder due
+to the potential side effect.
+*/
+html[data-uieditorversion^="1"] .map-preview > .uieditor-if-widget-container {
+    -servicestudio-width: 100%!important;
+}
+
+/* MAKE THE IF's TRUE BRANCH HIDDEN
+This condition enable us to completely hide the true branch
+in development time, to improve the code readability.
+*/
+html[data-uieditorversion^="1"] .hide-true-branch > .uieditor-if-widget-container > :first-child {
+    -servicestudio-display: none!important;
+}
+
+/* MAKE THE IF's FALSE BRANCH HIDDEN
+This condition enable us to completely hide the true .hide-true-branch
+in development time, to improve the code readability.
+*/
+html[data-uieditorversion^="1"] .hide-false-branch > .uieditor-if-widget-container > :last-child {
+    -servicestudio-display: none!important;
+}
+
+/* MAKE THE CUSTOM PLACEHOLDER MESSAGES DISAPPEAR ON MOUSE HOVER
+We are using custom placeholders messages, set by CSS - in
+order to improve the developer experience, however in SS hybrid
+is actually overlapping with the default placeholder message, that
+appears once the mouse is over the drawing canvas.
+This rule, will make our custom messages disappear once the developer
+has the mouse over the canvas.
+*/
+html[data-uieditorversion^="1"]:hover .ss-marker-events:empty:after,
+html[data-uieditorversion^="1"]:hover .map-preview-addons:empty:after,
+html[data-uieditorversion^="1"]:hover .map-preview-events:empty:after {
+    -servicestudio-display: none!important;
+}
+
+.map-wrapper .force-hide {
+    -servicestudio-display: none!important;
+}
 /***********************************************************************/
 /**/
 /***********************************************************************/
+
+.ss-shape{
+    -servicestudio-background: white;
+    -servicestudio-border-radius: 3px;
+    -servicestudio-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    -servicestudio-margin: 3px;
+    -servicestudio-max-width: 200px;
+    -servicestudio-min-width: 200px;
+}
+
+.ss-shape-icon{
+    -servicestudio-display: flex;
+    -servicestudio-justify-content: center;
+    -servicestudio-padding: 10px 10px 0 10px;
+}
+
+/***********************************************************************/
+/**/
+/***********************************************************************/
+
+.ss-shape-events {
+    -servicestudio-background-color: rgba(200,200,200,0.3);
+    -servicestudio-box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0.03);
+    -servicestudio-margin: 10px;
+    -servicestudio-min-height: 20px;
+    -servicestudio-position: relative;
+    -servicestudio-padding-bottom: 10px
+}
+
+.ss-shape-events:empty:after{
+    -servicestudio-color: lightgrey;
+    -servicestudio-content: 'Drag shape events here';
+    -servicestudio-font-family: Arial;
+    -servicestudio-font-size: 11px;
+    -servicestudio-left: 50%;
+    -servicestudio-position: absolute;
+    -servicestudio-top: 50%;
+    -servicestudio-transform: translate(-50%, -50%);
+    -servicestudio-white-space: nowrap;
+    -servicestudio-z-index: 0;
+}
+
+.ss-shape-events .event-preview {
+    margin-top: 0;
+}
+
+.ss-shape-events .event-preview > div {
+    -servicestudio-flex-direction: column;
+    -servicestudio-margin-left: 10px;
+}
+
+.ss-shape-events .event-preview > img {
+    -servicestudio-align-self: center;
+    -servicestudio-width: 20px;
+}
+
+.ss-shape-events .event-preview-origin {
+    -servicestudio-font-size: 11px;
+    -servicestudio-font-weight: normal;
+    -servicestudio-margin-bottom: 2px;
+}
+
+/***********************************************************************/
+/**/
+/***********************************************************************/
+
+.ss-drawingTools {
+    -servicestudio-background: white;
+    -servicestudio-border-radius: 3px;
+    -servicestudio-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    -servicestudio-margin: 3px;
+    -servicestudio-max-width: 200px;
+    -servicestudio-min-height: 50px;
+    -servicestudio-min-width: 200px;
+}
+
+.ss-drawingTools-hand {
+    -servicestudio-margin-top: 1px;
+}
+
+.ss-drawingTools-hand,
+.ss-drawingTools-icon {
+    -servicestudio-height: 27px;
+    -servicestudio-width: 27px;
+}
+
+.ss-drawingTools-icon img {
+    -servicestudio-height: 27px;
+}
+
+.ss-drawingTools-tools {
+    -servicestudio-display: flex;    
+    -servicestudio-padding: 10px 10px 10px 10px;
+}
+
+.ss-drawingTools-placeholder {
+    -servicestudio-border: 1px dashed #efefef;
+    -servicestudio-flex: 1;
+    -servicestudio-min-height: 30px;
+    -servicestudio-position: relative;
+}
+
+.ss-drawingTools-placeholder * {
+    -servicestudio-display: inline-block;
+}
+
+.ss-drawingTools-placeholder:empty:after {
+    -servicestudio-color: lightgrey;
+    -servicestudio-content: 'Drag draw blocks here';
+    -servicestudio-font-family: Arial;
+    -servicestudio-font-size: 11px;
+    -servicestudio-left: 50%;
+    -servicestudio-position: absolute;
+    -servicestudio-top: 50%;
+    -servicestudio-transform: translate(-50%, -50%);
+    -servicestudio-white-space: nowrap;
+    -servicestudio-z-index: 0;
+}
+
+
+/***********************************************************************/
+/**/
+/***********************************************************************/
+
+.ss-fileLayer,
+.ss-heatmapLayer {
+    -servicestudio-background: white;
+    -servicestudio-border-radius: 3px;
+    -servicestudio-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    -servicestudio-margin: 3px;
+    -servicestudio-max-width: 200px;
+    -servicestudio-min-width: 200px;
+    -servicestudio-padding-bottom: 10px;
+}
+
+.ss-fileLayer-icon,
+.ss-heatmapLayer-icon {
+    -servicestudio-display: flex;
+    -servicestudio-justify-content: center;
+    -servicestudio-padding: 10px 10px 0 10px;
+}
+
+/***********************/
+
+.custom-clustericon {
+    align-items: center;
+    color: #fff;
+    display: flex;
+    font-size: 14px;
+}
+
+.custom-clustericon-1::before,
+.custom-clustericon-2::before,
+.custom-clustericon-3::before{
+    content: "";
+    height: 100%;
+    left: 50%;
+    opacity: 1;
+    padding: 15px;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    width: 100%;
+}
+    
+.custom-clustericon-1::before {
+    background: var(--cluster-default-image-1) no-repeat center;
+}
+
+.custom-clustericon-2::before {
+    background: var(--cluster-default-image-2) no-repeat center;
+}
+
+.custom-clustericon-3::before {
+    background: var(--cluster-default-image-3) no-repeat center;
+}

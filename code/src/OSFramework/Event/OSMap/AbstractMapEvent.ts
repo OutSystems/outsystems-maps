@@ -18,7 +18,11 @@ namespace OSFramework.Event.OSMap {
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             ...args: any
         ): void {
-            this.handlers.slice(0).forEach((h) => h(mapObj, mapId, ...args));
+            this.handlers
+                .slice(0)
+                .forEach((h) =>
+                    Helper.AsyncInvocation(h, mapObj, mapId, ...args)
+                );
         }
     }
 }

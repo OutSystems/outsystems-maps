@@ -5,7 +5,7 @@ namespace OSFramework.Interface {
     /* eslint-disable @typescript-eslint/no-unused-vars */
     export interface IBuilder {
         /**
-         * Build object, instantiating dependencies, and maniulating DOM when necessary
+         * Build object, instantiating dependencies, and manipulating DOM when necessary
          */
         build(): void;
     }

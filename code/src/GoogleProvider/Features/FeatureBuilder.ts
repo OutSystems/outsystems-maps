@@ -6,7 +6,8 @@ namespace GoogleProvider.Feature {
     }
 
     export abstract class AbstractFactoryBuilder
-        implements IFeatures, OSFramework.Interface.IBuilder {
+        implements IFeatures, OSFramework.Interface.IBuilder
+    {
         protected _featureList: OSFramework.Interface.IBuilder[];
         protected _features: OSFramework.Feature.ExposedFeatures;
         protected _map: OSFramework.OSMap.IMap;
@@ -64,6 +65,19 @@ namespace GoogleProvider.Feature {
             this._features.directions = this._makeItem(Directions);
             return this;
         }
+        private _makeInfoWindow(): FeatureBuilder {
+            this._features.infoWindow = this._makeItem(InfoWindow);
+            return this;
+        }
+        private _makeMarkerClusterer(
+            markerClusterer: OSFramework.Configuration.IConfigurationMarkerClusterer
+        ): FeatureBuilder {
+            this._features.markerClusterer = this._makeItem(
+                GoogleMarkerClusterer,
+                markerClusterer
+            );
+            return this;
+        }
         private _makeOffset(
             offset: OSFramework.OSStructures.OSMap.Offset
         ): FeatureBuilder {
@@ -87,7 +101,9 @@ namespace GoogleProvider.Feature {
                 ._makeZoom(config.zoom)
                 ._makeCenter(config.center)
                 ._makeDirections()
-                ._makeOffset(config.offset);
+                ._makeOffset(config.offset)
+                ._makeMarkerClusterer(config.markerClusterer)
+                ._makeInfoWindow();
 
             super.build();
         }

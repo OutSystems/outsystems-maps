@@ -45,12 +45,10 @@ namespace MapAPI.MarkerManager.Events {
     ): string {
         //Try to find in DOM only if not present on Map
         if (lookUpDOM && !_eventsToMarkerId.has(eventUniqueId)) {
-            const eventElement = OSFramework.Helper.GetElementByUniqueId(
-                eventUniqueId
-            );
-            const markerId = OSFramework.Helper.GetClosestMarkerId(
-                eventElement
-            );
+            const eventElement =
+                OSFramework.Helper.GetElementByUniqueId(eventUniqueId);
+            const markerId =
+                OSFramework.Helper.GetClosestMarkerId(eventElement);
             _eventsToMarkerId.set(eventUniqueId, markerId);
         }
 
@@ -92,7 +90,7 @@ namespace MapAPI.MarkerManager.Events {
     ): void {
         // Let's make sure that if the Map doesn't exist, we don't throw and exception but instead add the handler to the pendingEvents
         const markerId = GetMarkerIdByEventUniqueId(eventUniqueId);
-        const marker = GetMarkerById(markerId);
+        const marker = GetMarkerById(markerId, false);
 
         if (marker === undefined) {
             if (_pendingEvents.has(markerId)) {
@@ -147,7 +145,7 @@ namespace MapAPI.MarkerManager.Events {
         callback: OSFramework.Callbacks.Marker.Event
     ): void {
         const markerId = GetMarkerIdByEventUniqueId(eventUniqueId);
-        const marker = GetMarkerById(markerId);
+        const marker = GetMarkerById(markerId, false);
         if (marker !== undefined) {
             marker.markerEvents.removeHandler(eventName, callback);
             // Let's make sure the events get refreshed on the Marker provider

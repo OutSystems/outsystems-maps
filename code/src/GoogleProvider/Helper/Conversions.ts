@@ -11,7 +11,8 @@ namespace GoogleProvider.Helper.Conversions {
         location: string,
         apiKey: string
     ): Promise<OSFramework.OSStructures.OSMap.Coordinates> {
-        location = location.replace(/[^a-zA-Z0-9 ]/g, '');
+        // Encodes a location string into a valid format
+        location = encodeURIComponent(location);
         return fetch(
             `${OSFramework.Helper.Constants.googleMapsApiGeocode}?address=${location}&key=${apiKey}`
         )
@@ -52,11 +53,14 @@ namespace GoogleProvider.Helper.Conversions {
             });
         }
 
-        // If the location doesn't have any chars a-z A-Z
-        if (location.search(/[a-zA-Z]/g) === -1) {
+        // Regex that validates if string is a set of coordinates
+        // Accepts "12.300,-8.220" and "12.300, -8.220"
+        const regexValidator = /^-{0,1}\d*\.{0,1}\d*,( )?-{0,1}\d*\.{0,1}\d*$/;
+        // If the provided location is a set of coordinates
+        if (regexValidator.test(location)) {
             let latitude: number;
             let longitude: number;
-            // If the location is a set of coordinates
+            // split the coordinates into latitude and longitude
             if (location.indexOf(',') > -1) {
                 latitude = parseFloat(location.split(',')[0].replace(' ', ''));
                 longitude = parseFloat(location.split(',')[1].replace(' ', ''));

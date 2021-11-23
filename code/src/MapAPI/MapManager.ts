@@ -36,7 +36,7 @@ namespace MapAPI.MapManager {
         providerType: OSFramework.Enum.ProviderType,
         configs: string
     ): OSFramework.OSMap.IMap {
-        const _map = GoogleProvider.Map.MapFactory.MakeMap(
+        const _map = GoogleProvider.OSMap.MapFactory.MakeMap(
             providerType,
             mapId,
             JSON.parse(configs)
@@ -164,6 +164,18 @@ namespace MapAPI.MapManager {
         const map = GetMapById(mapId);
 
         map.removeAllMarkers();
+    }
+
+    /**
+     * Function that will remove all File Layers from a given Map.
+     *
+     * @export
+     * @param {string} mapId Id of the Map to have markers removed.
+     */
+    export function RemoveFileLayers(mapId: string): void {
+        const map = GetMapById(mapId);
+
+        map.removeAllFileLayers();
     }
 
     /**

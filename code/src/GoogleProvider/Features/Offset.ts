@@ -1,13 +1,14 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace GoogleProvider.Feature {
     export class Offset
-        implements OSFramework.Feature.IOffset, OSFramework.Interface.IBuilder {
-        private _map: Map.IMapGoogle;
+        implements OSFramework.Feature.IOffset, OSFramework.Interface.IBuilder
+    {
+        private _map: OSMap.IMapGoogle;
         /** Current offset of the Map */
         private _offset: OSFramework.OSStructures.OSMap.Offset;
 
         constructor(
-            map: Map.IMapGoogle,
+            map: OSMap.IMapGoogle,
             offset: OSFramework.OSStructures.OSMap.Offset
         ) {
             this._map = map;
