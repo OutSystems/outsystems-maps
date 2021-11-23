@@ -121,7 +121,6 @@ namespace PlacesAPI.SearchPlacesManager {
      */
     export function InitializeSearchPlaces(searchPlacesId: string): void {
         const searchPlaces = GetSearchPlacesById(searchPlacesId);
-
         searchPlaces.build();
         Events.CheckPendingEvents(searchPlaces);
     }

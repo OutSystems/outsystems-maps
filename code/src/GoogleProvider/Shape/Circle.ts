@@ -7,7 +7,8 @@ namespace GoogleProvider.Shape {
             Configuration.Shape.CircleShapeConfig,
             google.maps.Circle
         >
-        implements OSFramework.Shape.IShapeCircle {
+        implements OSFramework.Shape.IShapeCircle
+    {
         constructor(
             map: OSFramework.OSMap.IMap,
             shapeId: string,

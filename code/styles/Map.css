@@ -48,6 +48,12 @@ html[data-uieditorversion^="1"] .map-wrapper .staticMap-image {
     width: 100%;
 }
 
+.map-container.provider-leaflet {   
+    -servicestudio-background: var(--map-container-image-leaflet) center;
+    -servicestudio-background-repeat: no-repeat;
+    -servicestudio-background-size: cover;
+}
+
 /***********************************************************************/
 /**/
 /***********************************************************************/
@@ -422,6 +428,18 @@ body.chrome .marker-popup-layout {
 .marker-layout-link a:hover, 
 .marker-layout-link a:focus {
     text-decoration: none;
+}
+
+.marker-leaflet-icon {
+    background: var(--marker-leaflet-icon);
+    text-align: center;
+}
+
+.leaflet-tooltip.marker-leaflet-transparent-tooltip,
+.leaflet-tooltip.marker-leaflet-transparent-tooltip::before  {
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 /***********************************************************************/

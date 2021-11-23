@@ -3,7 +3,8 @@ namespace OSFramework.Shape {
     export abstract class AbstractShape<
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         T extends Configuration.IConfigurationShape
-    > implements IShape {
+    > implements IShape
+    {
         /** Configuration reference */
         private _config: T;
         private _map: OSMap.IMap;

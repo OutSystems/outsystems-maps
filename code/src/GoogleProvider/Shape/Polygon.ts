@@ -7,7 +7,8 @@ namespace GoogleProvider.Shape {
             Configuration.Shape.FilledShapeConfig,
             google.maps.Polygon
         >
-        implements OSFramework.Shape.IShapePolyshape {
+        implements OSFramework.Shape.IShapePolyshape
+    {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
         constructor(
