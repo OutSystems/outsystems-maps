@@ -1,19 +1,14 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.Configuration.OSMap {
-    export class GoogleMapConfig
+namespace LeafletProvider.Configuration.OSMap {
+    export class LeafletMapConfig
         extends OSFramework.Configuration.AbstractConfiguration
         implements OSFramework.Configuration.IConfigurationMap
     {
         public advancedFormat: string;
-        public apiKey: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public center: string | OSFramework.OSStructures.OSMap.Coordinates;
         public height: string;
-        public markerClusterer: OSFramework.Configuration.IConfigurationMarkerClusterer;
         public offset: OSFramework.OSStructures.OSMap.Offset;
-        public showTraffic: boolean;
-        public staticMap: boolean;
-        public style: OSFramework.Enum.OSMap.Style;
-        public type: OSFramework.Enum.OSMap.Type;
         public uniqueId: string;
         public zoom: OSFramework.Enum.OSMap.Zoom;
 
@@ -28,8 +23,8 @@ namespace GoogleProvider.Configuration.OSMap {
             let provider = {
                 center: this.center,
                 zoom: this.zoom,
-                styles: this.style,
-                mapTypeId: this.type
+                // Let's make the map always editable to be able to later edit elements on the map
+                editable: true
             };
 
             //Cleanning undefined properties

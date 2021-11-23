@@ -33,10 +33,12 @@ namespace MapAPI.MapManager {
      */
     export function CreateMap(
         mapId: string,
-        providerType: OSFramework.Enum.ProviderType,
+        provider: OSFramework.Enum.ProviderType,
+        providerType: OSFramework.Enum.MapType,
         configs: string
     ): OSFramework.OSMap.IMap {
-        const _map = GoogleProvider.OSMap.MapFactory.MakeMap(
+        const _map = OSFramework.OSMap.MapFactory.MakeMap(
+            provider,
             providerType,
             mapId,
             JSON.parse(configs)
@@ -220,6 +222,7 @@ namespace MapAPI.MapManager {
             }
 
             widget.style.setProperty('--map-height', height);
+            map.updateHeight();
         } else {
             throw new Error(`Map id:${mapId} not found`);
         }
