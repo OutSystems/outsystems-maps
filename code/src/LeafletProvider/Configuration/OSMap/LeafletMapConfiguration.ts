@@ -4,8 +4,6 @@ namespace LeafletProvider.Configuration.OSMap {
         extends OSFramework.Configuration.AbstractConfiguration
         implements OSFramework.Configuration.IConfigurationMap
     {
-        public advancedFormat: string;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public center: string | OSFramework.OSStructures.OSMap.Coordinates;
         public height: string;
         public offset: OSFramework.OSStructures.OSMap.Offset;
