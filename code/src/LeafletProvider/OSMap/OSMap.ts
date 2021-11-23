@@ -79,6 +79,7 @@ namespace LeafletProvider.OSMap {
             );
         }
 
+        // Useful when using shared Component methods (Maps and SearchPlaces)
         public get addedEvents(): Array<string> {
             return this._addedEvents;
         }
@@ -174,8 +175,8 @@ namespace LeafletProvider.OSMap {
                 }
             );
             this.buildFeatures();
-            this._buildMarkers();
-            this._buildShapes();
+            // this._buildMarkers();
+            // this._buildShapes();
             // this._buildDrawingTools();
             // this._buildFileLayers();
             // this._buildHeatmapLayers();
@@ -184,16 +185,6 @@ namespace LeafletProvider.OSMap {
             // Make sure to change the center after the conversion of the location to coordinates
             this.features.center.updateCenter(currentCenter as string);
             this._setMapEvents();
-
-            /**
-             * Initializes the Google Map.
-             * 1) Add the script from GoogleAPIS to the header of the page
-             * 2) Creates the Map via GoogleMap API
-             */
-            // SharedComponents.InitializeScripts(
-            //     this.config.apiKey,
-            //     this._scriptCallback
-            // );
         }
 
         public buildFeatures(): void {
@@ -289,24 +280,6 @@ namespace LeafletProvider.OSMap {
                         );
                     case OSFramework.Enum.OS_Config_Map.zoom:
                         return this.features.zoom.setLevel(value);
-                    // case OSFramework.Enum.OS_Config_Map.type:
-                    //     return this._provider.setMapTypeId(value);
-                    // case OSFramework.Enum.OS_Config_Map.style:
-                    //     return this._provider.setOptions({
-                    //         styles: GetStyleByStyleId(value)
-                    //     });
-                    // case OSFramework.Enum.OS_Config_Map.showTraffic:
-                    //     return this.features.trafficLayer.setState(value);
-                    // case OSFramework.Enum.OS_Config_Map.markerClustererActive:
-                    // case OSFramework.Enum.OS_Config_Map.markerClustererMaxZoom:
-                    // case OSFramework.Enum.OS_Config_Map
-                    //     .markerClustererMinClusterSize:
-                    // case OSFramework.Enum.OS_Config_Map
-                    //     .markerClustererZoomOnClick:
-                    //     return this.features.markerClusterer.changeProperty(
-                    //         propertyName,
-                    //         value
-                    //     );
                 }
             }
         }
