@@ -11,6 +11,7 @@ namespace LeafletProvider.OSMap {
     {
         private _addedEvents: Array<string>;
         private _fBuilder: Feature.FeatureBuilder;
+        private _openStreetMapLayer: L.TileLayer;
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         constructor(mapId: string, configs: any) {
@@ -21,6 +22,15 @@ namespace LeafletProvider.OSMap {
                 OSFramework.Enum.MapType.Map
             );
             this._addedEvents = [];
+            // Set the openStreetMapLayer with the URL and the attribution needed
+            this._openStreetMapLayer = new L.TileLayer(
+                OSFramework.Helper.Constants.openStreetMapTileLayer.url,
+                {
+                    attribution:
+                        OSFramework.Helper.Constants.openStreetMapTileLayer
+                            .attribution
+                }
+            );
         }
 
         private _buildMarkers(): void {
@@ -167,11 +177,7 @@ namespace LeafletProvider.OSMap {
                 ) as HTMLElement,
                 {
                     ...this._getProviderConfig(),
-                    layers: [
-                        new L.TileLayer(
-                            'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
-                        )
-                    ]
+                    layers: [this._openStreetMapLayer]
                 }
             );
             this.buildFeatures();

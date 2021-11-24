@@ -110,4 +110,13 @@ namespace OSFramework.Helper.Constants {
     export const googleMapsApiMap = `${googleMapsApiURL}/js`;
     /** URL for GoogleMaps API to make use of the Google StaticMap */
     export const googleMapsApiStaticMap = `${googleMapsApiURL}/staticmap`;
+
+    /******************** */
+    /** URLs for Leaflet  */
+    /******************** */
+    export const openStreetMapTileLayer = {
+        url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+        attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    };
 }
