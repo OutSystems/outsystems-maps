@@ -86,19 +86,19 @@ namespace GoogleProvider.Marker {
             ) {
                 this._provider.addListener(
                     'click',
-                    (e?: google.maps.MapMouseEvent) => {
+                    (e: google.maps.MapMouseEvent) => {
+                        const coordinates =
+                            new OSFramework.OSStructures.OSMap.OSCoordinates(
+                                e.latLng.lat(),
+                                e.latLng.lng()
+                            );
                         this.markerEvents.trigger(
                             // EventType
                             OSFramework.Event.Marker.MarkerEventType.OnClick,
                             // EventName
                             OSFramework.Event.Marker.MarkerEventType.OnClick,
                             // Coords
-                            e !== undefined
-                                ? JSON.stringify({
-                                      Lat: e.latLng.lat(),
-                                      Lng: e.latLng.lng()
-                                  })
-                                : undefined
+                            JSON.stringify(coordinates)
                         );
                     }
                 );
