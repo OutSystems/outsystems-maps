@@ -9,9 +9,7 @@ namespace OSFramework.OSStructures.OSMap {
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
     export class OSCoordinates {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public Lat: number;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public Lng: number;
 
         constructor(lat: number, lng: number) {
