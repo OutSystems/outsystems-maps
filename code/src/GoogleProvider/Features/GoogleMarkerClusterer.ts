@@ -126,7 +126,7 @@ namespace GoogleProvider.Feature {
         public removeMarker(marker: OSFramework.Marker.IMarker): void {
             if (this.isEnabled && marker.isReady) {
                 // We need to make sure that a redraw is triggered whenever a new marker is removed from the clusters
-                this._markerClusterer.removeMarker(marker.provider, false);
+                this._markerClusterer?.removeMarker(marker.provider, false);
             }
         }
 
