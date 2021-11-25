@@ -169,7 +169,7 @@ namespace GoogleProvider.OSMap {
                         this._addedEvents.push(eventName);
                         this._provider.addListener(
                             // Name of the event (e.g. click, dblclick, contextmenu, etc)
-                            eventName,
+                            Constants.OSMap.ProviderEventNames[eventName],
                             // Callback CAN have an attribute (e) which is of the type MapMouseEvent
                             // Trigger the event by specifying the ProviderEvent MapType and the coords (lat, lng) if the callback has the attribute MapMouseEvent
                             (e?: google.maps.MapMouseEvent) => {
@@ -199,10 +199,6 @@ namespace GoogleProvider.OSMap {
 
         public get mapTag(): string {
             return OSFramework.Helper.Constants.mapTag;
-        }
-
-        public get supportedProviderEvents(): Array<string> {
-            return Constants.OSMap.Events;
         }
 
         public addDrawingTools(
@@ -485,6 +481,10 @@ namespace GoogleProvider.OSMap {
 
         public refreshProviderEvents(): void {
             if (this.isReady) this._setMapEvents();
+        }
+
+        public validateProviderEvent(eventName: string): boolean {
+            return Constants.OSMap.ProviderEventNames[eventName] !== undefined;
         }
     }
 }

@@ -144,10 +144,6 @@ namespace GoogleProvider.OSMap {
             throw new Error('StaticMap provider has no events');
         }
 
-        public get supportedProviderEvents(): Array<string> {
-            throw new Error('StaticMap provider has no supported events');
-        }
-
         public addMarker(
             marker: OSFramework.Marker.IMarker
         ): OSFramework.Marker.IMarker {
@@ -322,6 +318,11 @@ namespace GoogleProvider.OSMap {
             throw new Error(
                 "Refresh Provider Events method can't be used on a StaticMap because Static Maps don't have events."
             );
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        public validateProviderEvent(eventName: string): boolean {
+            throw new Error('StaticMap provider has no supported events');
         }
     }
 }

@@ -48,8 +48,6 @@ namespace OSFramework.OSMap {
             this._providerType = providerType;
         }
         public abstract get mapTag(): string;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public abstract get supportedProviderEvents(): any;
 
         protected get shapes(): Shape.IShape[] {
             return Array.from(this._shapesSet);
@@ -418,11 +416,6 @@ namespace OSFramework.OSMap {
             // but it should be overridden on the respective providers that might need to update the map after changing the height
             return;
         }
-
-        public validateProviderEvent(eventName: string): boolean {
-            return this.supportedProviderEvents.indexOf(eventName) !== -1;
-        }
-
         public abstract changeDrawingToolsProperty(
             drawingToolsId: string,
             propertyName: string,
@@ -460,5 +453,6 @@ namespace OSFramework.OSMap {
 
         public abstract refresh(): void;
         public abstract refreshProviderEvents(): void;
+        public abstract validateProviderEvent(eventName: string): boolean;
     }
 }
