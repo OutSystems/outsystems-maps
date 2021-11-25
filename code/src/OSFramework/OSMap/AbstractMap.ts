@@ -17,6 +17,7 @@ namespace OSFramework.OSMap {
         private _mapType: Enum.MapType;
         private _markers: Map<string, Marker.IMarker>;
         private _markersSet: Set<Marker.IMarker>;
+        private _providerType: Enum.ProviderType;
         private _shapes: Map<string, Shape.IShape>;
         private _shapesSet: Set<Shape.IShape>;
         private _uniqueId: string;
@@ -25,7 +26,12 @@ namespace OSFramework.OSMap {
         protected _features: Feature.ExposedFeatures;
         protected _provider: W;
 
-        constructor(uniqueId: string, config: Z, mapType: Enum.MapType) {
+        constructor(
+            uniqueId: string,
+            providerType: Enum.ProviderType,
+            config: Z,
+            mapType: Enum.MapType
+        ) {
             this._uniqueId = uniqueId;
             this._fileLayers = new Map<string, FileLayer.IFileLayer>();
             this._heatmapLayers = new Map<string, HeatmapLayer.IHeatmapLayer>();
@@ -39,6 +45,7 @@ namespace OSFramework.OSMap {
             this._isReady = false;
             this._mapEvents = new Event.OSMap.MapEventsManager(this);
             this._mapType = mapType;
+            this._providerType = providerType;
         }
         public abstract get mapTag(): string;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -90,6 +97,10 @@ namespace OSFramework.OSMap {
 
         public get provider(): W {
             return this._provider;
+        }
+
+        public get providerType(): Enum.ProviderType {
+            return this._providerType;
         }
 
         public get uniqueId(): string {
@@ -368,7 +379,7 @@ namespace OSFramework.OSMap {
                 const marker = this._markers.get(markerId);
 
                 // Make sure the marker is removed from any existent cluster
-                this.features.markerClusterer.removeMarker(marker);
+                this.features.markerClusterer?.removeMarker(marker);
                 marker.dispose();
                 this._markers.delete(markerId);
                 this._markersSet.delete(marker);
@@ -399,6 +410,13 @@ namespace OSFramework.OSMap {
                     this.refresh();
                 }
             }
+        }
+
+        public updateHeight(): void {
+            // Because only some specific map providers like Leaflet Provider need to update or refresh the map after changing its height,
+            // this function doesn't need any logic
+            // but it should be overridden on the respective providers that might need to update the map after changing the height
+            return;
         }
 
         public validateProviderEvent(eventName: string): boolean {

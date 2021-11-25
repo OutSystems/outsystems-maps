@@ -5,11 +5,10 @@ namespace OSFramework.Configuration {
      * Defines the basic structure for Map objects
      */
     export interface IConfigurationMap extends IConfiguration {
-        apiKey: string;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        center: any;
+        apiKey?: string;
+        center: string | OSStructures.OSMap.Coordinates;
         height: string;
-        type: Enum.OSMap.Type;
+        type?: Enum.OSMap.Type;
         uniqueId: string;
         zoom: Enum.OSMap.Zoom;
     }

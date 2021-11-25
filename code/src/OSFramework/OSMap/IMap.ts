@@ -26,6 +26,8 @@ namespace OSFramework.OSMap {
         /** Map provider */
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         provider: any;
+        /** Map provider Type (google, leaflet) */
+        providerType: OSFramework.Enum.ProviderType;
         /** Supported events from the Map provider */
         supportedProviderEvents: Array<string>;
         /** Id of the Map */
@@ -222,6 +224,10 @@ namespace OSFramework.OSMap {
          * @param shapeId id of the shape
          */
         removeShape(shapeId: string): void;
+        /**
+         * Updates the Height of the Map by refreshing/updating the provider
+         */
+        updateHeight(): void;
         /**
          * Check if the event name is valid for the provider events
          * @param eventName name of the event from provider

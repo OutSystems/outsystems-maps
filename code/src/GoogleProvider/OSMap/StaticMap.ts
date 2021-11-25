@@ -23,6 +23,7 @@ namespace GoogleProvider.OSMap {
         constructor(mapId: string, configs: any) {
             super(
                 mapId,
+                OSFramework.Enum.ProviderType.Google,
                 new Configuration.OSMap.GoogleStaticMapConfig(configs),
                 OSFramework.Enum.MapType.StaticMap
             );
