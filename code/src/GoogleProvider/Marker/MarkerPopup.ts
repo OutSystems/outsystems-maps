@@ -5,7 +5,8 @@ namespace GoogleProvider.Marker {
     export class MarkerPopup
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         extends Marker
-        implements OSFramework.Marker.IMarkerPopup {
+        implements OSFramework.Marker.IMarkerPopup
+    {
         private _contentString: string;
 
         protected _setMarkerEvents(events?: Array<string>): void {

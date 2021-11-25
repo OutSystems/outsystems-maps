@@ -9,8 +9,6 @@ namespace GoogleProvider.Marker {
         >
         implements IMarkerGoogle
     {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        private _advancedFormatObj: any;
         private _listeners: Array<string>;
 
         constructor(
@@ -41,16 +39,6 @@ namespace GoogleProvider.Marker {
                 );
                 return;
             } else {
-                // Take care of the advancedFormat options which can override the previous configuration
-                this._advancedFormatObj = OSFramework.Helper.JsonFormatter(
-                    this.config.advancedFormat
-                );
-                for (const property in this._advancedFormatObj) {
-                    const value = this._advancedFormatObj[property];
-                    this.config[property] = value;
-                    markerOptions[property] = value;
-                }
-
                 // Let's return a promise that will be resolved or rejected according to the result
                 return new Promise((resolve, reject) => {
                     Helper.Conversions.ConvertToCoordinates(
@@ -206,7 +194,7 @@ namespace GoogleProvider.Marker {
             const markerOptions = this._buildMarkerOptions();
             // If markerOptions is undefined (should be a promise) -> don't create the marker
             if (markerOptions !== undefined) {
-                this._buildMarkerOptions()
+                markerOptions
                     .then((markerOptions) => {
                         this._provider = new google.maps.Marker({
                             ...this.getProviderConfig(),
@@ -215,9 +203,7 @@ namespace GoogleProvider.Marker {
                         });
 
                         // We can only set the events on the provider after its creation
-                        this._setMarkerEvents(
-                            this._advancedFormatObj.markerEvents
-                        );
+                        this._setMarkerEvents();
 
                         // Finish build of Marker
                         this.finishBuild();
@@ -266,12 +252,6 @@ namespace GoogleProvider.Marker {
                                 );
                             });
                         return;
-                    case OSFramework.Enum.OS_Config_Map.advancedFormat:
-                        value = OSFramework.Helper.JsonFormatter(value);
-                        // Make sure the MapEvents that are associated in the advancedFormat get updated
-                        this._setMarkerEvents(value.markerEvents);
-                        this._provider.setOptions(value);
-                        return this.map.refresh();
                     case OSFramework.Enum.OS_Config_Marker.allowDrag:
                         return this._provider.setDraggable(value);
                     case OSFramework.Enum.OS_Config_Marker.iconUrl:
