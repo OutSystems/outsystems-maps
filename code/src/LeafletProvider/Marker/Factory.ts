@@ -9,7 +9,6 @@ namespace LeafletProvider.Marker {
         ): OSFramework.Marker.IMarker {
             switch (type) {
                 case OSFramework.Enum.MarkerType.Marker:
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     return new Marker(
                         map,
                         markerId,
