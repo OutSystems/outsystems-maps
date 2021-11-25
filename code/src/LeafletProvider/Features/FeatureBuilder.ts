@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.Feature {
+namespace LeafletProvider.Feature {
     export interface IFeatures {
         features: OSFramework.Feature.ExposedFeatures;
         dispose(): void;
@@ -61,31 +61,14 @@ namespace GoogleProvider.Feature {
             this._features.center = this._makeItem(Center, center);
             return this;
         }
-        private _makeDirections(): FeatureBuilder {
-            this._features.directions = this._makeItem(Directions);
-            return this;
-        }
-        private _makeInfoWindow(): FeatureBuilder {
-            this._features.infoWindow = this._makeItem(InfoWindow);
-            return this;
-        }
-        private _makeMarkerClusterer(
-            markerClusterer: OSFramework.Configuration.IConfigurationMarkerClusterer
-        ): FeatureBuilder {
-            this._features.markerClusterer = this._makeItem(
-                GoogleMarkerClusterer,
-                markerClusterer
-            );
-            return this;
-        }
+        // private _makeInfoWindow(): FeatureBuilder {
+        //     this._features.infoWindow = this._makeItem(InfoWindow);
+        //     return this;
+        // }
         private _makeOffset(
             offset: OSFramework.OSStructures.OSMap.Offset
         ): FeatureBuilder {
             this._features.offset = this._makeItem(Offset, offset);
-            return this;
-        }
-        private _makeTrafficLayer(enable: boolean): FeatureBuilder {
-            this._features.trafficLayer = this._makeItem(TrafficLayer, enable);
             return this;
         }
         private _makeZoom(level: OSFramework.Enum.OSMap.Zoom): FeatureBuilder {
@@ -95,17 +78,14 @@ namespace GoogleProvider.Feature {
 
         public build(): void {
             const config = this._map
-                .config as Configuration.OSMap.GoogleMapConfig;
+                .config as Configuration.OSMap.LeafletMapConfig;
 
-            this._makeTrafficLayer(config.showTraffic)
-                ._makeZoom(config.zoom)
+            this._makeZoom(config.zoom)
                 ._makeCenter(
                     config.center as OSFramework.OSStructures.OSMap.Coordinates
                 )
-                ._makeDirections()
-                ._makeOffset(config.offset)
-                ._makeMarkerClusterer(config.markerClusterer)
-                ._makeInfoWindow();
+                ._makeOffset(config.offset);
+            // ._makeInfoWindow();
 
             super.build();
         }

@@ -222,6 +222,7 @@ namespace MapAPI.MapManager {
             }
 
             widget.style.setProperty('--map-height', height);
+            // Updates the Height of the Map by refreshing/updating the provider
             map.updateHeight();
         } else {
             throw new Error(`Map id:${mapId} not found`);

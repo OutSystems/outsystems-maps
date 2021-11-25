@@ -23,10 +23,13 @@ namespace OSFramework.Enum {
         LIB_FailedGeocodingMap = 'MAPS-LIB-01002',
         LIB_InvalidApiKeyStaticMap = 'MAPS-LIB-02001',
         LIB_FailedGeocodingMarker = 'MAPS-LIB-03001',
+        LIB_FailedGeocodingLeafletMarker = 'MAPS-LIB-03002',
         LIB_FailedSetDirections = 'MAPS-LIB-04001',
         LIB_FailedGeocodingShapeLocations = 'MAPS-LIB-05001',
+        LIB_FailedGeocodingLeafletShapeLocations = 'MAPS-LIB-05002',
         LIB_InvalidApiKeySearchPlaces = 'MAPS-LIB-10001',
         LIB_FailedGeocodingSearchAreaLocations = 'MAPS-LIB-10002',
+        LIB_FailedGeocodingLeafletMap = 'MAPS-LIB-11001',
 
         // Error Codes - API errors - Specific errors generated when exposing the component client actions API/Framework.
         API_FailedRemoveDirections = 'MAPS-API-03001',

@@ -98,10 +98,6 @@ namespace LeafletProvider.OSMap {
             return OSFramework.Helper.Constants.mapTag;
         }
 
-        public get supportedProviderEvents(): Array<string> {
-            return Constants.OSMap.Events;
-        }
-
         public addDrawingTools(
             drawingTools: OSFramework.DrawingTools.IDrawingTools
         ): OSFramework.DrawingTools.IDrawingTools {
@@ -370,6 +366,10 @@ namespace LeafletProvider.OSMap {
 
         public updateHeight(): void {
             if (this.isReady) this._provider.invalidateSize();
+        }
+
+        public validateProviderEvent(eventName: string): boolean {
+            return Constants.OSMap.ProviderEventNames[eventName] !== undefined;
         }
     }
 }

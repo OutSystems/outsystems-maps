@@ -28,8 +28,6 @@ namespace OSFramework.OSMap {
         provider: any;
         /** Map provider Type (google, leaflet) */
         providerType: OSFramework.Enum.ProviderType;
-        /** Supported events from the Map provider */
-        supportedProviderEvents: Array<string>;
         /** Id of the Map */
         uniqueId: string;
         /** Id of the Map widget */
