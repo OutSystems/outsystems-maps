@@ -84,11 +84,24 @@ namespace GoogleProvider.Marker {
                     OSFramework.Event.Marker.MarkerEventType.OnClick
                 )
             ) {
-                this._provider.addListener('click', () => {
-                    this.markerEvents.trigger(
-                        OSFramework.Event.Marker.MarkerEventType.OnClick
-                    );
-                });
+                this._provider.addListener(
+                    'click',
+                    (e: google.maps.MapMouseEvent) => {
+                        const coordinates =
+                            new OSFramework.OSStructures.OSMap.OSCoordinates(
+                                e.latLng.lat(),
+                                e.latLng.lng()
+                            );
+                        this.markerEvents.trigger(
+                            // EventType
+                            OSFramework.Event.Marker.MarkerEventType.OnClick,
+                            // EventName
+                            OSFramework.Event.Marker.MarkerEventType.OnClick,
+                            // Coords
+                            JSON.stringify(coordinates)
+                        );
+                    }
+                );
             }
             // OnMouseOver Event
             if (
