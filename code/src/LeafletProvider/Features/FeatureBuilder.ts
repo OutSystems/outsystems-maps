@@ -61,10 +61,10 @@ namespace LeafletProvider.Feature {
             this._features.center = this._makeItem(Center, center);
             return this;
         }
-        private _makeInfoWindow(): FeatureBuilder {
-            this._features.infoWindow = this._makeItem(InfoWindow);
-            return this;
-        }
+        // private _makeInfoWindow(): FeatureBuilder {
+        //     this._features.infoWindow = this._makeItem(InfoWindow);
+        //     return this;
+        // }
         private _makeOffset(
             offset: OSFramework.OSStructures.OSMap.Offset
         ): FeatureBuilder {
@@ -84,8 +84,8 @@ namespace LeafletProvider.Feature {
                 ._makeCenter(
                     config.center as OSFramework.OSStructures.OSMap.Coordinates
                 )
-                ._makeOffset(config.offset)
-                ._makeInfoWindow();
+                ._makeOffset(config.offset);
+            // ._makeInfoWindow();
 
             super.build();
         }
