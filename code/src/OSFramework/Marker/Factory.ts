@@ -13,7 +13,7 @@ namespace OSFramework.Marker {
                         map,
                         markerId,
                         type,
-                        configs
+                        configs as GoogleProvider.Configuration.Marker.GoogleMarkerConfig
                     );
 
                 case Enum.ProviderType.Leaflet:
@@ -21,7 +21,7 @@ namespace OSFramework.Marker {
                         map,
                         markerId,
                         type,
-                        configs
+                        configs as LeafletProvider.Configuration.Marker.LeafletMarkerConfig
                     );
                 default:
                     throw `There is no factory for the Marker using the provider ${map.providerType}`;

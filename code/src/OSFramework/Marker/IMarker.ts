@@ -13,9 +13,6 @@ namespace OSFramework.Marker {
         markerEvents: Event.Marker.MarkerEventsManager;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         provider: any;
-        /** Events from the Marker provider */
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        providerEvents: any;
         uniqueId: string;
         widgetId: string;
 

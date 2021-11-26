@@ -177,7 +177,7 @@ namespace LeafletProvider.OSMap {
                 }
             );
             this.buildFeatures();
-            // this._buildMarkers();
+            this._buildMarkers();
             // this._buildShapes();
             // this._buildDrawingTools();
             // this._buildFileLayers();

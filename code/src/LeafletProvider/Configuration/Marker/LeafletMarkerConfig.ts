@@ -1,12 +1,11 @@
 /// <reference path="../../../OSFramework/Configuration/AbstractConfiguration.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.Configuration.Marker {
-    export class GoogleMarkerConfig
+namespace LeafletProvider.Configuration.Marker {
+    export class LeafletMarkerConfig
         extends OSFramework.Configuration.AbstractConfiguration
         implements OSFramework.Configuration.IConfigurationMarker
     {
-        public advancedFormat: string;
         public allowDrag: boolean;
         public iconHeight: number;
         public iconUrl: string;
@@ -25,13 +24,10 @@ namespace GoogleProvider.Configuration.Marker {
         public getProviderConfig(): any {
             // eslint-disable-next-line prefer-const
             let provider = {
-                advancedFormat: this.advancedFormat,
                 draggable: this.allowDrag,
-                icon: this.iconUrl,
+                iconUrl: this.iconUrl,
                 label: this.label,
-                location: this.location,
-                title: this.title,
-                uniqueId: this.uniqueId
+                title: this.title
             };
 
             //Deleting all the undefined properties

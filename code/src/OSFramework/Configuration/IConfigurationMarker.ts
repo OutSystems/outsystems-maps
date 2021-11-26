@@ -6,7 +6,9 @@ namespace OSFramework.Configuration {
      */
     export interface IConfigurationMarker extends IConfiguration {
         allowDrag: boolean;
+        iconHeight: number;
         iconUrl: string;
+        iconWidth: number;
         location: string;
         title: string;
         uniqueId: string;
