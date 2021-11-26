@@ -95,7 +95,7 @@ namespace MapAPI.MarkerManager {
     ): OSFramework.Marker.IMarker {
         const map = GetMapByMarkerId(markerId);
         if (!map.hasMarker(markerId)) {
-            const _marker = GoogleProvider.Marker.MarkerFactory.MakeMarker(
+            const _marker = OSFramework.Marker.MarkerFactory.MakeMarker(
                 map,
                 markerId,
                 markerType,

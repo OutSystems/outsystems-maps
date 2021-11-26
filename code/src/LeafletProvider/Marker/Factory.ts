@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.Marker {
+namespace LeafletProvider.Marker {
     export namespace MarkerFactory {
         export function MakeMarker(
             map: OSFramework.OSMap.IMap,
@@ -13,14 +13,14 @@ namespace GoogleProvider.Marker {
                         map,
                         markerId,
                         type,
-                        configs as Configuration.Marker.GoogleMarkerConfig
+                        configs as Configuration.Marker.LeafletMarkerConfig
                     );
                 case OSFramework.Enum.MarkerType.MarkerPopup:
                     return new MarkerPopup(
                         map,
                         markerId,
                         type,
-                        configs as Configuration.Marker.GoogleMarkerConfig
+                        configs as Configuration.Marker.LeafletMarkerConfig
                     );
                 default:
                     throw `There is no factory for this type of Marker (${type})`;
