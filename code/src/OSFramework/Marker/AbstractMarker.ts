@@ -8,7 +8,6 @@ namespace OSFramework.Marker {
     {
         /** Configuration reference */
         private _config: Configuration.IConfigurationMarker;
-        private _index: number;
         private _map: OSMap.IMap;
         private _uniqueId: string;
         private _widgetId: string;
@@ -32,8 +31,6 @@ namespace OSFramework.Marker {
             this._markerEvents = new Event.Marker.MarkerEventsManager(this);
         }
         public abstract get markerTag(): string;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public abstract get providerEvents(): any;
 
         public get config(): Configuration.IConfigurationMarker {
             return this._config;
@@ -113,10 +110,7 @@ namespace OSFramework.Marker {
             return this._config.getProviderConfig();
         }
 
-        public validateProviderEvent(eventName: string): boolean {
-            return this.providerEvents.indexOf(eventName) !== -1;
-        }
-
         public abstract refreshProviderEvents(): void;
+        public abstract validateProviderEvent(eventName: string): boolean;
     }
 }
