@@ -22,8 +22,7 @@ namespace LeafletProvider.Configuration.Marker {
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public getProviderConfig(): any {
-            // eslint-disable-next-line prefer-const
-            let provider = {
+            const provider = {
                 draggable: this.allowDrag,
                 iconUrl: this.iconUrl,
                 label: this.label,
