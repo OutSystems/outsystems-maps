@@ -24,7 +24,7 @@ namespace LeafletProvider.Feature {
                 marker.provider.getElement().offsetHeight;
 
             const options: L.PopupOptions = {
-                // Don't use any offsetX to get it centered horizontall
+                // Don't use any offsetX to get it centered horizontally
                 offset: [0, -offsetHeight]
             };
 
