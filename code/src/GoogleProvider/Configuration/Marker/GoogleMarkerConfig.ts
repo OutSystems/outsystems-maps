@@ -14,7 +14,6 @@ namespace GoogleProvider.Configuration.Marker {
         public label: string;
         public location: string;
         public title: string;
-        public uniqueId: string;
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         constructor(config: any) {
@@ -30,8 +29,7 @@ namespace GoogleProvider.Configuration.Marker {
                 icon: this.iconUrl,
                 label: this.label,
                 location: this.location,
-                title: this.title,
-                uniqueId: this.uniqueId
+                title: this.title
             };
 
             //Deleting all the undefined properties

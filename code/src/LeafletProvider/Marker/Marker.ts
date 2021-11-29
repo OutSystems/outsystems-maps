@@ -9,17 +9,9 @@ namespace LeafletProvider.Marker {
         >
         implements IMarkerLeaflet
     {
-        private _defaultIcon = new L.DivIcon({
-            iconSize: [24, 40],
-            className: 'marker-leaflet-icon',
-            iconAnchor: [12, 40]
-        });
-        private _defaultTooltip: L.TooltipOptions = {
-            permanent: true,
-            direction: 'top',
-            className: 'marker-leaflet-transparent-tooltip'
-        };
-        private _listeners: Array<string>;
+        private _addedEvents: Array<string>;
+        private _defaultIcon: L.DivIcon;
+        private _defaultTooltip: L.TooltipOptions;
 
         constructor(
             map: OSFramework.OSMap.IMap,
@@ -34,6 +26,17 @@ namespace LeafletProvider.Marker {
                 type,
                 new Configuration.Marker.LeafletMarkerConfig(configs)
             );
+            this._defaultIcon = new L.DivIcon({
+                iconSize: [24, 40],
+                className: 'marker-leaflet-icon',
+                iconAnchor: [12, 40]
+            });
+            this._defaultTooltip = {
+                permanent: true,
+                direction: 'top',
+                className: 'marker-leaflet-transparent-tooltip'
+            };
+            this._addedEvents = [];
         }
 
         /**
@@ -53,8 +56,8 @@ namespace LeafletProvider.Marker {
             } else {
                 let iconSize: L.PointExpression;
                 let iconAnchor: L.PointExpression;
-                // If the icon size has the width or the height equal to 0, then use the full image size
-                // Else, use the size that has been defined
+                // If the size of the icon is defined by a valid width and height, use those values
+                // Else If nothing is passed or the icon size has the width or the height equal to 0, use the full image size
                 if (this.config.iconWidth > 0 && this.config.iconHeight > 0) {
                     iconSize = [this.config.iconWidth, this.config.iconHeight];
                     // The icon will be centered by x axis on the marker position but on the y axis it will appear right above it
@@ -99,7 +102,7 @@ namespace LeafletProvider.Marker {
             if (tooltip) {
                 // IF the tooltip exists, then just update its content
                 this.provider.setTooltipContent(content);
-            } else if (!tooltip) {
+            } else {
                 // IF the tooltip doesn't exist (yet), use the default tooltip settings
                 // permanent: true,
                 // className: 'marker-leaflet-transparent-tooltip'
@@ -136,13 +139,11 @@ namespace LeafletProvider.Marker {
             }
         }
 
-        // This method will be removed as soon as the markers by input parameter get deprecated
         protected _setMarkerEvents(): void {
-            if (this._listeners === undefined) this._listeners = [];
             // Make sure the listeners get removed before adding the new ones
-            this._listeners.forEach((eventListener, index) => {
+            this._addedEvents.forEach((eventListener, index) => {
                 this.provider.removeEventListener(eventListener);
-                this._listeners.splice(index, 1);
+                this._addedEvents.splice(index, 1);
             });
 
             // OnClick Event
@@ -167,7 +168,7 @@ namespace LeafletProvider.Marker {
                         handler instanceof
                         OSFramework.Event.Marker.MarkerProviderEvent
                     ) {
-                        this._listeners.push(eventName);
+                        this._addedEvents.push(eventName);
                         this._provider.addEventListener(
                             // Name of the event (e.g. click, dblclick, contextmenu, etc)
                             Constants.Marker.ProviderEventNames[eventName],
@@ -244,10 +245,10 @@ namespace LeafletProvider.Marker {
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         public changeProperty(propertyName: string, value: any): void {
-            const propValue = OSFramework.Enum.OS_Config_Marker[propertyName];
+            const property = OSFramework.Enum.OS_Config_Marker[propertyName];
             super.changeProperty(propertyName, value);
             if (this.isReady) {
-                switch (propValue) {
+                switch (property) {
                     case OSFramework.Enum.OS_Config_Marker.location:
                         Helper.Conversions.ValidateCoordinates(value)
                             .then((response) => {

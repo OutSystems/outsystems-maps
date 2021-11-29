@@ -11,6 +11,5 @@ namespace OSFramework.Configuration {
         iconWidth: number;
         location: string;
         title: string;
-        uniqueId: string;
     }
 }

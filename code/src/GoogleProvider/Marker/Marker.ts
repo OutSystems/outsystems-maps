@@ -9,7 +9,7 @@ namespace GoogleProvider.Marker {
         >
         implements IMarkerGoogle
     {
-        private _listeners: Array<string>;
+        private _addedEvents: Array<string>;
 
         constructor(
             map: OSFramework.OSMap.IMap,
@@ -24,12 +24,13 @@ namespace GoogleProvider.Marker {
                 type,
                 new Configuration.Marker.GoogleMarkerConfig(configs)
             );
+            this._addedEvents = [];
         }
 
         private _setIcon(url: string): void {
             let scaledSize: google.maps.Size;
-            // If the icon size has the width or the height equal to 0, then use the full image size
-            // Else, use the size that has been defined
+            // If the size of the icon is defined by a valid width and height, use those values
+            // Else If nothing is passed or the icon size has the width or the height equal to 0, use the full image size
             if (this.config.iconWidth > 0 && this.config.iconHeight > 0) {
                 scaledSize = new google.maps.Size(
                     this.config.iconWidth,
@@ -87,13 +88,11 @@ namespace GoogleProvider.Marker {
             }
         }
 
-        // This method will be removed as soon as the markers by input parameter get deprecated
         protected _setMarkerEvents(events?: Array<string>): void {
-            if (this._listeners === undefined) this._listeners = [];
             // Make sure the listeners get removed before adding the new ones
-            this._listeners.forEach((eventListener, index) => {
+            this._addedEvents.forEach((eventListener, index) => {
                 google.maps.event.clearListeners(this.provider, eventListener);
-                this._listeners.splice(index, 1);
+                this._addedEvents.splice(index, 1);
             });
 
             // OnClick Event
@@ -153,7 +152,7 @@ namespace GoogleProvider.Marker {
                 events !== undefined
             ) {
                 events.forEach((eventName: string) => {
-                    this._listeners.push(eventName);
+                    this._addedEvents.push(eventName);
                     this._provider.addListener(eventName, () => {
                         this.markerEvents.trigger(
                             OSFramework.Event.Marker.MarkerEventType
@@ -173,7 +172,7 @@ namespace GoogleProvider.Marker {
                         handler instanceof
                         OSFramework.Event.Marker.MarkerProviderEvent
                     ) {
-                        this._listeners.push(eventName);
+                        this._addedEvents.push(eventName);
                         this._provider.addListener(
                             // Name of the event (e.g. click, dblclick, contextmenu, etc)
                             Constants.Marker.ProviderEventNames[eventName],
