@@ -14,7 +14,7 @@ namespace LeafletProvider.Feature {
         }
 
         // This method is a way of getting the options which include the offset.
-        // The offset needs to be acquired dynamically as it should changes according to the height of the icon applied to the marker.
+        // The offset needs to be acquired dynamically as it should change according to the height of the icon applied to the marker.
         private _getOptions(
             marker: OSFramework.Marker.IMarkerPopup
         ): L.PopupOptions {
