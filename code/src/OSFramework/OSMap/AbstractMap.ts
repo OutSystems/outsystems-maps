@@ -280,6 +280,11 @@ namespace OSFramework.OSMap {
                 return;
             }
             this._markers.forEach((marker) => {
+                // Make sure the marker is removed from any existent cluster
+                // But first ensure that map.features exist as well as the features.markerClusterer
+                this.features &&
+                    this.features.markerClusterer &&
+                    this.features.markerClusterer.removeMarker(marker);
                 marker.dispose();
             });
 
@@ -377,7 +382,10 @@ namespace OSFramework.OSMap {
                 const marker = this._markers.get(markerId);
 
                 // Make sure the marker is removed from any existent cluster
-                this.features.markerClusterer?.removeMarker(marker);
+                // But first ensure that map.features exist as well as the features.markerClusterer
+                this.features &&
+                    this.features.markerClusterer &&
+                    this.features.markerClusterer.removeMarker(marker);
                 marker.dispose();
                 this._markers.delete(markerId);
                 this._markersSet.delete(marker);
