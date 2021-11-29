@@ -18,12 +18,17 @@ namespace LeafletProvider.Feature {
         private _getOptions(
             marker: OSFramework.Marker.IMarkerPopup
         ): L.PopupOptions {
-            // Let's use the offsetHeight of the marker to get the height of the element and then subtract it with an offset
-            // This will allow having a better offset (dynamically) depending on the size of the image applied as the marker icon
-            const offsetHeight = marker.provider.getElement().offsetHeight;
-            return {
+            // Let's use the height of the marker icon as the offsetY. But if the height of the icon is not defined: use the runtime offsetHeight of the marker element
+            const offsetHeight =
+                marker.config.iconHeight ??
+                marker.provider.getElement().offsetHeight;
+
+            const options: L.PopupOptions = {
+                // Don't use any offsetX to get it centered horizontall
                 offset: [0, -offsetHeight]
             };
+
+            return options;
         }
 
         public build(): void {
