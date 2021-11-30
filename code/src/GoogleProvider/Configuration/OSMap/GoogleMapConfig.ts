@@ -11,7 +11,6 @@ namespace GoogleProvider.Configuration.OSMap {
         public markerClusterer: OSFramework.Configuration.IConfigurationMarkerClusterer;
         public offset: OSFramework.OSStructures.OSMap.Offset;
         public showTraffic: boolean;
-        public staticMap: boolean;
         public style: OSFramework.Enum.OSMap.Style;
         public type: OSFramework.Enum.OSMap.Type;
         public uniqueId: string;
@@ -24,8 +23,7 @@ namespace GoogleProvider.Configuration.OSMap {
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public getProviderConfig(): any {
-            // eslint-disable-next-line prefer-const
-            let provider = {
+            const provider = {
                 center: this.center,
                 zoom: this.zoom,
                 styles: this.style,

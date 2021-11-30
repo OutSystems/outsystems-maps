@@ -6,7 +6,6 @@ namespace GoogleProvider.Configuration.Marker {
         extends OSFramework.Configuration.AbstractConfiguration
         implements OSFramework.Configuration.IConfigurationMarker
     {
-        public advancedFormat: string;
         public allowDrag: boolean;
         public iconHeight: number;
         public iconUrl: string;
@@ -22,9 +21,7 @@ namespace GoogleProvider.Configuration.Marker {
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public getProviderConfig(): any {
-            // eslint-disable-next-line prefer-const
-            let provider = {
-                advancedFormat: this.advancedFormat,
+            const provider = {
                 draggable: this.allowDrag,
                 icon: this.iconUrl,
                 label: this.label,
