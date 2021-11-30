@@ -172,6 +172,10 @@ namespace OSFramework.OSMap {
          */
         hasMarker(markerId: string): boolean;
         /**
+         * Checks if the Map has a the markerClusterer feature enabled
+         */
+        hasMarkerClusterer(): boolean;
+        /**
          * Checks if the Map has a specific Shape by giving a shapeId
          * @param shapeId id of the shape
          */

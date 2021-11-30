@@ -29,7 +29,10 @@ namespace GoogleProvider.Feature {
         }
 
         public get isEnabled(): boolean {
-            return this._config.markerClustererActive;
+            return (
+                this._config.markerClustererActive &&
+                this._markerClusterer !== undefined
+            );
         }
 
         private _setState(value: boolean): void {
