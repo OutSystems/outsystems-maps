@@ -2,7 +2,8 @@
 namespace OSFramework.DrawingTools {
     export abstract class AbstractTool<
         T extends Configuration.IConfigurationTool
-    > implements ITool {
+    > implements ITool
+    {
         /** Configuration reference */
         private _config: T;
         private _drawingTools: IDrawingTools;

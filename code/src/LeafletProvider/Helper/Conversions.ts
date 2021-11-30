@@ -10,7 +10,7 @@ namespace LeafletProvider.Helper.Conversions {
     ): Promise<OSFramework.OSStructures.OSMap.Coordinates> {
         return new Promise((resolve, reject) => {
             if (location === undefined || location.trim().length === 0) {
-                console.error(
+                console.warn(
                     'Invalid location. Using the default location -> { lat: 42.3517926, lng: -71.0467845 }'
                 );
                 resolve(OSFramework.Helper.Constants.defaultMapCenter);

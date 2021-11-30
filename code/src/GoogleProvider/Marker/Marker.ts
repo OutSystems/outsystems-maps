@@ -57,7 +57,7 @@ namespace GoogleProvider.Marker {
             this._setIcon(this.config.iconUrl);
         }
 
-        protected _buildMarkerOptions(): Promise<google.maps.MarkerOptions> {
+        protected _buildMarkerPosition(): Promise<google.maps.MarkerOptions> {
             const markerOptions: google.maps.MarkerOptions = {};
             // If the marker has no location at the moment of its provider creation, then throw an error
             // If the marker has its location = "" at the moment of its provider creation, then the location value will be the default -> OutSystems, Boston US
@@ -88,14 +88,14 @@ namespace GoogleProvider.Marker {
             }
         }
 
-        protected _setMarkerEvents(events?: Array<string>): void {
+        protected _setMarkerEvents(): void {
             // Make sure the listeners get removed before adding the new ones
             this._addedEvents.forEach((eventListener, index) => {
                 google.maps.event.clearListeners(this.provider, eventListener);
                 this._addedEvents.splice(index, 1);
             });
 
-            // OnClick Event
+            // OnClick Event (OS accelerator)
             if (
                 this.markerEvents.hasHandlers(
                     OSFramework.Event.Marker.MarkerEventType.OnClick
@@ -120,52 +120,10 @@ namespace GoogleProvider.Marker {
                     }
                 );
             }
-            // OnMouseOver Event
-            if (
-                this.markerEvents.hasHandlers(
-                    OSFramework.Event.Marker.MarkerEventType.OnMouseover
-                )
-            ) {
-                this._provider.addListener('mouseover', () => {
-                    this.markerEvents.trigger(
-                        OSFramework.Event.Marker.MarkerEventType.OnMouseover
-                    );
-                });
-            }
-            // OnMouseOut Event
-            if (
-                this.markerEvents.hasHandlers(
-                    OSFramework.Event.Marker.MarkerEventType.OnMouseout
-                )
-            ) {
-                this._provider.addListener('mouseout', () => {
-                    this.markerEvents.trigger(
-                        OSFramework.Event.Marker.MarkerEventType.OnMouseout
-                    );
-                });
-            }
-            // OnEventTriggered Event (other events that can be set on the advancedFormat of the Marker)
-            if (
-                this.markerEvents.hasHandlers(
-                    OSFramework.Event.Marker.MarkerEventType.OnEventTriggered
-                ) &&
-                events !== undefined
-            ) {
-                events.forEach((eventName: string) => {
-                    this._addedEvents.push(eventName);
-                    this._provider.addListener(eventName, () => {
-                        this.markerEvents.trigger(
-                            OSFramework.Event.Marker.MarkerEventType
-                                .OnEventTriggered,
-                            eventName
-                        );
-                    });
-                });
-            }
 
+            // Other Provider Events (OS Marker Event Block)
             // Any events that got added to the markerEvents via the API Subscribe method will have to be taken care here
             // If the Event type of each handler is MarkerProviderEvent, we want to make sure to add that event to the listeners of the google marker provider (e.g. click, dblclick, contextmenu, etc)
-            // Otherwise, we don't want to add them to the google provider listeners (e.g. OnInitialize, OnTriggeredEvent, etc)
             this.markerEvents.handlers.forEach(
                 (handler: OSFramework.Event.IEvent<string>, eventName) => {
                     if (
@@ -212,14 +170,14 @@ namespace GoogleProvider.Marker {
         public build(): void {
             super.build();
 
-            // First build all MarkerOptions
+            // First build the Marker Position
             // Then, create the provider (Google maps Marker)
             // Then, set Marker events
             // Finally, refresh the Map
-            const markerOptions = this._buildMarkerOptions();
-            // If markerOptions is undefined (should be a promise) -> don't create the marker
-            if (markerOptions !== undefined) {
-                markerOptions
+            const markerPosition = this._buildMarkerPosition();
+            // If markerPosition is undefined (should be a promise) -> don't create the marker
+            if (markerPosition !== undefined) {
+                markerPosition
                     .then((markerOptions) => {
                         this._provider = new google.maps.Marker({
                             ...this.getProviderConfig(),

@@ -2,13 +2,11 @@
 namespace GoogleProvider.Configuration.OSMap {
     export class GoogleStaticMapConfig
         extends OSFramework.Configuration.AbstractConfiguration
-        implements OSFramework.Configuration.IConfigurationMap {
+        implements OSFramework.Configuration.IConfigurationMap
+    {
         public apiKey: string;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public center: any;
+        public center: string | OSFramework.OSStructures.OSMap.Coordinates;
         public height: string;
-        // To be removed (staticMap)
-        public staticMap: boolean;
         public type: OSFramework.Enum.OSMap.Type;
         public uniqueId: string;
         public zoom: OSFramework.Enum.OSMap.Zoom;
@@ -20,8 +18,7 @@ namespace GoogleProvider.Configuration.OSMap {
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public getProviderConfig(): any {
-            // eslint-disable-next-line prefer-const
-            let provider = {
+            const provider = {
                 center: this.center,
                 zoom: this.zoom,
                 mapTypeId: this.type

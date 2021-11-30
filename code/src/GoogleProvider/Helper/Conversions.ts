@@ -45,7 +45,7 @@ namespace GoogleProvider.Helper.Conversions {
         apiKey: string
     ): Promise<OSFramework.OSStructures.OSMap.Coordinates> {
         if (location === undefined || location.trim().length === 0) {
-            console.error(
+            console.warn(
                 'Invalid location. Using the default location -> 55 Thomson Pl 2nd floor, Boston, MA 02210, United States'
             );
             return new Promise((resolve) => {
