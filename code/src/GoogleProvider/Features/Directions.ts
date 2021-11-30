@@ -4,7 +4,8 @@ namespace GoogleProvider.Feature {
         implements
             OSFramework.Feature.IDirections,
             OSFramework.Interface.IBuilder,
-            OSFramework.Interface.IDisposable {
+            OSFramework.Interface.IDisposable
+    {
         private _directionsRenderer: google.maps.DirectionsRenderer;
         private _directionsService: google.maps.DirectionsService;
         private _isEnabled: boolean;
@@ -115,9 +116,8 @@ namespace GoogleProvider.Feature {
             avoidHighways: boolean,
             avoidFerries: boolean
         ): Promise<OSFramework.OSStructures.ReturnMessage> {
-            const waypts: google.maps.DirectionsWaypoint[] = this._waypointsCleanup(
-                JSON.parse(waypoints)
-            );
+            const waypts: google.maps.DirectionsWaypoint[] =
+                this._waypointsCleanup(JSON.parse(waypoints));
             return (
                 this._directionsService
                     .route(
@@ -154,9 +154,8 @@ namespace GoogleProvider.Feature {
                     .catch((reason: string) => {
                         this.setState(false);
                         return {
-                            code:
-                                OSFramework.Enum.ErrorCodes
-                                    .LIB_FailedSetDirections,
+                            code: OSFramework.Enum.ErrorCodes
+                                .LIB_FailedSetDirections,
                             message: `${reason}`
                         };
                     })

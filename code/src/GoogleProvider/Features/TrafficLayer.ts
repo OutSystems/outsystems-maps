@@ -4,7 +4,8 @@ namespace GoogleProvider.Feature {
         implements
             OSFramework.Feature.ITrafficLayer,
             OSFramework.Interface.IBuilder,
-            OSFramework.Interface.IDisposable {
+            OSFramework.Interface.IDisposable
+    {
         private _enabled: boolean;
         private _map: OSMap.IMapGoogle;
         private _trafficLayer: google.maps.TrafficLayer;

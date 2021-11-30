@@ -26,7 +26,8 @@ namespace GoogleProvider.Configuration.SearchPlaces {
                     ? { country: this.countries }
                     : undefined,
                 types: this.searchType
-                    ? [GoogleProvider.SearchPlaces.SearchTypes[this.searchType]]
+                    ? // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                      [GoogleProvider.SearchPlaces.SearchTypes[this.searchType]]
                     : undefined
             };
 

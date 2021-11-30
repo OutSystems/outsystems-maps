@@ -1,7 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace GoogleProvider.Feature {
     export class Zoom
-        implements OSFramework.Feature.IZoom, OSFramework.Interface.IBuilder {
+        implements OSFramework.Feature.IZoom, OSFramework.Interface.IBuilder
+    {
         /** Boolean that indicates whether the Map is using Autofit (Zoom = Auto) or not */
         private _autofitEnabled: boolean;
         /** Current Zoom level of the Map that changes whenever a marker is added or by enabling the Autofit on Zoom feature */
