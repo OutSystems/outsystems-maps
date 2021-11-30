@@ -39,7 +39,7 @@ html[data-uieditorversion^="1"] .map-wrapper .staticMap-image {
 }  
 
 .map-container {   
-    -servicestudio-background: var(--map-container-image);
+    -servicestudio-background: var(--map-container-image-google);
     -servicestudio-background-repeat: no-repeat;
     -servicestudio-background-size: cover;
     -servicestudio-display: table;
