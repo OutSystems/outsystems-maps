@@ -133,8 +133,8 @@ namespace GoogleProvider.OSMap {
             SharedComponents.RemoveEventsFromProvider(this);
 
             // OnEventTriggered Event (other events that can be set on the advancedFormat of the Map)
-            // We are deprecating the advancedFormat and the OnEventTriggered as well
-            // We might need to remove the following lines inside the If Statement
+            // We are deprecating the advancedFormat
+            // TO BE REMOVED SOON
             if (
                 this.mapEvents.hasHandlers(
                     OSFramework.Event.OSMap.MapEventType.OnEventTriggered
@@ -154,9 +154,9 @@ namespace GoogleProvider.OSMap {
                 });
             }
 
+            // Other Provider Events (OS Map Event Block)
             // Any events that got added to the mapEvents via the API Subscribe method will have to be taken care here
             // If the Event type of each handler is MapProviderEvent, we want to make sure to add that event to the listeners of the google maps provider (e.g. click, dblclick, contextmenu, etc)
-            // Otherwise, we don't want to add them to the google provider listeners (e.g. OnInitialize, OnError, OnTriggeredEvent)
             this.mapEvents.handlers.forEach(
                 (
                     handler: OSFramework.Event.IEvent<OSFramework.OSMap.IMap>,
@@ -179,10 +179,12 @@ namespace GoogleProvider.OSMap {
                                     this,
                                     eventName,
                                     e !== undefined
-                                        ? JSON.stringify({
-                                              Lat: e.latLng.lat(),
-                                              Lng: e.latLng.lng()
-                                          })
+                                        ? JSON.stringify(
+                                              new OSFramework.OSStructures.OSMap.OSCoordinates(
+                                                  e.latLng.lat(),
+                                                  e.latLng.lng()
+                                              )
+                                          )
                                         : undefined
                                 );
                             }
