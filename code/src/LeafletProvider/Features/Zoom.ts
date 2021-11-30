@@ -44,8 +44,10 @@ namespace LeafletProvider.Feature {
                 } else if (this._map.markers.length >= 2) {
                     this._map.markers.forEach(function (marker) {
                         if (marker.provider === undefined) return;
-                        const loc = marker.provider.position.toJSON();
-                        bounds.extend(loc);
+                        const loc: L.LatLng = marker.provider.getLatLng();
+                        bounds = bounds
+                            ? bounds.extend(loc)
+                            : new L.LatLngBounds(loc, loc);
                     });
                     this._map.provider.fitBounds(bounds);
                     this._map.provider.panInsideBounds(bounds);
