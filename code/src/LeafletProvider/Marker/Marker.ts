@@ -152,11 +152,24 @@ namespace LeafletProvider.Marker {
                     OSFramework.Event.Marker.MarkerEventType.OnClick
                 )
             ) {
-                this._provider.addEventListener('click', () => {
-                    this.markerEvents.trigger(
-                        OSFramework.Event.Marker.MarkerEventType.OnClick
-                    );
-                });
+                this._provider.addEventListener(
+                    'click',
+                    (e?: L.LeafletMouseEvent) => {
+                        const coordinates =
+                            new OSFramework.OSStructures.OSMap.OSCoordinates(
+                                e.latlng.lat,
+                                e.latlng.lng
+                            );
+                        this.markerEvents.trigger(
+                            // EventType
+                            OSFramework.Event.Marker.MarkerEventType.OnClick,
+                            // EventName
+                            OSFramework.Event.Marker.MarkerEventType.OnClick,
+                            // Coords
+                            JSON.stringify(coordinates)
+                        );
+                    }
+                );
             }
 
             // Any events that got added to the markerEvents via the API Subscribe method will have to be taken care here
