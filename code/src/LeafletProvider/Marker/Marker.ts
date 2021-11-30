@@ -1,15 +1,17 @@
 /// <reference path="../../OSFramework/Marker/AbstractMarker.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.Marker {
+namespace LeafletProvider.Marker {
     export class Marker
         extends OSFramework.Marker.AbstractMarker<
-            google.maps.Marker,
-            Configuration.Marker.GoogleMarkerConfig
+            L.Marker,
+            Configuration.Marker.LeafletMarkerConfig
         >
-        implements IMarkerGoogle
+        implements IMarkerLeaflet
     {
         private _addedEvents: Array<string>;
+        private _defaultIcon: L.DivIcon;
+        private _defaultTooltip: L.TooltipOptions;
 
         constructor(
             map: OSFramework.OSMap.IMap,
@@ -22,26 +24,55 @@ namespace GoogleProvider.Marker {
                 map,
                 markerId,
                 type,
-                new Configuration.Marker.GoogleMarkerConfig(configs)
+                new Configuration.Marker.LeafletMarkerConfig(configs)
             );
+            this._defaultIcon = new L.DivIcon({
+                iconSize: [24, 40],
+                className: 'marker-leaflet-icon',
+                iconAnchor: [12, 40]
+            });
+            this._defaultTooltip = {
+                permanent: true,
+                direction: 'top',
+                className: 'marker-leaflet-transparent-tooltip'
+            };
             this._addedEvents = [];
         }
 
-        private _setIcon(url: string): void {
-            let scaledSize: google.maps.Size;
-            // If the size of the icon is defined by a valid width and height, use those values
-            // Else If nothing is passed or the icon size has the width or the height equal to 0, use the full image size
-            if (this.config.iconWidth > 0 && this.config.iconHeight > 0) {
-                scaledSize = new google.maps.Size(
-                    this.config.iconWidth,
-                    this.config.iconHeight
-                );
+        /**
+         * Sets the new icon on the Marker just by using the iconUrl
+         * The width and the height of the icon will use the one in the configs (if set) or will use the default image size
+         * The icon will be centered by x axis on the marker position but on the y axis it will appear right above it
+         */
+        private _setIcon(iconUrl: string): void {
+            let icon: L.DivIcon;
+            // If the iconUrl is not set or is empty, we should use the defaultIcon
+            if (iconUrl === '') {
+                // icon will have the following configurations:
+                // iconSize: [24, 40],
+                // className: 'marker-leaflet-icon',
+                // iconAnchor: [12, 40]
+                icon = this._defaultIcon;
+            } else {
+                let iconSize: L.PointExpression;
+                let iconAnchor: L.PointExpression;
+                // If the size of the icon is defined by a valid width and height, use those values
+                // Else If nothing is passed or the icon size has the width or the height equal to 0, use the full image size
+                if (this.config.iconWidth > 0 && this.config.iconHeight > 0) {
+                    iconSize = [this.config.iconWidth, this.config.iconHeight];
+                    // The icon will be centered by x axis on the marker position but on the y axis it will appear right above it
+                    iconAnchor = [
+                        this.config.iconWidth / 2,
+                        this.config.iconHeight
+                    ];
+                }
+                // Update the icon using the previous configurations
+                icon = new L.Icon({
+                    iconUrl,
+                    iconSize,
+                    iconAnchor
+                });
             }
-            // Update the icon using the previous configurations
-            const icon = {
-                url,
-                scaledSize
-            };
             // Set the icon to the Marker provider
             this.provider.setIcon(icon);
         }
@@ -57,41 +88,61 @@ namespace GoogleProvider.Marker {
             this._setIcon(this.config.iconUrl);
         }
 
-        protected _buildMarkerOptions(): Promise<google.maps.MarkerOptions> {
-            const markerOptions: google.maps.MarkerOptions = {};
+        /**
+         * Sets the label on the marker (by using a tooltip alike)
+         */
+        private _setLabelContent(content: string): void {
+            // If the content is empty or is not set, just remove it from the Marker
+            if (content === '') {
+                this.provider.unbindTooltip();
+                return;
+            }
+
+            const tooltip = this.provider.getTooltip();
+            if (tooltip) {
+                // IF the tooltip exists, then just update its content
+                this.provider.setTooltipContent(content);
+            } else {
+                // IF the tooltip doesn't exist (yet), use the default tooltip settings
+                // permanent: true,
+                // className: 'marker-leaflet-transparent-tooltip'
+                this.provider.bindTooltip(content, this._defaultTooltip);
+            }
+        }
+
+        protected _buildMarkerLocation(): Promise<L.LatLng> {
+            let markerLocation: L.LatLng;
             // If the marker has no location at the moment of its provider creation, then throw an error
             // If the marker has its location = "" at the moment of its provider creation, then the location value will be the default -> OutSystems, Boston US
             if (typeof this.config.location === 'undefined') {
                 this.map.mapEvents.trigger(
                     OSFramework.Event.OSMap.MapEventType.OnError,
                     this.map,
-                    OSFramework.Enum.ErrorCodes.LIB_FailedGeocodingMarker,
+                    OSFramework.Enum.ErrorCodes
+                        .LIB_FailedGeocodingLeafletMarker,
                     `Location of the Marker can't be empty.`
                 );
                 return;
             } else {
                 // Let's return a promise that will be resolved or rejected according to the result
                 return new Promise((resolve, reject) => {
-                    Helper.Conversions.ConvertToCoordinates(
-                        this.config.location,
-                        this.map.config.apiKey
-                    )
+                    Helper.Conversions.ValidateCoordinates(this.config.location)
                         .then((response) => {
-                            markerOptions.position = {
-                                lat: response.lat,
-                                lng: response.lng
-                            };
-                            resolve(markerOptions);
+                            markerLocation = new L.LatLng(
+                                response.lat,
+                                response.lng
+                            );
+                            resolve(markerLocation);
                         })
                         .catch((e) => reject(e));
                 });
             }
         }
 
-        protected _setMarkerEvents(events?: Array<string>): void {
+        protected _setMarkerEvents(): void {
             // Make sure the listeners get removed before adding the new ones
             this._addedEvents.forEach((eventListener, index) => {
-                google.maps.event.clearListeners(this.provider, eventListener);
+                this.provider.removeEventListener(eventListener);
                 this._addedEvents.splice(index, 1);
             });
 
@@ -101,65 +152,10 @@ namespace GoogleProvider.Marker {
                     OSFramework.Event.Marker.MarkerEventType.OnClick
                 )
             ) {
-                this._provider.addListener(
-                    'click',
-                    (e: google.maps.MapMouseEvent) => {
-                        const coordinates =
-                            new OSFramework.OSStructures.OSMap.OSCoordinates(
-                                e.latLng.lat(),
-                                e.latLng.lng()
-                            );
-                        this.markerEvents.trigger(
-                            // EventType
-                            OSFramework.Event.Marker.MarkerEventType.OnClick,
-                            // EventName
-                            OSFramework.Event.Marker.MarkerEventType.OnClick,
-                            // Coords
-                            JSON.stringify(coordinates)
-                        );
-                    }
-                );
-            }
-            // OnMouseOver Event
-            if (
-                this.markerEvents.hasHandlers(
-                    OSFramework.Event.Marker.MarkerEventType.OnMouseover
-                )
-            ) {
-                this._provider.addListener('mouseover', () => {
+                this._provider.addEventListener('click', () => {
                     this.markerEvents.trigger(
-                        OSFramework.Event.Marker.MarkerEventType.OnMouseover
+                        OSFramework.Event.Marker.MarkerEventType.OnClick
                     );
-                });
-            }
-            // OnMouseOut Event
-            if (
-                this.markerEvents.hasHandlers(
-                    OSFramework.Event.Marker.MarkerEventType.OnMouseout
-                )
-            ) {
-                this._provider.addListener('mouseout', () => {
-                    this.markerEvents.trigger(
-                        OSFramework.Event.Marker.MarkerEventType.OnMouseout
-                    );
-                });
-            }
-            // OnEventTriggered Event (other events that can be set on the advancedFormat of the Marker)
-            if (
-                this.markerEvents.hasHandlers(
-                    OSFramework.Event.Marker.MarkerEventType.OnEventTriggered
-                ) &&
-                events !== undefined
-            ) {
-                events.forEach((eventName: string) => {
-                    this._addedEvents.push(eventName);
-                    this._provider.addListener(eventName, () => {
-                        this.markerEvents.trigger(
-                            OSFramework.Event.Marker.MarkerEventType
-                                .OnEventTriggered,
-                            eventName
-                        );
-                    });
                 });
             }
 
@@ -173,12 +169,12 @@ namespace GoogleProvider.Marker {
                         OSFramework.Event.Marker.MarkerProviderEvent
                     ) {
                         this._addedEvents.push(eventName);
-                        this._provider.addListener(
+                        this._provider.addEventListener(
                             // Name of the event (e.g. click, dblclick, contextmenu, etc)
                             Constants.Marker.ProviderEventNames[eventName],
                             // Callback CAN have an attribute (e) which is of the type MapMouseEvent
                             // Trigger the event by specifying the ProviderEvent MarkerType and the coords (lat, lng) if the callback has the attribute MapMouseEvent
-                            (e?: google.maps.MapMouseEvent) => {
+                            (e?: L.LeafletMouseEvent) => {
                                 this.markerEvents.trigger(
                                     // EventType
                                     OSFramework.Event.Marker.MarkerEventType
@@ -188,8 +184,8 @@ namespace GoogleProvider.Marker {
                                     // Coords
                                     e !== undefined
                                         ? JSON.stringify({
-                                              Lat: e.latLng.lat(),
-                                              Lng: e.latLng.lng()
+                                              Lat: e.latlng.lat,
+                                              Lng: e.latlng.lng
                                           })
                                         : undefined
                                 );
@@ -216,17 +212,17 @@ namespace GoogleProvider.Marker {
             // Then, create the provider (Google maps Marker)
             // Then, set Marker events
             // Finally, refresh the Map
-            const markerOptions = this._buildMarkerOptions();
+            const markerLocation = this._buildMarkerLocation();
+            const configs = this.getProviderConfig();
             // If markerOptions is undefined (should be a promise) -> don't create the marker
-            if (markerOptions !== undefined) {
-                markerOptions
-                    .then((markerOptions) => {
-                        this._provider = new google.maps.Marker({
-                            ...this.getProviderConfig(),
-                            ...markerOptions,
-                            map: this.map.provider
-                        });
+            if (markerLocation !== undefined) {
+                markerLocation
+                    .then((location: L.LatLng) => {
+                        this._provider = L.marker(location, configs);
+                        this._setIcon(configs.iconUrl);
+                        this._setLabelContent(configs.label);
 
+                        this._provider.addTo(this.map.provider);
                         // We can only set the events on the provider after its creation
                         this._setMarkerEvents();
 
@@ -236,13 +232,12 @@ namespace GoogleProvider.Marker {
                         // Trigger the new center location after creating the marker
                         this.map.refresh();
                     })
-                    .catch((error) => {
+                    .catch(() => {
                         this.map.mapEvents.trigger(
                             OSFramework.Event.OSMap.MapEventType.OnError,
                             this.map,
                             OSFramework.Enum.ErrorCodes
-                                .LIB_FailedGeocodingMarker,
-                            `${error}`
+                                .LIB_FailedGeocodingLeafletMarker
                         );
                     });
             }
@@ -250,35 +245,34 @@ namespace GoogleProvider.Marker {
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         public changeProperty(propertyName: string, value: any): void {
-            const propValue = OSFramework.Enum.OS_Config_Marker[propertyName];
+            const property = OSFramework.Enum.OS_Config_Marker[propertyName];
             super.changeProperty(propertyName, value);
             if (this.isReady) {
-                switch (propValue) {
+                switch (property) {
                     case OSFramework.Enum.OS_Config_Marker.location:
-                        Helper.Conversions.ConvertToCoordinates(
-                            value,
-                            this.map.config.apiKey
-                        )
+                        Helper.Conversions.ValidateCoordinates(value)
                             .then((response) => {
-                                this._provider.setPosition({
+                                this._provider.setLatLng({
                                     lat: response.lat,
                                     lng: response.lng
                                 });
                                 this.map.refresh();
                             })
-                            .catch((error) => {
+                            .catch(() => {
                                 this.map.mapEvents.trigger(
                                     OSFramework.Event.OSMap.MapEventType
                                         .OnError,
                                     this.map,
                                     OSFramework.Enum.ErrorCodes
-                                        .LIB_FailedGeocodingMarker,
-                                    `${error}`
+                                        .LIB_FailedGeocodingLeafletMarker
                                 );
                             });
                         return;
                     case OSFramework.Enum.OS_Config_Marker.allowDrag:
-                        return this._provider.setDraggable(value);
+                        value
+                            ? this._provider.dragging.enable()
+                            : this._provider.dragging.disable();
+                        return;
                     case OSFramework.Enum.OS_Config_Marker.iconHeight:
                         this._setIconSize();
                         return;
@@ -289,16 +283,18 @@ namespace GoogleProvider.Marker {
                         this._setIconSize();
                         return;
                     case OSFramework.Enum.OS_Config_Marker.label:
-                        return this._provider.setLabel(value);
+                        this._setLabelContent(value);
+                        return;
                     case OSFramework.Enum.OS_Config_Marker.title:
-                        return this._provider.setTitle(value);
+                        this._provider.getElement().title = value;
+                        return;
                 }
             }
         }
 
         public dispose(): void {
             if (this.isReady) {
-                this._provider.setMap(null);
+                this.map.provider.removeLayer(this.provider);
             }
             this._provider = undefined;
             super.dispose();
