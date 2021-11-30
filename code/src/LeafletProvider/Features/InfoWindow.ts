@@ -20,8 +20,9 @@ namespace LeafletProvider.Feature {
         ): L.PopupOptions {
             // Let's use the height of the marker icon as the offsetY. But if the height of the icon is not defined: use the runtime offsetHeight of the marker element
             const offsetHeight =
-                marker.config.iconHeight ??
-                marker.provider.getElement().offsetHeight;
+                marker.config.iconHeight > 0
+                    ? marker.config.iconHeight
+                    : marker.provider.getElement().offsetHeight;
 
             const options: L.PopupOptions = {
                 // Don't use any offsetX to get it centered horizontally

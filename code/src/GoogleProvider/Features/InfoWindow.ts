@@ -3,7 +3,8 @@ namespace GoogleProvider.Feature {
     export class InfoWindow
         implements
             OSFramework.Feature.IInfoWindow,
-            OSFramework.Interface.IBuilder {
+            OSFramework.Interface.IBuilder
+    {
         private _infoWindow: google.maps.InfoWindow;
         private _map: OSMap.IMapGoogle;
         private _popupIsOpened: boolean;
