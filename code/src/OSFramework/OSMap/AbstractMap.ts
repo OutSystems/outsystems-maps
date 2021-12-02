@@ -247,7 +247,11 @@ namespace OSFramework.OSMap {
         }
 
         public hasMarkerClusterer(): boolean {
-            return this._features.markerClusterer.isEnabled;
+            return (
+                this._features &&
+                this._features.markerClusterer &&
+                this._features.markerClusterer.isEnabled
+            );
         }
 
         public hasShape(shapeId: string): boolean {
@@ -286,9 +290,7 @@ namespace OSFramework.OSMap {
             this._markers.forEach((marker) => {
                 // Make sure the marker is removed from any existent cluster
                 // But first ensure that map.features exist as well as the features.markerClusterer
-                this.features &&
-                    this.features.markerClusterer &&
-                    this.hasMarkerClusterer() &&
+                this.hasMarkerClusterer() &&
                     this.features.markerClusterer.removeMarker(marker);
                 marker.dispose();
             });
@@ -388,9 +390,7 @@ namespace OSFramework.OSMap {
 
                 // Make sure the marker is removed from any existent cluster
                 // But first ensure that map.features exist as well as the features.markerClusterer
-                this.features &&
-                    this.features.markerClusterer &&
-                    this.hasMarkerClusterer() &&
+                this.hasMarkerClusterer() &&
                     this.features.markerClusterer.removeMarker(marker);
                 marker.dispose();
                 this._markers.delete(markerId);
