@@ -68,7 +68,8 @@ namespace OSFramework.Marker {
 
             // If the marker is ready (has the provider defined) we need to add it into the marker cluster.
             // The validation to guarantee that the clusterer is activated for the map is being done inside the addMarker method from markerClusterer feature.
-            this._map.hasMarkerClusterer() &&
+            this._map.features.markerClusterer &&
+                this._map.hasMarkerClusterer() &&
                 this._map.features.markerClusterer.addMarker(this);
         }
 
