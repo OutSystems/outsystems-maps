@@ -353,7 +353,8 @@ namespace LeafletProvider.OSMap {
             this.features.offset.setOffset(this.features.offset.getOffset);
 
             // Repaint the marker Clusterers
-            this.features.markerClusterer?.repaint();
+            this.hasMarkerClusterer() &&
+                this.features.markerClusterer.repaint();
         }
 
         public refreshProviderEvents(): void {

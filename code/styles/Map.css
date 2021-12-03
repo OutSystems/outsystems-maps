@@ -26,6 +26,7 @@
 .runtime-map-container {
     -servicestudio-display: none!important;
     height: 100%;
+    z-index: 1;
 }
 
 .map-wrapper .staticMap-image {
