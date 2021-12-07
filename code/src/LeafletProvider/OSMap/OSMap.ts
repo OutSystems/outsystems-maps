@@ -178,6 +178,7 @@ namespace LeafletProvider.OSMap {
             );
             this.buildFeatures();
             this._buildMarkers();
+            this._buildShapes();
             this.finishBuild();
 
             // Make sure to change the center after the conversion of the location to coordinates

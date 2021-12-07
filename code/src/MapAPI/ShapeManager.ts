@@ -40,7 +40,7 @@ namespace MapAPI.ShapeManager {
     ): OSFramework.Shape.IShape {
         const map = GetMapByShapeId(shapeId);
         if (!map.hasShape(shapeId)) {
-            const _shape = GoogleProvider.Shape.ShapeFactory.MakeShape(
+            const _shape = OSFramework.Shape.ShapeFactory.MakeShape(
                 map,
                 shapeId,
                 shapeType,
