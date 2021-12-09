@@ -11,6 +11,5 @@ namespace OSFramework.Configuration {
         strokeColor: string;
         strokeOpacity: number;
         strokeWeight: number;
-        uniqueId: string;
     }
 }
