@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.Shape {
     export abstract class AbstractShape<
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        W,
         T extends Configuration.IConfigurationShape
     > implements IShape
     {
@@ -12,7 +12,9 @@ namespace OSFramework.Shape {
         private _uniqueId: string;
         private _widgetId: string;
 
+        protected _addedEvents: Array<string>;
         protected _built: boolean;
+        protected _provider: W;
         protected _shapeEvents: Event.Shape.ShapeEventsManager;
 
         abstract hasEvents: boolean;
@@ -29,6 +31,7 @@ namespace OSFramework.Shape {
             this._built = false;
             this._shapeEvents = new Event.Shape.ShapeEventsManager(this);
             this._type = type;
+            this._addedEvents = [];
         }
 
         public get config(): T {
@@ -43,6 +46,9 @@ namespace OSFramework.Shape {
         /** Gets the minimum mandatory number of addresses/coordinates to create the path (depends on the shape) */
         public get minPath(): number {
             return Enum.ShapeMinPath[this._type];
+        }
+        public get provider(): W {
+            return this._provider;
         }
         public get shapeEvents(): Event.Shape.ShapeEventsManager {
             return this._shapeEvents;
@@ -117,8 +123,6 @@ namespace OSFramework.Shape {
         protected abstract get invalidShapeLocationErrorCode(): Enum.ErrorCodes;
 
         public abstract refreshProviderEvents(): void;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public abstract get provider(): any;
         public abstract get shapeProviderEvents(): Array<string>;
         public abstract get shapeTag(): string;
     }
