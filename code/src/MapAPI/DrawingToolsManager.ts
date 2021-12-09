@@ -20,7 +20,7 @@ namespace MapAPI.DrawingToolsManager {
             !drawingTools.toolAlreadyExists(type)
         ) {
             const _tool =
-                GoogleProvider.DrawingTools.DrawingToolsFactory.MakeTool(
+                LeafletProvider.DrawingTools.DrawingToolsFactory.MakeTool(
                     drawingTools.map,
                     drawingTools,
                     toolId,
@@ -201,7 +201,7 @@ namespace MapAPI.DrawingToolsManager {
         const map = GetMapByDrawingToolsId(drawingToolsId);
         if (!map.drawingTools) {
             const _drawingTools =
-                GoogleProvider.DrawingTools.DrawingToolsFactory.MakeDrawingTools(
+                LeafletProvider.DrawingTools.DrawingToolsFactory.MakeDrawingTools(
                     map,
                     drawingToolsId,
                     JSON.parse(configs)
