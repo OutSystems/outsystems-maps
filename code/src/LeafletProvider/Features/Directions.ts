@@ -247,15 +247,13 @@ namespace LeafletProvider.Feature {
         }
 
         public getTotalDistanceFromDirection(): Promise<number> {
-            const returningMessage =
-                new OSFramework.OSStructures.ReturnMessage();
             // Validate if the directionsRenderer exists
             if (!this._hasDirectionsRenderer()) {
-                returningMessage.code =
-                    OSFramework.Enum.ErrorCodes.API_FailedNoPluginDirections;
-                return new Promise((resolve, reject) =>
-                    reject(returningMessage)
+                OSFramework.Helper.ThrowError(
+                    this._map,
+                    OSFramework.Enum.ErrorCodes.API_FailedNoPluginDirections
                 );
+                return new Promise((resolve) => resolve(0));
             }
             return new Promise((resolve) => {
                 if (isNaN(this._currentDistance)) {
@@ -275,15 +273,13 @@ namespace LeafletProvider.Feature {
         }
 
         public getTotalDurationFromDirection(): Promise<number> {
-            const returningMessage =
-                new OSFramework.OSStructures.ReturnMessage();
             // Validate if the directionsRenderer exists
             if (!this._hasDirectionsRenderer()) {
-                returningMessage.code =
-                    OSFramework.Enum.ErrorCodes.API_FailedNoPluginDirections;
-                return new Promise((resolve, reject) =>
-                    reject(returningMessage)
+                OSFramework.Helper.ThrowError(
+                    this._map,
+                    OSFramework.Enum.ErrorCodes.API_FailedNoPluginDirections
                 );
+                return new Promise((resolve) => resolve(0));
             }
             return new Promise((resolve) => {
                 if (isNaN(this._currentDuration)) {
