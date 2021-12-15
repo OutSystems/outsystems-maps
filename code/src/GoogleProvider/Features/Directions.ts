@@ -106,6 +106,23 @@ namespace GoogleProvider.Feature {
                 };
             }
         }
+
+        /**
+         * SetPlugin for GoogleMaps provider is not needed.
+         */
+        public setPlugin(
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            providerName: string,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            apiKey: string
+        ): OSFramework.OSStructures.ReturnMessage {
+            OSFramework.Helper.ThrowError(
+                this._map,
+                OSFramework.Enum.ErrorCodes.GEN_NoPluginDirectionsNeeded
+            );
+            return;
+        }
+
         public setRoute(
             originRoute: string,
             destinationRoute: string,

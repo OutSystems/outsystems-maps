@@ -436,11 +436,24 @@ body.chrome .marker-popup-layout {
     text-align: center;
 }
 
+.marker-leaflet-icon-2 {
+    background: var(--marker-leaflet-icon-2);
+    text-align: center;
+}
+
 .leaflet-tooltip.marker-leaflet-transparent-tooltip,
-.leaflet-tooltip.marker-leaflet-transparent-tooltip::before  {
-  background: transparent;
-  border: none;
-  box-shadow: none;
+.leaflet-tooltip.marker-leaflet-transparent-tooltip-2,
+.leaflet-tooltip.marker-leaflet-transparent-tooltip::before,
+.leaflet-tooltip.marker-leaflet-transparent-tooltip-2::before  {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.leaflet-tooltip.marker-leaflet-transparent-tooltip-2,
+.leaflet-tooltip.marker-leaflet-transparent-tooltip-2::before {
+    color: white;
+    margin-top: -10px;
 }
 
 /***********************************************************************/

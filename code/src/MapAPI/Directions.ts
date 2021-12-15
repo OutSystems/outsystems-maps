@@ -13,7 +13,9 @@ namespace MapAPI.Directions {
      * Function that will calculate the total distance of the direction that is rendered on the Map.
      * @param mapId Id of the Map where the total distance of the direction will be calculated.
      */
-    export function GetTotalDistanceFromDirection(mapId: string): number {
+    export function GetTotalDistanceFromDirection(
+        mapId: string
+    ): number | Promise<number> {
         const map = MapManager.GetMapById(mapId, true);
         return map.features.directions.getTotalDistanceFromDirection();
     }
@@ -22,9 +24,32 @@ namespace MapAPI.Directions {
      * Function that will calculate the total duration of the direction that is rendered on the Map.
      * @param mapId Id of the Map where the total duration of the direction will be calculated.
      */
-    export function GetTotalDurationFromDirection(mapId: string): number {
+    export function GetTotalDurationFromDirection(
+        mapId: string
+    ): number | Promise<number> {
         const map = MapManager.GetMapById(mapId, true);
         return map.features.directions.getTotalDurationFromDirection();
+    }
+
+    /**
+     * Function that will load a plugin on the Map. The plugin is a service that provides the routing mechanisms and will later enable the SetDirections and RemoveDirections actions.
+     * @param mapId Id of the Map where the Plugin will be loaded
+     * @param providerName Name of the service that provides the Directions API
+     * @param apiKey APIKey or Token that is provided by the provider and is mandatory to use its Directions API
+     * @returns
+     */
+    export function LoadPlugin(
+        mapId: string,
+        // The provider will be an entry from LeafletProvider.Constants.Directions.Provider
+        providerName: string,
+        apiKey: string
+    ): string {
+        const map = MapManager.GetMapById(mapId, true);
+        const pluginResponse = map.features.directions.setPlugin(
+            providerName,
+            apiKey
+        );
+        return JSON.stringify(pluginResponse);
     }
 
     /**
