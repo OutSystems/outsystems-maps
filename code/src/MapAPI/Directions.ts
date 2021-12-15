@@ -15,7 +15,7 @@ namespace MapAPI.Directions {
      */
     export function GetTotalDistanceFromDirection(
         mapId: string
-    ): number | Promise<number> {
+    ): Promise<number> {
         const map = MapManager.GetMapById(mapId, true);
         return map.features.directions.getTotalDistanceFromDirection();
     }
@@ -26,7 +26,7 @@ namespace MapAPI.Directions {
      */
     export function GetTotalDurationFromDirection(
         mapId: string
-    ): number | Promise<number> {
+    ): Promise<number> {
         const map = MapManager.GetMapById(mapId, true);
         return map.features.directions.getTotalDurationFromDirection();
     }

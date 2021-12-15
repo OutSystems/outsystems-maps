@@ -357,18 +357,14 @@ namespace LeafletProvider.Feature {
             if (!this._hasDirectionsRenderer()) {
                 returningMessage.code =
                     OSFramework.Enum.ErrorCodes.API_FailedNoPluginDirections;
-                return new Promise((resolve, reject) =>
-                    reject(returningMessage)
-                );
+                return new Promise((resolve) => resolve(returningMessage));
             }
 
             // Make sure to return an error code if the travel mode is not valid
             if (this._setTravelMode(travelMode) === false) {
                 returningMessage.code =
                     OSFramework.Enum.ErrorCodes.CFG_InvalidTravelMode;
-                return new Promise((resolve, reject) =>
-                    reject(returningMessage)
-                );
+                return new Promise((resolve) => resolve(returningMessage));
             }
 
             // Set the exclude object (Avoidance criteria)
