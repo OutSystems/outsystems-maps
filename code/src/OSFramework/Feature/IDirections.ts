@@ -6,13 +6,11 @@ namespace OSFramework.Feature {
         /** Get All Legs from Direction (when direction contains waypoints, each leg is one step from a point to the next)*/
         getLegsFromDirection(): Array<OSStructures.Directions.DirectionLegs>;
         /** Get Total Distance from Direction (sum in meters of all the distances from all legs).
-         * Returns a number in case the Distance has already been calculated. Otherwise, returns a Promise.
          */
-        getTotalDistanceFromDirection(): number | Promise<number>;
+        getTotalDistanceFromDirection(): Promise<number>;
         /** Get Total Duration from Direction (sum in seconds of all the durations from all legs)
-         * Returns a number in case the Duration has already been calculated. Otherwise, returns a Promise.
          */
-        getTotalDurationFromDirection(): number | Promise<number>;
+        getTotalDurationFromDirection(): Promise<number>;
         /** Remove any Route that has been created (remove directions from the Map)*/
         removeRoute(): OSStructures.ReturnMessage;
         /**
