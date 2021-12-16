@@ -22,11 +22,14 @@ namespace LeafletProvider.Feature {
         private _currentDistance: number;
         private _currentDuration: number;
 
+        /** IconOptions for the Icon that is going to be created per each Waypoint of the route */
         private _defaultIcon: L.DivIconOptions;
+        /** TooltipOptions for the Text that will appear over the Waypoint Icon*/
         private _defaultTooltip: L.TooltipOptions;
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         private _directionsRenderer: any;
+
         private _isEnabled: boolean;
         private _map: OSMap.IMapLeaflet;
         private _providerName: Constants.Directions.Provider;
@@ -34,12 +37,15 @@ namespace LeafletProvider.Feature {
         constructor(map: OSMap.IMapLeaflet) {
             this._map = map;
             this._isEnabled = false;
+            //Let's make sure to reset the currentDistance and currentDuration with the values NaN.
+            //By making this, we ensure any time the GetDistance and GetDuration methods get invoked, they will make a new request.
             this._currentDistance = NaN;
             this._currentDuration = NaN;
+
             this._bindSetRoute = this._routesFoundHandler.bind(
                 this,
-                undefined,
-                ResolveType.SetRoute
+                undefined, // undefined resolve
+                ResolveType.SetRoute // SetRoute resolveType
             );
             // Let's not set the following variables until they are really needed (by invoking GetDistance/GetDuration)
             this._bindDistance = undefined;
@@ -256,6 +262,8 @@ namespace LeafletProvider.Feature {
                 return new Promise((resolve) => resolve(0));
             }
             return new Promise((resolve) => {
+                // If there currentDistance is not NaN, this means it already has a value and the directions didn't change,
+                // so we can resolve the Promise with the same distance we had before
                 if (isNaN(this._currentDistance)) {
                     this._bindDistance = this._routesFoundHandler.bind(
                         this,
@@ -282,6 +290,8 @@ namespace LeafletProvider.Feature {
                 return new Promise((resolve) => resolve(0));
             }
             return new Promise((resolve) => {
+                // If there currentDuration is not NaN, this means it already has a value and the directions didn't change,
+                // so we can resolve the Promise with the same duration we had before
                 if (isNaN(this._currentDuration)) {
                     this._bindDuration = this._routesFoundHandler.bind(
                         this,
@@ -346,6 +356,8 @@ namespace LeafletProvider.Feature {
             avoidFerries: boolean
         ): Promise<OSFramework.OSStructures.ReturnMessage> {
             let returningMessage = new OSFramework.OSStructures.ReturnMessage();
+            //Let's make sure to reset the currentDistance and currentDuration with the values NaN.
+            //By making this, we ensure any time the GetDistance and GetDuration methods get invoked, they will make a new request.
             this._currentDistance = NaN;
             this._currentDuration = NaN;
 
