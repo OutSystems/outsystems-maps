@@ -442,16 +442,16 @@ body.chrome .marker-popup-layout {
 }
 
 .leaflet-tooltip.marker-leaflet-transparent-tooltip,
-.leaflet-tooltip.marker-leaflet-transparent-tooltip-2,
+.leaflet-tooltip.marker-leaflet-transparent-tooltip-wp,
 .leaflet-tooltip.marker-leaflet-transparent-tooltip::before,
-.leaflet-tooltip.marker-leaflet-transparent-tooltip-2::before  {
+.leaflet-tooltip.marker-leaflet-transparent-tooltip-wp::before  {
     background: transparent;
     border: none;
     box-shadow: none;
 }
 
-.leaflet-tooltip.marker-leaflet-transparent-tooltip-2,
-.leaflet-tooltip.marker-leaflet-transparent-tooltip-2::before {
+.leaflet-tooltip.marker-leaflet-transparent-tooltip-wp,
+.leaflet-tooltip.marker-leaflet-transparent-tooltip-wp::before {
     color: white;
     margin-top: -10px;
 }

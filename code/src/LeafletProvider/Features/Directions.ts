@@ -32,7 +32,7 @@ namespace LeafletProvider.Feature {
 
         private _isEnabled: boolean;
         private _map: OSMap.IMapLeaflet;
-        private _providerName: Constants.Directions.Provider;
+        private _providerName: string;
 
         constructor(map: OSMap.IMapLeaflet) {
             this._map = map;
@@ -53,13 +53,13 @@ namespace LeafletProvider.Feature {
 
             this._defaultIcon = {
                 iconSize: [24, 40],
-                className: 'marker-leaflet-icon-2',
+                className: 'marker-leaflet-icon-wp',
                 iconAnchor: [12, 40]
             };
             this._defaultTooltip = {
                 permanent: true,
                 direction: 'top',
-                className: 'marker-leaflet-transparent-tooltip-2'
+                className: 'marker-leaflet-transparent-tooltip-wp'
             };
         }
 
@@ -321,7 +321,7 @@ namespace LeafletProvider.Feature {
         }
 
         public setPlugin(
-            provider: Constants.Directions.Provider,
+            provider: Constants.Directions.Provider | string,
             apiKey: string
         ): OSFramework.OSStructures.ReturnMessage {
             if (this._directionsRenderer !== undefined) {
@@ -372,6 +372,7 @@ namespace LeafletProvider.Feature {
 
             this._directionsRenderer.on('routesfound', this._bindSetRoute);
 
+            // Call the Plugin route mechanism to render the directions on the Map.
             this._directionsRenderer.route({});
             this.setState(true);
 
