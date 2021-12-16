@@ -128,33 +128,29 @@ namespace GoogleProvider.Feature {
         }
 
         public setRoute(
-            originRoute: string,
-            destinationRoute: string,
-            travelMode: google.maps.TravelMode,
-            waypoints: string,
-            optimizeWaypoints: boolean,
-            avoidTolls: boolean,
-            avoidHighways: boolean,
-            avoidFerries: boolean
+            directionOptions: OSFramework.OSStructures.Directions.Options
         ): Promise<OSFramework.OSStructures.ReturnMessage> {
             const waypts: google.maps.DirectionsWaypoint[] =
-                this._waypointsCleanup(JSON.parse(waypoints));
+                this._waypointsCleanup(JSON.parse(directionOptions.waypoints));
             return (
                 this._directionsService
                     .route(
                         {
                             origin: {
-                                query: originRoute
+                                query: directionOptions.originRoute
                             },
                             destination: {
-                                query: destinationRoute
+                                query: directionOptions.destinationRoute
                             },
                             waypoints: waypts,
-                            optimizeWaypoints,
-                            travelMode,
-                            avoidTolls,
-                            avoidHighways,
-                            avoidFerries
+                            optimizeWaypoints:
+                                directionOptions.optimizeWaypoints,
+                            travelMode:
+                                directionOptions.travelMode as google.maps.TravelMode,
+                            avoidTolls: directionOptions.exclude.avoidTolls,
+                            avoidHighways:
+                                directionOptions.exclude.avoidHighways,
+                            avoidFerries: directionOptions.exclude.avoidFerries
                         },
                         (response, status) => {
                             if (status === 'OK') {

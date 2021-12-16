@@ -106,6 +106,7 @@ namespace LeafletProvider.Feature {
                     }.bind(this),
                     routeWhileDragging: false,
                     draggableWaypoints: false,
+                    // Remove the default overlay that contains the directions (created by the leaflet-routing-machine plugin)
                     createGeocoderElement: undefined
                 })
             });
@@ -167,17 +168,15 @@ namespace LeafletProvider.Feature {
          * Sets the avoidance criteria (avoidTolls, avoidHighways, avoidFerries) on the directionsRenderer routing service
          */
         private _setExcludes(
-            avoidTolls: boolean,
-            avoidHighways: boolean,
-            avoidFerries: boolean
+            dirExclude: OSFramework.OSStructures.Directions.ExcludeCriteria
         ): boolean {
             // If the Map has no directionsRenderer, return false.
             if (!this._hasDirectionsRenderer()) return false;
 
             const exclude = [];
-            avoidTolls && exclude.push('toll');
-            avoidHighways && exclude.push('motorway');
-            avoidFerries && exclude.push('ferry');
+            dirExclude.avoidTolls && exclude.push('toll');
+            dirExclude.avoidHighways && exclude.push('motorway');
+            dirExclude.avoidFerries && exclude.push('ferry');
 
             // Set the exclude option
             this._directionsRenderer.getRouter().options.exclude = exclude;
@@ -231,7 +230,7 @@ namespace LeafletProvider.Feature {
                             reject({
                                 code: OSFramework.Enum.ErrorCodes
                                     .LIB_FailedSetDirections,
-                                message: `One or more pair of coordinates are not valid`
+                                message: `One or more set of coordinates is not valid`
                             });
                         })
                 );
@@ -346,14 +345,7 @@ namespace LeafletProvider.Feature {
         }
 
         public setRoute(
-            originRoute: string,
-            destinationRoute: string,
-            travelMode: string,
-            waypoints: string,
-            optimizeWaypoints: boolean,
-            avoidTolls: boolean,
-            avoidHighways: boolean,
-            avoidFerries: boolean
+            directionOptions: OSFramework.OSStructures.Directions.Options
         ): Promise<OSFramework.OSStructures.ReturnMessage> {
             let returningMessage = new OSFramework.OSStructures.ReturnMessage();
             //Let's make sure to reset the currentDistance and currentDuration with the values NaN.
@@ -369,14 +361,14 @@ namespace LeafletProvider.Feature {
             }
 
             // Make sure to return an error code if the travel mode is not valid
-            if (this._setTravelMode(travelMode) === false) {
+            if (this._setTravelMode(directionOptions.travelMode) === false) {
                 returningMessage.code =
                     OSFramework.Enum.ErrorCodes.CFG_InvalidTravelMode;
                 return new Promise((resolve) => resolve(returningMessage));
             }
 
             // Set the exclude object (Avoidance criteria)
-            this._setExcludes(avoidTolls, avoidHighways, avoidFerries);
+            this._setExcludes(directionOptions.exclude);
 
             this._directionsRenderer.on('routesfound', this._bindSetRoute);
 
@@ -389,9 +381,9 @@ namespace LeafletProvider.Feature {
 
             // Make sure the origin and the destination are both inside the waypoints array
             const waypts = [
-                originRoute,
-                ...JSON.parse(waypoints),
-                destinationRoute
+                directionOptions.originRoute,
+                ...JSON.parse(directionOptions.waypoints),
+                directionOptions.destinationRoute
             ];
 
             // Validate coordinate from the waypoints array

@@ -34,14 +34,7 @@ namespace OSFramework.Feature {
          * @returns Promise containing the ReturnMessage structure {code, message}
          */
         setRoute(
-            originRoute: string,
-            destinationRoute: string,
-            travelMode: string,
-            waypoints: string,
-            optimizeWaypoints: boolean,
-            avoidTolls: boolean,
-            avoidHighways: boolean,
-            avoidFerries: boolean
+            directionOptions: OSFramework.OSStructures.Directions.Options
         ): Promise<OSStructures.ReturnMessage>;
         /**
          * Set the Directions state on the Map.

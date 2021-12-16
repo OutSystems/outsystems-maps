@@ -76,17 +76,18 @@ namespace MapAPI.Directions {
         avoidFerries: boolean
     ): Promise<string> {
         const map = MapManager.GetMapById(mapId, true);
+        let directionOptions =
+            new OSFramework.OSStructures.Directions.Options();
+        directionOptions = {
+            originRoute: origin,
+            destinationRoute: destination,
+            travelMode,
+            waypoints,
+            optimizeWaypoints,
+            exclude: { avoidTolls, avoidHighways, avoidFerries }
+        };
         return map.features.directions
-            .setRoute(
-                origin,
-                destination,
-                travelMode,
-                waypoints,
-                optimizeWaypoints,
-                avoidTolls,
-                avoidHighways,
-                avoidFerries
-            )
+            .setRoute(directionOptions)
             .then((response) => JSON.stringify(response));
     }
 
