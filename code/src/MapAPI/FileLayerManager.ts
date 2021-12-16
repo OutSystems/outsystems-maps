@@ -74,6 +74,10 @@ namespace MapAPI.FileLayerManager {
         configs: string
     ): OSFramework.FileLayer.IFileLayer {
         const map = GetMapByFileLayerId(fileLayerId);
+        OSFramework.Helper.ValidateFeatureProvider(
+            map,
+            OSFramework.Enum.Feature.FileLayer
+        );
         if (!map.hasFileLayer(fileLayerId)) {
             const _fileLayer =
                 GoogleProvider.FileLayer.FileLayerFactory.MakeFileLayer(
@@ -108,7 +112,7 @@ namespace MapAPI.FileLayerManager {
         );
 
         if (fileLayer === undefined && raiseError) {
-            throw new Error(`Marker id:${fileLayerId} not found`);
+            throw new Error(`FileLayer id:${fileLayerId} not found`);
         }
 
         return fileLayer;
