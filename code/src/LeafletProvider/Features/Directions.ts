@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace LeafletProvider.Feature {
-    enum ResolveType {
+    const enum ResolveType {
         SetRoute,
         GetDuration,
         GetDistance
@@ -129,6 +129,7 @@ namespace LeafletProvider.Feature {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             e?: any
         ) {
+            let bind: OSFramework.Callbacks.Generic;
             // This method was invoked by the setRoute and because there might exist concurrency between the setRoute and the getDistance or getDirections methods
             // when they are invoked one after the other (inside an action flow [OS] for instance), we need to ensure the listeners get removed after the "routesfound" event is triggered
             this._currentDistance = e.routes[0].summary.totalDistance;
@@ -139,29 +140,25 @@ namespace LeafletProvider.Feature {
                 if (resolveType === ResolveType.GetDistance) {
                     // Make sure to resolve with the callback "resolve" and passing the currentDistance as an argument
                     resolve(this._currentDistance);
-                    // invoked by the getDistance method -> as soon as the routesFoundHandler gets executed and after getting the currentDistance and currentDuration we can remove the listener for the getDistance.
-                    this._directionsRenderer.off(
-                        'routesfound',
-                        this._bindDistance
-                    );
+                    // invoked by the getDistance method -> as soon as the routesFoundHandler gets executed and after getting the currentDistance and currentDuration we can later remove the listener for the getDistance.
+                    bind = this._bindDistance;
                 } else if (resolveType === ResolveType.GetDuration) {
                     // Make sure to resolve with the callback "resolve" and passing the currentDuration as an argument
                     resolve(this._currentDuration);
-                    // invoked by the getDuration method -> as soon as the routesFoundHandler gets executed and after getting the currentDistance and currentDuration we can remove the listener for the getDuration.
-                    this._directionsRenderer.off(
-                        'routesfound',
-                        this._bindDuration
-                    );
+                    // invoked by the getDuration method -> as soon as the routesFoundHandler gets executed and after getting the currentDistance and currentDuration we can later remove the listener for the getDuration.
+                    bind = this._bindDuration;
                 }
             } else {
                 if (resolveType === ResolveType.SetRoute) {
-                    // invoked by the setRoute method -> as soon as the routesFoundHandler gets executed and after getting the currentDistance and currentDuration we can remove the listener for the setRoute.
-                    this._directionsRenderer.off(
-                        'routesfound',
-                        this._bindSetRoute
-                    );
+                    // invoked by the setRoute method -> as soon as the routesFoundHandler gets executed and after getting the currentDistance and currentDuration we can later remove the listener for the setRoute.
+                    bind = this._bindSetRoute;
                 }
             }
+            // remove the routesfound event handler, depending on the method (setRoute, getDistance, getDuration), will be have different bind value
+            this._directionsRenderer.off(
+                Constants.Directions.Events.routesfound,
+                bind
+            );
         }
 
         /**
@@ -171,7 +168,7 @@ namespace LeafletProvider.Feature {
             dirExclude: OSFramework.OSStructures.Directions.ExcludeCriteria
         ): boolean {
             // If the Map has no directionsRenderer, return false.
-            if (!this._hasDirectionsRenderer()) return false;
+            if (this._hasDirectionsRenderer() === false) return false;
 
             const exclude = [];
             dirExclude.avoidTolls && exclude.push('toll');
@@ -190,7 +187,7 @@ namespace LeafletProvider.Feature {
             // If the Map has no directionsRenderer, return false.
             // If the provider of the routing service doesn't have the chosen travelMode option, return false
             if (
-                !this._hasDirectionsRenderer() ||
+                this._hasDirectionsRenderer() === false ||
                 Constants.Directions[this._providerName]?.TravelModes[
                     travelMode
                 ] === undefined
@@ -253,7 +250,7 @@ namespace LeafletProvider.Feature {
 
         public getTotalDistanceFromDirection(): Promise<number> {
             // Validate if the directionsRenderer exists
-            if (!this._hasDirectionsRenderer()) {
+            if (this._hasDirectionsRenderer() === false) {
                 OSFramework.Helper.ThrowError(
                     this._map,
                     OSFramework.Enum.ErrorCodes.API_FailedNoPluginDirections
@@ -270,7 +267,7 @@ namespace LeafletProvider.Feature {
                         ResolveType.GetDistance
                     );
                     this._directionsRenderer.on(
-                        'routesfound',
+                        Constants.Directions.Events.routesfound,
                         this._bindDistance
                     );
                 } else {
@@ -281,7 +278,7 @@ namespace LeafletProvider.Feature {
 
         public getTotalDurationFromDirection(): Promise<number> {
             // Validate if the directionsRenderer exists
-            if (!this._hasDirectionsRenderer()) {
+            if (this._hasDirectionsRenderer() === false) {
                 OSFramework.Helper.ThrowError(
                     this._map,
                     OSFramework.Enum.ErrorCodes.API_FailedNoPluginDirections
@@ -298,7 +295,7 @@ namespace LeafletProvider.Feature {
                         ResolveType.GetDuration
                     );
                     this._directionsRenderer.on(
-                        'routesfound',
+                        Constants.Directions.Events.routesfound,
                         this._bindDuration
                     );
                 } else {
@@ -309,15 +306,15 @@ namespace LeafletProvider.Feature {
 
         public removeRoute(): OSFramework.OSStructures.ReturnMessage {
             this.setState(false);
-            const returnigMessage =
+            const returningMessage =
                 new OSFramework.OSStructures.ReturnMessage();
-            if (!this._hasDirectionsRenderer()) {
-                returnigMessage.isSuccess = true;
+            if (this._hasDirectionsRenderer() === false) {
+                returningMessage.isSuccess = true;
             } else {
-                returnigMessage.code =
+                returningMessage.code =
                     OSFramework.Enum.ErrorCodes.API_FailedRemoveDirections;
             }
-            return returnigMessage;
+            return returningMessage;
         }
 
         public setPlugin(
@@ -332,15 +329,15 @@ namespace LeafletProvider.Feature {
                 apiKey
             );
             this._providerName = provider;
-            const returnigMessage =
+            const returningMessage =
                 new OSFramework.OSStructures.ReturnMessage();
             if (this._hasDirectionsRenderer()) {
-                returnigMessage.isSuccess = true;
+                returningMessage.isSuccess = true;
             } else {
-                returnigMessage.code =
+                returningMessage.code =
                     OSFramework.Enum.ErrorCodes.API_FailedLoadingPlugin;
             }
-            return returnigMessage;
+            return returningMessage;
         }
 
         public setRoute(
@@ -353,7 +350,7 @@ namespace LeafletProvider.Feature {
             this._currentDuration = NaN;
 
             // Validate if the directionsRenderer exists
-            if (!this._hasDirectionsRenderer()) {
+            if (this._hasDirectionsRenderer() === false) {
                 returningMessage.code =
                     OSFramework.Enum.ErrorCodes.API_FailedNoPluginDirections;
                 return new Promise((resolve) => resolve(returningMessage));
@@ -369,7 +366,10 @@ namespace LeafletProvider.Feature {
             // Set the exclude object (Avoidance criteria)
             this._setExcludes(directionOptions.exclude);
 
-            this._directionsRenderer.on('routesfound', this._bindSetRoute);
+            this._directionsRenderer.on(
+                Constants.Directions.Events.routesfound,
+                this._bindSetRoute
+            );
 
             // Call the Plugin route mechanism to render the directions on the Map.
             this._directionsRenderer.route({});
@@ -377,7 +377,7 @@ namespace LeafletProvider.Feature {
             // Make sure the origin and the destination are both inside the waypoints array
             const waypts = [
                 directionOptions.originRoute,
-                ...JSON.parse(directionOptions.waypoints),
+                ...directionOptions.waypoints,
                 directionOptions.destinationRoute
             ];
 

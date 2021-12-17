@@ -68,8 +68,8 @@ namespace GoogleProvider.Feature {
         }
         public getTotalDistanceFromDirection(): Promise<number> {
             return new Promise((resolve) => {
-                // If the Map has the directions disabled return 0 (meters)
-                if (this._isEnabled === false) return 0;
+                // If no route has been set before requesting the distance return 0 (meters)
+                if (this._isEnabled === false) resolve(0);
 
                 const distance = this._directionsRenderer
                     .getDirections()
@@ -84,8 +84,8 @@ namespace GoogleProvider.Feature {
         }
         public getTotalDurationFromDirection(): Promise<number> {
             return new Promise((resolve) => {
-                // If the Map has the directions disabled return 0 (seconds)
-                if (this._isEnabled === false) return 0;
+                // If no route has been set before requesting the duration return 0 (meters)
+                if (this._isEnabled === false) resolve(0);
 
                 const duration = this._directionsRenderer
                     .getDirections()
