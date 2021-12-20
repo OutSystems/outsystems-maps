@@ -84,8 +84,9 @@ namespace MapAPI.HeatmapLayerManager {
                 map,
                 OSFramework.Enum.Feature.HeatmapLayer
             ) === false
-        )
+        ) {
             return;
+        }
         if (!map.hasHeatmapLayer(heatmapLayerId)) {
             const _heatmapLayer =
                 GoogleProvider.HeatmapLayer.HeatmapLayerFactory.MakeHeatmapLayer(

@@ -79,8 +79,9 @@ namespace MapAPI.FileLayerManager {
                 map,
                 OSFramework.Enum.Feature.FileLayer
             ) === false
-        )
+        ) {
             return;
+        }
         if (!map.hasFileLayer(fileLayerId)) {
             const _fileLayer =
                 GoogleProvider.FileLayer.FileLayerFactory.MakeFileLayer(

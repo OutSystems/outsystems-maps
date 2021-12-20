@@ -203,8 +203,9 @@ namespace MapAPI.DrawingToolsManager {
                 map,
                 OSFramework.Enum.Feature.DrawingTools
             ) === false
-        )
+        ) {
             return;
+        }
         if (!map.drawingTools) {
             const _drawingTools =
                 GoogleProvider.DrawingTools.DrawingToolsFactory.MakeDrawingTools(
