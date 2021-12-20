@@ -436,8 +436,8 @@ body.chrome .marker-popup-layout {
     text-align: center;
 }
 
-.marker-leaflet-icon-2 {
-    background: var(--marker-leaflet-icon-2);
+.marker-leaflet-icon-wp {
+    background: var(--marker-leaflet-icon-wp);
     text-align: center;
 }
 
