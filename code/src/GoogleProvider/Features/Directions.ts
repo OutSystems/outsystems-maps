@@ -131,7 +131,7 @@ namespace GoogleProvider.Feature {
             directionOptions: OSFramework.OSStructures.Directions.Options
         ): Promise<OSFramework.OSStructures.ReturnMessage> {
             const waypts: google.maps.DirectionsWaypoint[] =
-                this._waypointsCleanup(JSON.parse(directionOptions.waypoints));
+                this._waypointsCleanup(directionOptions.waypoints);
             return (
                 this._directionsService
                     .route(
