@@ -321,9 +321,9 @@ namespace LeafletProvider.Feature {
             provider: Constants.Directions.Provider | string,
             apiKey: string
         ): OSFramework.OSStructures.ReturnMessage {
-            if (this._directionsRenderer !== undefined) {
-                this.removeRoute();
-            }
+            // If there is already a plugin for directions, remove it and add a new one.
+            this._directionsRenderer && this.dispose();
+
             this._buildDirectionsRenderer(
                 Constants.Directions.Provider[provider] || provider,
                 apiKey
