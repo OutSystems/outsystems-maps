@@ -6,7 +6,7 @@ namespace OSFramework.OSStructures.Directions {
         public optimizeWaypoints: boolean;
         public originRoute: string;
         public travelMode: string;
-        public waypoints: string;
+        public waypoints: Array<string>;
     }
     /** Return Message that is sent to Service Studio */
     export class ExcludeCriteria {
