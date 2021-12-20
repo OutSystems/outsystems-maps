@@ -74,10 +74,13 @@ namespace MapAPI.FileLayerManager {
         configs: string
     ): OSFramework.FileLayer.IFileLayer {
         const map = GetMapByFileLayerId(fileLayerId);
-        OSFramework.Helper.ValidateFeatureProvider(
-            map,
-            OSFramework.Enum.Feature.FileLayer
-        );
+        if (
+            OSFramework.Helper.ValidateFeatureProvider(
+                map,
+                OSFramework.Enum.Feature.FileLayer
+            ) === false
+        )
+            return;
         if (!map.hasFileLayer(fileLayerId)) {
             const _fileLayer =
                 GoogleProvider.FileLayer.FileLayerFactory.MakeFileLayer(

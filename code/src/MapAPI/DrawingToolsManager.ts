@@ -198,10 +198,13 @@ namespace MapAPI.DrawingToolsManager {
         configs: string
     ): OSFramework.DrawingTools.IDrawingTools {
         const map = GetMapByDrawingToolsId(drawingToolsId);
-        OSFramework.Helper.ValidateFeatureProvider(
-            map,
-            OSFramework.Enum.Feature.DrawingTools
-        );
+        if (
+            OSFramework.Helper.ValidateFeatureProvider(
+                map,
+                OSFramework.Enum.Feature.DrawingTools
+            ) === false
+        )
+            return;
         if (!map.drawingTools) {
             const _drawingTools =
                 GoogleProvider.DrawingTools.DrawingToolsFactory.MakeDrawingTools(
