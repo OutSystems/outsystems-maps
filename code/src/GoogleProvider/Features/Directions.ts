@@ -66,33 +66,37 @@ namespace GoogleProvider.Feature {
 
             return legs;
         }
-        public getTotalDistanceFromDirection(): number {
-            // If the Map has the directions disabled return 0 (meters)
-            if (this._isEnabled === false) return 0;
+        public getTotalDistanceFromDirection(): Promise<number> {
+            return new Promise((resolve) => {
+                // If no route has been set before requesting the distance return 0 (meters)
+                if (this._isEnabled === false) resolve(0);
 
-            const distance = this._directionsRenderer
-                .getDirections()
-                .routes[0].legs.reduce((acc, curr) => {
-                    // For each leg, sum the distance values (in meters)
-                    acc += curr.distance.value;
-                    return acc;
-                }, 0);
+                const distance = this._directionsRenderer
+                    .getDirections()
+                    .routes[0].legs.reduce((acc, curr) => {
+                        // For each leg, sum the distance values (in meters)
+                        acc += curr.distance.value;
+                        return acc;
+                    }, 0);
 
-            return distance;
+                resolve(distance);
+            });
         }
-        public getTotalDurationFromDirection(): number {
-            // If the Map has the directions disabled return 0 (seconds)
-            if (this._isEnabled === false) return 0;
+        public getTotalDurationFromDirection(): Promise<number> {
+            return new Promise((resolve) => {
+                // If no route has been set before requesting the duration return 0 (meters)
+                if (this._isEnabled === false) resolve(0);
 
-            const duration = this._directionsRenderer
-                .getDirections()
-                .routes[0].legs.reduce((acc, curr) => {
-                    // For each leg, sum the duration values (in seconds)
-                    acc += curr.duration.value;
-                    return acc;
-                }, 0);
+                const duration = this._directionsRenderer
+                    .getDirections()
+                    .routes[0].legs.reduce((acc, curr) => {
+                        // For each leg, sum the duration values (in seconds)
+                        acc += curr.duration.value;
+                        return acc;
+                    }, 0);
 
-            return duration;
+                resolve(duration);
+            });
         }
         public removeRoute(): OSFramework.OSStructures.ReturnMessage {
             this.setState(false);
@@ -106,34 +110,47 @@ namespace GoogleProvider.Feature {
                 };
             }
         }
+
+        /**
+         * SetPlugin for GoogleMaps provider is not needed.
+         */
+        public setPlugin(
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            providerName: string,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            apiKey: string
+        ): OSFramework.OSStructures.ReturnMessage {
+            OSFramework.Helper.ThrowError(
+                this._map,
+                OSFramework.Enum.ErrorCodes.GEN_NoPluginDirectionsNeeded
+            );
+            return;
+        }
+
         public setRoute(
-            originRoute: string,
-            destinationRoute: string,
-            travelMode: google.maps.TravelMode,
-            waypoints: string,
-            optimizeWaypoints: boolean,
-            avoidTolls: boolean,
-            avoidHighways: boolean,
-            avoidFerries: boolean
+            directionOptions: OSFramework.OSStructures.Directions.Options
         ): Promise<OSFramework.OSStructures.ReturnMessage> {
             const waypts: google.maps.DirectionsWaypoint[] =
-                this._waypointsCleanup(JSON.parse(waypoints));
+                this._waypointsCleanup(JSON.parse(directionOptions.waypoints));
             return (
                 this._directionsService
                     .route(
                         {
                             origin: {
-                                query: originRoute
+                                query: directionOptions.originRoute
                             },
                             destination: {
-                                query: destinationRoute
+                                query: directionOptions.destinationRoute
                             },
                             waypoints: waypts,
-                            optimizeWaypoints,
-                            travelMode,
-                            avoidTolls,
-                            avoidHighways,
-                            avoidFerries
+                            optimizeWaypoints:
+                                directionOptions.optimizeWaypoints,
+                            travelMode:
+                                directionOptions.travelMode as google.maps.TravelMode,
+                            avoidTolls: directionOptions.exclude.avoidTolls,
+                            avoidHighways:
+                                directionOptions.exclude.avoidHighways,
+                            avoidFerries: directionOptions.exclude.avoidFerries
                         },
                         (response, status) => {
                             if (status === 'OK') {
