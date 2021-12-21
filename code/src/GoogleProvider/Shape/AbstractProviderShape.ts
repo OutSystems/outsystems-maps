@@ -81,7 +81,7 @@ namespace GoogleProvider.Shape {
                         handler instanceof
                         OSFramework.Event.Shape.ShapeProviderEvent
                     ) {
-                        // Take care of the provider events
+                        // Take care of the shape_changed events
                         if (
                             eventName ===
                             OSFramework.Helper.Constants.shapeChangedEvent
@@ -120,7 +120,7 @@ namespace GoogleProvider.Shape {
                                 eventName
                             ) !== -1
                         ) {
-                            // Take care of the custom provider events
+                            // Take care of the custom provider events (the special events are not relative to the provider but to its path)
                             this._addedEvents.push(eventName);
                             this.providerObjectListener.addListener(
                                 eventName,
@@ -134,6 +134,18 @@ namespace GoogleProvider.Shape {
                                     );
                                 }
                             );
+                        } else {
+                            // Provider events (the provider events are relative to the provider)
+                            this._addedEvents.push(eventName);
+                            this.provider.addListener(eventName, () => {
+                                this.shapeEvents.trigger(
+                                    // EventType
+                                    OSFramework.Event.Shape.ShapeEventType
+                                        .ProviderEvent,
+                                    // EventName
+                                    eventName
+                                );
+                            });
                         }
                     }
                 }

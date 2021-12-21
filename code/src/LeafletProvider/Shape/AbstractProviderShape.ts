@@ -139,6 +139,7 @@ namespace LeafletProvider.Shape {
                             );
                         } else if (
                             // If the eventName is included inside the ProviderSpecialEvents then add the listener
+                            Constants.Shape.Events.indexOf(eventName) !== -1 ||
                             Constants.Shape.ProviderSpecialEvents.indexOf(
                                 eventName
                             ) !== -1
