@@ -193,12 +193,19 @@ namespace MapAPI.DrawingToolsManager {
      * @param {string} configs configurations for the DrawingTools in JSON format
      * @returns {*}  {DrawingTools.IDrawingTools} instance of the DrawingTools
      */
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     export function CreateDrawingTools(
         drawingToolsId: string,
         configs: string
     ): OSFramework.DrawingTools.IDrawingTools {
         const map = GetMapByDrawingToolsId(drawingToolsId);
+        if (
+            OSFramework.Helper.ValidateFeatureProvider(
+                map,
+                OSFramework.Enum.Feature.DrawingTools
+            ) === false
+        ) {
+            return;
+        }
         if (!map.drawingTools) {
             const _drawingTools =
                 LeafletProvider.DrawingTools.DrawingToolsFactory.MakeDrawingTools(

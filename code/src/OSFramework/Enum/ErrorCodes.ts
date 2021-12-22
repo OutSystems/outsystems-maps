@@ -17,6 +17,7 @@ namespace OSFramework.Enum {
         CFG_InvalidSearchPlacesSearchArea = 'MAPS-CFG-10002',
         CFG_MaximumCountriesNumber = 'MAPS-CFG-10003',
         CFG_InvalidInputSearchPlaces = 'MAPS-CFG-10004',
+        CFG_InvalidTravelMode = 'MAPS-CFG-04001',
 
         // Error Codes - LIB errors - Specific errors generated when consuming a third party lib / providers
         LIB_InvalidApiKeyMap = 'MAPS-LIB-01001',
@@ -37,6 +38,8 @@ namespace OSFramework.Enum {
         API_FailedGettingCircleShape = 'MAPS-API-05002',
         API_FailedGettingShapeCenter = 'MAPS-API-05003',
         API_FailedGettingShapeRadius = 'MAPS-API-05004',
+        API_FailedLoadingPlugin = 'MAPS-API-04002',
+        API_FailedNoPluginDirections = 'MAPS-API-04003',
 
         // Error Codes - GENeral error - General or internal Errors of the component. In the situation of simple components without different features/sections inside it, the GEN acronym should be used.
         GEN_InvalidChangePropertyMap = 'MAPS-GEN-01001',
@@ -54,6 +57,7 @@ namespace OSFramework.Enum {
         GEN_InvalidChangePropertyHeatmapLayer = 'MAPS-GEN-08001',
         GEN_InvalidChangePropertyMarkerClusterer = 'MAPS-GEN-09001',
         GEN_InvalidChangePropertySearchPlaces = 'MAPS-GEN-10001',
-        GEN_UnsupportedEventSearchPlaces = 'MAPS-GEN-10002'
+        GEN_UnsupportedEventSearchPlaces = 'MAPS-GEN-10002',
+        GEN_NoPluginDirectionsNeeded = 'MAPS-GEN-04001'
     }
 }

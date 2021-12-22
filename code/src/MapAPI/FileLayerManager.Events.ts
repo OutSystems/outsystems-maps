@@ -53,9 +53,25 @@ namespace MapAPI.FileLayerManager.Events {
         eventName: OSFramework.Event.FileLayer.FileLayersEventType,
         callback: OSFramework.Callbacks.FileLayer.Event
     ): void {
-        const fileLayer = GetFileLayerById(fileLayerId);
-        fileLayer.fileLayerEvents.addHandler(eventName, callback);
-        fileLayer.refreshProviderEvents();
+        const fileLayer = GetFileLayerById(fileLayerId, false);
+        if (fileLayer === undefined) {
+            if (_pendingEvents.has(fileLayerId)) {
+                _pendingEvents.get(fileLayerId).push({
+                    event: eventName,
+                    cb: callback
+                });
+            } else {
+                _pendingEvents.set(fileLayerId, [
+                    {
+                        event: eventName,
+                        cb: callback
+                    }
+                ]);
+            }
+        } else {
+            fileLayer.fileLayerEvents.addHandler(eventName, callback);
+            fileLayer.refreshProviderEvents();
+        }
     }
 
     /**
