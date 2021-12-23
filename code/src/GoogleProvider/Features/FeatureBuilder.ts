@@ -99,7 +99,9 @@ namespace GoogleProvider.Feature {
 
             this._makeTrafficLayer(config.showTraffic)
                 ._makeZoom(config.zoom)
-                ._makeCenter(config.center)
+                ._makeCenter(
+                    config.center as OSFramework.OSStructures.OSMap.Coordinates
+                )
                 ._makeDirections()
                 ._makeOffset(config.offset)
                 ._makeMarkerClusterer(config.markerClusterer)

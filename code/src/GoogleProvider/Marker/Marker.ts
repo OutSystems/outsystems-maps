@@ -9,9 +9,7 @@ namespace GoogleProvider.Marker {
         >
         implements IMarkerGoogle
     {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        private _advancedFormatObj: any;
-        private _listeners: Array<string>;
+        private _addedEvents: Array<string>;
 
         constructor(
             map: OSFramework.OSMap.IMap,
@@ -26,9 +24,40 @@ namespace GoogleProvider.Marker {
                 type,
                 new Configuration.Marker.GoogleMarkerConfig(configs)
             );
+            this._addedEvents = [];
         }
 
-        protected _buildMarkerOptions(): Promise<google.maps.MarkerOptions> {
+        private _setIcon(url: string): void {
+            let scaledSize: google.maps.Size;
+            // If the size of the icon is defined by a valid width and height, use those values
+            // Else If nothing is passed or the icon size has the width or the height equal to 0, use the full image size
+            if (this.config.iconWidth > 0 && this.config.iconHeight > 0) {
+                scaledSize = new google.maps.Size(
+                    this.config.iconWidth,
+                    this.config.iconHeight
+                );
+            }
+            // Update the icon using the previous configurations
+            const icon = {
+                url,
+                scaledSize
+            };
+            // Set the icon to the Marker provider
+            this.provider.setIcon(icon);
+        }
+
+        /**
+         * This method is usefull to be used by the changeProperty method only
+         * As it requires a config update before being able to use it
+         */
+        private _setIconSize(): void {
+            // The width and the height of the icon will be acquired using the config.iconWidth and config.iconHeight
+            // Therefore, just by calling the _setIcon private method we are going to set the same iconUrl that is already being used
+            // But the icon will be updated and will be using the new size
+            this._setIcon(this.config.iconUrl);
+        }
+
+        protected _buildMarkerPosition(): Promise<google.maps.MarkerOptions> {
             const markerOptions: google.maps.MarkerOptions = {};
             // If the marker has no location at the moment of its provider creation, then throw an error
             // If the marker has its location = "" at the moment of its provider creation, then the location value will be the default -> OutSystems, Boston US
@@ -41,16 +70,6 @@ namespace GoogleProvider.Marker {
                 );
                 return;
             } else {
-                // Take care of the advancedFormat options which can override the previous configuration
-                this._advancedFormatObj = OSFramework.Helper.JsonFormatter(
-                    this.config.advancedFormat
-                );
-                for (const property in this._advancedFormatObj) {
-                    const value = this._advancedFormatObj[property];
-                    this.config[property] = value;
-                    markerOptions[property] = value;
-                }
-
                 // Let's return a promise that will be resolved or rejected according to the result
                 return new Promise((resolve, reject) => {
                     Helper.Conversions.ConvertToCoordinates(
@@ -69,83 +88,52 @@ namespace GoogleProvider.Marker {
             }
         }
 
-        // This method will be removed as soon as the markers by input parameter get deprecated
-        protected _setMarkerEvents(events?: Array<string>): void {
-            if (this._listeners === undefined) this._listeners = [];
+        protected _setMarkerEvents(): void {
             // Make sure the listeners get removed before adding the new ones
-            this._listeners.forEach((eventListener, index) => {
+            this._addedEvents.forEach((eventListener, index) => {
                 google.maps.event.clearListeners(this.provider, eventListener);
-                this._listeners.splice(index, 1);
+                this._addedEvents.splice(index, 1);
             });
 
-            // OnClick Event
+            // OnClick Event (OS accelerator)
             if (
                 this.markerEvents.hasHandlers(
                     OSFramework.Event.Marker.MarkerEventType.OnClick
                 )
             ) {
-                this._provider.addListener('click', () => {
-                    this.markerEvents.trigger(
-                        OSFramework.Event.Marker.MarkerEventType.OnClick
-                    );
-                });
-            }
-            // OnMouseOver Event
-            if (
-                this.markerEvents.hasHandlers(
-                    OSFramework.Event.Marker.MarkerEventType.OnMouseover
-                )
-            ) {
-                this._provider.addListener('mouseover', () => {
-                    this.markerEvents.trigger(
-                        OSFramework.Event.Marker.MarkerEventType.OnMouseover
-                    );
-                });
-            }
-            // OnMouseOut Event
-            if (
-                this.markerEvents.hasHandlers(
-                    OSFramework.Event.Marker.MarkerEventType.OnMouseout
-                )
-            ) {
-                this._provider.addListener('mouseout', () => {
-                    this.markerEvents.trigger(
-                        OSFramework.Event.Marker.MarkerEventType.OnMouseout
-                    );
-                });
-            }
-            // OnEventTriggered Event (other events that can be set on the advancedFormat of the Marker)
-            if (
-                this.markerEvents.hasHandlers(
-                    OSFramework.Event.Marker.MarkerEventType.OnEventTriggered
-                ) &&
-                events !== undefined
-            ) {
-                events.forEach((eventName: string) => {
-                    this._listeners.push(eventName);
-                    this._provider.addListener(eventName, () => {
+                this._provider.addListener(
+                    'click',
+                    (e: google.maps.MapMouseEvent) => {
+                        const coordinates =
+                            new OSFramework.OSStructures.OSMap.OSCoordinates(
+                                e.latLng.lat(),
+                                e.latLng.lng()
+                            );
                         this.markerEvents.trigger(
-                            OSFramework.Event.Marker.MarkerEventType
-                                .OnEventTriggered,
-                            eventName
+                            // EventType
+                            OSFramework.Event.Marker.MarkerEventType.OnClick,
+                            // EventName
+                            OSFramework.Event.Marker.MarkerEventType.OnClick,
+                            // Coords
+                            JSON.stringify(coordinates)
                         );
-                    });
-                });
+                    }
+                );
             }
 
+            // Other Provider Events (OS Marker Event Block)
             // Any events that got added to the markerEvents via the API Subscribe method will have to be taken care here
             // If the Event type of each handler is MarkerProviderEvent, we want to make sure to add that event to the listeners of the google marker provider (e.g. click, dblclick, contextmenu, etc)
-            // Otherwise, we don't want to add them to the google provider listeners (e.g. OnInitialize, OnTriggeredEvent, etc)
             this.markerEvents.handlers.forEach(
                 (handler: OSFramework.Event.IEvent<string>, eventName) => {
                     if (
                         handler instanceof
                         OSFramework.Event.Marker.MarkerProviderEvent
                     ) {
-                        this._listeners.push(eventName);
+                        this._addedEvents.push(eventName);
                         this._provider.addListener(
                             // Name of the event (e.g. click, dblclick, contextmenu, etc)
-                            eventName,
+                            Constants.Marker.ProviderEventNames[eventName],
                             // Callback CAN have an attribute (e) which is of the type MapMouseEvent
                             // Trigger the event by specifying the ProviderEvent MarkerType and the coords (lat, lng) if the callback has the attribute MapMouseEvent
                             (e?: google.maps.MapMouseEvent) => {
@@ -179,21 +167,17 @@ namespace GoogleProvider.Marker {
             return OSFramework.Helper.Constants.markerTag;
         }
 
-        public get providerEvents(): Array<string> {
-            return Constants.Marker.Events;
-        }
-
         public build(): void {
             super.build();
 
-            // First build all MarkerOptions
+            // First build the Marker Position
             // Then, create the provider (Google maps Marker)
             // Then, set Marker events
             // Finally, refresh the Map
-            const markerOptions = this._buildMarkerOptions();
-            // If markerOptions is undefined (should be a promise) -> don't create the marker
-            if (markerOptions !== undefined) {
-                this._buildMarkerOptions()
+            const markerPosition = this._buildMarkerPosition();
+            // If markerPosition is undefined (should be a promise) -> don't create the marker
+            if (markerPosition !== undefined) {
+                markerPosition
                     .then((markerOptions) => {
                         this._provider = new google.maps.Marker({
                             ...this.getProviderConfig(),
@@ -202,9 +186,7 @@ namespace GoogleProvider.Marker {
                         });
 
                         // We can only set the events on the provider after its creation
-                        this._setMarkerEvents(
-                            this._advancedFormatObj.markerEvents
-                        );
+                        this._setMarkerEvents();
 
                         // Finish build of Marker
                         this.finishBuild();
@@ -253,16 +235,17 @@ namespace GoogleProvider.Marker {
                                 );
                             });
                         return;
-                    case OSFramework.Enum.OS_Config_Map.advancedFormat:
-                        value = OSFramework.Helper.JsonFormatter(value);
-                        // Make sure the MapEvents that are associated in the advancedFormat get updated
-                        this._setMarkerEvents(value.markerEvents);
-                        this._provider.setOptions(value);
-                        return this.map.refresh();
                     case OSFramework.Enum.OS_Config_Marker.allowDrag:
                         return this._provider.setDraggable(value);
+                    case OSFramework.Enum.OS_Config_Marker.iconHeight:
+                        this._setIconSize();
+                        return;
                     case OSFramework.Enum.OS_Config_Marker.iconUrl:
-                        return this._provider.setIcon(value);
+                        this._setIcon(value);
+                        return;
+                    case OSFramework.Enum.OS_Config_Marker.iconWidth:
+                        this._setIconSize();
+                        return;
                     case OSFramework.Enum.OS_Config_Marker.label:
                         return this._provider.setLabel(value);
                     case OSFramework.Enum.OS_Config_Marker.title:
@@ -281,6 +264,10 @@ namespace GoogleProvider.Marker {
 
         public refreshProviderEvents(): void {
             if (this.isReady) this._setMarkerEvents();
+        }
+
+        public validateProviderEvent(eventName: string): boolean {
+            return Constants.Marker.ProviderEventNames[eventName] !== undefined;
         }
     }
 }

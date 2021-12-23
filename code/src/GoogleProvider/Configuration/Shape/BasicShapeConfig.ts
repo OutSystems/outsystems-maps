@@ -4,7 +4,8 @@
 namespace GoogleProvider.Configuration.Shape {
     export class BasicShapeConfig
         extends OSFramework.Configuration.AbstractConfiguration
-        implements OSFramework.Configuration.IConfigurationShape {
+        implements OSFramework.Configuration.IConfigurationShape
+    {
         public allowDrag: boolean;
         public allowEdit: boolean;
         public locations: string;

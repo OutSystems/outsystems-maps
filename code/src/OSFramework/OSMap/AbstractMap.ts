@@ -17,6 +17,7 @@ namespace OSFramework.OSMap {
         private _mapType: Enum.MapType;
         private _markers: Map<string, Marker.IMarker>;
         private _markersSet: Set<Marker.IMarker>;
+        private _providerType: Enum.ProviderType;
         private _shapes: Map<string, Shape.IShape>;
         private _shapesSet: Set<Shape.IShape>;
         private _uniqueId: string;
@@ -25,7 +26,12 @@ namespace OSFramework.OSMap {
         protected _features: Feature.ExposedFeatures;
         protected _provider: W;
 
-        constructor(uniqueId: string, config: Z, mapType: Enum.MapType) {
+        constructor(
+            uniqueId: string,
+            providerType: Enum.ProviderType,
+            config: Z,
+            mapType: Enum.MapType
+        ) {
             this._uniqueId = uniqueId;
             this._fileLayers = new Map<string, FileLayer.IFileLayer>();
             this._heatmapLayers = new Map<string, HeatmapLayer.IHeatmapLayer>();
@@ -39,10 +45,9 @@ namespace OSFramework.OSMap {
             this._isReady = false;
             this._mapEvents = new Event.OSMap.MapEventsManager(this);
             this._mapType = mapType;
+            this._providerType = providerType;
         }
         public abstract get mapTag(): string;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public abstract get supportedProviderEvents(): any;
 
         protected get shapes(): Shape.IShape[] {
             return Array.from(this._shapesSet);
@@ -90,6 +95,10 @@ namespace OSFramework.OSMap {
 
         public get provider(): W {
             return this._provider;
+        }
+
+        public get providerType(): Enum.ProviderType {
+            return this._providerType;
         }
 
         public get uniqueId(): string {
@@ -237,6 +246,14 @@ namespace OSFramework.OSMap {
             return this._markers.has(markerId);
         }
 
+        public hasMarkerClusterer(): boolean {
+            return (
+                this._features &&
+                this._features.markerClusterer &&
+                this._features.markerClusterer.isEnabled
+            );
+        }
+
         public hasShape(shapeId: string): boolean {
             return this._shapes.has(shapeId);
         }
@@ -271,6 +288,10 @@ namespace OSFramework.OSMap {
                 return;
             }
             this._markers.forEach((marker) => {
+                // Make sure the marker is removed from any existent cluster
+                // But first ensure that map.features exist as well as the features.markerClusterer
+                this.hasMarkerClusterer() &&
+                    this.features.markerClusterer.removeMarker(marker);
                 marker.dispose();
             });
 
@@ -368,7 +389,9 @@ namespace OSFramework.OSMap {
                 const marker = this._markers.get(markerId);
 
                 // Make sure the marker is removed from any existent cluster
-                this.features.markerClusterer.removeMarker(marker);
+                // But first ensure that map.features exist as well as the features.markerClusterer
+                this.hasMarkerClusterer() &&
+                    this.features.markerClusterer.removeMarker(marker);
                 marker.dispose();
                 this._markers.delete(markerId);
                 this._markersSet.delete(marker);
@@ -401,10 +424,12 @@ namespace OSFramework.OSMap {
             }
         }
 
-        public validateProviderEvent(eventName: string): boolean {
-            return this.supportedProviderEvents.indexOf(eventName) !== -1;
+        public updateHeight(): void {
+            // Because only some specific map providers like Leaflet Provider need to update or refresh the map after changing its height,
+            // this function doesn't need any logic
+            // but it should be overridden on the respective providers that might need to update the map after changing the height
+            return;
         }
-
         public abstract changeDrawingToolsProperty(
             drawingToolsId: string,
             propertyName: string,
@@ -442,5 +467,6 @@ namespace OSFramework.OSMap {
 
         public abstract refresh(): void;
         public abstract refreshProviderEvents(): void;
+        public abstract validateProviderEvent(eventName: string): boolean;
     }
 }

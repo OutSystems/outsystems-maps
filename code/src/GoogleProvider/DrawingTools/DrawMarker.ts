@@ -51,9 +51,9 @@ namespace GoogleProvider.DrawingTools {
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             configs: any
         ): OSFramework.Marker.IMarker {
-            const location = `${marker
+            const location = `${marker.getPosition().lat()},${marker
                 .getPosition()
-                .lat()},${marker.getPosition().lng()}`;
+                .lng()}`;
 
             // Join both the configs that were provided for the new marker element and the location that was provided by the DrawingTools markercomplete event
             const finalConfigs = { ...configs, location };

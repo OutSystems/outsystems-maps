@@ -26,8 +26,8 @@ namespace OSFramework.OSMap {
         /** Map provider */
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         provider: any;
-        /** Supported events from the Map provider */
-        supportedProviderEvents: Array<string>;
+        /** Map provider Type (google, leaflet) */
+        providerType: OSFramework.Enum.ProviderType;
         /** Id of the Map */
         uniqueId: string;
         /** Id of the Map widget */
@@ -172,6 +172,10 @@ namespace OSFramework.OSMap {
          */
         hasMarker(markerId: string): boolean;
         /**
+         * Checks if the Map has a the markerClusterer feature enabled
+         */
+        hasMarkerClusterer(): boolean;
+        /**
          * Checks if the Map has a specific Shape by giving a shapeId
          * @param shapeId id of the shape
          */
@@ -222,6 +226,10 @@ namespace OSFramework.OSMap {
          * @param shapeId id of the shape
          */
         removeShape(shapeId: string): void;
+        /**
+         * Updates the Height of the Map by refreshing/updating the provider
+         */
+        updateHeight(): void;
         /**
          * Check if the event name is valid for the provider events
          * @param eventName name of the event from provider

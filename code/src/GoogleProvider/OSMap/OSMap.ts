@@ -19,6 +19,7 @@ namespace GoogleProvider.OSMap {
         constructor(mapId: string, configs: any) {
             super(
                 mapId,
+                OSFramework.Enum.ProviderType.Google,
                 new Configuration.OSMap.GoogleMapConfig(configs),
                 OSFramework.Enum.MapType.Map
             );
@@ -102,7 +103,7 @@ namespace GoogleProvider.OSMap {
                 this.finishBuild();
 
                 // Make sure to change the center after the conversion of the location to coordinates
-                this.features.center.updateCenter(currentCenter);
+                this.features.center.updateCenter(currentCenter as string);
 
                 // Make sure the style is converted from an id to the correspondent JSON
                 this._provider.setOptions({
@@ -117,7 +118,6 @@ namespace GoogleProvider.OSMap {
             }
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         private _getProviderConfig(): google.maps.MapOptions {
             // Make sure the center has a default value before the conversion of the location to coordinates
             this.config.center = OSFramework.Helper.Constants.defaultMapCenter;
@@ -129,13 +129,12 @@ namespace GoogleProvider.OSMap {
             return this.config.getProviderConfig();
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         private _setMapEvents(events?: Array<string>): void {
             SharedComponents.RemoveEventsFromProvider(this);
 
             // OnEventTriggered Event (other events that can be set on the advancedFormat of the Map)
-            // We are deprecating the advancedFormat and the OnEventTriggered as well
-            // We might need to remove the following lines inside the If Statement
+            // We are deprecating the advancedFormat
+            // TO BE REMOVED SOON
             if (
                 this.mapEvents.hasHandlers(
                     OSFramework.Event.OSMap.MapEventType.OnEventTriggered
@@ -155,9 +154,9 @@ namespace GoogleProvider.OSMap {
                 });
             }
 
+            // Other Provider Events (OS Map Event Block)
             // Any events that got added to the mapEvents via the API Subscribe method will have to be taken care here
             // If the Event type of each handler is MapProviderEvent, we want to make sure to add that event to the listeners of the google maps provider (e.g. click, dblclick, contextmenu, etc)
-            // Otherwise, we don't want to add them to the google provider listeners (e.g. OnInitialize, OnError, OnTriggeredEvent)
             this.mapEvents.handlers.forEach(
                 (
                     handler: OSFramework.Event.IEvent<OSFramework.OSMap.IMap>,
@@ -170,7 +169,7 @@ namespace GoogleProvider.OSMap {
                         this._addedEvents.push(eventName);
                         this._provider.addListener(
                             // Name of the event (e.g. click, dblclick, contextmenu, etc)
-                            eventName,
+                            Constants.OSMap.ProviderEventNames[eventName],
                             // Callback CAN have an attribute (e) which is of the type MapMouseEvent
                             // Trigger the event by specifying the ProviderEvent MapType and the coords (lat, lng) if the callback has the attribute MapMouseEvent
                             (e?: google.maps.MapMouseEvent) => {
@@ -180,10 +179,12 @@ namespace GoogleProvider.OSMap {
                                     this,
                                     eventName,
                                     e !== undefined
-                                        ? JSON.stringify({
-                                              Lat: e.latLng.lat(),
-                                              Lng: e.latLng.lng()
-                                          })
+                                        ? JSON.stringify(
+                                              new OSFramework.OSStructures.OSMap.OSCoordinates(
+                                                  e.latLng.lat(),
+                                                  e.latLng.lng()
+                                              )
+                                          )
                                         : undefined
                                 );
                             }
@@ -193,16 +194,13 @@ namespace GoogleProvider.OSMap {
             );
         }
 
+        // Useful when using shared Component methods (Maps and SearchPlaces)
         public get addedEvents(): Array<string> {
             return this._addedEvents;
         }
 
         public get mapTag(): string {
             return OSFramework.Helper.Constants.mapTag;
-        }
-
-        public get supportedProviderEvents(): Array<string> {
-            return Constants.OSMap.Events;
         }
 
         public addDrawingTools(
@@ -480,11 +478,16 @@ namespace GoogleProvider.OSMap {
             this.features.offset.setOffset(this.features.offset.getOffset);
 
             // Repaint the marker Clusterers
-            this.features.markerClusterer.repaint();
+            this.hasMarkerClusterer() &&
+                this.features.markerClusterer.repaint();
         }
 
         public refreshProviderEvents(): void {
             if (this.isReady) this._setMapEvents();
+        }
+
+        public validateProviderEvent(eventName: string): boolean {
+            return Constants.OSMap.ProviderEventNames[eventName] !== undefined;
         }
     }
 }

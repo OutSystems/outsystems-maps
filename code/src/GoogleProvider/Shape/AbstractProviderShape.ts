@@ -5,17 +5,14 @@ namespace GoogleProvider.Shape {
     export abstract class AbstractProviderShape<
         T extends OSFramework.Configuration.IConfigurationShape,
         W extends google.maps.MVCObject
-    > extends OSFramework.Shape.AbstractShape<T> {
+    > extends OSFramework.Shape.AbstractShape<W, T> {
         private _shapeChangedEventTimeout: number;
-
-        protected _listeners: Array<string>;
-        protected _provider: W;
 
         private _resetShapeEvents(): void {
             // Make sure the listeners get removed before adding the new ones
-            this._listeners.forEach((eventListener, index) => {
+            this._addedEvents.forEach((eventListener, index) => {
                 google.maps.event.clearListeners(this.provider, eventListener);
-                this._listeners.splice(index, 1);
+                this._addedEvents.splice(index, 1);
             });
         }
 
@@ -55,7 +52,6 @@ namespace GoogleProvider.Shape {
         }
 
         protected _setShapeEvents(): void {
-            if (this._listeners === undefined) this._listeners = [];
             // Make sure the listeners get removed before adding the new ones
             this._resetShapeEvents();
 
@@ -85,27 +81,12 @@ namespace GoogleProvider.Shape {
                         handler instanceof
                         OSFramework.Event.Shape.ShapeProviderEvent
                     ) {
-                        this._listeners.push(eventName);
-                        this.provider.addListener(
-                            // Name of the event (e.g. dblclick, dragend, etc)
-                            eventName,
-                            () => {
-                                this.shapeEvents.trigger(
-                                    // EventType
-                                    OSFramework.Event.Shape.ShapeEventType
-                                        .ProviderEvent,
-                                    // EventName
-                                    eventName
-                                );
-                            }
-                        );
-
-                        // Take care of the provider events
+                        // Take care of the shape_changed events
                         if (
                             eventName ===
                             OSFramework.Helper.Constants.shapeChangedEvent
                         ) {
-                            this._listeners.push(eventName);
+                            this._addedEvents.push(eventName);
                             this.providerEventsList.forEach((event) =>
                                 this.providerObjectListener.addListener(
                                     event,
@@ -139,6 +120,8 @@ namespace GoogleProvider.Shape {
                                 eventName
                             ) !== -1
                         ) {
+                            // Take care of the custom provider events (the special events are not relative to the provider but to its path)
+                            this._addedEvents.push(eventName);
                             this.providerObjectListener.addListener(
                                 eventName,
                                 () => {
@@ -151,6 +134,18 @@ namespace GoogleProvider.Shape {
                                     );
                                 }
                             );
+                        } else {
+                            // Provider events (the provider events are relative to the provider)
+                            this._addedEvents.push(eventName);
+                            this.provider.addListener(eventName, () => {
+                                this.shapeEvents.trigger(
+                                    // EventType
+                                    OSFramework.Event.Shape.ShapeEventType
+                                        .ProviderEvent,
+                                    // EventName
+                                    eventName
+                                );
+                            });
                         }
                     }
                 }

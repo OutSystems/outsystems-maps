@@ -4,7 +4,8 @@ namespace OSFramework.DrawingTools {
         W,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         T extends Configuration.IConfigurationDrawingTools
-    > implements IDrawingTools {
+    > implements IDrawingTools
+    {
         /** Configuration reference */
         private _config: T;
         private _map: OSMap.IMap;
@@ -24,9 +25,8 @@ namespace OSFramework.DrawingTools {
             this._uniqueId = uniqueId;
             this._config = config;
             this._built = false;
-            this._drawingToolsEvents = new Event.DrawingTools.DrawingToolsEventsManager(
-                this
-            );
+            this._drawingToolsEvents =
+                new Event.DrawingTools.DrawingToolsEventsManager(this);
             this._tools = new Map<string, ITool>();
             this._toolsSet = new Set<ITool>();
             this._createElements = [];

@@ -4,7 +4,8 @@
 namespace GoogleProvider.Configuration.DrawingTools {
     export class DrawConfig
         extends OSFramework.Configuration.AbstractConfiguration
-        implements OSFramework.Configuration.IConfigurationTool {
+        implements OSFramework.Configuration.IConfigurationTool
+    {
         public allowDrag: boolean;
         public uniqueId: string;
 

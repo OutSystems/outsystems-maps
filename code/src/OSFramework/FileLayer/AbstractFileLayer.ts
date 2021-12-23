@@ -4,7 +4,8 @@ namespace OSFramework.FileLayer {
         W,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         T extends Configuration.IConfigurationFileLayer
-    > implements IFileLayer {
+    > implements IFileLayer
+    {
         /** Configuration reference */
         private _config: T;
         private _map: OSMap.IMap;

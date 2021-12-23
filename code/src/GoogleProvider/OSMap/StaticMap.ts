@@ -23,6 +23,7 @@ namespace GoogleProvider.OSMap {
         constructor(mapId: string, configs: any) {
             super(
                 mapId,
+                OSFramework.Enum.ProviderType.Google,
                 new Configuration.OSMap.GoogleStaticMapConfig(configs),
                 OSFramework.Enum.MapType.StaticMap
             );
@@ -30,7 +31,8 @@ namespace GoogleProvider.OSMap {
 
         private _getCenter(center?: string): string {
             // If the center paramater is undefined, then use the config.center
-            let position = center === undefined ? this.config.center : center;
+            let position =
+                center === undefined ? (this.config.center as string) : center;
             // If has markers use the first one's config location as the new position
             if (this.markers.length >= 1) {
                 position = this.markers[0].config.location;
@@ -117,7 +119,6 @@ namespace GoogleProvider.OSMap {
                 // Scale 2 will give the Map a better resolution
                 '&scale=' + 2 + 
                 '&size=' + this._size.width + 'x' + this._size.height;
-                /* eslint-enable prettier/prettier */
             image.onerror = () => {
                 // Check if needed
                 this.mapEvents.trigger(
@@ -131,20 +132,11 @@ namespace GoogleProvider.OSMap {
         }
 
         public get mapTag(): string {
-            // To be removed
-            // If the map has been built via the deprecated input parameter (SS) -> isStaticMap
-            if (this.config.staticMap) {
-                return OSFramework.Helper.Constants.mapTag;
-            }
             return OSFramework.Helper.Constants.staticMapTag;
         }
 
         public get addedEvents(): Array<string> {
             throw new Error('StaticMap provider has no events');
-        }
-
-        public get supportedProviderEvents(): Array<string> {
-            throw new Error('StaticMap provider has no supported events');
         }
 
         public addMarker(
@@ -321,6 +313,11 @@ namespace GoogleProvider.OSMap {
             throw new Error(
                 "Refresh Provider Events method can't be used on a StaticMap because Static Maps don't have events."
             );
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        public validateProviderEvent(eventName: string): boolean {
+            throw new Error('StaticMap provider has no supported events');
         }
     }
 }

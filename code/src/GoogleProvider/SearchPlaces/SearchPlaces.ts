@@ -167,6 +167,10 @@ namespace GoogleProvider.SearchPlaces {
                         .OnPlaceSelect
                 )
             ) {
+                // Add the event OnPlaceSelect into the addedEvents auxiliar list
+                this._addedEvents.push(
+                    Constants.SearchPlaces.Events.OnPlaceSelect
+                );
                 this._provider.addListener(
                     Constants.SearchPlaces.Events.OnPlaceSelect,
                     () => {
@@ -222,6 +226,7 @@ namespace GoogleProvider.SearchPlaces {
             return true;
         }
 
+        // Useful when using shared Component methods (Maps and SearchPlaces)
         public get addedEvents(): Array<string> {
             return this._addedEvents;
         }

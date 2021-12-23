@@ -4,7 +4,8 @@
 namespace GoogleProvider.Configuration.DrawingTools {
     export class DrawingToolsConfig
         extends OSFramework.Configuration.AbstractConfiguration
-        implements OSFramework.Configuration.IConfigurationDrawingTools {
+        implements OSFramework.Configuration.IConfigurationDrawingTools
+    {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public position: string;
         public uniqueId: string;

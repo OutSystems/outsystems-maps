@@ -4,14 +4,15 @@
 namespace GoogleProvider.Configuration.Marker {
     export class GoogleMarkerConfig
         extends OSFramework.Configuration.AbstractConfiguration
-        implements OSFramework.Configuration.IConfigurationMarker {
-        public advancedFormat: string;
+        implements OSFramework.Configuration.IConfigurationMarker
+    {
         public allowDrag: boolean;
+        public iconHeight: number;
         public iconUrl: string;
+        public iconWidth: number;
         public label: string;
         public location: string;
         public title: string;
-        public uniqueId: string;
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         constructor(config: any) {
@@ -20,15 +21,12 @@ namespace GoogleProvider.Configuration.Marker {
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public getProviderConfig(): any {
-            // eslint-disable-next-line prefer-const
-            let provider = {
-                advancedFormat: this.advancedFormat,
+            const provider = {
                 draggable: this.allowDrag,
                 icon: this.iconUrl,
                 label: this.label,
                 location: this.location,
-                title: this.title,
-                uniqueId: this.uniqueId
+                title: this.title
             };
 
             //Deleting all the undefined properties

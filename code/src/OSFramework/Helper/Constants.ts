@@ -6,8 +6,6 @@ namespace OSFramework.Helper.Constants {
     /************************** */
     /**       DATA BLOCKS       */
     /************************** */
-    /** Tag used to find Map */
-    export const mapTag = '[data-block="Maps.Map"]';
     /** Tag used to find Generic Markers */
     export const markerGeneric = '[data-block*="Marker.Marker"]';
     /** Tag used to find Marker */
@@ -35,6 +33,8 @@ namespace OSFramework.Helper.Constants {
     export const outsystemsWidgetTag = '[data-block]';
     /** Tag used to find StaticMap */
     export const staticMapTag = '[data-block="Maps.StaticMap"]';
+    /** Tag used to find Map */
+    export const mapTag = `[data-block*="Maps."]:not(${staticMapTag})`;
 
     /** Tag used to find the DrawingTools */
     export const drawingToolsTag = '[data-block="Drawing_Tools.Drawing_Tools"]';
@@ -110,4 +110,13 @@ namespace OSFramework.Helper.Constants {
     export const googleMapsApiMap = `${googleMapsApiURL}/js`;
     /** URL for GoogleMaps API to make use of the Google StaticMap */
     export const googleMapsApiStaticMap = `${googleMapsApiURL}/staticmap`;
+
+    /******************** */
+    /** URLs for Leaflet  */
+    /******************** */
+    export const openStreetMapTileLayer = {
+        url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+        attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    };
 }

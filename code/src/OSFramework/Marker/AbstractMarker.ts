@@ -8,7 +8,6 @@ namespace OSFramework.Marker {
     {
         /** Configuration reference */
         private _config: Configuration.IConfigurationMarker;
-        private _index: number;
         private _map: OSMap.IMap;
         private _uniqueId: string;
         private _widgetId: string;
@@ -32,8 +31,6 @@ namespace OSFramework.Marker {
             this._markerEvents = new Event.Marker.MarkerEventsManager(this);
         }
         public abstract get markerTag(): string;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public abstract get providerEvents(): any;
 
         public get config(): Configuration.IConfigurationMarker {
             return this._config;
@@ -71,7 +68,8 @@ namespace OSFramework.Marker {
 
             // If the marker is ready (has the provider defined) we need to add it into the marker cluster.
             // The validation to guarantee that the clusterer is activated for the map is being done inside the addMarker method from markerClusterer feature.
-            this._map.features.markerClusterer.addMarker(this);
+            this._map.hasMarkerClusterer() &&
+                this._map.features.markerClusterer.addMarker(this);
         }
 
         public build(): void {
@@ -113,10 +111,7 @@ namespace OSFramework.Marker {
             return this._config.getProviderConfig();
         }
 
-        public validateProviderEvent(eventName: string): boolean {
-            return this.providerEvents.indexOf(eventName) !== -1;
-        }
-
         public abstract refreshProviderEvents(): void;
+        public abstract validateProviderEvent(eventName: string): boolean;
     }
 }

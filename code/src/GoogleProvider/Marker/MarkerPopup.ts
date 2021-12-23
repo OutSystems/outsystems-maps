@@ -5,14 +5,15 @@ namespace GoogleProvider.Marker {
     export class MarkerPopup
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         extends Marker
-        implements OSFramework.Marker.IMarkerPopup {
+        implements OSFramework.Marker.IMarkerPopup
+    {
         private _contentString: string;
 
-        protected _setMarkerEvents(events?: Array<string>): void {
-            super._setMarkerEvents(events);
+        protected _setMarkerEvents(): void {
+            super._setMarkerEvents();
 
             // Open the popup when the user clicks on the Marker
-            // To close the Marker use the ESC or the "x" on the top right corner of the popup
+            // To close the Marker click on it and then use the ESC or the "x" on the top right corner of the popup
             // Or use the API method - closePopup()
             this._provider.addListener('click', () => {
                 this.refreshPopupContent();
