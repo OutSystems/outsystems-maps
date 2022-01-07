@@ -45,7 +45,7 @@ namespace GoogleProvider.DrawingTools {
             return OSFramework.Helper.Constants.drawingRectangleCompleted;
         }
 
-        protected get options(): google.maps.RectangleOptions {
+        public get options(): google.maps.RectangleOptions {
             return this.drawingTools.provider.get('rectangleOptions');
         }
 

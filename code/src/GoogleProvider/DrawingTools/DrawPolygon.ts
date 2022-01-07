@@ -25,7 +25,7 @@ namespace GoogleProvider.DrawingTools {
             return OSFramework.Helper.Constants.drawingPolygonCompleted;
         }
 
-        protected get options(): google.maps.PolygonOptions {
+        public get options(): google.maps.PolygonOptions {
             return this.drawingTools.provider.get('polygonOptions');
         }
 

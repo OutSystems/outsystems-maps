@@ -2,36 +2,115 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace LeafletProvider.DrawingTools {
+    class ToolsList {
+        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+        public circle: boolean | any;
+        public circleMarker: boolean;
+        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+        public marker: boolean | any;
+        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+        public polygon: boolean | any;
+        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+        public polyline: boolean | any;
+        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+        public rectangle: boolean | any;
+
+        constructor() {
+            this.circleMarker = false; // this tool isn't provided by our experience
+            this.circle = false;
+            this.marker = false;
+            this.polygon = false;
+            this.polyline = false;
+            this.rectangle = false;
+        }
+    }
+
     export class DrawingTools extends OSFramework.DrawingTools
         .AbstractDrawingTools<
-        google.maps.drawing.DrawingManager,
+        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+        any,
         OSFramework.Configuration.IConfigurationDrawingTools
     > {
+        // FeatureGroup <any>: as required by Leaflet
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        private _toolsGroup: L.FeatureGroup<any>;
         protected _provider: google.maps.drawing.DrawingManager;
+
         constructor(
             map: OSFramework.OSMap.IMap,
             drawingToolsId: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
+            configs: Configuration.DrawingTools.DrawingToolsConfig
         ) {
             super(
                 map,
                 drawingToolsId,
                 new Configuration.DrawingTools.DrawingToolsConfig(configs)
             );
+
+            this._toolsGroup = new L.FeatureGroup();
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        private _addCompletedEventHandler(event: any): void {
+            const toolType = event.layerType;
+
+            this.tools
+                .filter((element) => element.type === toolType)
+                .forEach((element) => element.addCompletedEvent(event));
+        }
+
+        private _getDrawingToolsPosition(
+            position: string
+        ): Constants.DrawingTools.Positions {
+            if (Constants.DrawingTools.Positions[position] !== undefined) {
+                return Constants.DrawingTools.Positions[position];
+            } else {
+                OSFramework.Helper.ThrowError(
+                    this.map,
+                    OSFramework.Enum.ErrorCodes.CFG_InvalidDrawingToolsPosition,
+                    `${position}`
+                );
+                return;
+            }
+        }
+
+        //TODO: create the return structure
+        private _getTools(): ToolsList {
+            const _tools = new ToolsList();
+            this.tools.forEach((tool) => {
+                switch (tool.type) {
+                    case OSFramework.Enum.DrawingToolsTypes.Circle:
+                        _tools.circle = tool.options || {};
+                        break;
+                    case OSFramework.Enum.DrawingToolsTypes.Marker:
+                        _tools.marker = tool.options || {};
+
+                        break;
+                    case OSFramework.Enum.DrawingToolsTypes.Polygon:
+                        _tools.polygon = tool.options || {};
+                        break;
+                    case OSFramework.Enum.DrawingToolsTypes.Polyline:
+                        _tools.polyline = tool.options || {};
+
+                        break;
+                    case OSFramework.Enum.DrawingToolsTypes.Rectangle:
+                        _tools.rectangle = tool.options || {};
+                        break;
+                    default:
+                        break;
+                }
+            });
+
+            return _tools;
         }
 
         private _refreshDrawingModes(): void {
-            const drawingControlOptions = this.provider.get(
-                'drawingControlOptions'
-            );
-            this.provider.setOptions({
-                drawingMode: null,
-                drawingControlOptions: {
-                    ...drawingControlOptions,
-                    drawingModes: this.tools.map((tool) => tool.type)
-                }
-            });
+            const drawingOptions = this.provider.options;
+            const finalDrawingOptions = {
+                ...drawingOptions,
+                draw: this._getTools()
+            };
+            this.provider.setDrawingOptions(finalDrawingOptions.draw);
         }
 
         private _refreshDrawingTools(): void {
@@ -39,14 +118,18 @@ namespace LeafletProvider.DrawingTools {
             this._setDrawingToolsEvents();
             // After adding/removing a new Tool we need to refresh the drawingModes to add the new tool into the drawingtools box
             this._refreshDrawingModes();
+            this.map.provider.addControl(this._provider);
         }
 
         private _setDrawingToolsEvents(): void {
             // Make sure the listeners get removed before adding the new ones
-            google.maps.event.clearInstanceListeners(this.provider);
+            this.map.provider.off('draw:created');
 
             // Add the handler that will create the shape/marker element and remove the overlay created by the drawing tool on the map
-            this.tools.forEach((tool) => tool.addCompletedEvent());
+            this.map.provider.on(
+                'draw:created',
+                this._addCompletedEventHandler.bind(this)
+            );
         }
 
         protected get controlOptions(): google.maps.drawing.DrawingControlOptions {
@@ -85,22 +168,20 @@ namespace LeafletProvider.DrawingTools {
             const configs: OSFramework.Configuration.IConfigurationDrawingTools =
                 this.getProviderConfig();
 
-            this._provider = new google.maps.drawing.DrawingManager({
-                drawingMode: null,
-                drawingControl: true,
-                drawingControlOptions: {
-                    position: parseInt(
-                        google.maps.ControlPosition[configs.position]
-                    ),
-                    drawingModes: this.tools.map(
-                        (tool) => OSFramework.Enum.DrawingToolsTypes[tool.type]
-                    )
+            this.map.provider.addLayer(this._toolsGroup);
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-ignore
+            this._provider = new L.Control.Draw({
+                position:
+                    this._getDrawingToolsPosition(configs.position) ||
+                    Constants.DrawingTools.Positions.TOP_LEFT,
+                edit: {
+                    featureGroup: this._toolsGroup,
+                    edit: false,
+                    remove: false
                 },
-                polylineOptions: {},
-                markerOptions: {}
+                draw: this._getTools()
             });
-
-            this._provider.setMap(this.map.provider);
             this.tools.forEach((tool) => tool.build());
             // Set all the events for the DrawingTools provider and the events for the tools that are contained on the DrawingTools box
             // After adding a new Tool we need to refresh the drawingModes to add the new tool into the drawingtools box
@@ -116,11 +197,11 @@ namespace LeafletProvider.DrawingTools {
             if (this.isReady) {
                 switch (propValue) {
                     case OSFramework.Enum.OS_Config_DrawingTools.position:
-                        this.controlOptions = {
-                            position: parseInt(
-                                google.maps.ControlPosition[value]
-                            )
-                        };
+                        // eslint-disable-next-line no-case-declarations
+                        const positionValue =
+                            this._getDrawingToolsPosition(value);
+                        positionValue &&
+                            this.provider.setPosition(positionValue);
                         return;
                 }
             }
@@ -128,7 +209,7 @@ namespace LeafletProvider.DrawingTools {
 
         public dispose(): void {
             if (this.isReady) {
-                this.provider.set('map', null);
+                this.map.provider.removeControl(this._provider);
             }
             this._provider = undefined;
             super.dispose();

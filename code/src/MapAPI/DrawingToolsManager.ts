@@ -19,14 +19,13 @@ namespace MapAPI.DrawingToolsManager {
             !drawingTools.hasTool(toolId) &&
             !drawingTools.toolAlreadyExists(type)
         ) {
-            const _tool =
-                LeafletProvider.DrawingTools.DrawingToolsFactory.MakeTool(
-                    drawingTools.map,
-                    drawingTools,
-                    toolId,
-                    type,
-                    JSON.parse(configs)
-                );
+            const _tool = OSFramework.DrawingTools.DrawingToolsFactory.MakeTool(
+                drawingTools.map,
+                drawingTools,
+                toolId,
+                type,
+                JSON.parse(configs)
+            );
             drawingTools.addTool(_tool);
             Events.CheckPendingEvents(drawingTools);
             return _tool;
@@ -208,7 +207,7 @@ namespace MapAPI.DrawingToolsManager {
         }
         if (!map.drawingTools) {
             const _drawingTools =
-                LeafletProvider.DrawingTools.DrawingToolsFactory.MakeDrawingTools(
+                OSFramework.DrawingTools.DrawingToolsFactory.MakeDrawingTools(
                     map,
                     drawingToolsId,
                     JSON.parse(configs)

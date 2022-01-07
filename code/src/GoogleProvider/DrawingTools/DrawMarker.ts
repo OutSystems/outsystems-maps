@@ -34,7 +34,7 @@ namespace GoogleProvider.DrawingTools {
             return OSFramework.Helper.Constants.drawingMarkerCompleted;
         }
 
-        protected get options(): google.maps.MarkerOptions {
+        public get options(): google.maps.MarkerOptions {
             return this.drawingTools.provider.get('markerOptions');
         }
 

@@ -59,6 +59,8 @@ namespace LeafletProvider.DrawingTools {
 
         public build(): void {
             super.build();
+
+            this.options = this.getProviderConfig();
         }
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
@@ -67,24 +69,21 @@ namespace LeafletProvider.DrawingTools {
             super.changeProperty(propertyName, value);
             if (this.drawingTools.isReady) {
                 switch (propValue) {
-                    case OSFramework.Enum.OS_Config_Shape.allowEdit:
-                        this.options = { editable: value };
-                        return;
                     case OSFramework.Enum.OS_Config_Shape.strokeOpacity:
-                        this.options = { strokeOpacity: value };
+                        this.options = { shapeOptions: { opacity: value } };
                         return;
                     case OSFramework.Enum.OS_Config_Shape.strokeColor:
-                        this.options = { strokeColor: value };
+                        this.options = { shapeOptions: { color: value } };
                         return;
                     case OSFramework.Enum.OS_Config_Shape.strokeWeight:
-                        this.options = { strokeWeight: value };
+                        this.options = { shapeOptions: { weight: value } };
                         return;
                     // If the following configurations are not included on the configs of the tool, the AbstractTool will make sure to throw an error
                     case OSFramework.Enum.OS_Config_Shape.fillOpacity:
-                        this.options = { fillOpacity: value };
+                        this.options = { shapeOptions: { fillOpacity: value } };
                         return;
                     case OSFramework.Enum.OS_Config_Shape.fillColor:
-                        this.options = { fillColor: value };
+                        this.options = { shapeOptions: { fillColor: value } };
                         return;
                 }
             }

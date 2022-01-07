@@ -44,7 +44,7 @@ namespace GoogleProvider.DrawingTools {
             return OSFramework.Helper.Constants.drawingCircleCompleted;
         }
 
-        protected get options(): google.maps.CircleOptions {
+        public get options(): google.maps.CircleOptions {
             return this.drawingTools.provider.get('circleOptions');
         }
 

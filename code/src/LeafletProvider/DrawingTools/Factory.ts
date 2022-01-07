@@ -6,7 +6,6 @@ namespace LeafletProvider.DrawingTools {
             drawingToolsId: string,
             configs: OSFramework.Configuration.IConfiguration
         ): OSFramework.DrawingTools.IDrawingTools {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             return new DrawingTools(
                 map,
                 drawingToolsId,
@@ -21,7 +20,6 @@ namespace LeafletProvider.DrawingTools {
             type: OSFramework.Enum.DrawingToolsTypes,
             configs: OSFramework.Configuration.IConfiguration
         ): OSFramework.DrawingTools.ITool {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             switch (type) {
                 case OSFramework.Enum.DrawingToolsTypes.Marker:
                     return new DrawMarker(
@@ -64,7 +62,7 @@ namespace LeafletProvider.DrawingTools {
                         configs as Configuration.DrawingTools.DrawFilledShapeConfig
                     );
                 default:
-                    throw `There is no factory for this type of DrawingTool (${type})`;
+                    throw `There is no factory for this type of Tool (${type})`;
             }
         }
     }

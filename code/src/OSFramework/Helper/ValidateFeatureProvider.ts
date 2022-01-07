@@ -14,8 +14,8 @@ namespace OSFramework.Helper {
             case Enum.Feature.MarkerPopup:
             case Enum.Feature.Shapes:
             case Enum.Feature.Directions:
-                return true;
             case Enum.Feature.DrawingTools:
+                return true;
             case Enum.Feature.HeatmapLayer:
             case Enum.Feature.FileLayer:
             default:

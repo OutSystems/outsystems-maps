@@ -93,7 +93,7 @@ namespace GoogleProvider.DrawingTools {
         }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        protected abstract get options(): any;
+        public abstract get options(): any;
         protected abstract get completedToolEventName(): string;
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types

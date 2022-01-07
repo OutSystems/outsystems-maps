@@ -6,14 +6,13 @@ namespace LeafletProvider.Configuration.DrawingTools {
         public iconUrl: string;
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        constructor(config: any) {
+        constructor(config: Configuration.DrawingTools.DrawMarkerConfig) {
             super(config);
         }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public getProviderConfig(): any {
             const provider = super.getProviderConfig();
-            provider.icon = this.iconUrl;
 
             Object.keys(provider).forEach((key) => {
                 if (provider[key] === undefined) delete provider[key];

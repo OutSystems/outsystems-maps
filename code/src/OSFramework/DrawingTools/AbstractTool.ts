@@ -98,11 +98,13 @@ namespace OSFramework.DrawingTools {
             return id === this._uniqueId || id === this.widgetId;
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public getProviderConfig(): T {
             return this._config.getProviderConfig();
         }
 
-        public abstract addCompletedEvent(): void;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        public abstract get options(): any;
+        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+        public abstract addCompletedEvent(e?: any): void;
     }
 }

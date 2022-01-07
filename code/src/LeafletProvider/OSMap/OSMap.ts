@@ -7,8 +7,7 @@ namespace LeafletProvider.OSMap {
             L.Map,
             Configuration.OSMap.LeafletMapConfig
         >
-        implements IMapLeaflet
-    {
+        implements IMapLeaflet {
         private _addedEvents: Array<string>;
         private _fBuilder: Feature.FeatureBuilder;
         private _openStreetMapLayer: L.TileLayer;
@@ -31,6 +30,11 @@ namespace LeafletProvider.OSMap {
                             .attribution
                 }
             );
+        }
+
+        private _buildDrawingTools(): void {
+            // There is only one drawingTools per map
+            this.drawingTools && this.drawingTools.build();
         }
 
         private _buildMarkers(): void {
@@ -179,6 +183,7 @@ namespace LeafletProvider.OSMap {
             this.buildFeatures();
             this._buildMarkers();
             this._buildShapes();
+            this._buildDrawingTools();
             this.finishBuild();
 
             // Make sure to change the center after the conversion of the location to coordinates

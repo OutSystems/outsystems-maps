@@ -6,7 +6,6 @@ namespace LeafletProvider.Configuration.DrawingTools {
         extends OSFramework.Configuration.AbstractConfiguration
         implements OSFramework.Configuration.IConfigurationDrawingTools
     {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public position: string;
         public uniqueId: string;
 
