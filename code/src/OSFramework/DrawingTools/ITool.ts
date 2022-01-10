@@ -17,6 +17,7 @@ namespace OSFramework.DrawingTools {
         /**
          * Adds the completedElement (completemarker, completepolyline, etc.) event listeners to the correspondent element
          * The new handlers will create the shape/markers elements and remove the overlay created by the drawing tool on the map
+         * @param e is only used by the leaflet implementation, is used to access the configs info on the creation of a new shape/marker
          */
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         addCompletedEvent(e?: any): void;

@@ -1,8 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace LeafletProvider.Constants.DrawingTools {
     /**
-     * Enum that defines the available Provider Events
+     * Enum that defines the available positions for the Leaflet DrawingTools
      */
+    //TODO - evaluate if we can use a single enum for all the providers
     export enum Positions {
         BOTTOM_LEFT = 'bottomleft',
         BOTTOM_RIGHT = 'bottomright',

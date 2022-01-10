@@ -7,7 +7,8 @@ namespace LeafletProvider.OSMap {
             L.Map,
             Configuration.OSMap.LeafletMapConfig
         >
-        implements IMapLeaflet {
+        implements IMapLeaflet
+    {
         private _addedEvents: Array<string>;
         private _fBuilder: Feature.FeatureBuilder;
         private _openStreetMapLayer: L.TileLayer;
@@ -33,7 +34,7 @@ namespace LeafletProvider.OSMap {
         }
 
         private _buildDrawingTools(): void {
-            // There is only one drawingTools per map
+            // Here we aren't using a forEach because there is only one drawingTools per map
             this.drawingTools && this.drawingTools.build();
         }
 

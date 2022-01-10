@@ -3,17 +3,19 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace LeafletProvider.DrawingTools {
     class ToolsList {
+        //TODO - Create/optimize types for all the tools by using a global.d.ts or ussi
+        //     - In that moment each tool should be boolean | NEW_TYPE because the empty state is false.
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        public circle: boolean | any;
+        public circle: any;
         public circleMarker: boolean;
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        public marker: boolean | any;
+        public marker: any;
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        public polygon: boolean | any;
+        public polygon: any;
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        public polyline: boolean | any;
+        public polyline: any;
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        public rectangle: boolean | any;
+        public rectangle: any;
 
         constructor() {
             this.circleMarker = false; // this tool isn't provided by our experience
@@ -27,14 +29,16 @@ namespace LeafletProvider.DrawingTools {
 
     export class DrawingTools extends OSFramework.DrawingTools
         .AbstractDrawingTools<
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        any,
+        L.Control, //TODO - this type should be more specific (Drawing Tool)
         OSFramework.Configuration.IConfigurationDrawingTools
     > {
         // FeatureGroup <any>: as required by Leaflet
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         private _toolsGroup: L.FeatureGroup<any>;
-        protected _provider: google.maps.drawing.DrawingManager;
+        //TODO - At the moment the type is not well defined and it doesn't included setDrawingOptions for example,
+        //     - When this is done the overwrite of the _provider is not needed anymore.
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        protected _provider: any;
 
         constructor(
             map: OSFramework.OSMap.IMap,
@@ -110,7 +114,7 @@ namespace LeafletProvider.DrawingTools {
                 ...drawingOptions,
                 draw: this._getTools()
             };
-            this.provider.setDrawingOptions(finalDrawingOptions.draw);
+            this._provider.setDrawingOptions(finalDrawingOptions.draw);
         }
 
         private _refreshDrawingTools(): void {
@@ -123,11 +127,13 @@ namespace LeafletProvider.DrawingTools {
 
         private _setDrawingToolsEvents(): void {
             // Make sure the listeners get removed before adding the new ones
-            this.map.provider.off('draw:created');
+            this.map.provider.off(
+                OSFramework.Helper.Constants.drawingLeafletCompleted
+            );
 
             // Add the handler that will create the shape/marker element and remove the overlay created by the drawing tool on the map
             this.map.provider.on(
-                'draw:created',
+                OSFramework.Helper.Constants.drawingLeafletCompleted,
                 this._addCompletedEventHandler.bind(this)
             );
         }
@@ -169,6 +175,7 @@ namespace LeafletProvider.DrawingTools {
                 this.getProviderConfig();
 
             this.map.provider.addLayer(this._toolsGroup);
+            //TODO - Add the types of L.Draw so this ignore is not needed.
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             //@ts-ignore
             this._provider = new L.Control.Draw({
