@@ -69,6 +69,7 @@ namespace LeafletProvider.DrawingTools {
             super.changeProperty(propertyName, value);
             if (this.drawingTools.isReady) {
                 switch (propValue) {
+                    // If the following configurations are not included on the configs of the tool, the AbstractTool will make sure to throw an error
                     case OSFramework.Enum.OS_Config_Shape.strokeOpacity:
                         this.options = { shapeOptions: { opacity: value } };
                         return;
@@ -78,7 +79,6 @@ namespace LeafletProvider.DrawingTools {
                     case OSFramework.Enum.OS_Config_Shape.strokeWeight:
                         this.options = { shapeOptions: { weight: value } };
                         return;
-                    // If the following configurations are not included on the configs of the tool, the AbstractTool will make sure to throw an error
                     case OSFramework.Enum.OS_Config_Shape.fillOpacity:
                         this.options = { shapeOptions: { fillOpacity: value } };
                         return;

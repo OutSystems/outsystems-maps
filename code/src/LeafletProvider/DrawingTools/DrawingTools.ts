@@ -19,6 +19,9 @@ namespace LeafletProvider.DrawingTools {
 
         constructor() {
             this.circleMarker = false; // this tool isn't provided by our experience
+            // By default the tools are marked with false, this means that if the configs don't show up the tool will not be added (it's disabled).
+            // DrawingTools is a wrapper of Tools, the configs have to be on the wrapper level (Leaflet requirement),
+            // but on our experience they are provided by each Tool.
             this.circle = false;
             this.marker = false;
             this.polygon = false;

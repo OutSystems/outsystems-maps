@@ -44,6 +44,7 @@ namespace LeafletProvider.DrawingTools {
             } else {
                 let iconSize: L.PointExpression;
                 let iconAnchor: L.PointExpression; /*
+                TODO - 
                 // If the size of the icon is defined by a valid width and height, use those values
                 // Else If nothing is passed or the icon size has the width or the height equal to 0, use the full image size
                 if (this.config.iconWidth > 0 && this.config.iconHeight > 0) {
