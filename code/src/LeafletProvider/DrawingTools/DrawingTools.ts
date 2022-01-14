@@ -87,21 +87,21 @@ namespace LeafletProvider.DrawingTools {
             this.tools.forEach((tool) => {
                 switch (tool.type) {
                     case OSFramework.Enum.DrawingToolsTypes.Circle:
-                        _tools.circle = tool.options || {};
+                        _tools.circle = tool.options;
                         break;
                     case OSFramework.Enum.DrawingToolsTypes.Marker:
-                        _tools.marker = tool.options || {};
+                        _tools.marker = tool.options;
 
                         break;
                     case OSFramework.Enum.DrawingToolsTypes.Polygon:
-                        _tools.polygon = tool.options || {};
+                        _tools.polygon = tool.options;
                         break;
                     case OSFramework.Enum.DrawingToolsTypes.Polyline:
-                        _tools.polyline = tool.options || {};
+                        _tools.polyline = tool.options;
 
                         break;
                     case OSFramework.Enum.DrawingToolsTypes.Rectangle:
-                        _tools.rectangle = tool.options || {};
+                        _tools.rectangle = tool.options;
                         break;
                     default:
                         break;

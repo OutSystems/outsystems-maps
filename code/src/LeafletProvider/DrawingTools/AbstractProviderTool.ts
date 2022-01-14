@@ -17,6 +17,9 @@ namespace LeafletProvider.DrawingTools {
             configs: any
         ) {
             super(map, drawingTools, drawingToolsId, type, configs);
+            this.internalOptions = {};
+            //We want to create internalOptions as an empty Object,
+            //since on the first iteration we want the tool to be built even when configs are empty
         }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
