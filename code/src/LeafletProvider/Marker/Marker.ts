@@ -26,9 +26,9 @@ namespace LeafletProvider.Marker {
                 new Configuration.Marker.LeafletMarkerConfig(configs)
             );
             this._defaultIcon = new L.DivIcon({
-                iconSize: [24, 40],
+                iconSize: Constants.Marker.defaultSize,
                 className: 'marker-leaflet-icon',
-                iconAnchor: [12, 40]
+                iconAnchor: Constants.Marker.defaultAnchor
             });
             this._defaultTooltip = {
                 permanent: true,

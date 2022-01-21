@@ -21,9 +21,9 @@ namespace LeafletProvider.DrawingTools {
             );
 
             this._defaultIcon = new L.DivIcon({
-                iconSize: [24, 40],
+                iconSize: Constants.Marker.defaultSize,
                 className: 'marker-leaflet-icon',
-                iconAnchor: [12, 40]
+                iconAnchor: Constants.Marker.defaultAnchor
             });
         }
 
@@ -33,15 +33,15 @@ namespace LeafletProvider.DrawingTools {
          * The icon will be centered by x axis on the marker position but on the y axis it will appear right above it
          */
         private _createIcon(iconUrl: string): L.DivIcon {
-            let icon: L.DivIcon;
-            // If the iconUrl is not set or is empty, we should use the defaultIcon
-            if (iconUrl === '') {
-                // icon will have the following configurations:
-                // iconSize: [24, 40],
-                // className: 'marker-leaflet-icon',
-                // iconAnchor: [12, 40]
-                icon = this._defaultIcon;
-            } else {
+            // By default, we will use the defaultIcon
+            // icon will have the following configurations:
+            // iconSize: [24, 40],
+            // className: 'marker-leaflet-icon',
+            // iconAnchor: [12, 40]
+            let icon: L.DivIcon = this._defaultIcon;
+
+            //If iconUrl is defined, we should reset icon properties
+            if (iconUrl !== '') {
                 let iconSize: L.PointExpression;
                 let iconAnchor: L.PointExpression; /*
                 TODO - 
