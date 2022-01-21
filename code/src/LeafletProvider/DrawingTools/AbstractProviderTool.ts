@@ -1,10 +1,13 @@
 /// <reference path="../../OSFramework/DrawingTools/AbstractTool.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.DrawingTools {
+namespace LeafletProvider.DrawingTools {
     export abstract class AbstractProviderTool<
         T extends OSFramework.Configuration.IConfigurationTool
     > extends OSFramework.DrawingTools.AbstractTool<T> {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        protected internalOptions: any; //TODO: create structure for this (repeatmode:,editable ..., shapeOptions:{???})
+
         constructor(
             map: OSFramework.OSMap.IMap,
             drawingTools: OSFramework.DrawingTools.IDrawingTools,
@@ -14,15 +17,18 @@ namespace GoogleProvider.DrawingTools {
             configs: any
         ) {
             super(map, drawingTools, drawingToolsId, type, configs);
+            this.internalOptions = {};
+            //We want to create internalOptions as an empty Object,
+            //since on the first iteration we want the tool to be built even when configs are empty
         }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        private _addCompletedEventHandler(element: any): void {
+        private _addCompletedEventHandler(event: any): void {
             const uniqueId = OSFramework.Helper.GenerateUniqueId();
             // create the shape/marker element
             const newElm = this.createElement(
                 uniqueId,
-                element,
+                event.layer,
                 // Get the configs to create the shape/marker (elementConfig)
                 this.config
             );
@@ -30,11 +36,6 @@ namespace GoogleProvider.DrawingTools {
 
             // Trigger the event of element complete (markercomplete, polylinecomplete, polygoncomplete, etc) with the information of a new element (boolean set to True)
             this.triggerOnDrawingChangeEvent(uniqueId, true);
-
-            // Make sure to remove the overlays after creating them,
-            // Otherwise the following line which will create the shape/marker will be over the overlay of the provider
-            element.setMap(null); // unset the map to remove the overlay
-            element = null;
         }
 
         /**
@@ -60,11 +61,8 @@ namespace GoogleProvider.DrawingTools {
 
         // Adds the completedElement (completemarker, completepolyline, etc.) event listeners to the correspondent element.
         // The new handlers will create the shape/markers elements and remove the overlay created by the drawing tool on the map
-        public addCompletedEvent(): void {
-            this.drawingTools.provider.addListener(
-                this.completedToolEventName,
-                this._addCompletedEventHandler.bind(this)
-            );
+        public addCompletedEvent(event: any): void {
+            this._addCompletedEventHandler(event);
         }
 
         public build(): void {
@@ -73,19 +71,6 @@ namespace GoogleProvider.DrawingTools {
             this.options = this.getProviderConfig();
 
             this.finishBuild();
-        }
-
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-        public changeProperty(propertyName: string, value: any): void {
-            const propValue = OSFramework.Enum.OS_Config_Shape[propertyName];
-            super.changeProperty(propertyName, value);
-            if (this.drawingTools.isReady) {
-                switch (propValue) {
-                    case OSFramework.Enum.OS_Config_Shape.allowDrag:
-                        this.options = { draggable: value };
-                        return;
-                }
-            }
         }
 
         public dispose(): void {

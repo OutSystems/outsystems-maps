@@ -26,7 +26,7 @@ namespace GoogleProvider.DrawingTools {
         }
 
         /** Get the polyline options from the drawing tools element (provider) */
-        protected get options(): google.maps.PolylineOptions {
+        public get options(): google.maps.PolylineOptions {
             return this.drawingTools.provider.get('polylineOptions');
         }
 

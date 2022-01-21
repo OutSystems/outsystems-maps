@@ -1,15 +1,14 @@
 /// <reference path="AbstractDrawShape.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.DrawingTools {
+namespace LeafletProvider.DrawingTools {
     export class DrawCircle extends AbstractDrawShape<Configuration.DrawingTools.DrawFilledShapeConfig> {
         constructor(
             map: OSFramework.OSMap.IMap,
             drawingTools: OSFramework.DrawingTools.IDrawingTools,
             drawingToolsId: string,
             type: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
+            configs: Configuration.DrawingTools.DrawFilledShapeConfig
         ) {
             super(
                 map,
@@ -21,13 +20,12 @@ namespace GoogleProvider.DrawingTools {
         }
 
         private _createConfigsElement(
-            shape: google.maps.Circle,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+            shape: L.Circle,
             configs: Configuration.Shape.CircleShapeConfig
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ): any {
-            const providerCenter = shape.getCenter();
-            const center = `${providerCenter.lat()},${providerCenter.lng()}`;
+        ): Configuration.Shape.CircleShapeConfig {
+            const providerCenter = shape.getLatLng();
+            const center = `${providerCenter.lat},${providerCenter.lng}`;
             const radius = shape.getRadius();
 
             // Join both the configs that were provided for the new shape element and the location that was provided by the DrawingTools shapecomplete event
@@ -36,7 +34,7 @@ namespace GoogleProvider.DrawingTools {
                 center,
                 radius
             };
-            return finalConfigs;
+            return finalConfigs as Configuration.Shape.CircleShapeConfig;
         }
 
         /** Get the constant for the event polygoncomplete */
@@ -44,21 +42,32 @@ namespace GoogleProvider.DrawingTools {
             return OSFramework.Helper.Constants.drawingCircleCompleted;
         }
 
-        public get options(): google.maps.CircleOptions {
-            return this.drawingTools.provider.get('circleOptions');
+        //TODO: create structure for circle options
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+        public get options(): any {
+            return this.internalOptions;
         }
 
-        protected set options(options: google.maps.CircleOptions) {
+        //TODO: create structure for circle options
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+        protected set options(options: any) {
             const allOptions = { ...this.options, ...options };
-            this.drawingTools.provider.setOptions({
-                circleOptions: allOptions
+            const shapeOptions = {
+                ...this.options?.shapeOptions,
+                ...options.shapeOptions
+            };
+            allOptions.shapeOptions = shapeOptions;
+
+            this.drawingTools.provider.setDrawingOptions({
+                circle: allOptions
             });
+
+            this.internalOptions = allOptions;
         }
 
         protected createElement(
             uniqueId: string,
-            shape: google.maps.Circle,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+            shape: L.Circle,
             configs: Configuration.Shape.CircleShapeConfig
         ): OSFramework.Shape.IShape {
             // we need to clean the provided configs and add the locations in order to create the new element

@@ -24,7 +24,7 @@ namespace LeafletProvider.Configuration.Shape {
                 // Always have the draggable property enabled in order to create the dragging instance
                 // The allowDrag property will take care of the feature enablement and disablement
                 draggable: true,
-                editable: this.allowEdit,
+                editable: false, //the allowEdit property will take care of the feature. Always maintain this parameter false to use drawing
                 opacity: this.strokeOpacity,
                 color: this.strokeColor,
                 weight: this.strokeWeight

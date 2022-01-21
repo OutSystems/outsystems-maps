@@ -33,6 +33,11 @@ namespace LeafletProvider.OSMap {
             );
         }
 
+        private _buildDrawingTools(): void {
+            // Here we aren't using a forEach because there is only one drawingTools per map
+            this.drawingTools && this.drawingTools.build();
+        }
+
         private _buildMarkers(): void {
             this.markers.forEach((marker) => marker.build());
         }
@@ -179,6 +184,7 @@ namespace LeafletProvider.OSMap {
             this.buildFeatures();
             this._buildMarkers();
             this._buildShapes();
+            this._buildDrawingTools();
             this.finishBuild();
 
             // Make sure to change the center after the conversion of the location to coordinates

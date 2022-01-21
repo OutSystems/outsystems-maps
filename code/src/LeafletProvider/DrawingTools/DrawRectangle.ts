@@ -1,15 +1,14 @@
 /// <reference path="AbstractDrawShape.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.DrawingTools {
+namespace LeafletProvider.DrawingTools {
     export class DrawRectangle extends AbstractDrawShape<Configuration.DrawingTools.DrawFilledShapeConfig> {
         constructor(
             map: OSFramework.OSMap.IMap,
             drawingTools: OSFramework.DrawingTools.IDrawingTools,
             drawingToolsId: string,
             type: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
+            configs: Configuration.DrawingTools.DrawFilledShapeConfig
         ) {
             super(
                 map,
@@ -21,15 +20,15 @@ namespace GoogleProvider.DrawingTools {
         }
 
         private _createConfigsElement(
-            shape: google.maps.Rectangle,
+            shape: L.Rectangle,
             configs: Configuration.Shape.RectangleShapeConfig
         ): Configuration.Shape.RectangleShapeConfig {
             const providerBounds = shape.getBounds();
             const bounds: OSFramework.OSStructures.OSMap.BoundsString = {
-                north: providerBounds.getNorthEast().lat().toString(),
-                south: providerBounds.getSouthWest().lat().toString(),
-                west: providerBounds.getSouthWest().lng().toString(),
-                east: providerBounds.getNorthEast().lng().toString()
+                north: providerBounds.getNorthEast().lat.toString(),
+                south: providerBounds.getSouthWest().lat.toString(),
+                west: providerBounds.getSouthWest().lng.toString(),
+                east: providerBounds.getNorthEast().lng.toString()
             };
 
             // Join both the configs that were provided for the new shape element and the location that was provided by the DrawingTools shapecomplete event
@@ -45,21 +44,30 @@ namespace GoogleProvider.DrawingTools {
             return OSFramework.Helper.Constants.drawingRectangleCompleted;
         }
 
-        public get options(): google.maps.RectangleOptions {
-            return this.drawingTools.provider.get('rectangleOptions');
+        //TODO: create structure for rectangle options
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+        public get options(): any {
+            return this.internalOptions;
         }
 
-        protected set options(options: google.maps.RectangleOptions) {
+        //TODO: create structure for rectangle options
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+        protected set options(options: any) {
             const allOptions = { ...this.options, ...options };
-            this.drawingTools.provider.setOptions({
-                rectangleOptions: allOptions
+            const shapeOptions = {
+                ...this.options?.shapeOptions,
+                ...options.shapeOptions
+            };
+            allOptions.shapeOptions = shapeOptions;
+            this.drawingTools.provider.setDrawingOptions({
+                rectangle: allOptions
             });
+            this.internalOptions = allOptions;
         }
 
         protected createElement(
             uniqueId: string,
-            shape: google.maps.Rectangle,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+            shape: L.Rectangle,
             configs: Configuration.Shape.RectangleShapeConfig
         ): OSFramework.Shape.IShape {
             const finalConfigs = this._createConfigsElement(shape, configs);

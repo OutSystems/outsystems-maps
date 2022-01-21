@@ -17,8 +17,7 @@ namespace LeafletProvider.Marker {
             map: OSFramework.OSMap.IMap,
             markerId: string,
             type: OSFramework.Enum.MarkerType,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
+            configs: Configuration.Marker.LeafletMarkerConfig
         ) {
             super(
                 map,
@@ -27,9 +26,9 @@ namespace LeafletProvider.Marker {
                 new Configuration.Marker.LeafletMarkerConfig(configs)
             );
             this._defaultIcon = new L.DivIcon({
-                iconSize: [24, 40],
+                iconSize: Constants.Marker.defaultSize,
                 className: 'marker-leaflet-icon',
-                iconAnchor: [12, 40]
+                iconAnchor: Constants.Marker.defaultAnchor
             });
             this._defaultTooltip = {
                 permanent: true,
@@ -195,7 +194,7 @@ namespace LeafletProvider.Marker {
                                     // EventName
                                     eventName,
                                     // Coords
-                                    e !== undefined
+                                    e !== undefined && e.latlng !== undefined
                                         ? JSON.stringify({
                                               Lat: e.latlng.lat,
                                               Lng: e.latlng.lng
