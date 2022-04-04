@@ -9,9 +9,10 @@
     display: none;
     -servicestudio-align-items: center;
     -servicestudio-background-color: white;
-    -servicestudio-border: 1px solid rgba(200,200,200,0.5);
+    -servicestudio-border: 1px solid rgba(200, 200, 200, 0.5);
     -servicestudio-border-radius: 4px;
-    -servicestudio-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    -servicestudio-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+        0 1px 2px 0 rgba(0, 0, 0, 0.06);
     -servicestudio-display: flex;
     -servicestudio-height: 35px;
     -servicestudio-padding: 5px 10px;
@@ -27,20 +28,20 @@
 }
 
 .ss-searchPlaces-dropdown-text {
-    -servicestudio-color: rgba(155,155,155,1);
+    -servicestudio-color: rgba(155, 155, 155, 1);
     -servicestudio-font-size: 13px;
     -servicestudio-margin-left: 5px;
     -servicestudio-margin-right: 10px;
 }
 
 .ss-searchPlaces-styles {
-    -servicestudio-display: none!important;
+    -servicestudio-display: none !important;
 }
 
 .ss-searchPlaces-placeholder {
-    -servicestudio-background-color: rgba(200,200,200,0.3);
+    -servicestudio-background-color: rgba(200, 200, 200, 0.3);
     -servicestudio-box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0.03);
-    -servicestudio-border: 1px solid rgba(200,200,200,0.5);
+    -servicestudio-border: 1px solid rgba(200, 200, 200, 0.5);
     -servicestudio-border-radius: 4px;
     -servicestudio-min-height: 35px;
     -servicestudio-position: relative;

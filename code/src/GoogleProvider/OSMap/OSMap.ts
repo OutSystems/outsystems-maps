@@ -7,7 +7,8 @@ namespace GoogleProvider.OSMap {
             google.maps.Map,
             Configuration.OSMap.GoogleMapConfig
         >
-        implements IMapGoogle {
+        implements IMapGoogle
+    {
         private _addedEvents: Array<string>;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         private _advancedFormatObj: any;
@@ -85,14 +86,13 @@ namespace GoogleProvider.OSMap {
                     this._getProviderConfig()
                 );
                 // Check if the provider has been created with a valid APIKey
-                window[
-                    OSFramework.Helper.Constants.googleMapsAuthFailure
-                ] = () =>
-                    this.mapEvents.trigger(
-                        OSFramework.Event.OSMap.MapEventType.OnError,
-                        this,
-                        OSFramework.Enum.ErrorCodes.LIB_InvalidApiKeyMap
-                    );
+                window[OSFramework.Helper.Constants.googleMapsAuthFailure] =
+                    () =>
+                        this.mapEvents.trigger(
+                            OSFramework.Event.OSMap.MapEventType.OnError,
+                            this,
+                            OSFramework.Enum.ErrorCodes.LIB_InvalidApiKeyMap
+                        );
 
                 this.buildFeatures();
                 this._buildMarkers();

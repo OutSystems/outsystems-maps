@@ -14,7 +14,7 @@ namespace GoogleProvider.SharedComponents {
             if (script === null) {
                 script = document.createElement('script');
                 /* eslint-disable-next-line prettier/prettier */
-                    script.src =
+                script.src =
                     OSFramework.Helper.Constants.googleMapsApiMap +
                     '?key=' +
                     apiKey +

@@ -110,15 +110,22 @@ namespace GoogleProvider.OSMap {
             image.src =
                 /* eslint-disable prettier/prettier */
                 `${OSFramework.Helper.Constants.googleMapsApiStaticMap}?` +
-                'key=' + this.config.apiKey +
-                '&center=' + this._center +
+                'key=' +
+                this.config.apiKey +
+                '&center=' +
+                this._center +
                 /*'&markers=' +*/ this._markerString +
-                '&maptype=' + this._type +
+                '&maptype=' +
+                this._type +
                 // If the zoom = -1, then don't use the zoom parameter
                 (this._zoom > -1 ? '&zoom=' + this._zoom : '') +
                 // Scale 2 will give the Map a better resolution
-                '&scale=' + 2 + 
-                '&size=' + this._size.width + 'x' + this._size.height;
+                '&scale=' +
+                2 +
+                '&size=' +
+                this._size.width +
+                'x' +
+                this._size.height;
             image.onerror = () => {
                 // Check if needed
                 this.mapEvents.trigger(
