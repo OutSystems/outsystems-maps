@@ -83,7 +83,7 @@
     width: 0;
     height: 0;
     -moz-box-sizing: border-box;
-         box-sizing: border-box;
+    box-sizing: border-box;
     z-index: 800;
 }
 
@@ -92,15 +92,33 @@
     -moz-user-select: none;
 }
 
-.leaflet-pane         { z-index: 400; }
-.leaflet-tile-pane    { z-index: 200; }
-.leaflet-overlay-pane { z-index: 400; }
-.leaflet-shadow-pane  { z-index: 500; }
-.leaflet-marker-pane  { z-index: 600; }
-.leaflet-tooltip-pane   { z-index: 650; }
-.leaflet-popup-pane   { z-index: 700; }
-.leaflet-map-pane canvas { z-index: 100; }
-.leaflet-map-pane svg    { z-index: 200; }
+.leaflet-pane {
+    z-index: 400;
+}
+.leaflet-tile-pane {
+    z-index: 200;
+}
+.leaflet-overlay-pane {
+    z-index: 400;
+}
+.leaflet-shadow-pane {
+    z-index: 500;
+}
+.leaflet-marker-pane {
+    z-index: 600;
+}
+.leaflet-tooltip-pane {
+    z-index: 650;
+}
+.leaflet-popup-pane {
+    z-index: 700;
+}
+.leaflet-map-pane canvas {
+    z-index: 100;
+}
+.leaflet-map-pane svg {
+    z-index: 200;
+}
 
 .leaflet-vml-shape {
     width: 1px;
@@ -179,9 +197,9 @@
 .leaflet-fade-anim .leaflet-popup {
     opacity: 0;
     -webkit-transition: opacity 0.2s linear;
-       -moz-transition: opacity 0.2s linear;
-         -o-transition: opacity 0.2s linear;
-            transition: opacity 0.2s linear;
+    -moz-transition: opacity 0.2s linear;
+    -o-transition: opacity 0.2s linear;
+    transition: opacity 0.2s linear;
 }
 
 .leaflet-fade-anim .leaflet-map-pane .leaflet-popup {
@@ -190,8 +208,8 @@
 
 .leaflet-zoom-animated {
     -webkit-transform-origin: 0 0;
-        -ms-transform-origin: 0 0;
-            transform-origin: 0 0;
+    -ms-transform-origin: 0 0;
+    transform-origin: 0 0;
 }
 
 .leaflet-zoom-anim .leaflet-zoom-animated {
@@ -199,18 +217,18 @@
 }
 
 .leaflet-zoom-anim .leaflet-zoom-animated {
-    -webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1);
-       -moz-transition:    -moz-transform 0.25s cubic-bezier(0,0,0.25,1);
-         -o-transition:      -o-transform 0.25s cubic-bezier(0,0,0.25,1);
-            transition:         transform 0.25s cubic-bezier(0,0,0.25,1);
+    -webkit-transition: -webkit-transform 0.25s cubic-bezier(0, 0, 0.25, 1);
+    -moz-transition: -moz-transform 0.25s cubic-bezier(0, 0, 0.25, 1);
+    -o-transition: -o-transform 0.25s cubic-bezier(0, 0, 0.25, 1);
+    transition: transform 0.25s cubic-bezier(0, 0, 0.25, 1);
 }
 
 .leaflet-zoom-anim .leaflet-tile,
 .leaflet-pan-anim .leaflet-tile {
     -webkit-transition: none;
-       -moz-transition: none;
-         -o-transition: none;
-            transition: none;
+    -moz-transition: none;
+    -o-transition: none;
+    transition: none;
 }
 
 .leaflet-zoom-anim .leaflet-zoom-hide {
@@ -224,7 +242,7 @@
 
 .leaflet-grab {
     cursor: -webkit-grab;
-    cursor:    -moz-grab;
+    cursor: -moz-grab;
 }
 
 .leaflet-crosshair,
@@ -242,7 +260,7 @@
 .leaflet-dragging .leaflet-marker-draggable {
     cursor: move;
     cursor: -webkit-grabbing;
-    cursor:    -moz-grabbing;
+    cursor: -moz-grabbing;
 }
 
 /* marker & overlays interactivity */
@@ -269,7 +287,7 @@
 }
 
 .leaflet-container a {
-    color: #0078A8;
+    color: #0078a8;
 }
 
 .leaflet-container a.leaflet-active {
@@ -278,18 +296,18 @@
 
 .leaflet-zoom-box {
     border: 2px dotted #38f;
-    background: rgba(255,255,255,0.5);
+    background: rgba(255, 255, 255, 0.5);
 }
 
 /* general typography */
 .leaflet-container {
-    font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+    font: 12px/1.5 'Helvetica Neue', Arial, Helvetica, sans-serif;
 }
 
 /* general toolbar styles */
 
 .leaflet-bar {
-    box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
     border-radius: 4px;
 }
 
@@ -352,7 +370,6 @@
     font-size: 20px;
 }
 
-
 .leaflet-touch .leaflet-control-zoom-in {
     font-size: 22px;
 }
@@ -364,7 +381,7 @@
 /* layers control */
 
 .leaflet-control-layers {
-    box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
     background: #fff;
     border-radius: 5px;
 }
@@ -471,7 +488,7 @@
     white-space: nowrap;
     overflow: hidden;
     -moz-box-sizing: border-box;
-         box-sizing: border-box;
+    box-sizing: border-box;
 
     background: #fff;
     background: rgba(255, 255, 255, 0.5);
@@ -487,7 +504,6 @@
     border-bottom: 2px solid #777;
 }
 
-
 .leaflet-touch .leaflet-control-attribution,
 .leaflet-touch .leaflet-control-layers,
 .leaflet-touch .leaflet-bar {
@@ -496,7 +512,7 @@
 
 .leaflet-touch .leaflet-control-layers,
 .leaflet-touch .leaflet-bar {
-    border: 2px solid rgba(0,0,0,0.2);
+    border: 2px solid rgba(0, 0, 0, 0.2);
     background-clip: padding-box;
 }
 
@@ -539,17 +555,17 @@
     padding: 1px;
     margin: -10px auto 0;
     -webkit-transform: rotate(45deg);
-       -moz-transform: rotate(45deg);
-        -ms-transform: rotate(45deg);
-         -o-transform: rotate(45deg);
-            transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
 }
 
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip {
     background: white;
     color: #333;
-    box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
 }
 
 .leaflet-container a.leaflet-popup-close-button {
@@ -585,7 +601,7 @@
 .leaflet-oldie .leaflet-popup-tip {
     width: 24px;
     margin: 0 auto;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)";
+    -ms-filter: 'progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)';
     filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);
 }
 
@@ -622,7 +638,7 @@
     -ms-user-select: none;
     user-select: none;
     pointer-events: none;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .leaflet-tooltip.leaflet-clickable {
@@ -638,7 +654,7 @@
     pointer-events: none;
     border: 6px solid transparent;
     background: transparent;
-    content: "";
+    content: '';
 }
 
 /* Directions */

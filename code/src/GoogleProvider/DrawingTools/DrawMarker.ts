@@ -3,6 +3,10 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace GoogleProvider.DrawingTools {
     export class DrawMarker extends AbstractProviderTool<Configuration.DrawingTools.DrawMarkerConfig> {
+        private _latLng = {
+            lat: undefined,
+            lng: undefined
+        };
         constructor(
             map: OSFramework.OSMap.IMap,
             drawingTools: OSFramework.DrawingTools.IDrawingTools,
@@ -25,7 +29,13 @@ namespace GoogleProvider.DrawingTools {
                 // changing the marker location is only available via the drag-and-drop, so the solution passes by adding the dragend event listener as the marker's OnChanged event
                 'dragend' as OSFramework.Event.Marker.MarkerEventType,
                 // Trigger the onDrawingChangeEvent with the extra information (marker uniqueId and flag indicating that the element is not new)
-                () => this.triggerOnDrawingChangeEvent(_marker.uniqueId, false)
+                () =>
+                    this.triggerOnDrawingChangeEvent(
+                        _marker.uniqueId,
+                        false,
+                        JSON.stringify(this._latLng),
+                        _marker.config.location
+                    )
             );
         }
 
@@ -55,6 +65,9 @@ namespace GoogleProvider.DrawingTools {
                 .getPosition()
                 .lng()}`;
 
+            this._latLng.lat = marker.getPosition().lat();
+            this._latLng.lng = marker.getPosition().lng();
+
             // Join both the configs that were provided for the new marker element and the location that was provided by the DrawingTools markercomplete event
             const finalConfigs = { ...configs, location };
 
@@ -70,6 +83,26 @@ namespace GoogleProvider.DrawingTools {
             // Add the new element to the map
             this.map.addMarker(_marker);
             return _marker;
+        }
+
+        /** Gets the coordinates of the new marker, with the expected lat/lng structure */
+        protected getCoordinates(): string {
+            const locations = this.newElm.config.location;
+            let coordinatesArray = [];
+
+            coordinatesArray = locations.split(',');
+
+            const coordinates = {
+                Lat: coordinatesArray[0],
+                Lng: coordinatesArray[1]
+            };
+
+            return JSON.stringify(coordinates);
+        }
+
+        /** Gets the location of the new shape (marker), as a string */
+        protected getLocation(): string {
+            return this.newElm.config.location;
         }
 
         public build(): void {

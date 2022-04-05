@@ -5,6 +5,7 @@ namespace GoogleProvider.DrawingTools {
     export abstract class AbstractProviderTool<
         T extends OSFramework.Configuration.IConfigurationTool
     > extends OSFramework.DrawingTools.AbstractTool<T> {
+        protected newElm;
         constructor(
             map: OSFramework.OSMap.IMap,
             drawingTools: OSFramework.DrawingTools.IDrawingTools,
@@ -20,16 +21,24 @@ namespace GoogleProvider.DrawingTools {
         private _addCompletedEventHandler(element: any): void {
             const uniqueId = OSFramework.Helper.GenerateUniqueId();
             // create the shape/marker element
-            const newElm = this.createElement(
+            this.newElm = this.createElement(
                 uniqueId,
                 element,
                 // Get the configs to create the shape/marker (elementConfig)
                 this.config
             );
-            this.drawingTools.createdElements.push(newElm);
+            this.drawingTools.createdElements.push(this.newElm);
+
+            const coordinates = this.getCoordinates();
+            const location = this.getLocation();
 
             // Trigger the event of element complete (markercomplete, polylinecomplete, polygoncomplete, etc) with the information of a new element (boolean set to True)
-            this.triggerOnDrawingChangeEvent(uniqueId, true);
+            this.triggerOnDrawingChangeEvent(
+                uniqueId,
+                true,
+                coordinates,
+                location
+            );
 
             // Make sure to remove the overlays after creating them,
             // Otherwise the following line which will create the shape/marker will be over the overlay of the provider
@@ -45,7 +54,9 @@ namespace GoogleProvider.DrawingTools {
          */
         protected triggerOnDrawingChangeEvent(
             uniqueId: string,
-            isNewElement: boolean
+            isNewElement: boolean,
+            coordinates: string,
+            location: string | string[]
         ): void {
             this.drawingTools.drawingToolsEvents.trigger(
                 // EventType
@@ -54,7 +65,7 @@ namespace GoogleProvider.DrawingTools {
                 // EventName
                 this.completedToolEventName,
                 // Extra (marker uniqueId and flag indicating that the element is new)
-                { uniqueId, isNewElement }
+                { uniqueId, isNewElement, coordinates, location }
             );
         }
 
@@ -113,5 +124,8 @@ namespace GoogleProvider.DrawingTools {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
             configs: any
         ): void;
+
+        protected abstract getCoordinates(): string;
+        protected abstract getLocation(): string | string[];
     }
 }
