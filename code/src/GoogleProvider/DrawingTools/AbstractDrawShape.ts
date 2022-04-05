@@ -16,6 +16,27 @@ namespace GoogleProvider.DrawingTools {
             super(map, drawingTools, drawingToolsId, type, configs);
         }
 
+        /** Create the new shape element based on the configurations (already contains the locations, the bounds or the center and radius depending on the type of the new shape) */
+        protected createShapeElement(
+            uniqueId: string,
+            type: OSFramework.Enum.ShapeType,
+            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+            configs: any
+        ): OSFramework.Shape.IShape {
+            const _shape = Shape.ShapeFactory.MakeShape(
+                this.map,
+                uniqueId,
+                type,
+                configs
+            );
+
+            // Add the onChange event to the new element
+            this.setOnChangeEvent(_shape, _shape.config.locations);
+            // Add the new element to the map
+            this.map.addShape(_shape);
+            return _shape;
+        }
+
         /** Add the onChange event to the new element */
         protected setOnChangeEvent(
             _shape: OSFramework.Shape.IShape,
@@ -41,28 +62,6 @@ namespace GoogleProvider.DrawingTools {
                     );
                 }
             );
-        }
-
-        /** Create the new shape element based on the configurations (already contains the locations, the bounds or the center and radius depending on the type of the new shape) */
-        // eslint-disable-next-line @typescript-eslint/member-ordering
-        protected createShapeElement(
-            uniqueId: string,
-            type: OSFramework.Enum.ShapeType,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
-        ): OSFramework.Shape.IShape {
-            const _shape = Shape.ShapeFactory.MakeShape(
-                this.map,
-                uniqueId,
-                type,
-                configs
-            );
-
-            // Add the onChange event to the new element
-            this.setOnChangeEvent(_shape, _shape.config.locations);
-            // Add the new element to the map
-            this.map.addShape(_shape);
-            return _shape;
         }
 
         public build(): void {
