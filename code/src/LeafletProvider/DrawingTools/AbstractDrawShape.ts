@@ -57,6 +57,27 @@ namespace LeafletProvider.DrawingTools {
             return _shape;
         }
 
+        protected getCoordinates(): string {
+            const locations = JSON.parse(this.newElm.config.locations);
+            const locationsArray = [];
+
+            for (const coord of locations) {
+                locationsArray.push(coord.toString().split(','));
+            }
+
+            const finalLocations = locationsArray.map(
+                (coords: OSFramework.OSStructures.OSMap.Coordinates) => {
+                    return { Lat: coords[0], Lng: coords[1] };
+                }
+            );
+
+            return JSON.stringify(finalLocations);
+        }
+
+        protected getLocation(): string {
+            return this.newElm.config.locations;
+        }
+
         public build(): void {
             super.build();
 

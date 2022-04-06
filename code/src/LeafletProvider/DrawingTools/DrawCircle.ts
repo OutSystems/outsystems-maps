@@ -79,5 +79,29 @@ namespace LeafletProvider.DrawingTools {
                 finalConfigs
             );
         }
+
+        protected getCoordinates(): string {
+            const locations = this.newElm.config.center;
+            let coordinatesArray = [];
+
+            coordinatesArray = locations.split(',');
+
+            const coordinates = {
+                Lat: coordinatesArray[0],
+                Lng: coordinatesArray[1]
+            };
+
+            return JSON.stringify(coordinates);
+        }
+
+        /** Gets the location of the new shape (circle), as a string */
+        protected getLocation(): string {
+            const location = this.newElm.config.center;
+            const radius = this.newElm.config.radius;
+
+            // Get the location and radius and return as object stringified to pass to platform event
+            const locationConfig = { location: location, radius: radius };
+            return JSON.stringify(locationConfig);
+        }
     }
 }
