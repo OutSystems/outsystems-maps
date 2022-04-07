@@ -78,5 +78,16 @@ namespace LeafletProvider.DrawingTools {
                 finalConfigs
             );
         }
+
+        /** Gets the bounds of the new rectangle, with the expected bound structure */
+        protected getCoordinates(): string {
+            const coordinates = JSON.parse(this.newElm.config.bounds);
+            return JSON.stringify(coordinates);
+        }
+
+        /** Gets the location of the new shape (rectangle), as a string */
+        protected getLocation(): string {
+            return this.newElm.config.bounds;
+        }
     }
 }

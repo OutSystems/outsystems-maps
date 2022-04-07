@@ -7,6 +7,7 @@ namespace LeafletProvider.DrawingTools {
     > extends OSFramework.DrawingTools.AbstractTool<T> {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         protected internalOptions: any; //TODO: create structure for this (repeatmode:,editable ..., shapeOptions:{???})
+        protected newElm;
 
         constructor(
             map: OSFramework.OSMap.IMap,
@@ -26,16 +27,21 @@ namespace LeafletProvider.DrawingTools {
         private _addCompletedEventHandler(event: any): void {
             const uniqueId = OSFramework.Helper.GenerateUniqueId();
             // create the shape/marker element
-            const newElm = this.createElement(
+            this.newElm = this.createElement(
                 uniqueId,
                 event.layer,
                 // Get the configs to create the shape/marker (elementConfig)
                 this.config
             );
-            this.drawingTools.createdElements.push(newElm);
+            this.drawingTools.createdElements.push(this.newElm);
+
+            const location = this.getLocation();
+            const coordinates = this.getCoordinates();
 
             // Trigger the event of element complete (markercomplete, polylinecomplete, polygoncomplete, etc) with the information of a new element (boolean set to True)
-            this.triggerOnDrawingChangeEvent(uniqueId, true);
+            this.triggerOnDrawingChangeEvent(uniqueId, true, 
+                coordinates,
+                location);
         }
 
         /**
@@ -46,7 +52,9 @@ namespace LeafletProvider.DrawingTools {
          */
         protected triggerOnDrawingChangeEvent(
             uniqueId: string,
-            isNewElement: boolean
+            isNewElement: boolean,
+            coordinates: string,
+            location: string | string[]
         ): void {
             this.drawingTools.drawingToolsEvents.trigger(
                 // EventType
@@ -55,7 +63,7 @@ namespace LeafletProvider.DrawingTools {
                 // EventName
                 this.completedToolEventName,
                 // Extra (marker uniqueId and flag indicating that the element is new)
-                { uniqueId, isNewElement }
+                { uniqueId, isNewElement, coordinates, location }
             );
         }
 
@@ -98,5 +106,8 @@ namespace LeafletProvider.DrawingTools {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
             configs: any
         ): void;
+
+        protected abstract getCoordinates(): string;
+        protected abstract getLocation(): string | string[];
     }
 }
