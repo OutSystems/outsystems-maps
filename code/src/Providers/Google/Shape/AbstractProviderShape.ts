@@ -1,7 +1,7 @@
-/// <reference path="../../OSFramework/Shape/AbstractShape.ts" />
+/// <reference path="../../../OSFramework/Shape/AbstractShape.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.Shape {
+namespace Provider.Google.Shape {
     export abstract class AbstractProviderShape<
         T extends OSFramework.Configuration.IConfigurationShape,
         W extends google.maps.MVCObject

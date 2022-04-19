@@ -1,7 +1,7 @@
-/// <reference path="../../OSFramework/OSMap/AbstractMap.ts" />
+/// <reference path="../../../OSFramework/OSMap/AbstractMap.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.OSMap {
+namespace Provider.Google.OSMap {
     export class Map
         extends OSFramework.OSMap.AbstractMap<
             google.maps.Map,

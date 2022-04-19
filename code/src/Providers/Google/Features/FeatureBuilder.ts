@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.Feature {
+namespace Provider.Google.Feature {
     export interface IFeatures {
         features: OSFramework.Feature.ExposedFeatures;
         dispose(): void;

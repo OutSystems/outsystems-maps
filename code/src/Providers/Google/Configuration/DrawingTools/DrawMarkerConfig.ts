@@ -1,7 +1,7 @@
 /// <reference path="./DrawConfig.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.Configuration.DrawingTools {
+namespace Provider.Google.Configuration.DrawingTools {
     export class DrawMarkerConfig extends DrawConfig {
         public iconUrl: string;
 

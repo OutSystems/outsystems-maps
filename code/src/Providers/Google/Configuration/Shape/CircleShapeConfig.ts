@@ -1,7 +1,7 @@
 /// <reference path="./FilledShapeConfig.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.Configuration.Shape {
+namespace Provider.Google.Configuration.Shape {
     export class CircleShapeConfig extends FilledShapeConfig {
         public center: string;
         public radius: number;

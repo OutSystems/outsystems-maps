@@ -1,7 +1,7 @@
-/// <reference path="../../../OSFramework/Configuration/AbstractConfiguration.ts" />
+/// <reference path="../../../../OSFramework/Configuration/AbstractConfiguration.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.Configuration.Shape {
+namespace Provider.Google.Configuration.Shape {
     export class BasicShapeConfig
         extends OSFramework.Configuration.AbstractConfiguration
         implements OSFramework.Configuration.IConfigurationShape

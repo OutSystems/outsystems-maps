@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.SearchPlaces {
+namespace Provider.Google.SearchPlaces {
     export namespace SearchPlacesFactory {
         export function MakeSearchPlaces(
             searchPlacesId: string,

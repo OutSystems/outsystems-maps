@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.Feature {
+namespace Provider.Google.Feature {
     export class Zoom
         implements OSFramework.Feature.IZoom, OSFramework.Interface.IBuilder
     {

@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.Constants.Shape {
+namespace Provider.Google.Constants.Shape {
     /**
      * Array of strings that define the available Provider Events
      */

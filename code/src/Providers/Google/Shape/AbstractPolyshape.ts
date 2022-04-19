@@ -1,7 +1,7 @@
 /// <reference path="AbstractProviderShape.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.Shape {
+namespace Provider.Google.Shape {
     export abstract class AbstractPolyshape<
         T extends OSFramework.Configuration.IConfigurationShape,
         W extends google.maps.Polygon | google.maps.Polyline

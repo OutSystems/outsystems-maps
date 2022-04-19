@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.DrawingTools {
+namespace Provider.Google.DrawingTools {
     export namespace DrawingToolsFactory {
         export function MakeDrawingTools(
             map: OSFramework.OSMap.IMap,

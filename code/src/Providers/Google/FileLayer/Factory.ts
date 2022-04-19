@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.FileLayer {
+namespace Provider.Google.FileLayer {
     export namespace FileLayerFactory {
         export function MakeFileLayer(
             map: OSFramework.OSMap.IMap,

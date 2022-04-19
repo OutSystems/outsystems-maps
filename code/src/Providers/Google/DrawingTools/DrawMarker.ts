@@ -1,7 +1,7 @@
 /// <reference path="AbstractProviderTool.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.DrawingTools {
+namespace Provider.Google.DrawingTools {
     export class DrawMarker extends AbstractProviderTool<Configuration.DrawingTools.DrawMarkerConfig> {
         private _latLng = {
             lat: undefined,

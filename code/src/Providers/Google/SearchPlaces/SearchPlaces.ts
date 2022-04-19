@@ -1,7 +1,7 @@
-/// <reference path="../../OSFramework/SearchPlaces/AbstractSearchPlaces.ts" />
+/// <reference path="../../../OSFramework/SearchPlaces/AbstractSearchPlaces.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.SearchPlaces {
+namespace Provider.Google.SearchPlaces {
     export class SearchPlaces extends OSFramework.SearchPlaces
         .AbstractSearchPlaces<
         google.maps.places.Autocomplete,
@@ -302,7 +302,7 @@ namespace GoogleProvider.SearchPlaces {
                     case OSFramework.Enum.OS_Config_SearchPlaces.searchType:
                         return this.provider.setTypes([
                             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                            GoogleProvider.SearchPlaces.SearchTypes[value]
+                            Provider.Google.SearchPlaces.SearchTypes[value]
                         ]);
                 }
             }

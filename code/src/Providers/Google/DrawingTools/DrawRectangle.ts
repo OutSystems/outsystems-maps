@@ -1,7 +1,7 @@
 /// <reference path="AbstractDrawShape.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.DrawingTools {
+namespace Provider.Google.DrawingTools {
     export class DrawRectangle extends AbstractDrawShape<Configuration.DrawingTools.DrawFilledShapeConfig> {
         constructor(
             map: OSFramework.OSMap.IMap,

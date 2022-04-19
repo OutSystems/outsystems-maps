@@ -1,7 +1,7 @@
-/// <reference path="../../OSFramework/FileLayer/AbstractFileLayer.ts" />
+/// <reference path="../../../OSFramework/FileLayer/AbstractFileLayer.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.FileLayer {
+namespace Provider.Google.FileLayer {
     export class FileLayer extends OSFramework.FileLayer.AbstractFileLayer<
         google.maps.KmlLayer,
         OSFramework.Configuration.IConfigurationFileLayer

@@ -1,7 +1,7 @@
-/// <reference path="../../OSFramework/DrawingTools/AbstractTool.ts" />
+/// <reference path="../../../OSFramework/DrawingTools/AbstractTool.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.DrawingTools {
+namespace Provider.Google.DrawingTools {
     export abstract class AbstractProviderTool<
         T extends OSFramework.Configuration.IConfigurationTool
     > extends OSFramework.DrawingTools.AbstractTool<T> {

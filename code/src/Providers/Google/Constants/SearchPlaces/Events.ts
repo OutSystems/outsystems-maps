@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.Constants.SearchPlaces {
+namespace Provider.Google.Constants.SearchPlaces {
     /**
      * Array of strings that define the available Provider Events
      */

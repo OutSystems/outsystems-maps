@@ -1,7 +1,7 @@
-/// <reference path="../../../OSFramework/Configuration/AbstractConfiguration.ts" />
+/// <reference path="../../../../OSFramework/Configuration/AbstractConfiguration.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.Configuration.SearchPlaces {
+namespace Provider.Google.Configuration.SearchPlaces {
     export class SearchPlacesConfig
         extends OSFramework.Configuration.AbstractConfiguration
         implements OSFramework.Configuration.IConfigurationSearchPlaces
@@ -27,7 +27,7 @@ namespace GoogleProvider.Configuration.SearchPlaces {
                     : undefined,
                 types: this.searchType
                     ? // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                      [GoogleProvider.SearchPlaces.SearchTypes[this.searchType]]
+                      [Google.SearchPlaces.SearchTypes[this.searchType]]
                     : undefined
             };
 

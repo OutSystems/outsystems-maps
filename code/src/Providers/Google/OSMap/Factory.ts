@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.OSMap {
+namespace Provider.Google.OSMap {
     export namespace MapFactory {
         export function MakeMap(
             type: OSFramework.Enum.MapType,

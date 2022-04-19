@@ -1,7 +1,7 @@
-/// <reference path="../../../OSFramework/Configuration/AbstractConfiguration.ts" />
+/// <reference path="../../../../OSFramework/Configuration/AbstractConfiguration.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.Configuration.FileLayer {
+namespace Provider.Google.Configuration.FileLayer {
     export class FileLayerConfig
         extends OSFramework.Configuration.AbstractConfiguration
         implements OSFramework.Configuration.IConfigurationFileLayer

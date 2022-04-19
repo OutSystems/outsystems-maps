@@ -3,7 +3,7 @@
  */
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.SharedComponents {
+namespace Provider.Google.SharedComponents {
     export function InitializeScripts(apiKey: string, cb: () => void): void {
         let script = document.getElementById(
             OSFramework.Helper.Constants.googleMapsScript

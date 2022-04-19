@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace GoogleProvider.SearchPlaces {
+namespace Provider.Google.SearchPlaces {
     /**
      * Internal type definition
      */
