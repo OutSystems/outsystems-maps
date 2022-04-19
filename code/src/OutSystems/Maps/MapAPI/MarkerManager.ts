@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace MapAPI.MarkerManager {
+namespace OutSystems.Maps.MapAPI.MarkerManager {
     const markerMap = new Map<string, string>(); //marker.uniqueId -> map.uniqueId
     const markerArr = new Array<OSFramework.Marker.IMarker>();
 
@@ -62,7 +62,7 @@ namespace MapAPI.MarkerManager {
     ): OSFramework.Marker.IMarker {
         const map = MapManager.GetMapById(mapId, true);
         if (!map.hasMarker(markerId)) {
-            const _marker = GoogleProvider.Marker.MarkerFactory.MakeMarker(
+            const _marker = Provider.Google.Marker.MarkerFactory.MakeMarker(
                 map,
                 markerId,
                 OSFramework.Enum.MarkerType.Marker,
@@ -197,5 +197,98 @@ namespace MapAPI.MarkerManager {
             }),
             1
         );
+    }
+}
+
+/// Overrides for the old namespace - calls the new one, lets users know this is no longer in use
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+namespace MapAPI.MarkerManager {
+    export function ChangeProperty(
+        markerId: string,
+        propertyName: string,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+        propertyValue: any
+    ): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.ChangeProperty()'`
+        );
+        OutSystems.Maps.MapAPI.MarkerManager.ChangeProperty(
+            markerId,
+            propertyName,
+            propertyValue
+        );
+    }
+
+    export function ClosePopup(markerId: string): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.ClosePopup()'`
+        );
+        OutSystems.Maps.MapAPI.MarkerManager.ClosePopup(markerId);
+    }
+
+    export function RefreshPopup(markerId: string): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.RefreshPopup()'`
+        );
+        OutSystems.Maps.MapAPI.MarkerManager.RefreshPopup(markerId);
+    }
+
+    export function CreateMarker(
+        mapId: string,
+        markerId: string,
+        configs: string
+    ): OSFramework.Marker.IMarker {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.CreateMarker()'`
+        );
+        return OutSystems.Maps.MapAPI.MarkerManager.CreateMarker(
+            mapId,
+            markerId,
+            configs
+        );
+    }
+
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    export function CreateMarkerByUniqueID(
+        markerId: string,
+        markerType: OSFramework.Enum.MarkerType,
+        configs: string
+    ): OSFramework.Marker.IMarker {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.CreateMarkerByUniqueID()'`
+        );
+        return OutSystems.Maps.MapAPI.MarkerManager.CreateMarkerByUniqueID(
+            markerId,
+            markerType,
+            configs
+        );
+    }
+
+    export function GetMarkerById(
+        markerId: string,
+        raiseError = true
+    ): OSFramework.Marker.IMarker {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.GetMarkerById()'`
+        );
+        return OutSystems.Maps.MapAPI.MarkerManager.GetMarkerById(
+            markerId,
+            raiseError
+        );
+    }
+
+    export function OpenPopup(markerId: string): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.OpenPopup()'`
+        );
+        return OutSystems.Maps.MapAPI.MarkerManager.OpenPopup(markerId);
+    }
+
+    export function RemoveMarker(markerId: string): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.RemoveMarker()'`
+        );
+        OutSystems.Maps.MapAPI.MarkerManager.RemoveMarker(markerId);
     }
 }
