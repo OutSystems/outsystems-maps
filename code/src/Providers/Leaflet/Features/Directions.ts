@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace LeafletProvider.Feature {
+namespace Provider.Leaflet.Feature {
     const enum ResolveType {
         SetRoute,
         GetDuration,

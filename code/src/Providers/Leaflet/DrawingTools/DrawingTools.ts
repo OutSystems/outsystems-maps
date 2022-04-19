@@ -1,7 +1,7 @@
-/// <reference path="../../OSFramework/DrawingTools/AbstractDrawingTools.ts" />
+/// <reference path="../../../OSFramework/DrawingTools/AbstractDrawingTools.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace LeafletProvider.DrawingTools {
+namespace Provider.Leaflet.DrawingTools {
     class ToolsList {
         //TODO - Create/optimize types for all the tools by using a global.d.ts or ussi
         //     - In that moment each tool should be boolean | NEW_TYPE because the empty state is false.

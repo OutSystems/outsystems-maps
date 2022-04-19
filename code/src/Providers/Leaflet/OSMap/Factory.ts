@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace LeafletProvider.OSMap {
+namespace Provider.Leaflet.OSMap {
     export namespace MapFactory {
         export function MakeMap(
             type: OSFramework.Enum.MapType,

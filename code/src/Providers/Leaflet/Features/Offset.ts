@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace LeafletProvider.Feature {
+namespace Provider.Leaflet.Feature {
     export class Offset
         implements OSFramework.Feature.IOffset, OSFramework.Interface.IBuilder
     {

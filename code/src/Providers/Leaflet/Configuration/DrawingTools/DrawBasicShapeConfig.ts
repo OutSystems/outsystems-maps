@@ -1,7 +1,7 @@
 /// <reference path="./DrawConfig.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace LeafletProvider.Configuration.DrawingTools {
+namespace Provider.Leaflet.Configuration.DrawingTools {
     export class DrawBasicShapeConfig extends DrawConfig {
         public allowEdit: boolean;
         public strokeColor: string;

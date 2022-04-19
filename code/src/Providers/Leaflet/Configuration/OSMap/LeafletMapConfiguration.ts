@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace LeafletProvider.Configuration.OSMap {
+namespace Provider.Leaflet.Configuration.OSMap {
     export class LeafletMapConfig
         extends OSFramework.Configuration.AbstractConfiguration
         implements OSFramework.Configuration.IConfigurationMap

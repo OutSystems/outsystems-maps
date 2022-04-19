@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace LeafletProvider.Constants.DrawingTools {
+namespace Provider.Leaflet.Constants.DrawingTools {
     /**
      * Enum that defines the available positions for the Leaflet DrawingTools
      */

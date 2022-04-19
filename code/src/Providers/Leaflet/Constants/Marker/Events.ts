@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace LeafletProvider.Constants.Marker {
+namespace Provider.Leaflet.Constants.Marker {
     /**
      * Enum that defines the available Provider Events
      */

@@ -1,7 +1,7 @@
 /// <reference path="AbstractProviderTool.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace LeafletProvider.DrawingTools {
+namespace Provider.Leaflet.DrawingTools {
     export class DrawMarker extends AbstractProviderTool<Configuration.DrawingTools.DrawMarkerConfig> {
         private _defaultIcon: L.DivIcon;
 

@@ -1,7 +1,7 @@
 /// <reference path="AbstractProviderTool.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace LeafletProvider.DrawingTools {
+namespace Provider.Leaflet.DrawingTools {
     export abstract class AbstractDrawShape<
         W extends Configuration.DrawingTools.DrawConfig
     > extends AbstractProviderTool<W> {

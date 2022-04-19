@@ -1,7 +1,7 @@
-/// <reference path="../../OSFramework/DrawingTools/AbstractTool.ts" />
+/// <reference path="../../../OSFramework/DrawingTools/AbstractTool.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace LeafletProvider.DrawingTools {
+namespace Provider.Leaflet.DrawingTools {
     export abstract class AbstractProviderTool<
         T extends OSFramework.Configuration.IConfigurationTool
     > extends OSFramework.DrawingTools.AbstractTool<T> {
@@ -39,9 +39,12 @@ namespace LeafletProvider.DrawingTools {
             const coordinates = this.getCoordinates();
 
             // Trigger the event of element complete (markercomplete, polylinecomplete, polygoncomplete, etc) with the information of a new element (boolean set to True)
-            this.triggerOnDrawingChangeEvent(uniqueId, true, 
+            this.triggerOnDrawingChangeEvent(
+                uniqueId,
+                true,
                 coordinates,
-                location);
+                location
+            );
         }
 
         /**

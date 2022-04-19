@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace LeafletProvider.Constants.OSMap {
+namespace Provider.Leaflet.Constants.OSMap {
     /**
      * Array of strings that define the available Provider Events
      */

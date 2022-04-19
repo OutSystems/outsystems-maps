@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace LeafletProvider.Constants.Directions {
+namespace Provider.Leaflet.Constants.Directions {
     /**
      * Enum that defines the available OSRM TravelModes
      */
