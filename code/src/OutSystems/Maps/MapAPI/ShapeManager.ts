@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace MapAPI.ShapeManager {
+namespace OutSystems.Maps.MapAPI.ShapeManager {
     const shapeMap = new Map<string, string>(); //shape.uniqueId -> map.uniqueId
     const shapeArr = new Array<OSFramework.Shape.IShape>();
 
@@ -96,7 +96,10 @@ namespace MapAPI.ShapeManager {
 
         //shapeId is the UniqueId
         if (shapeMap.has(shapeId)) {
-            map = MapManager.GetMapById(shapeMap.get(shapeId), false);
+            map = OutSystems.Maps.MapAPI.MapManager.GetMapById(
+                shapeMap.get(shapeId),
+                false
+            );
         }
         //UniqueID not found
         else {
@@ -181,5 +184,77 @@ namespace MapAPI.ShapeManager {
             }),
             1
         );
+    }
+}
+
+/// Overrides for the old namespace - calls the new one, lets users know this is no longer in use
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+namespace MapAPI.ShapeManager {
+    export function ChangeProperty(
+        shapeId: string,
+        propertyName: string,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+        propertyValue: any
+    ): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.ShapeManager.ChangeProperty()'`
+        );
+        OutSystems.Maps.MapAPI.ShapeManager.ChangeProperty(
+            shapeId,
+            propertyName,
+            propertyValue
+        );
+    }
+
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    export function CreateShape(
+        shapeId: string,
+        shapeType: OSFramework.Enum.ShapeType,
+        configs: string
+    ): OSFramework.Shape.IShape {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.ShapeManager.CreateShape()'`
+        );
+        return OutSystems.Maps.MapAPI.ShapeManager.CreateShape(
+            shapeId,
+            shapeType,
+            configs
+        );
+    }
+
+    export function GetCircle(shapeId: string): string {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.ShapeManager.GetCircle()'`
+        );
+        return OutSystems.Maps.MapAPI.ShapeManager.GetCircle(shapeId);
+    }
+
+    export function GetShapeById(
+        shapeId: string,
+        raiseError = true
+    ): OSFramework.Shape.IShape {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.ShapeManager.GetShapeById()'`
+        );
+
+        return OutSystems.Maps.MapAPI.ShapeManager.GetShapeById(
+            shapeId,
+            raiseError
+        );
+    }
+
+    export function GetShapePath(shapeId: string): string {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.ShapeManager.GetShapePath()'`
+        );
+        return OutSystems.Maps.MapAPI.ShapeManager.GetShapePath(shapeId);
+    }
+
+    export function RemoveShape(shapeId: string): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.ShapeManager.RemoveShape()'`
+        );
+        OutSystems.Maps.MapAPI.ShapeManager.RemoveShape(shapeId);
     }
 }

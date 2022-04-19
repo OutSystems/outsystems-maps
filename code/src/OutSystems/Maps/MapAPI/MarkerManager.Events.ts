@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace MapAPI.MarkerManager.Events {
+namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
     const _pendingEvents: Map<
         string,
@@ -165,5 +165,95 @@ namespace MapAPI.MarkerManager.Events {
                 }
             }
         }
+    }
+}
+
+/// Overrides for the old namespace - calls the new one, lets users know this is no longer in use
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+namespace MapAPI.MarkerManager.Events {
+    export function CheckPendingEvents(
+        marker: OSFramework.Marker.IMarker
+    ): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.Events.CheckPendingEvents()'`
+        );
+        OutSystems.Maps.MapAPI.MarkerManager.Events.CheckPendingEvents(marker);
+    }
+
+    export function GetMarkerIdByEventUniqueId(
+        eventUniqueId: string,
+        lookUpDOM = true
+    ): string {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.Events.GetMarkerIdByEventUniqueId()'`
+        );
+        return OutSystems.Maps.MapAPI.MarkerManager.Events.GetMarkerIdByEventUniqueId(
+            eventUniqueId,
+            lookUpDOM
+        );
+    }
+
+    export function Subscribe(
+        markerId: string,
+        eventName: OSFramework.Event.Marker.MarkerEventType,
+        // eslint-disable-next-line
+        callback: OSFramework.Callbacks.Marker.Event
+    ): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.Events.Subscribe()'`
+        );
+        OutSystems.Maps.MapAPI.MarkerManager.Events.Subscribe(
+            markerId,
+            eventName,
+            callback
+        );
+    }
+
+    export function SubscribeByUniqueId(
+        eventUniqueId: string,
+        eventName: OSFramework.Event.Marker.MarkerEventType,
+        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+        callback: OSFramework.Callbacks.Marker.Event
+    ): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.Events.SubscribeByUniqueId()'`
+        );
+        OutSystems.Maps.MapAPI.MarkerManager.Events.SubscribeByUniqueId(
+            eventUniqueId,
+            eventName,
+            callback
+        );
+    }
+
+    export function SubscribeAll(
+        mapId: string,
+        eventName: OSFramework.Event.Marker.MarkerEventType,
+        // eslint-disable-next-line
+        callback: OSFramework.Callbacks.Marker.Event
+    ): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.Events.SubscribeAll()'`
+        );
+        OutSystems.Maps.MapAPI.MarkerManager.Events.SubscribeAll(
+            mapId,
+            eventName,
+            callback
+        );
+    }
+
+    export function Unsubscribe(
+        eventUniqueId: string,
+        eventName: OSFramework.Event.Marker.MarkerEventType,
+        // eslint-disable-next-line
+        callback: OSFramework.Callbacks.Marker.Event
+    ): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.Events.Unsubscribe()'`
+        );
+        OutSystems.Maps.MapAPI.MarkerManager.Events.Unsubscribe(
+            eventUniqueId,
+            eventName,
+            callback
+        );
     }
 }

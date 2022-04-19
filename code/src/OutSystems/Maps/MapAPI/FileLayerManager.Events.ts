@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace MapAPI.FileLayerManager.Events {
+namespace OutSystems.Maps.MapAPI.FileLayerManager.Events {
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
     const _pendingEvents: Map<
         string,
@@ -108,5 +108,51 @@ namespace MapAPI.FileLayerManager.Events {
                 }
             }
         }
+    }
+}
+
+/// Overrides for the old namespace - calls the new one, lets users know this is no longer in use
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+namespace MapAPI.FileLayerManager.Events {
+    export function CheckPendingEvents(
+        fileLayer: OSFramework.FileLayer.IFileLayer
+    ): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.Events.CheckPendingEvents()'`
+        );
+        OutSystems.Maps.MapAPI.FileLayerManager.Events.CheckPendingEvents(
+            fileLayer
+        );
+    }
+
+    export function Subscribe(
+        fileLayerId: string,
+        eventName: OSFramework.Event.FileLayer.FileLayersEventType,
+        callback: OSFramework.Callbacks.FileLayer.Event
+    ): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.Events.Subscribe()'`
+        );
+        OutSystems.Maps.MapAPI.FileLayerManager.Events.Subscribe(
+            fileLayerId,
+            eventName,
+            callback
+        );
+    }
+
+    export function Unsubscribe(
+        fileLayerId: string,
+        eventName: OSFramework.Event.FileLayer.FileLayersEventType,
+        callback: OSFramework.Callbacks.FileLayer.Event
+    ): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.Events.Unsubscribe()'`
+        );
+        OutSystems.Maps.MapAPI.FileLayerManager.Events.Unsubscribe(
+            fileLayerId,
+            eventName,
+            callback
+        );
     }
 }

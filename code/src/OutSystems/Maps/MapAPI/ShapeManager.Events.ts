@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace MapAPI.ShapeManager.Events {
+namespace OutSystems.Maps.MapAPI.ShapeManager.Events {
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
     const _pendingEvents: Map<
         string,
@@ -143,5 +143,76 @@ namespace MapAPI.ShapeManager.Events {
                 }
             }
         }
+    }
+}
+/// Overrides for the old namespace - calls the new one, lets users know this is no longer in use
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+namespace MapAPI.ShapeManager.Events {
+    export function CheckPendingEvents(shape: OSFramework.Shape.IShape): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.Auxiliary.OutSystems.Maps.MapAPI.ShapeManager.Events.CheckPendingEvents()'`
+        );
+        OutSystems.Maps.MapAPI.ShapeManager.Events.CheckPendingEvents(shape);
+    }
+
+    export function GetShapeIdByEventUniqueId(
+        eventUniqueId: string,
+        lookUpDOM = true
+    ): string {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.ShapeManager.Events.GetShapeIdByEventUniqueId()'`
+        );
+        return OutSystems.Maps.MapAPI.ShapeManager.Events.GetShapeIdByEventUniqueId(
+            eventUniqueId,
+            lookUpDOM
+        );
+    }
+
+    export function Subscribe(
+        shapeId: string,
+        eventName: OSFramework.Event.Shape.ShapeEventType,
+        // eslint-disable-next-line
+        callback: OSFramework.Callbacks.Shape.Event
+    ): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.ShapeManager.Events.Subscribe()'`
+        );
+        OutSystems.Maps.MapAPI.ShapeManager.Events.Subscribe(
+            shapeId,
+            eventName,
+            callback
+        );
+    }
+
+    export function SubscribeByEventUniqueId(
+        eventUniqueId: string,
+        eventName: OSFramework.Event.Shape.ShapeEventType,
+        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+        callback: OSFramework.Callbacks.Shape.Event
+    ): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.ShapeManager.Events.SubscribeByEventUniqueId()'`
+        );
+        OutSystems.Maps.MapAPI.ShapeManager.Events.SubscribeByEventUniqueId(
+            eventUniqueId,
+            eventName,
+            callback
+        );
+    }
+
+    export function Unsubscribe(
+        eventUniqueId: string,
+        eventName: OSFramework.Event.Shape.ShapeEventType,
+        // eslint-disable-next-line
+        callback: OSFramework.Callbacks.Shape.Event
+    ): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.ShapeManager.Events.Unsubscribe()'`
+        );
+        OutSystems.Maps.MapAPI.ShapeManager.Events.Unsubscribe(
+            eventUniqueId,
+            eventName,
+            callback
+        );
     }
 }

@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace MapAPI.FileLayerManager {
+namespace OutSystems.Maps.MapAPI.FileLayerManager {
     const fileLayerMap = new Map<string, string>(); //fileLayer.uniqueId -> map.uniqueId
     const fileLayerArr = new Array<OSFramework.FileLayer.IFileLayer>();
 
@@ -84,7 +84,7 @@ namespace MapAPI.FileLayerManager {
         }
         if (!map.hasFileLayer(fileLayerId)) {
             const _fileLayer =
-                GoogleProvider.FileLayer.FileLayerFactory.MakeFileLayer(
+                Provider.Google.FileLayer.FileLayerFactory.MakeFileLayer(
                     map,
                     fileLayerId,
                     JSON.parse(configs)
@@ -138,6 +138,62 @@ namespace MapAPI.FileLayerManager {
                 return p && p.equalsToID(fileLayerId);
             }),
             1
+        );
+    }
+}
+
+/// Overrides for the old namespace - calls the new one, lets users know this is no longer in use
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+namespace MapAPI.FileLayerManager {
+    export function ChangeProperty(
+        fileLayerId: string,
+        propertyName: string,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+        propertyValue: any
+    ): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.ChangeProperty()'`
+        );
+        OutSystems.Maps.MapAPI.FileLayerManager.ChangeProperty(
+            fileLayerId,
+            propertyName,
+            propertyValue
+        );
+    }
+
+    export function CreateFileLayer(
+        fileLayerId: string,
+        configs: string
+    ): OSFramework.FileLayer.IFileLayer {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.CreateFileLayer()'`
+        );
+        return OutSystems.Maps.MapAPI.FileLayerManager.CreateFileLayer(
+            fileLayerId,
+            configs
+        );
+    }
+
+    export function GetFileLayerById(
+        fileLayerId: string,
+        raiseError = true
+    ): OSFramework.FileLayer.IFileLayer {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.GetFileLayerById()'`
+        );
+        return OutSystems.Maps.MapAPI.FileLayerManager.GetFileLayerById(
+            fileLayerId,
+            raiseError
+        );
+    }
+
+    export function RemoveFileLayer(fileLayerId: string): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.RemoveFileLayer()'`
+        );
+        return OutSystems.Maps.MapAPI.FileLayerManager.RemoveFileLayer(
+            fileLayerId
         );
     }
 }

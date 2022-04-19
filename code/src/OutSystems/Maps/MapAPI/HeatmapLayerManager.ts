@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace MapAPI.HeatmapLayerManager {
+namespace OutSystems.Maps.MapAPI.HeatmapLayerManager {
     const heatmapLayerMap = new Map<string, string>(); //heatmapLayer.uniqueId -> map.uniqueId
     const heatmapLayerArr = new Array<OSFramework.HeatmapLayer.IHeatmapLayer>();
 
@@ -89,7 +89,7 @@ namespace MapAPI.HeatmapLayerManager {
         }
         if (!map.hasHeatmapLayer(heatmapLayerId)) {
             const _heatmapLayer =
-                GoogleProvider.HeatmapLayer.HeatmapLayerFactory.MakeHeatmapLayer(
+                Provider.Google.HeatmapLayer.HeatmapLayerFactory.MakeHeatmapLayer(
                     map,
                     heatmapLayerId,
                     JSON.parse(configs)
@@ -142,6 +142,63 @@ namespace MapAPI.HeatmapLayerManager {
                 return p && p.equalsToID(heatmapLayerId);
             }),
             1
+        );
+    }
+}
+
+/// Overrides for the old namespace - calls the new one, lets users know this is no longer in use
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+namespace MapAPI.HeatmapLayerManager {
+    export function ChangeProperty(
+        heatmapLayerId: string,
+        propertyName: string,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+        propertyValue: any
+    ): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.HeatmapLayerManager.ChangeProperty()'`
+        );
+        OutSystems.Maps.MapAPI.HeatmapLayerManager.ChangeProperty(
+            heatmapLayerId,
+            propertyName,
+            propertyValue
+        );
+    }
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    export function CreateHeatmapLayer(
+        heatmapLayerId: string,
+        configs: string
+    ): OSFramework.HeatmapLayer.IHeatmapLayer {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.HeatmapLayerManager.CreateHeatmapLayer()'`
+        );
+        return OutSystems.Maps.MapAPI.HeatmapLayerManager.CreateHeatmapLayer(
+            heatmapLayerId,
+            configs
+        );
+    }
+
+    export function GetHeatmapLayerById(
+        heatmapLayerId: string,
+        raiseError = true
+    ): OSFramework.HeatmapLayer.IHeatmapLayer {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.HeatmapLayerManager.GetHeatmapLayerById()'`
+        );
+
+        return OutSystems.Maps.MapAPI.HeatmapLayerManager.GetHeatmapLayerById(
+            heatmapLayerId,
+            raiseError
+        );
+    }
+
+    export function RemoveHeatmapLayer(heatmapLayerId: string): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.HeatmapLayerManager.RemoveHeatmapLayer()'`
+        );
+        OutSystems.Maps.MapAPI.HeatmapLayerManager.RemoveHeatmapLayer(
+            heatmapLayerId
         );
     }
 }

@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace PlacesAPI.SearchPlacesManager.Events {
+namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events {
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     const _pendingEvents: Map<
         string,
@@ -137,5 +137,66 @@ namespace PlacesAPI.SearchPlacesManager.Events {
                 }
             }
         }
+    }
+}
+
+/// Overrides for the old namespace - calls the new one, lets users know this is no longer in use
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+namespace PlacesAPI.SearchPlacesManager.Events {
+    export function CheckPendingEvents(
+        searchPlaces: OSFramework.SearchPlaces.ISearchPlaces
+    ): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events.CheckPendingEvents()'`
+        );
+        OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events.CheckPendingEvents(
+            searchPlaces
+        );
+    }
+
+    export function GetSearchPlacesByEventUniqueId(
+        eventUniqueId: string,
+        lookUpDOM = true
+    ): string {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events.GetSearchPlacesByEventUniqueId()'`
+        );
+        return OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events.GetSearchPlacesByEventUniqueId(
+            eventUniqueId,
+            lookUpDOM
+        );
+    }
+
+    export function Subscribe(
+        searchPlacesId: string,
+        eventName: OSFramework.Event.SearchPlaces.SearchPlacesEventType,
+        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+        callback: OSFramework.Callbacks.SearchPlaces.Event
+    ): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events.Subscribe()'`
+        );
+        OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events.Subscribe(
+            searchPlacesId,
+            eventName,
+            callback
+        );
+    }
+
+    export function Unsubscribe(
+        eventUniqueId: string,
+        eventName: OSFramework.Event.SearchPlaces.SearchPlacesEventType,
+        // eslint-disable-next-line
+        callback: OSFramework.Callbacks.SearchPlaces.Event
+    ): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events.Unsubscribe()'`
+        );
+        OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events.Unsubscribe(
+            eventUniqueId,
+            eventName,
+            callback
+        );
     }
 }

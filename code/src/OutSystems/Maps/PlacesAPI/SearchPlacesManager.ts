@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace PlacesAPI.SearchPlacesManager {
+namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager {
     const searchPlacesMap = new Map<
         string,
         OSFramework.SearchPlaces.ISearchPlaces
@@ -39,7 +39,7 @@ namespace PlacesAPI.SearchPlacesManager {
         configs: string
     ): OSFramework.SearchPlaces.ISearchPlaces {
         const _searchPlaces =
-            GoogleProvider.SearchPlaces.SearchPlacesFactory.MakeSearchPlaces(
+            Provider.Google.SearchPlaces.SearchPlacesFactory.MakeSearchPlaces(
                 searchPlacesId,
                 JSON.parse(configs)
             );
@@ -142,5 +142,86 @@ namespace PlacesAPI.SearchPlacesManager {
         }
 
         _searchPlaces.dispose();
+    }
+}
+
+/// Overrides for the old namespace - calls the new one, lets users know this is no longer in use
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+namespace PlacesAPI.SearchPlacesManager {
+    export function ChangeProperty(
+        searchPlacesId: string,
+        propertyName: string,
+        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+        propertyValue: any
+    ): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.ChangeProperty()'`
+        );
+        OutSystems.Maps.PlacesAPI.SearchPlacesManager.ChangeProperty(
+            searchPlacesId,
+            propertyName,
+            propertyValue
+        );
+    }
+
+    export function CreateSearchPlaces(
+        searchPlacesId: string,
+        configs: string
+    ): OSFramework.SearchPlaces.ISearchPlaces {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage}  'OutSystems.Maps.PlacesAPI.SearchPlacesManager.CreateSearchPlaces()'`
+        );
+        return OutSystems.Maps.PlacesAPI.SearchPlacesManager.CreateSearchPlaces(
+            searchPlacesId,
+            configs
+        );
+    }
+
+    export function GetActiveSearchPlaces(): OSFramework.SearchPlaces.ISearchPlaces {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.GetActiveSearchPlaces()'`
+        );
+        return OutSystems.Maps.PlacesAPI.SearchPlacesManager.GetActiveSearchPlaces();
+    }
+
+    export function GetSearchPlacesById(
+        searchPlacesId: string,
+        raiseError = true
+    ): OSFramework.SearchPlaces.ISearchPlaces {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.GetSearchPlacesById()'`
+        );
+        return OutSystems.Maps.PlacesAPI.SearchPlacesManager.GetSearchPlacesById(
+            searchPlacesId,
+            raiseError
+        );
+    }
+
+    export function GetSearchPlacessFromPage(): Map<
+        string,
+        OSFramework.SearchPlaces.ISearchPlaces
+    > {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.GetSearchPlacessFromPage()'`
+        );
+        return OutSystems.Maps.PlacesAPI.SearchPlacesManager.GetSearchPlacessFromPage();
+    }
+
+    export function InitializeSearchPlaces(searchPlacesId: string): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.InitializeSearchPlaces()'`
+        );
+        OutSystems.Maps.PlacesAPI.SearchPlacesManager.InitializeSearchPlaces(
+            searchPlacesId
+        );
+    }
+
+    export function RemoveSearchPlaces(searchPlacesId: string): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.RemoveSearchPlaces()'`
+        );
+        OutSystems.Maps.PlacesAPI.SearchPlacesManager.RemoveSearchPlaces(
+            searchPlacesId
+        );
     }
 }

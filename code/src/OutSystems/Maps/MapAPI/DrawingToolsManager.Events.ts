@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace MapAPI.DrawingToolsManager.Events {
+namespace OutSystems.Maps.MapAPI.DrawingToolsManager.Events {
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
     const _pendingEvents: Map<
         string,
@@ -114,5 +114,53 @@ namespace MapAPI.DrawingToolsManager.Events {
                 }
             }
         }
+    }
+}
+
+/// Overrides for the old namespace - calls the new one, lets users know this is no longer in use
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+namespace MapAPI.DrawingToolsManager.Events {
+    export function CheckPendingEvents(
+        drawingTools: OSFramework.DrawingTools.IDrawingTools
+    ): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.Events.CheckPendingEvents()'`
+        );
+        OutSystems.Maps.MapAPI.DrawingToolsManager.Events.CheckPendingEvents(
+            drawingTools
+        );
+    }
+
+    export function SubscribeByToolUniqueId(
+        toolUniqueId: string,
+        eventName: OSFramework.Event.DrawingTools.DrawingToolsEventType,
+        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+        callback: OSFramework.Callbacks.DrawingTools.Event
+    ): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.Events.SubscribeByToolUniqueId()'`
+        );
+        OutSystems.Maps.MapAPI.DrawingToolsManager.Events.SubscribeByToolUniqueId(
+            toolUniqueId,
+            eventName,
+            callback
+        );
+    }
+
+    export function UnsubscribeByToolId(
+        toolUniqueId: string,
+        eventName: OSFramework.Event.DrawingTools.DrawingToolsEventType,
+        // eslint-disable-next-line
+        callback: OSFramework.Callbacks.DrawingTools.Event
+    ): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.Events.UnsubscribeByToolId()'`
+        );
+        OutSystems.Maps.MapAPI.DrawingToolsManager.Events.UnsubscribeByToolId(
+            toolUniqueId,
+            eventName,
+            callback
+        );
     }
 }

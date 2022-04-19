@@ -1,11 +1,11 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace MapAPI.Directions {
+namespace OutSystems.Maps.MapAPI.Directions {
     /**
      * Function that will retrieve all the legs (steps from one waypoint to the other) from the direction that is rendered on the Map.
      * @param mapId Id of the Map to get the legs from the direction.
      */
     export function GetLegsFromDirection(mapId: string): string {
-        const map = MapManager.GetMapById(mapId, true);
+        const map = OutSystems.Maps.MapAPI.MapManager.GetMapById(mapId, true);
         return JSON.stringify(map.features.directions.getLegsFromDirection());
     }
 
@@ -75,5 +75,71 @@ namespace MapAPI.Directions {
     export function RemoveDirections(mapId: string): string {
         const map = MapManager.GetMapById(mapId, true);
         return JSON.stringify(map.features.directions.removeRoute());
+    }
+}
+
+/// Overrides for the old namespace - calls the new one, lets users know this is no longer in use
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+namespace MapAPI.Directions {
+    export function GetLegsFromDirection(mapId: string): string {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.Directions.GetLegsFromDirection()'`
+        );
+        return OutSystems.Maps.MapAPI.Directions.GetLegsFromDirection(mapId);
+    }
+
+    export function GetTotalDistanceFromDirection(
+        mapId: string
+    ): Promise<number> {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.Directions.GetTotalDistanceFromDirection()'`
+        );
+        return OutSystems.Maps.MapAPI.Directions.GetTotalDistanceFromDirection(
+            mapId
+        );
+    }
+
+    export function GetTotalDurationFromDirection(
+        mapId: string
+    ): Promise<number> {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.Directions.GetTotalDistanceFromDirection()'`
+        );
+        return OutSystems.Maps.MapAPI.Directions.GetTotalDistanceFromDirection(
+            mapId
+        );
+    }
+
+    export function LoadPlugin(
+        mapId: string,
+        providerName: string,
+        apiKey: string
+    ): string {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.Directions.LoadPlugin()'`
+        );
+        return OutSystems.Maps.MapAPI.Directions.LoadPlugin(
+            mapId,
+            providerName,
+            apiKey
+        );
+    }
+
+    export function SetDirections(
+        mapId: string,
+        options: string
+    ): Promise<string> {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.Directions.SetDirections()'`
+        );
+        return OutSystems.Maps.MapAPI.Directions.SetDirections(mapId, options);
+    }
+
+    export function RemoveDirections(mapId: string): string {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.Directions.RemoveDirections()'`
+        );
+        return OutSystems.Maps.MapAPI.Directions.RemoveDirections(mapId);
     }
 }

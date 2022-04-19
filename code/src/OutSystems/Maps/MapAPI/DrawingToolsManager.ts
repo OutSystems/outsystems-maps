@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace MapAPI.DrawingToolsManager {
+namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
     const drawingToolsMap = new Map<string, string>(); //drawingTools.uniqueId -> map.uniqueId
     let drawingToolsElement = undefined;
 
@@ -68,7 +68,7 @@ namespace MapAPI.DrawingToolsManager {
             if (elem !== undefined) {
                 //Find the closest Map
                 const mapId = OSFramework.Helper.GetClosestMapId(elem);
-                map = MapManager.GetMapById(mapId);
+                map = OutSystems.Maps.MapAPI.MapManager.GetMapById(mapId);
             }
         }
 
@@ -291,5 +291,123 @@ namespace MapAPI.DrawingToolsManager {
         const drawingTools = GetDrawingToolsById(drawingToolsId, false);
 
         drawingTools && drawingTools.removeTool(toolId);
+    }
+}
+
+/// Overrides for the old namespace - calls the new one, lets users know this is no longer in use
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+namespace MapAPI.DrawingToolsManager {
+    export function AddTool(
+        toolId: string,
+        type: OSFramework.Enum.DrawingToolsTypes,
+        configs: string
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ): OSFramework.DrawingTools.ITool {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.AddTool()'`
+        );
+        return OutSystems.Maps.MapAPI.DrawingToolsManager.AddTool(
+            toolId,
+            type,
+            configs
+        );
+    }
+
+    export function ChangeProperty(
+        drawingToolsId: string,
+        propertyName: string,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+        propertyValue: any
+    ): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.ChangeProperty()'`
+        );
+        OutSystems.Maps.MapAPI.DrawingToolsManager.ChangeProperty(
+            drawingToolsId,
+            propertyName,
+            propertyValue
+        );
+    }
+
+    export function ChangeToolProperty(
+        toolId: string,
+        propertyName: string,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+        propertyValue: any
+    ): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.ChangeToolProperty()'`
+        );
+        OutSystems.Maps.MapAPI.DrawingToolsManager.ChangeToolProperty(
+            toolId,
+            propertyName,
+            propertyValue
+        );
+    }
+
+    export function CheckPendingTools(
+        drawingTools: OSFramework.DrawingTools.IDrawingTools
+    ): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.CheckPendingTools()'`
+        );
+        OutSystems.Maps.MapAPI.DrawingToolsManager.CheckPendingTools(
+            drawingTools
+        );
+    }
+
+    export function CreateDrawingTools(
+        drawingToolsId: string,
+        configs: string
+    ): OSFramework.DrawingTools.IDrawingTools {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.CreateDrawingTools()'`
+        );
+        return OutSystems.Maps.MapAPI.DrawingToolsManager.CreateDrawingTools(
+            drawingToolsId,
+            configs
+        );
+    }
+
+    export function GetDrawingToolsById(
+        drawingToolsId: string,
+        raiseError = true
+    ): OSFramework.DrawingTools.IDrawingTools {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.GetDrawingToolsById()'`
+        );
+
+        return OutSystems.Maps.MapAPI.DrawingToolsManager.GetDrawingToolsById(
+            drawingToolsId,
+            raiseError
+        );
+    }
+
+    export function GetDrawingToolsByToolUniqueId(
+        toolUniqueId: string
+    ): string {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.GetDrawingToolsByToolUniqueId()'`
+        );
+        return OutSystems.Maps.MapAPI.DrawingToolsManager.GetDrawingToolsByToolUniqueId(
+            toolUniqueId
+        );
+    }
+
+    export function RemoveDrawingTools(drawingToolsId: string): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.RemoveDrawingTools()'`
+        );
+        OutSystems.Maps.MapAPI.DrawingToolsManager.RemoveDrawingTools(
+            drawingToolsId
+        );
+    }
+
+    export function RemoveTool(toolId: string): void {
+        OSFramework.Helper.LogWarningMessage(
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.RemoveTool()'`
+        );
+        OutSystems.Maps.MapAPI.DrawingToolsManager.RemoveTool(toolId);
     }
 }
