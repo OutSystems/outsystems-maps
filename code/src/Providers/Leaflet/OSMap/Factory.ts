@@ -15,7 +15,7 @@ namespace Provider.Leaflet.OSMap {
                 //Right now there is no StaticMap for the Leaflet provider
                 case OSFramework.Enum.MapType.StaticMap:
                 default:
-                    throw `There is no factory for this type of Map (${type})`;
+                    throw new Error(`There is no factory for this type of Map (${type})`);
             }
         }
     }
