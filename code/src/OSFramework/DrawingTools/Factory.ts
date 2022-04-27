@@ -20,7 +20,7 @@ namespace OSFramework.DrawingTools {
                         configs
                     );
                 default:
-                    throw `There is no factory for the DrawingTools using the provider ${map.providerType}`;
+                    throw new Error(`There is no factory for the DrawingTools using the provider ${map.providerType}`);
             }
         }
 
@@ -49,7 +49,7 @@ namespace OSFramework.DrawingTools {
                         configs
                     );
                 default:
-                    throw `There is no factory for the Tool (${type}) using the provider ${map.providerType}`;
+                    throw new Error(`There is no factory for the Tool (${type}) using the provider ${map.providerType}`);
             }
         }
     }

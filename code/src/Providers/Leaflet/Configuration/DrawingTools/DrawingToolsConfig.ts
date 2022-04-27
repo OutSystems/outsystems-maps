@@ -11,12 +11,9 @@ namespace Provider.Leaflet.Configuration.DrawingTools {
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public getProviderConfig(): any {
-            // eslint-disable-next-line prefer-const
-            let provider = {
+            return {
                 position: this.position
-            };
-
-            return provider;
+            };;
         }
     }
 }

@@ -1,5 +1,3 @@
-//import { map } from 'leaflet';
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OutSystems.Maps.MapAPI.MapManager {
     const maps = new Map<string, OSFramework.OSMap.IMap>(); //map.uniqueId -> Map obj

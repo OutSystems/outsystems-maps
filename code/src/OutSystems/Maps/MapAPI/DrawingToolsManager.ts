@@ -259,9 +259,8 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
         //Try to find in DOM only if not present on Map
         const toolElement =
             OSFramework.Helper.GetElementByUniqueId(toolUniqueId);
-        const drawingToolsId =
-            OSFramework.Helper.GetClosestDrawingToolsId(toolElement);
-        return drawingToolsId;
+            
+        return OSFramework.Helper.GetClosestDrawingToolsId(toolElement);
     }
 
     /**

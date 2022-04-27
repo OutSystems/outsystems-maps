@@ -43,7 +43,6 @@ namespace Provider.Google.DrawingTools {
             // Make sure to remove the overlays after creating them,
             // Otherwise the following line which will create the shape/marker will be over the overlay of the provider
             element.setMap(null); // unset the map to remove the overlay
-            element = null;
         }
 
         /**

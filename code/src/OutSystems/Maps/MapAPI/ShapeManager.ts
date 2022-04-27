@@ -50,7 +50,6 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
             shapeMap.set(shapeId, map.uniqueId);
             map.addShape(_shape);
 
-            // shapes.set(shapeId, _shape);
             Events.CheckPendingEvents(_shape);
             return _shape;
         } else {

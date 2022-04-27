@@ -21,7 +21,7 @@ namespace OSFramework.OSMap {
                         configs
                     );
                 default:
-                    throw `There is no factory for this Map provider (${provider})`;
+                    throw new Error(`There is no factory for this Map provider (${provider})`);
             }
         }
     }

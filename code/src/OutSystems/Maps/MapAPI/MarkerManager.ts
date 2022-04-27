@@ -105,7 +105,6 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
             markerMap.set(markerId, map.uniqueId);
             map.addMarker(_marker);
 
-            // markers.set(markerId, _marker);
             Events.CheckPendingEvents(_marker);
             return _marker;
         } else {
