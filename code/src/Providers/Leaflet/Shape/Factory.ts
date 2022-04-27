@@ -17,7 +17,7 @@ namespace Provider.Leaflet.Shape {
                 case OSFramework.Enum.ShapeType.Rectangle:
                     return new Rectangle(map, shapeId, type, configs);
                 default:
-                    throw `There is no factory for this type of Shape (${type})`;
+                    throw new Error(`There is no factory for this type of Shape (${type})`);
             }
         }
     }

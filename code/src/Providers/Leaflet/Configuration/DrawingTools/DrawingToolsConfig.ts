@@ -13,7 +13,7 @@ namespace Provider.Leaflet.Configuration.DrawingTools {
         public getProviderConfig(): any {
             return {
                 position: this.position
-            };;
+            };
         }
     }
 }

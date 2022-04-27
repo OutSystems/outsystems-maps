@@ -24,7 +24,7 @@ namespace OSFramework.Shape {
                         configs as JSON
                     );
                 default:
-                    throw `There is no factory for the Shape using the provider ${map.providerType}`;
+                    throw new Error(`There is no factory for the Shape using the provider ${map.providerType}`);
             }
         }
     }
