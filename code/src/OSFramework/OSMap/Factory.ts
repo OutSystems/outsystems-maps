@@ -9,19 +9,19 @@ namespace OSFramework.OSMap {
         ): OSMap.IMap {
             switch (provider) {
                 case Enum.ProviderType.Google:
-                    return GoogleProvider.OSMap.MapFactory.MakeMap(
+                    return Provider.Google.OSMap.MapFactory.MakeMap(
                         type,
                         mapdId,
                         configs
                     );
                 case Enum.ProviderType.Leaflet:
-                    return LeafletProvider.OSMap.MapFactory.MakeMap(
+                    return Provider.Leaflet.OSMap.MapFactory.MakeMap(
                         type,
                         mapdId,
                         configs
                     );
                 default:
-                    throw `There is no factory for this Map provider (${provider})`;
+                    throw new Error(`There is no factory for this Map provider (${provider})`);
             }
         }
     }

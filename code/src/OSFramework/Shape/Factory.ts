@@ -10,21 +10,21 @@ namespace OSFramework.Shape {
             switch (map.providerType) {
                 case Enum.ProviderType.Google:
                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                    return GoogleProvider.Shape.ShapeFactory.MakeShape(
+                    return Provider.Google.Shape.ShapeFactory.MakeShape(
                         map,
                         shapeId,
                         type,
                         configs as JSON
                     );
                 case Enum.ProviderType.Leaflet:
-                    return LeafletProvider.Shape.ShapeFactory.MakeShape(
+                    return Provider.Leaflet.Shape.ShapeFactory.MakeShape(
                         map,
                         shapeId,
                         type,
                         configs as JSON
                     );
                 default:
-                    throw `There is no factory for the Shape using the provider ${map.providerType}`;
+                    throw new Error(`There is no factory for the Shape using the provider ${map.providerType}`);
             }
         }
     }

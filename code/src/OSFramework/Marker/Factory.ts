@@ -9,22 +9,22 @@ namespace OSFramework.Marker {
         ): Marker.IMarker {
             switch (map.providerType) {
                 case Enum.ProviderType.Google:
-                    return GoogleProvider.Marker.MarkerFactory.MakeMarker(
+                    return Provider.Google.Marker.MarkerFactory.MakeMarker(
                         map,
                         markerId,
                         type,
-                        configs as GoogleProvider.Configuration.Marker.GoogleMarkerConfig
+                        configs as Provider.Google.Configuration.Marker.GoogleMarkerConfig
                     );
 
                 case Enum.ProviderType.Leaflet:
-                    return LeafletProvider.Marker.MarkerFactory.MakeMarker(
+                    return Provider.Leaflet.Marker.MarkerFactory.MakeMarker(
                         map,
                         markerId,
                         type,
-                        configs as LeafletProvider.Configuration.Marker.LeafletMarkerConfig
+                        configs as Provider.Leaflet.Configuration.Marker.LeafletMarkerConfig
                     );
                 default:
-                    throw `There is no factory for the Marker using the provider ${map.providerType}`;
+                    throw new Error(`There is no factory for the Marker using the provider ${map.providerType}`);
             }
         }
     }
