@@ -95,10 +95,7 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
 
         //shapeId is the UniqueId
         if (shapeMap.has(shapeId)) {
-            map = OutSystems.Maps.MapAPI.MapManager.GetMapById(
-                shapeMap.get(shapeId),
-                false
-            );
+            map = MapManager.GetMapById(shapeMap.get(shapeId), false);
         }
         //UniqueID not found
         else {

@@ -53,7 +53,7 @@ namespace OutSystems.Maps.MapAPI.MapManager {
         maps.set(mapId, _map);
         activeMap = _map;
 
-        //Events.CheckPendingEvents(_map);
+        Events.CheckPendingEvents(_map);
 
         return _map;
     }
@@ -134,7 +134,7 @@ namespace OutSystems.Maps.MapAPI.MapManager {
         const map = GetMapById(mapId);
 
         map.build();
-        //Events.CheckPendingEvents(map);
+        Events.CheckPendingEvents(map);
     }
 
     /**
