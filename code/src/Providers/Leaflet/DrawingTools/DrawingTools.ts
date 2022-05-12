@@ -7,7 +7,7 @@ namespace Provider.Leaflet.DrawingTools {
         //     - In that moment each tool should be boolean | NEW_TYPE because the empty state is false.
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         public circle: any;
-        public circleMarker: boolean;
+        public circlemarker: boolean;
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         public marker: any;
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
@@ -18,7 +18,7 @@ namespace Provider.Leaflet.DrawingTools {
         public rectangle: any;
 
         constructor() {
-            this.circleMarker = false; // this tool isn't provided by our experience
+            this.circlemarker = false; // this tool isn't provided by our experience
             // By default the tools are marked with false, this means that if the configs don't show up the tool will not be added (it's disabled).
             // DrawingTools is a wrapper of Tools, the configs have to be on the wrapper level (Leaflet requirement),
             // but on our experience they are provided by each Tool.
@@ -91,14 +91,12 @@ namespace Provider.Leaflet.DrawingTools {
                         break;
                     case OSFramework.Enum.DrawingToolsTypes.Marker:
                         _tools.marker = tool.options;
-
                         break;
                     case OSFramework.Enum.DrawingToolsTypes.Polygon:
                         _tools.polygon = tool.options;
                         break;
                     case OSFramework.Enum.DrawingToolsTypes.Polyline:
                         _tools.polyline = tool.options;
-
                         break;
                     case OSFramework.Enum.DrawingToolsTypes.Rectangle:
                         _tools.rectangle = tool.options;
