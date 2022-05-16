@@ -104,9 +104,9 @@ namespace MapAPI.Directions {
         mapId: string
     ): Promise<number> {
         OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.Directions.GetTotalDistanceFromDirection()'`
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.Directions.GetTotalDurationFromDirection()'`
         );
-        return OutSystems.Maps.MapAPI.Directions.GetTotalDistanceFromDirection(
+        return OutSystems.Maps.MapAPI.Directions.GetTotalDurationFromDirection(
             mapId
         );
     }

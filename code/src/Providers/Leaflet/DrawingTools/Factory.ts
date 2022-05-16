@@ -62,7 +62,9 @@ namespace Provider.Leaflet.DrawingTools {
                         configs as Configuration.DrawingTools.DrawFilledShapeConfig
                     );
                 default:
-                    throw new Error(`There is no factory for this type of Tool (${type}) using the Leaflet provider`);
+                    throw new Error(
+                        `There is no factory for this type of Tool (${type}) using the Leaflet provider`
+                    );
             }
         }
     }

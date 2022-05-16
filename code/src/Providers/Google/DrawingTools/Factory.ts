@@ -64,7 +64,9 @@ namespace Provider.Google.DrawingTools {
                         configs as Configuration.DrawingTools.DrawFilledShapeConfig
                     );
                 default:
-                    throw new Error(`There is no factory for this type of DrawingTool (${type})`);
+                    throw new Error(
+                        `There is no factory for this type of DrawingTool (${type})`
+                    );
             }
         }
     }
