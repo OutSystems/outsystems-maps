@@ -40,7 +40,7 @@ namespace OutSystems.Maps.MapAPI.Directions {
      */
     export function LoadPlugin(
         mapId: string,
-        // The provider will be an entry from LeafletProvider.Constants.Directions.Provider
+        // The provider will be an entry from Provider.Leaflet.Constants.Directions.Provider
         providerName: string,
         apiKey: string
     ): string {
