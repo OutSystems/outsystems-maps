@@ -38,12 +38,26 @@ namespace Provider.Leaflet.Marker {
             this._addedEvents = [];
         }
 
+        private async _getMeta(
+            url
+        ): Promise<{ width: number; height: number }> {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () =>
+                    resolve({
+                        width: img.width,
+                        height: img.height
+                    });
+                img.onerror = (error) => reject(error);
+                img.src = url;
+            });
+        }
         /**
          * Sets the new icon on the Marker just by using the iconUrl
          * The width and the height of the icon will use the one in the configs (if set) or will use the default image size
          * The icon will be centered by x axis on the marker position but on the y axis it will appear right above it
          */
-        private _setIcon(iconUrl: string): void {
+        private async _setIcon(iconUrl: string) {
             let icon: L.DivIcon;
             // If the iconUrl is not set or is empty, we should use the defaultIcon
             if (iconUrl === '') {
@@ -64,6 +78,24 @@ namespace Provider.Leaflet.Marker {
                         this.config.iconWidth / 2,
                         this.config.iconHeight
                     ];
+                } else {
+                    // get the image's size to set the location of the marker in the map correctly
+                    try {
+                        const { width, height } = await this._getMeta(iconUrl);
+                        this.config.iconWidth = width;
+                        this.config.iconHeight = height;
+                        iconSize = [
+                            this.config.iconWidth,
+                            this.config.iconHeight
+                        ];
+                        iconAnchor = [
+                            this.config.iconWidth / 2,
+                            this.config.iconHeight
+                        ];
+                    } catch (e) {
+                        // Could not load image from specified URL
+                        console.error(e);
+                    }
                 }
                 // Update the icon using the previous configurations
                 icon = new L.Icon({
