@@ -11,7 +11,7 @@ namespace Provider.Leaflet.Constants.Directions.OSRM {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace LeafletProvider.Constants.Directions.MapBox {
+namespace Provider.Leaflet.Constants.Directions.MapBox {
     /**
      * Enum that defines the available MapBox TravelModes
      */
@@ -23,7 +23,7 @@ namespace LeafletProvider.Constants.Directions.MapBox {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace LeafletProvider.Constants.Directions.GraphHopper {
+namespace Provider.Leaflet.Constants.Directions.GraphHopper {
     /**
      * Enum that defines the available GraphHopper TravelModes
      */
@@ -35,7 +35,7 @@ namespace LeafletProvider.Constants.Directions.GraphHopper {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace LeafletProvider.Constants.Directions.TomTom {
+namespace Provider.Leaflet.Constants.Directions.TomTom {
     /**
      * Enum that defines the available TomTom TravelModes
      */

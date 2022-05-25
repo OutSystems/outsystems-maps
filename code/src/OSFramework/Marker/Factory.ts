@@ -24,7 +24,9 @@ namespace OSFramework.Marker {
                         configs as Provider.Leaflet.Configuration.Marker.LeafletMarkerConfig
                     );
                 default:
-                    throw new Error(`There is no factory for the Marker using the provider ${map.providerType}`);
+                    throw new Error(
+                        `There is no factory for the Marker using the provider ${map.providerType}`
+                    );
             }
         }
     }

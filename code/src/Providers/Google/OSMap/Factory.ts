@@ -18,7 +18,9 @@ namespace Provider.Google.OSMap {
                         configs as Configuration.OSMap.GoogleStaticMapConfig
                     );
                 default:
-                    throw new Error(`There is no factory for this type of Map (${type})`);
+                    throw new Error(
+                        `There is no factory for this type of Map (${type})`
+                    );
             }
         }
     }

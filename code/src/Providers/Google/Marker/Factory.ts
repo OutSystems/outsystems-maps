@@ -13,7 +13,9 @@ namespace Provider.Google.Marker {
                 case OSFramework.Enum.MarkerType.MarkerPopup:
                     return new MarkerPopup(map, markerId, type, configs);
                 default:
-                    throw new Error(`There is no factory for this type of Marker (${type})`);
+                    throw new Error(
+                        `There is no factory for this type of Marker (${type})`
+                    );
             }
         }
     }

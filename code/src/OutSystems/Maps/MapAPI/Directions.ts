@@ -40,7 +40,7 @@ namespace OutSystems.Maps.MapAPI.Directions {
      */
     export function LoadPlugin(
         mapId: string,
-        // The provider will be an entry from LeafletProvider.Constants.Directions.Provider
+        // The provider will be an entry from Provider.Leaflet.Constants.Directions.Provider
         providerName: string,
         apiKey: string
     ): string {
@@ -104,9 +104,9 @@ namespace MapAPI.Directions {
         mapId: string
     ): Promise<number> {
         OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.Directions.GetTotalDistanceFromDirection()'`
+            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.Directions.GetTotalDurationFromDirection()'`
         );
-        return OutSystems.Maps.MapAPI.Directions.GetTotalDistanceFromDirection(
+        return OutSystems.Maps.MapAPI.Directions.GetTotalDurationFromDirection(
             mapId
         );
     }

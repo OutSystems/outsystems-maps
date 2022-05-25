@@ -17,7 +17,9 @@ namespace Provider.Google.Shape {
                 case OSFramework.Enum.ShapeType.Rectangle:
                     return new Rectangle(map, shapeId, type, configs);
                 default:
-                    throw new Error(`There is no factory for this type of Shape (${type})`);
+                    throw new Error(
+                        `There is no factory for this type of Shape (${type})`
+                    );
             }
         }
     }
