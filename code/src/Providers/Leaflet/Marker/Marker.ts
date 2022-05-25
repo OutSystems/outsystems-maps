@@ -82,9 +82,6 @@ namespace Provider.Leaflet.Marker {
                     // get the image's size to set the location of the marker in the map correctly
                     try {
                         const { width, height } = await this._getMeta(iconUrl);
-                        console.log(
-                            `Image dimensions: ${width}px x ${height}px`
-                        );
                         this.config.iconWidth = width;
                         this.config.iconHeight = height;
                         iconSize = [
