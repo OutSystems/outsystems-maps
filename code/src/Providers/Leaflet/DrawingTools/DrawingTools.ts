@@ -139,13 +139,15 @@ namespace Provider.Leaflet.DrawingTools {
             );
         }
 
-        protected get controlOptions(): google.maps.drawing.DrawingControlOptions {
+        // We don't have the types for the drawingTools features
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        protected get controlOptions(): any {
             return this._provider.get('drawingControlOptions');
         }
 
-        protected set controlOptions(
-            options: google.maps.drawing.DrawingControlOptions
-        ) {
+        // We don't have the types for the drawingTools features
+        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+        protected set controlOptions(options: any) {
             const allOptions = { ...this.controlOptions, ...options };
             this._provider.setOptions({
                 drawingControlOptions: allOptions
