@@ -427,7 +427,9 @@ namespace GoogleProvider.OSMap {
         public dispose(): void {
             super.dispose();
 
-            this._fBuilder.dispose();
+            if (this._fBuilder) {
+                this._fBuilder.dispose();
+            }
 
             this._provider = undefined;
         }
