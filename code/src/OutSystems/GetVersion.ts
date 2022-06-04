@@ -4,7 +4,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OutSystems.Maps {
     /**
-     * Function that returns the OutSystemsUI version value
+     * Function that returns the OutSystems Maps version value
      *
      * @export
      * @return {*}  {string}
