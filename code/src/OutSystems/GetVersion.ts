@@ -10,6 +10,6 @@ namespace OutSystems.Maps {
      * @return {*}  {string}
      */
     export function GetVersion(): string {
-        return OSUIFramework.Constants.OSMapsVersion;
+        return OSFramework.Constants.OSMapsVersion;
     }
 }
