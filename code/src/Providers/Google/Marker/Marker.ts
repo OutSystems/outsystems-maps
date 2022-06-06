@@ -28,22 +28,36 @@ namespace Provider.Google.Marker {
         }
 
         private _setIcon(url: string): void {
-            let scaledSize: google.maps.Size;
-            // If the size of the icon is defined by a valid width and height, use those values
-            // Else If nothing is passed or the icon size has the width or the height equal to 0, use the full image size
-            if (this.config.iconWidth > 0 && this.config.iconHeight > 0) {
-                scaledSize = new google.maps.Size(
-                    this.config.iconWidth,
-                    this.config.iconHeight
-                );
+            // If the iconUrl is not set or is empty, we should use the defaultIcon
+            if (url === '') {
+                // Set the icon to the default Marker provider
+                this.provider.setIcon(null);
+            } else {
+                try {
+                    let scaledSize: google.maps.Size;
+                    // If the size of the icon is defined by a valid width and height, use those values
+                    // Else If nothing is passed or the icon size has the width or the height equal to 0, use the full image size
+                    if (
+                        this.config.iconWidth > 0 &&
+                        this.config.iconHeight > 0
+                    ) {
+                        scaledSize = new google.maps.Size(
+                            this.config.iconWidth,
+                            this.config.iconHeight
+                        );
+                    }
+                    // Update the icon using the previous configurations
+                    const icon = {
+                        url,
+                        scaledSize
+                    };
+                    // Set the icon to the Marker provider
+                    this.provider.setIcon(icon);
+                } catch (e) {
+                    // Could not load image from specified URL
+                    console.error(e);
+                }
             }
-            // Update the icon using the previous configurations
-            const icon = {
-                url,
-                scaledSize
-            };
-            // Set the icon to the Marker provider
-            this.provider.setIcon(icon);
         }
 
         /**
