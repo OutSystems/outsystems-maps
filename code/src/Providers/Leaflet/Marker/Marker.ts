@@ -226,10 +226,11 @@ namespace Provider.Leaflet.Marker {
                                     // EventName
                                     eventName,
                                     // Coords
-                                    e !== undefined && e.latlng !== undefined
+                                    e !== undefined &&
+                                        e.target.getLatLng() !== undefined
                                         ? JSON.stringify({
-                                              Lat: e.latlng.lat,
-                                              Lng: e.latlng.lng
+                                              Lat: e.target.getLatLng().lat,
+                                              Lng: e.target.getLatLng().lng
                                           })
                                         : undefined
                                 );
