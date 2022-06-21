@@ -80,6 +80,8 @@ namespace OSFramework.Helper.Constants {
     export const drawingPolygonCompleted = 'polygoncomplete';
     export const drawingCircleCompleted = 'circlecomplete';
     export const drawingRectangleCompleted = 'rectanglecomplete';
+    /* Default name for drawing completed event - Leaflet*/
+    export const drawingLeafletCompleted = 'draw:created';
     /** Default gradient heatmap colors from google provider */
     export const gradientHeatmapColors = [
         'rgba(102, 255, 0, 0)',

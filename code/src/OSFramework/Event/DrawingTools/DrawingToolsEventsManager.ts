@@ -94,7 +94,9 @@ namespace OSFramework.Event.DrawingTools {
                                     this._drawingTools.widgetId ||
                                     this._drawingTools.uniqueId, // Id of marker/shape block (once created by the DrawingTools) that triggered the event
                                 // eventInfo, // Name of the event that got triggered
-                                args[0].isNewElement // IsNewShape/IsNewMarker default is true
+                                args[0].isNewElement, // IsNewShape/IsNewMarker default is true
+                                args[0].coordinates, // coordinates in lat/lng structure
+                                args[0].location // location in string, as the shape block accepts coords and addresses
                             );
                             break;
                         }

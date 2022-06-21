@@ -21,7 +21,11 @@ namespace OSFramework.Event.DrawingTools {
             mapId: string,
             drawingToolsId: string,
             eventName: string,
-            isNewElement: boolean
+            isNewElement: boolean,
+            coordinates:
+                | OSStructures.OSMap.Coordinates
+                | OSStructures.OSMap.BoundsString,
+            location: string
         ): void {
             this.handlers
                 .slice(0)
@@ -31,7 +35,9 @@ namespace OSFramework.Event.DrawingTools {
                         mapId,
                         drawingToolsId,
                         eventName,
-                        isNewElement
+                        isNewElement,
+                        coordinates,
+                        location
                     )
                 );
         }

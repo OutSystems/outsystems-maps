@@ -18,6 +18,7 @@ namespace OSFramework.Enum {
         CFG_MaximumCountriesNumber = 'MAPS-CFG-10003',
         CFG_InvalidInputSearchPlaces = 'MAPS-CFG-10004',
         CFG_InvalidTravelMode = 'MAPS-CFG-04001',
+        CFG_InvalidDrawingToolsPosition = 'MAPS-CFG-06001',
 
         // Error Codes - LIB errors - Specific errors generated when consuming a third party lib / providers
         LIB_InvalidApiKeyMap = 'MAPS-LIB-01001',
