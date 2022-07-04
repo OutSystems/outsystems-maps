@@ -29,7 +29,7 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
      * Function to add drawing shapes to the shape arrays
      *
      * @export
-     * @param {OSFramework.Shape.IShape} shape
+     * @param {OSFramework.Shape.IShape} shape instance of the Shape
      */
     export function CreateDrawedShape(shape: OSFramework.Shape.IShape): void {
         const map = shape.map;
