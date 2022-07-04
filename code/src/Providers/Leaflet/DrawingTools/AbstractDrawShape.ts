@@ -53,7 +53,7 @@ namespace Provider.Leaflet.DrawingTools {
             // Add the onChange event to the new element
             this._setOnChangeEvent(_shape);
             // Add the new element to the map
-            this.map.addShape(_shape);
+            OutSystems.Maps.MapAPI.ShapeManager.CreateDrawedShape(_shape);
             return _shape;
         }
 
