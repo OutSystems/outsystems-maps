@@ -26,13 +26,26 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
     }
 
     /**
+     * Function to add drawing shapes to the shape arrays
+     *
+     * @export
+     * @param {OSFramework.Shape.IShape} shape
+     */
+    export function CreateDrawedShape(shape: OSFramework.Shape.IShape): void {
+        const map = shape.map;
+
+        shapeArr.push(shape);
+        shapeMap.set(shape.uniqueId, map.uniqueId);
+        map.addShape(shape);
+    }
+
+    /**
      * Function that will create an instance of Shape object with the configurations passed
      *
      * @export
      * @param {string} configs configurations for the Shape in JSON format
      * @returns {*}  {Shape.IShape} instance of the Shape
      */
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     export function CreateShape(
         shapeId: string,
         shapeType: OSFramework.Enum.ShapeType,
