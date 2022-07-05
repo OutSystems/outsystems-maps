@@ -55,8 +55,6 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
         shapeType: OSFramework.Enum.ShapeType,
         configs: string
     ): OSFramework.Shape.IShape {
-        // eslint-disable-next-line no-debugger
-        debugger;
         const map = GetMapByShapeId(shapeId);
         if (!map.hasShape(shapeId)) {
             const _shape = OSFramework.Shape.ShapeFactory.MakeShape(
