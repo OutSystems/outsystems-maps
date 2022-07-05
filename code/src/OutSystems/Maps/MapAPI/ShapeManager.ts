@@ -32,11 +32,15 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
      * @param {OSFramework.Shape.IShape} shape instance of the Shape
      */
     export function CreateDrawedShape(shape: OSFramework.Shape.IShape): void {
-        const map = shape.map;
+        if (shape !== undefined) {
+            const map = shape.map;
 
-        shapeArr.push(shape);
-        shapeMap.set(shape.uniqueId, map.uniqueId);
-        map.addShape(shape);
+            shapeArr.push(shape);
+            shapeMap.set(shape.uniqueId, map.uniqueId);
+            map.addShape(shape);
+        } else {
+            throw new Error(`The Shape ${shape} instance does not exist`);
+        }
     }
 
     /**
@@ -51,6 +55,8 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
         shapeType: OSFramework.Enum.ShapeType,
         configs: string
     ): OSFramework.Shape.IShape {
+        // eslint-disable-next-line no-debugger
+        debugger;
         const map = GetMapByShapeId(shapeId);
         if (!map.hasShape(shapeId)) {
             const _shape = OSFramework.Shape.ShapeFactory.MakeShape(
@@ -102,7 +108,6 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
      * @param {string} shapeId Id of the Shape that exists on the Map
      * @returns {*}  {ShapeMapper} this structure has the id of Map, and the reference to the instance of the Map
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     function GetMapByShapeId(shapeId: string): OSFramework.OSMap.IMap {
         let map: OSFramework.OSMap.IMap;
 
