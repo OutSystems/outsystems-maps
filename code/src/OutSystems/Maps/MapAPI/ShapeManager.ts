@@ -140,14 +140,26 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
         shapeId: string,
         raiseError = true
     ): OSFramework.Shape.IShape {
-        const shape: OSFramework.Shape.IShape = shapeArr.find(
+        let shape: OSFramework.Shape.IShape = shapeArr.find(
             (p) => p && p.equalsToID(shapeId)
         );
 
-        if (shape === undefined && raiseError) {
-            throw new Error(`Shape id:${shapeId} not found`);
-        }
+        if (shape === undefined) {
+            const allMaps = [...MapManager.GetMapsFromPage().values()];
 
+            allMaps.find((map) => {
+                shape =
+                    map.drawingTools &&
+                    map.drawingTools.createdElements.find((shape) =>
+                        shape.equalToID(shapeId)
+                    );
+                return shape !== undefined;
+            });
+
+            if (shape === undefined && raiseError) {
+                throw new Error(`Shape id:${shapeId} not found`);
+            }
+        }
         return shape;
     }
 
