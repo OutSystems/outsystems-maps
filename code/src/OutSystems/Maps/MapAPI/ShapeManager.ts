@@ -26,24 +26,6 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
     }
 
     /**
-     * Function to add drawing shapes to the shape arrays
-     *
-     * @export
-     * @param {OSFramework.Shape.IShape} shape instance of the Shape
-     */
-    export function CreateDrawedShape(shape: OSFramework.Shape.IShape): void {
-        if (shape !== undefined) {
-            const map = shape.map;
-
-            shapeArr.push(shape);
-            shapeMap.set(shape.uniqueId, map.uniqueId);
-            map.addShape(shape);
-        } else {
-            throw new Error(`The Shape ${shape} instance does not exist`);
-        }
-    }
-
-    /**
      * Function that will create an instance of Shape object with the configurations passed
      *
      * @export
@@ -144,18 +126,23 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
             (p) => p && p.equalsToID(shapeId)
         );
 
+        // if didn't found shape, check if it was draw by the DrawingTools
         if (shape === undefined) {
+            // Get all maps
             const allMaps = [...MapManager.GetMapsFromPage().values()];
 
-            allMaps.find((map) => {
+            // On each map, look for all drawingTools and on each one look, on the createdElements array, for the shapeId passed
+            allMaps.find((map: OSFramework.OSMap.IMap) => {
                 shape =
                     map.drawingTools &&
-                    map.drawingTools.createdElements.find((shape) =>
-                        shape.equalToID(shapeId)
+                    map.drawingTools.createdElements.find(
+                        (shape: OSFramework.Shape.IShape) =>
+                            shape.equalsToID(shapeId)
                     );
                 return shape !== undefined;
             });
 
+            // If still wasn't found, then it does not exist and throw error
             if (shape === undefined && raiseError) {
                 throw new Error(`Shape id:${shapeId} not found`);
             }

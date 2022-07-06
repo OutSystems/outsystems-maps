@@ -33,7 +33,7 @@ namespace Provider.Google.DrawingTools {
             // Add the onChange event to the new element
             this.setOnChangeEvent(_shape, _shape.config.locations);
             // Add the new element to the map
-            //OutSystems.Maps.MapAPI.ShapeManager.CreateDrawedShape(_shape);
+            this.map.addShape(_shape);
 
             return _shape;
         }
