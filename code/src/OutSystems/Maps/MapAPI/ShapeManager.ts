@@ -133,13 +133,12 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
 
             // On each map, look for all drawingTools and on each one look, on the createdElements array, for the shapeId passed
             allMaps.find((map: OSFramework.OSMap.IMap) => {
-                shape =
+                return (shape =
                     map.drawingTools &&
                     map.drawingTools.createdElements.find(
                         (shape: OSFramework.Shape.IShape) =>
                             shape.equalsToID(shapeId)
-                    );
-                return shape !== undefined;
+                    ));
             });
 
             // If still wasn't found, then it does not exist and throw error
