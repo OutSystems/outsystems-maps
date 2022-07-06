@@ -98,6 +98,10 @@ namespace Provider.Google.DrawingTools {
             }
         }
 
+        public dispose(): void {
+            super.dispose();
+        }
+
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public abstract get options(): any;
         protected abstract get completedToolEventName(): string;
