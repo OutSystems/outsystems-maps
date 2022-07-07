@@ -3,8 +3,8 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Google.DrawingTools {
     export abstract class AbstractDrawShape<
-        W extends Configuration.DrawingTools.DrawConfig
-    > extends AbstractProviderTool<W> {
+        T extends Configuration.DrawingTools.DrawConfig
+    > extends AbstractProviderTool<T> {
         constructor(
             map: OSFramework.OSMap.IMap,
             drawingTools: OSFramework.DrawingTools.IDrawingTools,
@@ -34,6 +34,7 @@ namespace Provider.Google.DrawingTools {
             this.setOnChangeEvent(_shape, _shape.config.locations);
             // Add the new element to the map
             this.map.addShape(_shape);
+
             return _shape;
         }
 

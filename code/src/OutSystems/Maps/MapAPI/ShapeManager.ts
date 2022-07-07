@@ -32,7 +32,6 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
      * @param {string} configs configurations for the Shape in JSON format
      * @returns {*}  {Shape.IShape} instance of the Shape
      */
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     export function CreateShape(
         shapeId: string,
         shapeType: OSFramework.Enum.ShapeType,
@@ -89,7 +88,6 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
      * @param {string} shapeId Id of the Shape that exists on the Map
      * @returns {*}  {ShapeMapper} this structure has the id of Map, and the reference to the instance of the Map
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     function GetMapByShapeId(shapeId: string): OSFramework.OSMap.IMap {
         let map: OSFramework.OSMap.IMap;
 
@@ -124,14 +122,30 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
         shapeId: string,
         raiseError = true
     ): OSFramework.Shape.IShape {
-        const shape: OSFramework.Shape.IShape = shapeArr.find(
+        let shape: OSFramework.Shape.IShape = shapeArr.find(
             (p) => p && p.equalsToID(shapeId)
         );
 
-        if (shape === undefined && raiseError) {
-            throw new Error(`Shape id:${shapeId} not found`);
-        }
+        // if didn't found shape, check if it was draw by the DrawingTools
+        if (shape === undefined) {
+            // Get all maps
+            const allMaps = [...MapManager.GetMapsFromPage().values()];
 
+            // On each map, look for all drawingTools and on each one look, on the createdElements array, for the shapeId passed
+            allMaps.find((map: OSFramework.OSMap.IMap) => {
+                return (shape =
+                    map.drawingTools &&
+                    map.drawingTools.createdElements.find(
+                        (shape: OSFramework.Shape.IShape) =>
+                            shape.equalsToID(shapeId)
+                    ));
+            });
+
+            // If still wasn't found, then it does not exist and throw error
+            if (shape === undefined && raiseError) {
+                throw new Error(`Shape id:${shapeId} not found`);
+            }
+        }
         return shape;
     }
 

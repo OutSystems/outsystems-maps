@@ -21,7 +21,6 @@ namespace Provider.Google.DrawingTools {
 
         /** Adds the location to the configurations of the new shape (polyline or polygon) */
         protected createConfigsElement(
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             shape: google.maps.Polyline | google.maps.Polygon,
             configs:
                 | Configuration.Shape.BasicShapeConfig
