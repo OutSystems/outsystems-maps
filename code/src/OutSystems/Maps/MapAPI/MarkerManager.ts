@@ -156,14 +156,30 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
         markerId: string,
         raiseError = true
     ): OSFramework.Marker.IMarker {
-        const marker: OSFramework.Marker.IMarker = markerArr.find(
+        let marker: OSFramework.Marker.IMarker = markerArr.find(
             (p) => p && p.equalsToID(markerId)
         );
 
-        if (marker === undefined && raiseError) {
-            throw new Error(`Marker id:${markerId} not found`);
-        }
+        // if didn't found marker, check if it was draw by the DrawingTools
+        if (marker === undefined) {
+            // Get all maps
+            const allMaps = [...MapManager.GetMapsFromPage().values()];
 
+            // On each map, look for all drawingTools and on each one look, on the createdElements array, for the markerId passed
+            allMaps.find((map: OSFramework.OSMap.IMap) => {
+                return (marker =
+                    map.drawingTools &&
+                    map.drawingTools.createdElements.find(
+                        (marker: OSFramework.Marker.IMarker) =>
+                            marker.equalsToID(markerId)
+                    ));
+            });
+
+            // If still wasn't found, then it does not exist and throw error
+            if (marker === undefined && raiseError) {
+                throw new Error(`Marker id:${markerId} not found`);
+            }
+        }
         return marker;
     }
 
