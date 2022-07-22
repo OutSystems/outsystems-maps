@@ -7,13 +7,15 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager.Events {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             cb: any;
             event: OSFramework.Event.FileLayer.FileLayersEventType;
+            uniqueId: string;
         }[]
     > = new Map<
         string,
         {
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             cb: any;
             event: OSFramework.Event.FileLayer.FileLayersEventType;
+            uniqueId: string;
         }[]
     >();
 
@@ -30,7 +32,11 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager.Events {
         for (const key of _pendingEvents.keys()) {
             if (fileLayer.equalsToID(key)) {
                 _pendingEvents.get(key).forEach((obj) => {
-                    fileLayer.fileLayerEvents.addHandler(obj.event, obj.cb);
+                    fileLayer.fileLayerEvents.addHandler(
+                        obj.event,
+                        obj.cb,
+                        obj.uniqueId
+                    );
                 });
                 fileLayer.refreshProviderEvents();
                 // Make sure to delete the entry from the pendingEvents
@@ -58,18 +64,24 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager.Events {
             if (_pendingEvents.has(fileLayerId)) {
                 _pendingEvents.get(fileLayerId).push({
                     event: eventName,
-                    cb: callback
+                    cb: callback,
+                    uniqueId: fileLayerId
                 });
             } else {
                 _pendingEvents.set(fileLayerId, [
                     {
                         event: eventName,
-                        cb: callback
+                        cb: callback,
+                        uniqueId: fileLayerId
                     }
                 ]);
             }
         } else {
-            fileLayer.fileLayerEvents.addHandler(eventName, callback);
+            fileLayer.fileLayerEvents.addHandler(
+                eventName,
+                callback,
+                fileLayerId
+            );
             fileLayer.refreshProviderEvents();
         }
     }

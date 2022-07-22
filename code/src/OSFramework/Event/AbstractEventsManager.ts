@@ -23,13 +23,19 @@ namespace OSFramework.Event {
             return this._handlers;
         }
 
-        public addHandler(eventType: ET, handler: Callbacks.Generic): void {
+        public addHandler(
+            eventType: ET,
+            handler: Callbacks.Generic,
+            eventUniqueId?: string
+        ): void {
             if (this._handlers && this._handlers.has(eventType)) {
-                this._handlers.get(eventType).addHandler(handler);
+                this._handlers
+                    .get(eventType)
+                    .addHandler(handler, eventUniqueId);
             } else {
                 const ev = this.getInstanceOfEventType(eventType);
                 if (ev !== undefined) {
-                    ev.addHandler(handler);
+                    ev.addHandler(handler, eventUniqueId);
                     this._handlers.set(eventType, ev);
                 }
             }

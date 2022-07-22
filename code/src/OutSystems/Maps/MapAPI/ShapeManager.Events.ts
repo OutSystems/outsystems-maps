@@ -3,12 +3,20 @@ namespace OutSystems.Maps.MapAPI.ShapeManager.Events {
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
     const _pendingEvents: Map<
         string,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        { cb: any; event: OSFramework.Event.Shape.ShapeEventType }[]
+        {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            cb: any;
+            event: OSFramework.Event.Shape.ShapeEventType;
+            uniqueId: string;
+        }[]
     > = new Map<
         string,
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        { cb: any; event: OSFramework.Event.Shape.ShapeEventType }[]
+        {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            cb: any;
+            event: OSFramework.Event.Shape.ShapeEventType;
+            uniqueId: string;
+        }[]
     >();
 
     const _eventsToShapeId = new Map<string, string>(); //event.uniqueId -> shape.uniqueId
@@ -24,7 +32,11 @@ namespace OutSystems.Maps.MapAPI.ShapeManager.Events {
         for (const key of _pendingEvents.keys()) {
             if (shape.equalsToID(key)) {
                 _pendingEvents.get(key).forEach((obj) => {
-                    shape.shapeEvents.addHandler(obj.event, obj.cb);
+                    shape.shapeEvents.addHandler(
+                        obj.event,
+                        obj.cb,
+                        obj.uniqueId
+                    );
                 });
                 // Make sure to delete the entry from the pendingEvents
                 _pendingEvents.delete(key);
@@ -67,7 +79,7 @@ namespace OutSystems.Maps.MapAPI.ShapeManager.Events {
         callback: OSFramework.Callbacks.Shape.Event
     ): void {
         const shape = GetShapeById(shapeId);
-        shape.shapeEvents.addHandler(eventName, callback);
+        shape.shapeEvents.addHandler(eventName, callback, shapeId);
     }
 
     /**
@@ -92,18 +104,20 @@ namespace OutSystems.Maps.MapAPI.ShapeManager.Events {
             if (_pendingEvents.has(shapeId)) {
                 _pendingEvents.get(shapeId).push({
                     event: eventName,
-                    cb: callback
+                    cb: callback,
+                    uniqueId: eventUniqueId
                 });
             } else {
                 _pendingEvents.set(shapeId, [
                     {
                         event: eventName,
-                        cb: callback
+                        cb: callback,
+                        uniqueId: eventUniqueId
                     }
                 ]);
             }
         } else {
-            shape.shapeEvents.addHandler(eventName, callback);
+            shape.shapeEvents.addHandler(eventName, callback, eventUniqueId);
             shape.refreshProviderEvents();
         }
     }

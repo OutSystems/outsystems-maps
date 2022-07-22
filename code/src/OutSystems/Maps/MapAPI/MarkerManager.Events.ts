@@ -3,12 +3,20 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
     const _pendingEvents: Map<
         string,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        { cb: any; event: OSFramework.Event.Marker.MarkerEventType }[]
+        {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            cb: any;
+            event: OSFramework.Event.Marker.MarkerEventType;
+            uniqueId: string;
+        }[]
     > = new Map<
         string,
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        { cb: any; event: OSFramework.Event.Marker.MarkerEventType }[]
+        {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            cb: any;
+            event: OSFramework.Event.Marker.MarkerEventType;
+            uniqueId: string;
+        }[]
     >();
 
     const _eventsToMarkerId = new Map<string, string>(); //event.uniqueId -> marker.uniqueId
@@ -26,7 +34,11 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
         for (const key of _pendingEvents.keys()) {
             if (marker.equalsToID(key)) {
                 _pendingEvents.get(key).forEach((obj) => {
-                    marker.markerEvents.addHandler(obj.event, obj.cb);
+                    marker.markerEvents.addHandler(
+                        obj.event,
+                        obj.cb,
+                        obj.uniqueId
+                    );
                 });
                 // Make sure to delete the entry from the pendingEvents
                 _pendingEvents.delete(key);
@@ -71,7 +83,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
         callback: OSFramework.Callbacks.Marker.Event
     ): void {
         const marker = GetMarkerById(markerId);
-        marker.markerEvents.addHandler(eventName, callback);
+        marker.markerEvents.addHandler(eventName, callback, markerId);
     }
 
     /**
@@ -96,18 +108,20 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
             if (_pendingEvents.has(markerId)) {
                 _pendingEvents.get(markerId).push({
                     event: eventName,
-                    cb: callback
+                    cb: callback,
+                    uniqueId: eventUniqueId
                 });
             } else {
                 _pendingEvents.set(markerId, [
                     {
                         event: eventName,
-                        cb: callback
+                        cb: callback,
+                        uniqueId: eventUniqueId
                     }
                 ]);
             }
         } else {
-            marker.markerEvents.addHandler(eventName, callback);
+            marker.markerEvents.addHandler(eventName, callback, eventUniqueId);
         }
     }
 
@@ -126,7 +140,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
     ): void {
         const map = MapManager.GetMapById(mapId);
         map.markers.forEach((marker) => {
-            marker.markerEvents.addHandler(eventName, callback);
+            marker.markerEvents.addHandler(eventName, callback, mapId);
         });
     }
 
