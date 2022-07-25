@@ -7,7 +7,7 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager.Events {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             cb: any;
             event: OSFramework.Event.FileLayer.FileLayersEventType;
-            uniqueId: string;
+            uniqueId: string; //Event unique identifier
         }[]
     > = new Map<
         string,
@@ -15,7 +15,7 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager.Events {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             cb: any;
             event: OSFramework.Event.FileLayer.FileLayersEventType;
-            uniqueId: string;
+            uniqueId: string; //Event unique identifier
         }[]
     >();
 

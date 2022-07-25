@@ -2,7 +2,7 @@
 namespace OSFramework.Event {
     type Handler = {
         eventHandler: Callbacks.Generic;
-        uniqueId: string;
+        uniqueId: string; //Event unique identifier
     };
 
     /**

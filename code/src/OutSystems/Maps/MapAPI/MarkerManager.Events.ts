@@ -7,7 +7,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             cb: any;
             event: OSFramework.Event.Marker.MarkerEventType;
-            uniqueId: string;
+            uniqueId: string; //Event unique identifier
         }[]
     > = new Map<
         string,
@@ -15,7 +15,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             cb: any;
             event: OSFramework.Event.Marker.MarkerEventType;
-            uniqueId: string;
+            uniqueId: string; //Event unique identifier
         }[]
     >();
 
