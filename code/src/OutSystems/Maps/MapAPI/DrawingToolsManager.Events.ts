@@ -7,13 +7,15 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager.Events {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             cb: any;
             event: OSFramework.Event.DrawingTools.DrawingToolsEventType;
+            uniqueId: string; //Event unique identifier
         }[]
     > = new Map<
         string,
         {
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             cb: any;
             event: OSFramework.Event.DrawingTools.DrawingToolsEventType;
+            uniqueId: string; //Event unique identifier
         }[]
     >();
 
@@ -32,7 +34,8 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager.Events {
                 _pendingEvents.get(key).forEach((obj) => {
                     drawingTools.drawingToolsEvents.addHandler(
                         obj.event,
-                        obj.cb
+                        obj.cb,
+                        obj.uniqueId
                     );
                 });
                 drawingTools.refreshProviderEvents();
@@ -53,7 +56,6 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager.Events {
     export function SubscribeByToolUniqueId(
         toolUniqueId: string,
         eventName: OSFramework.Event.DrawingTools.DrawingToolsEventType,
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         callback: OSFramework.Callbacks.DrawingTools.Event
     ): void {
         // Let's make sure that if the Map doesn't exist, we don't throw and exception but instead add the handler to the pendingEvents
@@ -64,18 +66,24 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager.Events {
             if (_pendingEvents.has(drawingToolsId)) {
                 _pendingEvents.get(drawingToolsId).push({
                     event: eventName,
-                    cb: callback
+                    cb: callback,
+                    uniqueId: toolUniqueId
                 });
             } else {
                 _pendingEvents.set(drawingToolsId, [
                     {
                         event: eventName,
-                        cb: callback
+                        cb: callback,
+                        uniqueId: toolUniqueId
                     }
                 ]);
             }
         } else {
-            drawingTools.drawingToolsEvents.addHandler(eventName, callback);
+            drawingTools.drawingToolsEvents.addHandler(
+                eventName,
+                callback,
+                toolUniqueId
+            );
         }
     }
 
@@ -90,7 +98,6 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager.Events {
     export function UnsubscribeByToolId(
         toolUniqueId: string,
         eventName: OSFramework.Event.DrawingTools.DrawingToolsEventType,
-        // eslint-disable-next-line
         callback: OSFramework.Callbacks.DrawingTools.Event
     ): void {
         const drawingToolsId = GetDrawingToolsByToolUniqueId(toolUniqueId);
@@ -135,7 +142,6 @@ namespace MapAPI.DrawingToolsManager.Events {
     export function SubscribeByToolUniqueId(
         toolUniqueId: string,
         eventName: OSFramework.Event.DrawingTools.DrawingToolsEventType,
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         callback: OSFramework.Callbacks.DrawingTools.Event
     ): void {
         OSFramework.Helper.LogWarningMessage(
@@ -151,7 +157,6 @@ namespace MapAPI.DrawingToolsManager.Events {
     export function UnsubscribeByToolId(
         toolUniqueId: string,
         eventName: OSFramework.Event.DrawingTools.DrawingToolsEventType,
-        // eslint-disable-next-line
         callback: OSFramework.Callbacks.DrawingTools.Event
     ): void {
         OSFramework.Helper.LogWarningMessage(

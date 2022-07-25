@@ -7,6 +7,7 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             cb: any;
             event: OSFramework.Event.SearchPlaces.SearchPlacesEventType;
+            uniqueId: string;
         }[]
     > = new Map<
         string,
@@ -14,6 +15,7 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             cb: any;
             event: OSFramework.Event.SearchPlaces.SearchPlacesEventType;
+            uniqueId: string;
         }[]
     >();
 
@@ -34,7 +36,8 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events {
                 _pendingEvents.get(key).forEach((obj) => {
                     searchPlaces.searchPlacesEvents.addHandler(
                         obj.event,
-                        obj.cb
+                        obj.cb,
+                        obj.uniqueId
                     );
                 });
                 // Make sure to delete the entry from the pendingEvents
@@ -79,7 +82,6 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events {
     export function Subscribe(
         searchPlacesId: string,
         eventName: OSFramework.Event.SearchPlaces.SearchPlacesEventType,
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         callback: OSFramework.Callbacks.SearchPlaces.Event
     ): void {
         // Let's make sure that if the SearchPlaces doesn't exist, we don't throw and exception but instead add the handler to the pendingEvents
@@ -88,18 +90,24 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events {
             if (_pendingEvents.has(searchPlacesId)) {
                 _pendingEvents.get(searchPlacesId).push({
                     event: eventName,
-                    cb: callback
+                    cb: callback,
+                    uniqueId: searchPlacesId
                 });
             } else {
                 _pendingEvents.set(searchPlacesId, [
                     {
                         event: eventName,
-                        cb: callback
+                        cb: callback,
+                        uniqueId: searchPlacesId
                     }
                 ]);
             }
         } else {
-            searchPlaces.searchPlacesEvents.addHandler(eventName, callback);
+            searchPlaces.searchPlacesEvents.addHandler(
+                eventName,
+                callback,
+                searchPlacesId
+            );
         }
     }
 
@@ -114,7 +122,6 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events {
     export function Unsubscribe(
         eventUniqueId: string,
         eventName: OSFramework.Event.SearchPlaces.SearchPlacesEventType,
-        // eslint-disable-next-line
         callback: OSFramework.Callbacks.SearchPlaces.Event
     ): void {
         const searchPlacesId = GetSearchPlacesByEventUniqueId(eventUniqueId);
@@ -171,7 +178,6 @@ namespace PlacesAPI.SearchPlacesManager.Events {
     export function Subscribe(
         searchPlacesId: string,
         eventName: OSFramework.Event.SearchPlaces.SearchPlacesEventType,
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         callback: OSFramework.Callbacks.SearchPlaces.Event
     ): void {
         OSFramework.Helper.LogWarningMessage(
@@ -187,7 +193,6 @@ namespace PlacesAPI.SearchPlacesManager.Events {
     export function Unsubscribe(
         eventUniqueId: string,
         eventName: OSFramework.Event.SearchPlaces.SearchPlacesEventType,
-        // eslint-disable-next-line
         callback: OSFramework.Callbacks.SearchPlaces.Event
     ): void {
         OSFramework.Helper.LogWarningMessage(

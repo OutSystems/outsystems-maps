@@ -3,12 +3,20 @@ namespace OutSystems.Maps.MapAPI.MapManager.Events {
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
     const _pendingEvents: Map<
         string,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        { cb: any; event: OSFramework.Event.OSMap.MapEventType }[]
+        {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            cb: any;
+            event: OSFramework.Event.OSMap.MapEventType;
+            uniqueId: string; //Event unique identifier
+        }[]
     > = new Map<
         string,
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        { cb: any; event: OSFramework.Event.OSMap.MapEventType }[]
+        {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            cb: any;
+            event: OSFramework.Event.OSMap.MapEventType;
+            uniqueId: string; //Event unique identifier
+        }[]
     >();
 
     const _eventsToMapId = new Map<string, string>(); //event.uniqueId -> map.uniqueId
@@ -24,7 +32,7 @@ namespace OutSystems.Maps.MapAPI.MapManager.Events {
         for (const key of _pendingEvents.keys()) {
             if (map.equalsToID(key)) {
                 _pendingEvents.get(key).forEach((obj) => {
-                    map.mapEvents.addHandler(obj.event, obj.cb);
+                    map.mapEvents.addHandler(obj.event, obj.cb, obj.uniqueId);
                 });
                 // Make sure to delete the entry from the pendingEvents
                 _pendingEvents.delete(key);
@@ -77,13 +85,15 @@ namespace OutSystems.Maps.MapAPI.MapManager.Events {
             if (_pendingEvents.has(mapId)) {
                 _pendingEvents.get(mapId).push({
                     event: eventName,
-                    cb: callback
+                    cb: callback,
+                    uniqueId: mapId
                 });
             } else {
                 _pendingEvents.set(mapId, [
                     {
                         event: eventName,
-                        cb: callback
+                        cb: callback,
+                        uniqueId: mapId
                     }
                 ]);
             }
@@ -101,31 +111,32 @@ namespace OutSystems.Maps.MapAPI.MapManager.Events {
      * @param {MapAPI.Callbacks.OSMap.Event} callback callback to be invoked when the event occurs
      */
     export function SubscribeByUniqueId(
-        uniqueId: string,
+        eventUniqueId: string,
         eventName: OSFramework.Event.OSMap.MapEventType,
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         callback: OSFramework.Callbacks.OSMap.Event
     ): void {
         // Let's make sure that if the Map doesn't exist, we don't throw and exception but instead add the handler to the pendingEvents
-        const mapId = GetMapByEventUniqueId(uniqueId);
+        const mapId = GetMapByEventUniqueId(eventUniqueId);
         const map = GetMapById(mapId, false);
 
         if (map === undefined) {
             if (_pendingEvents.has(mapId)) {
                 _pendingEvents.get(mapId).push({
                     event: eventName,
-                    cb: callback
+                    cb: callback,
+                    uniqueId: eventUniqueId
                 });
             } else {
                 _pendingEvents.set(mapId, [
                     {
                         event: eventName,
-                        cb: callback
+                        cb: callback,
+                        uniqueId: eventUniqueId
                     }
                 ]);
             }
         } else {
-            map.mapEvents.addHandler(eventName, callback);
+            map.mapEvents.addHandler(eventName, callback, eventUniqueId);
             map.refreshProviderEvents();
         }
     }
@@ -141,7 +152,6 @@ namespace OutSystems.Maps.MapAPI.MapManager.Events {
     export function Unsubscribe(
         eventUniqueId: string,
         eventName: OSFramework.Event.OSMap.MapEventType,
-        // eslint-disable-next-line
         callback: OSFramework.Callbacks.OSMap.Event
     ): void {
         const mapId = GetMapByEventUniqueId(eventUniqueId);
@@ -193,7 +203,6 @@ namespace MapAPI.MapManager.Events {
     export function Subscribe(
         mapId: string,
         eventName: OSFramework.Event.OSMap.MapEventType,
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         callback: OSFramework.Callbacks.OSMap.Event
     ): void {
         OSFramework.Helper.LogWarningMessage(
@@ -209,7 +218,6 @@ namespace MapAPI.MapManager.Events {
     export function SubscribeByUniqueId(
         uniqueId: string,
         eventName: OSFramework.Event.OSMap.MapEventType,
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         callback: OSFramework.Callbacks.OSMap.Event
     ): void {
         OSFramework.Helper.LogWarningMessage(
@@ -225,7 +233,6 @@ namespace MapAPI.MapManager.Events {
     export function Unsubscribe(
         eventUniqueId: string,
         eventName: OSFramework.Event.OSMap.MapEventType,
-        // eslint-disable-next-line
         callback: OSFramework.Callbacks.OSMap.Event
     ): void {
         OSFramework.Helper.LogWarningMessage(

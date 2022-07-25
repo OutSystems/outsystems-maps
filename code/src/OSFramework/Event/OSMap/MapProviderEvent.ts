@@ -21,13 +21,26 @@ namespace OSFramework.Event.OSMap {
             mapObj: OSFramework.OSMap.IMap,
             mapId: string,
             eventName: string,
+            eventUniqueId: string,
             coords: string
         ): void {
-            this.handlers
-                .slice(0)
-                .forEach((h) =>
-                    Helper.AsyncInvocation(h, mapObj, mapId, eventName, coords)
-                );
+            this.handlers.slice(0).forEach((h) => {
+                // Checks if event block exists on page before calling its callback
+                if (
+                    document.querySelector(
+                        '.event-preview[name="' + h.uniqueId + '"]'
+                    )
+                ) {
+                    Helper.AsyncInvocation(
+                        h,
+                        mapObj,
+                        mapId,
+                        eventName,
+                        coords,
+                        eventUniqueId
+                    );
+                }
+            });
         }
     }
 }

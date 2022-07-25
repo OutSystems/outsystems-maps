@@ -87,7 +87,6 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
         toolId: string,
         type: OSFramework.Enum.DrawingToolsTypes,
         configs: string
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ): OSFramework.DrawingTools.ITool {
         // Let's make sure that if the Map doesn't exist, we don't throw and exception but instead add the handler to the pendingEvents
         const drawingToolsId = GetDrawingToolsByToolUniqueId(toolId);
@@ -300,7 +299,6 @@ namespace MapAPI.DrawingToolsManager {
         toolId: string,
         type: OSFramework.Enum.DrawingToolsTypes,
         configs: string
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ): OSFramework.DrawingTools.ITool {
         OSFramework.Helper.LogWarningMessage(
             `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.AddTool()'`

@@ -48,7 +48,8 @@ namespace OSFramework.Event.SearchPlaces {
 
         public addHandler(
             eventType: SearchPlacesEventType,
-            handler: Callbacks.SearchPlaces.Event
+            handler: Callbacks.SearchPlaces.Event,
+            eventUniqueId: string
         ): void {
             //if the SearchPlaces is already ready, fire immediatly the event.
             if (
@@ -62,7 +63,7 @@ namespace OSFramework.Event.SearchPlaces {
                     this._searchPlaces.widgetId
                 );
             } else {
-                super.addHandler(eventType, handler);
+                super.addHandler(eventType, handler, eventUniqueId);
             }
         }
 

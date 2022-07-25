@@ -1,5 +1,10 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.Event {
+    type Handler = {
+        eventHandler: Callbacks.Generic;
+        uniqueId: string; //Event unique identifier
+    };
+
     /**
      * Abstract class that will be responsible for the basic behaviours of a link, namely storing the callbacks.
      *
@@ -11,14 +16,20 @@ namespace OSFramework.Event {
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     export abstract class AbstractEvent<T> implements IEvent<T> {
-        private _handlers: Callbacks.Generic[] = [];
+        private _handlers: Handler[] = [];
 
-        protected get handlers(): Callbacks.Generic[] {
+        protected get handlers(): Handler[] {
             return this._handlers;
         }
 
-        public addHandler(handler: Callbacks.Generic): void {
-            this._handlers.push(handler);
+        public addHandler(
+            handler: Callbacks.Generic,
+            eventUniqueId?: string // if it's an internal event, it will not have a uniqueId
+        ): void {
+            this._handlers.push({
+                eventHandler: handler,
+                uniqueId: eventUniqueId
+            });
         }
 
         public hasHandlers(): boolean {
@@ -27,7 +38,7 @@ namespace OSFramework.Event {
 
         public removeHandler(handler: Callbacks.Generic): void {
             const index = this._handlers.findIndex((hd) => {
-                return hd === handler;
+                return hd.eventHandler === handler;
             });
 
             if (index !== -1) {
@@ -39,7 +50,7 @@ namespace OSFramework.Event {
         public trigger(data?: T, ...args): void {
             this._handlers
                 .slice(0)
-                .forEach((h) => Helper.AsyncInvocation(h, data));
+                .forEach((h) => Helper.AsyncInvocation(h.eventHandler, data));
         }
     }
 }
