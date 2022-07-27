@@ -31,7 +31,7 @@ namespace OSFramework.Event.OSMap {
                         '.event-preview[name="' + h.uniqueId + '"]'
                     )
                 ) {
-                    Helper.AsyncInvocation(
+                    Helper.CallbackAsyncInvocation(
                         h,
                         mapObj,
                         mapId,

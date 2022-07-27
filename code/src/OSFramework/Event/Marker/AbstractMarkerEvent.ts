@@ -20,7 +20,7 @@ namespace OSFramework.Event.Marker {
             this.handlers
                 .slice(0)
                 .forEach((h) =>
-                    Helper.AsyncInvocation(h, mapId, markerId, ...args)
+                    Helper.CallbackAsyncInvocation(h, mapId, markerId, ...args)
                 );
         }
     }

@@ -26,7 +26,7 @@ namespace OSFramework.Event.Marker {
             this.handlers
                 .slice(0)
                 .forEach((h) =>
-                    Helper.AsyncInvocation(
+                    Helper.CallbackAsyncInvocation(
                         h,
                         mapId,
                         markerId,

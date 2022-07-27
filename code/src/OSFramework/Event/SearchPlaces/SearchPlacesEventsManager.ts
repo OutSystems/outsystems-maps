@@ -57,7 +57,7 @@ namespace OSFramework.Event.SearchPlaces {
                 this._searchPlaces.isReady
             ) {
                 //make the invocation of the handler assync.
-                Helper.AsyncInvocation(
+                Helper.CallbackAsyncInvocation(
                     handler,
                     this._searchPlaces,
                     this._searchPlaces.widgetId
