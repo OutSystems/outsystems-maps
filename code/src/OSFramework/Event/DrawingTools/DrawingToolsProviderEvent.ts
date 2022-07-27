@@ -30,7 +30,7 @@ namespace OSFramework.Event.DrawingTools {
             this.handlers
                 .slice(0)
                 .forEach((h) =>
-                    Helper.AsyncInvocation(
+                    Helper.CallbackAsyncInvocation(
                         h,
                         mapId,
                         drawingToolsId,

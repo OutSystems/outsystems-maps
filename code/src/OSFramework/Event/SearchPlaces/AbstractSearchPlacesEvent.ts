@@ -21,7 +21,7 @@ namespace OSFramework.Event.SearchPlaces {
             this.handlers
                 .slice(0)
                 .forEach((h) =>
-                    Helper.AsyncInvocation(
+                    Helper.CallbackAsyncInvocation(
                         h,
                         searchPlacesObj,
                         searchPlacesId,

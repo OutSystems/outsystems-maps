@@ -24,7 +24,7 @@ namespace OSFramework.Event.Shape {
             this.handlers
                 .slice(0)
                 .forEach((h) =>
-                    Helper.AsyncInvocation(h, mapId, shapeId, eventName)
+                    Helper.CallbackAsyncInvocation(h, mapId, shapeId, eventName)
                 );
         }
     }

@@ -50,7 +50,9 @@ namespace OSFramework.Event {
         public trigger(data?: T, ...args): void {
             this._handlers
                 .slice(0)
-                .forEach((h) => Helper.AsyncInvocation(h.eventHandler, data));
+                .forEach((h) =>
+                    Helper.CallbackAsyncInvocation(h.eventHandler, data)
+                );
         }
     }
 }
