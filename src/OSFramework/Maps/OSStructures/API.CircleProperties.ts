@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.OSStructures.API {
+namespace OSFramework.Maps.OSStructures.API {
     export class CircleProperties {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public Center: OSStructures.OSMap.OSCoordinates;

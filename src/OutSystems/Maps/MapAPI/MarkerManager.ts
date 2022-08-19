@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OutSystems.Maps.MapAPI.MarkerManager {
     const markerMap = new Map<string, string>(); //marker.uniqueId -> map.uniqueId
-    const markerArr = new Array<OSFramework.Marker.IMarker>();
+    const markerArr = new Array<OSFramework.Maps.Marker.IMarker>();
 
     /**
      * Changes the property value of a given Marker.
@@ -32,7 +32,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
     export function ClosePopup(markerId: string): void {
         const marker = GetMarkerById(
             markerId
-        ) as OSFramework.Marker.IMarkerPopup;
+        ) as OSFramework.Maps.Marker.IMarkerPopup;
         if (marker.hasPopup) marker.closePopup();
     }
 
@@ -43,7 +43,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
     export function RefreshPopup(markerId: string): void {
         const marker = GetMarkerById(
             markerId
-        ) as OSFramework.Marker.IMarkerPopup;
+        ) as OSFramework.Maps.Marker.IMarkerPopup;
         if (marker.hasPopup) marker.refreshPopupContent();
     }
 
@@ -59,13 +59,13 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
         mapId: string,
         markerId: string,
         configs: string
-    ): OSFramework.Marker.IMarker {
+    ): OSFramework.Maps.Marker.IMarker {
         const map = MapManager.GetMapById(mapId, true);
         if (!map.hasMarker(markerId)) {
             const _marker = Provider.Google.Marker.MarkerFactory.MakeMarker(
                 map,
                 markerId,
-                OSFramework.Enum.MarkerType.Marker,
+                OSFramework.Maps.Enum.MarkerType.Marker,
                 JSON.parse(configs)
             );
             markerArr.push(_marker);
@@ -90,12 +90,12 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     export function CreateMarkerByUniqueID(
         markerId: string,
-        markerType: OSFramework.Enum.MarkerType,
+        markerType: OSFramework.Maps.Enum.MarkerType,
         configs: string
-    ): OSFramework.Marker.IMarker {
+    ): OSFramework.Maps.Marker.IMarker {
         const map = GetMapByMarkerId(markerId);
         if (!map.hasMarker(markerId)) {
-            const _marker = OSFramework.Marker.MarkerFactory.MakeMarker(
+            const _marker = OSFramework.Maps.Marker.MarkerFactory.MakeMarker(
                 map,
                 markerId,
                 markerType,
@@ -122,8 +122,8 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
      * @returns {*}  {MarkerMapper} this structure has the id of Map, and the reference to the instance of the Map
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    function GetMapByMarkerId(markerId: string): OSFramework.OSMap.IMap {
-        let map: OSFramework.OSMap.IMap;
+    function GetMapByMarkerId(markerId: string): OSFramework.Maps.OSMap.IMap {
+        let map: OSFramework.Maps.OSMap.IMap;
 
         //markerId is the UniqueId
         if (markerMap.has(markerId)) {
@@ -132,7 +132,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
         //UniqueID not found
         else {
             // Try to find its reference on DOM
-            const elem = OSFramework.Helper.GetElementByUniqueId(
+            const elem = OSFramework.Maps.Helper.GetElementByUniqueId(
                 markerId,
                 false
             );
@@ -140,7 +140,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
             // If element is found, means that the DOM was rendered
             if (elem !== undefined) {
                 //Find the closest Map
-                const mapId = OSFramework.Helper.GetClosestMapId(elem);
+                const mapId = OSFramework.Maps.Helper.GetClosestMapId(elem);
                 map = MapManager.GetMapById(mapId);
             }
         }
@@ -155,8 +155,8 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
     export function GetMarkerById(
         markerId: string,
         raiseError = true
-    ): OSFramework.Marker.IMarker {
-        let marker: OSFramework.Marker.IMarker = markerArr.find(
+    ): OSFramework.Maps.Marker.IMarker {
+        let marker: OSFramework.Maps.Marker.IMarker = markerArr.find(
             (p) => p && p.equalsToID(markerId)
         );
 
@@ -166,11 +166,11 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
             const allMaps = [...MapManager.GetMapsFromPage().values()];
 
             // On each map, look for all drawingTools and on each one look, on the createdElements array, for the markerId passed
-            allMaps.find((map: OSFramework.OSMap.IMap) => {
+            allMaps.find((map: OSFramework.Maps.OSMap.IMap) => {
                 return (marker =
                     map.drawingTools &&
                     map.drawingTools.createdElements.find(
-                        (marker: OSFramework.Marker.IMarker) =>
+                        (marker: OSFramework.Maps.Marker.IMarker) =>
                             marker.equalsToID(markerId)
                     ));
             });
@@ -190,7 +190,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
     export function OpenPopup(markerId: string): void {
         const marker = GetMarkerById(
             markerId
-        ) as OSFramework.Marker.IMarkerPopup;
+        ) as OSFramework.Maps.Marker.IMarkerPopup;
         if (marker.hasPopup) marker.openPopup();
     }
 
@@ -225,8 +225,8 @@ namespace MapAPI.MarkerManager {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
         propertyValue: any
     ): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.ChangeProperty()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.ChangeProperty()'`
         );
         OutSystems.Maps.MapAPI.MarkerManager.ChangeProperty(
             markerId,
@@ -236,15 +236,15 @@ namespace MapAPI.MarkerManager {
     }
 
     export function ClosePopup(markerId: string): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.ClosePopup()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.ClosePopup()'`
         );
         OutSystems.Maps.MapAPI.MarkerManager.ClosePopup(markerId);
     }
 
     export function RefreshPopup(markerId: string): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.RefreshPopup()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.RefreshPopup()'`
         );
         OutSystems.Maps.MapAPI.MarkerManager.RefreshPopup(markerId);
     }
@@ -253,9 +253,9 @@ namespace MapAPI.MarkerManager {
         mapId: string,
         markerId: string,
         configs: string
-    ): OSFramework.Marker.IMarker {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.CreateMarker()'`
+    ): OSFramework.Maps.Marker.IMarker {
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.CreateMarker()'`
         );
         return OutSystems.Maps.MapAPI.MarkerManager.CreateMarker(
             mapId,
@@ -267,11 +267,11 @@ namespace MapAPI.MarkerManager {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     export function CreateMarkerByUniqueID(
         markerId: string,
-        markerType: OSFramework.Enum.MarkerType,
+        markerType: OSFramework.Maps.Enum.MarkerType,
         configs: string
-    ): OSFramework.Marker.IMarker {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.CreateMarkerByUniqueID()'`
+    ): OSFramework.Maps.Marker.IMarker {
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.CreateMarkerByUniqueID()'`
         );
         return OutSystems.Maps.MapAPI.MarkerManager.CreateMarkerByUniqueID(
             markerId,
@@ -283,9 +283,9 @@ namespace MapAPI.MarkerManager {
     export function GetMarkerById(
         markerId: string,
         raiseError = true
-    ): OSFramework.Marker.IMarker {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.GetMarkerById()'`
+    ): OSFramework.Maps.Marker.IMarker {
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.GetMarkerById()'`
         );
         return OutSystems.Maps.MapAPI.MarkerManager.GetMarkerById(
             markerId,
@@ -294,15 +294,15 @@ namespace MapAPI.MarkerManager {
     }
 
     export function OpenPopup(markerId: string): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.OpenPopup()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.OpenPopup()'`
         );
         return OutSystems.Maps.MapAPI.MarkerManager.OpenPopup(markerId);
     }
 
     export function RemoveMarker(markerId: string): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.RemoveMarker()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.RemoveMarker()'`
         );
         OutSystems.Maps.MapAPI.MarkerManager.RemoveMarker(markerId);
     }

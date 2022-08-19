@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Helper {
+namespace OSFramework.Maps.Helper {
     /** This is a temporary method that will allow checking if the feature is already implemented for the Leaflet provider */
     export function ValidateFeatureProvider(
         map: OSMap.IMap,

@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.DrawingTools {
+namespace OSFramework.Maps.DrawingTools {
     export interface IDrawingTools
         extends Interface.IBuilder,
             Interface.ISearchById,
@@ -58,7 +58,7 @@ namespace OSFramework.DrawingTools {
          * (There should not be 2 tools with the same type on the DrawingTools element)
          */
         toolAlreadyExists(
-            toolType: OSFramework.Enum.DrawingToolsTypes
+            toolType: OSFramework.Maps.Enum.DrawingToolsTypes
         ): boolean;
         /**
          * Check if the event name is valid for the provider events

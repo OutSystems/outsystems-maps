@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.DrawingTools {
+namespace OSFramework.Maps.DrawingTools {
     export namespace DrawingToolsFactory {
         export function MakeDrawingTools(
             map: OSMap.IMap,

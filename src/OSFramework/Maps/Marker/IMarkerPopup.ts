@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Marker {
+namespace OSFramework.Maps.Marker {
     export interface IMarkerPopup extends IMarker {
         /**
          * Closes the popup of the Marker when the Marker has a popup

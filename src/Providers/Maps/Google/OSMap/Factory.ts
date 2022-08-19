@@ -2,17 +2,17 @@
 namespace Provider.Google.OSMap {
     export namespace MapFactory {
         export function MakeMap(
-            type: OSFramework.Enum.MapType,
+            type: OSFramework.Maps.Enum.MapType,
             mapdId: string,
-            configs: OSFramework.Configuration.IConfiguration
-        ): OSFramework.OSMap.IMap {
+            configs: OSFramework.Maps.Configuration.IConfiguration
+        ): OSFramework.Maps.OSMap.IMap {
             switch (type) {
-                case OSFramework.Enum.MapType.Map:
+                case OSFramework.Maps.Enum.MapType.Map:
                     return new Map(
                         mapdId,
                         configs as Configuration.OSMap.GoogleMapConfig
                     );
-                case OSFramework.Enum.MapType.StaticMap:
+                case OSFramework.Maps.Enum.MapType.StaticMap:
                     return new StaticMap(
                         mapdId,
                         configs as Configuration.OSMap.GoogleStaticMapConfig

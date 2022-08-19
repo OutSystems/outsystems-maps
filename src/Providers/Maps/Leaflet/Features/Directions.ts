@@ -8,16 +8,16 @@ namespace Provider.Leaflet.Feature {
 
     export class Directions
         implements
-            OSFramework.Feature.IDirections,
-            OSFramework.Interface.IBuilder,
-            OSFramework.Interface.IDisposable
+            OSFramework.Maps.Feature.IDirections,
+            OSFramework.Maps.Interface.IBuilder,
+            OSFramework.Maps.Interface.IDisposable
     {
         // Will host the method: this._routesFoundHandler.bind(this,resolve,ResolveType.GetDistance)
-        private _bindDistance: OSFramework.Callbacks.Generic;
+        private _bindDistance: OSFramework.Maps.Callbacks.Generic;
         // Will host the method: this._routesFoundHandler.bind(this,resolve,ResolveType.GetDuration)
-        private _bindDuration: OSFramework.Callbacks.Generic;
+        private _bindDuration: OSFramework.Maps.Callbacks.Generic;
         // Will host the method: this._routesFoundHandler.bind(this,undefined,ResolveType.SetRoute)
-        private _bindSetRoute: OSFramework.Callbacks.Generic;
+        private _bindSetRoute: OSFramework.Maps.Callbacks.Generic;
 
         private _currentDistance: number;
         private _currentDuration: number;
@@ -124,12 +124,12 @@ namespace Provider.Leaflet.Feature {
          * @param e Event that got triggered (L.Routing.RoutingResultEvent) and respective structure
          */
         private _routesFoundHandler(
-            resolve?: OSFramework.Callbacks.Generic,
+            resolve?: OSFramework.Maps.Callbacks.Generic,
             resolveType?: ResolveType,
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             e?: any
         ) {
-            let bind: OSFramework.Callbacks.Generic;
+            let bind: OSFramework.Maps.Callbacks.Generic;
             // This method was invoked by the setRoute and because there might exist concurrency between the setRoute and the getDistance or getDirections methods
             // when they are invoked one after the other (inside an action flow [OS] for instance), we need to ensure the listeners get removed after the "routesfound" event is triggered
             this._currentDistance = e.routes[0].summary.totalDistance;
@@ -165,7 +165,7 @@ namespace Provider.Leaflet.Feature {
          * Sets the avoidance criteria (avoidTolls, avoidHighways, avoidFerries) on the directionsRenderer routing service
          */
         private _setExcludes(
-            dirExclude: OSFramework.OSStructures.Directions.ExcludeCriteria
+            dirExclude: OSFramework.Maps.OSStructures.Directions.ExcludeCriteria
         ): boolean {
             // If the Map has no directionsRenderer, return false.
             if (this._hasDirectionsRenderer() === false) return false;
@@ -210,7 +210,7 @@ namespace Provider.Leaflet.Feature {
          */
         private _validateCoordinates(
             waypoints: Array<string>
-        ): Promise<Array<OSFramework.OSStructures.OSMap.Coordinates>> {
+        ): Promise<Array<OSFramework.Maps.OSStructures.OSMap.Coordinates>> {
             const wayptsFinal = [];
             return new Promise((resolve, reject) => {
                 waypoints.forEach((wpt) =>
@@ -225,7 +225,7 @@ namespace Provider.Leaflet.Feature {
                         })
                         .catch(() => {
                             reject({
-                                code: OSFramework.Enum.ErrorCodes
+                                code: OSFramework.Maps.Enum.ErrorCodes
                                     .LIB_FailedSetDirections,
                                 message: `One or more set of coordinates is not valid`
                             });
@@ -244,16 +244,17 @@ namespace Provider.Leaflet.Feature {
         }
 
         /** This method is not implemented for the LeafletProvider Directions API */
-        public getLegsFromDirection(): Array<OSFramework.OSStructures.Directions.DirectionLegs> {
+        public getLegsFromDirection(): Array<OSFramework.Maps.OSStructures.Directions.DirectionLegs> {
             throw new Error('Method not implemented.');
         }
 
         public getTotalDistanceFromDirection(): Promise<number> {
             // Validate if the directionsRenderer exists
             if (this._hasDirectionsRenderer() === false) {
-                OSFramework.Helper.ThrowError(
+                OSFramework.Maps.Helper.ThrowError(
                     this._map,
-                    OSFramework.Enum.ErrorCodes.API_FailedNoPluginDirections
+                    OSFramework.Maps.Enum.ErrorCodes
+                        .API_FailedNoPluginDirections
                 );
                 return new Promise((resolve) => resolve(0));
             }
@@ -279,9 +280,10 @@ namespace Provider.Leaflet.Feature {
         public getTotalDurationFromDirection(): Promise<number> {
             // Validate if the directionsRenderer exists
             if (this._hasDirectionsRenderer() === false) {
-                OSFramework.Helper.ThrowError(
+                OSFramework.Maps.Helper.ThrowError(
                     this._map,
-                    OSFramework.Enum.ErrorCodes.API_FailedNoPluginDirections
+                    OSFramework.Maps.Enum.ErrorCodes
+                        .API_FailedNoPluginDirections
                 );
                 return new Promise((resolve) => resolve(0));
             }
@@ -304,15 +306,15 @@ namespace Provider.Leaflet.Feature {
             });
         }
 
-        public removeRoute(): OSFramework.OSStructures.ReturnMessage {
+        public removeRoute(): OSFramework.Maps.OSStructures.ReturnMessage {
             this.setState(false);
             const returningMessage =
-                new OSFramework.OSStructures.ReturnMessage();
+                new OSFramework.Maps.OSStructures.ReturnMessage();
             if (this._hasDirectionsRenderer() === false) {
                 returningMessage.isSuccess = true;
             } else {
                 returningMessage.code =
-                    OSFramework.Enum.ErrorCodes.API_FailedRemoveDirections;
+                    OSFramework.Maps.Enum.ErrorCodes.API_FailedRemoveDirections;
             }
             return returningMessage;
         }
@@ -320,7 +322,7 @@ namespace Provider.Leaflet.Feature {
         public setPlugin(
             provider: Constants.Directions.Provider | string,
             apiKey: string
-        ): OSFramework.OSStructures.ReturnMessage {
+        ): OSFramework.Maps.OSStructures.ReturnMessage {
             // If there is already a plugin for directions, remove it and add a new one.
             this._directionsRenderer && this.dispose();
 
@@ -330,20 +332,21 @@ namespace Provider.Leaflet.Feature {
             );
             this._providerName = provider;
             const returningMessage =
-                new OSFramework.OSStructures.ReturnMessage();
+                new OSFramework.Maps.OSStructures.ReturnMessage();
             if (this._hasDirectionsRenderer()) {
                 returningMessage.isSuccess = true;
             } else {
                 returningMessage.code =
-                    OSFramework.Enum.ErrorCodes.API_FailedLoadingPlugin;
+                    OSFramework.Maps.Enum.ErrorCodes.API_FailedLoadingPlugin;
             }
             return returningMessage;
         }
 
         public setRoute(
-            directionOptions: OSFramework.OSStructures.Directions.Options
-        ): Promise<OSFramework.OSStructures.ReturnMessage> {
-            let returningMessage = new OSFramework.OSStructures.ReturnMessage();
+            directionOptions: OSFramework.Maps.OSStructures.Directions.Options
+        ): Promise<OSFramework.Maps.OSStructures.ReturnMessage> {
+            let returningMessage =
+                new OSFramework.Maps.OSStructures.ReturnMessage();
             //Let's make sure to reset the currentDistance and currentDuration with the values NaN.
             //By making this, we ensure any time the GetDistance and GetDuration methods get invoked, they will make a new request.
             this._currentDistance = NaN;
@@ -352,14 +355,14 @@ namespace Provider.Leaflet.Feature {
             // Validate if the directionsRenderer exists
             if (this._hasDirectionsRenderer() === false) {
                 returningMessage.code =
-                    OSFramework.Enum.ErrorCodes.API_FailedNoPluginDirections;
+                    OSFramework.Maps.Enum.ErrorCodes.API_FailedNoPluginDirections;
                 return new Promise((resolve) => resolve(returningMessage));
             }
 
             // Make sure to return an error code if the travel mode is not valid
             if (this._setTravelMode(directionOptions.travelMode) === false) {
                 returningMessage.code =
-                    OSFramework.Enum.ErrorCodes.CFG_InvalidTravelMode;
+                    OSFramework.Maps.Enum.ErrorCodes.CFG_InvalidTravelMode;
                 return new Promise((resolve) => resolve(returningMessage));
             }
 

@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Feature {
+namespace OSFramework.Maps.Feature {
     export interface IDirections {
         /** Boolean that indicates the enabled state of the Directions feature of the Map */
         isEnabled: boolean;
@@ -34,7 +34,7 @@ namespace OSFramework.Feature {
          * @returns Promise containing the ReturnMessage structure {code, message}
          */
         setRoute(
-            directionOptions: OSFramework.OSStructures.Directions.Options
+            directionOptions: OSFramework.Maps.OSStructures.Directions.Options
         ): Promise<OSStructures.ReturnMessage>;
         /**
          * Set the Directions state on the Map.

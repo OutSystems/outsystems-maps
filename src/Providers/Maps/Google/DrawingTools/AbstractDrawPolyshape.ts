@@ -9,8 +9,8 @@ namespace Provider.Google.DrawingTools {
     > extends AbstractDrawShape<W> {
         private _locations: string[];
         constructor(
-            map: OSFramework.OSMap.IMap,
-            drawingTools: OSFramework.DrawingTools.IDrawingTools,
+            map: OSFramework.Maps.OSMap.IMap,
+            drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
             drawingToolsId: string,
             type: string,
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
@@ -53,7 +53,7 @@ namespace Provider.Google.DrawingTools {
             }
 
             const finalLocations = locationsArray.map(
-                (coords: OSFramework.OSStructures.OSMap.Coordinates) => {
+                (coords: OSFramework.Maps.OSStructures.OSMap.Coordinates) => {
                     return { Lat: coords[0], Lng: coords[1] };
                 }
             );

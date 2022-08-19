@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Event.FileLayer {
+namespace OSFramework.Maps.Event.FileLayer {
     /**
      * Class that will be responsible for managing the events of the FileLayer.
      *
@@ -11,18 +11,18 @@ namespace OSFramework.Event.FileLayer {
         FileLayersEventType,
         string
     > {
-        private _fileLayer: OSFramework.FileLayer.IFileLayer;
+        private _fileLayer: OSFramework.Maps.FileLayer.IFileLayer;
 
-        constructor(fileLayer: OSFramework.FileLayer.IFileLayer) {
+        constructor(fileLayer: OSFramework.Maps.FileLayer.IFileLayer) {
             super();
             this._fileLayer = fileLayer;
         }
 
         protected getInstanceOfEventType(
             eventType: FileLayersEventType
-        ): OSFramework.Event.IEvent<string> {
+        ): OSFramework.Maps.Event.IEvent<string> {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            let event: OSFramework.Event.IEvent<string>;
+            let event: OSFramework.Maps.Event.IEvent<string>;
 
             switch (eventType) {
                 case FileLayersEventType.Initialized:

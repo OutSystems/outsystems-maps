@@ -1,15 +1,15 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Google.Configuration.OSMap {
     export class GoogleStaticMapConfig
-        extends OSFramework.Configuration.AbstractConfiguration
-        implements OSFramework.Configuration.IConfigurationMap
+        extends OSFramework.Maps.Configuration.AbstractConfiguration
+        implements OSFramework.Maps.Configuration.IConfigurationMap
     {
         public apiKey: string;
-        public center: string | OSFramework.OSStructures.OSMap.Coordinates;
+        public center: string | OSFramework.Maps.OSStructures.OSMap.Coordinates;
         public height: string;
-        public type: OSFramework.Enum.OSMap.Type;
+        public type: OSFramework.Maps.Enum.OSMap.Type;
         public uniqueId: string;
-        public zoom: OSFramework.Enum.OSMap.Zoom;
+        public zoom: OSFramework.Maps.Enum.OSMap.Zoom;
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         constructor(config: any) {

@@ -6,7 +6,7 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events {
         {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             cb: any;
-            event: OSFramework.Event.SearchPlaces.SearchPlacesEventType;
+            event: OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType;
             uniqueId: string;
         }[]
     > = new Map<
@@ -14,7 +14,7 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events {
         {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             cb: any;
-            event: OSFramework.Event.SearchPlaces.SearchPlacesEventType;
+            event: OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType;
             uniqueId: string;
         }[]
     >();
@@ -28,7 +28,7 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events {
      * @param {string} searchPlaces SearchPlaces that is ready for events
      */
     export function CheckPendingEvents(
-        searchPlaces: OSFramework.SearchPlaces.ISearchPlaces
+        searchPlaces: OSFramework.Maps.SearchPlaces.ISearchPlaces
     ): void {
         // For each key of the pendingEvents check if the searchPlaces has the key as a widgetId or uniqueId and add the new handler
         for (const key of _pendingEvents.keys()) {
@@ -58,9 +58,9 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events {
         //Try to find in DOM only if not present on SearchPlaces
         if (lookUpDOM && !_eventsToSearchPlacesId.has(eventUniqueId)) {
             const eventElement =
-                OSFramework.Helper.GetElementByUniqueId(eventUniqueId);
+                OSFramework.Maps.Helper.GetElementByUniqueId(eventUniqueId);
             const searchPlacesId =
-                OSFramework.Helper.GetClosestSearchPlacesId(eventElement);
+                OSFramework.Maps.Helper.GetClosestSearchPlacesId(eventElement);
             const searchPlaces = GetSearchPlacesById(searchPlacesId);
 
             if (searchPlaces) {
@@ -76,13 +76,13 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events {
      *
      * @export
      * @param {string} searchPlacesId SearchPlaces where the event will be attached
-     * @param {OSFramework.Event.SearchPlaces.SearchPlacesEventType} eventName name fo the event to be attached
+     * @param {OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType} eventName name fo the event to be attached
      * @param {SearchPlacesAPI.Callbacks.SearchPlaces.Event} callback callback to be invoked when the event occurs
      */
     export function Subscribe(
         searchPlacesId: string,
-        eventName: OSFramework.Event.SearchPlaces.SearchPlacesEventType,
-        callback: OSFramework.Callbacks.SearchPlaces.Event
+        eventName: OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType,
+        callback: OSFramework.Maps.Callbacks.SearchPlaces.Event
     ): void {
         // Let's make sure that if the SearchPlaces doesn't exist, we don't throw and exception but instead add the handler to the pendingEvents
         const searchPlaces = GetSearchPlacesById(searchPlacesId, false);
@@ -116,13 +116,13 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events {
      *
      * @export
      * @param {string} eventUniqueId Event Id that will get removed
-     * @param {OSFramework.Event.SearchPlaces.SearchPlacesEventType} eventName name of the event to be removed
+     * @param {OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType} eventName name of the event to be removed
      * @param {SearchPlacesAPI.Callbacks.SearchPlaces.Event} callback callback that will be removed
      */
     export function Unsubscribe(
         eventUniqueId: string,
-        eventName: OSFramework.Event.SearchPlaces.SearchPlacesEventType,
-        callback: OSFramework.Callbacks.SearchPlaces.Event
+        eventName: OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType,
+        callback: OSFramework.Maps.Callbacks.SearchPlaces.Event
     ): void {
         const searchPlacesId = GetSearchPlacesByEventUniqueId(eventUniqueId);
         const searchPlaces = GetSearchPlacesById(searchPlacesId, false);
@@ -152,10 +152,10 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace PlacesAPI.SearchPlacesManager.Events {
     export function CheckPendingEvents(
-        searchPlaces: OSFramework.SearchPlaces.ISearchPlaces
+        searchPlaces: OSFramework.Maps.SearchPlaces.ISearchPlaces
     ): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events.CheckPendingEvents()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events.CheckPendingEvents()'`
         );
         OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events.CheckPendingEvents(
             searchPlaces
@@ -166,8 +166,8 @@ namespace PlacesAPI.SearchPlacesManager.Events {
         eventUniqueId: string,
         lookUpDOM = true
     ): string {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events.GetSearchPlacesByEventUniqueId()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events.GetSearchPlacesByEventUniqueId()'`
         );
         return OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events.GetSearchPlacesByEventUniqueId(
             eventUniqueId,
@@ -177,11 +177,11 @@ namespace PlacesAPI.SearchPlacesManager.Events {
 
     export function Subscribe(
         searchPlacesId: string,
-        eventName: OSFramework.Event.SearchPlaces.SearchPlacesEventType,
-        callback: OSFramework.Callbacks.SearchPlaces.Event
+        eventName: OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType,
+        callback: OSFramework.Maps.Callbacks.SearchPlaces.Event
     ): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events.Subscribe()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events.Subscribe()'`
         );
         OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events.Subscribe(
             searchPlacesId,
@@ -192,11 +192,11 @@ namespace PlacesAPI.SearchPlacesManager.Events {
 
     export function Unsubscribe(
         eventUniqueId: string,
-        eventName: OSFramework.Event.SearchPlaces.SearchPlacesEventType,
-        callback: OSFramework.Callbacks.SearchPlaces.Event
+        eventName: OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType,
+        callback: OSFramework.Maps.Callbacks.SearchPlaces.Event
     ): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events.Unsubscribe()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events.Unsubscribe()'`
         );
         OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events.Unsubscribe(
             eventUniqueId,

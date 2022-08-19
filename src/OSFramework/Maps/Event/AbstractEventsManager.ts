@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Event {
+namespace OSFramework.Maps.Event {
     /**
      * This class is a Manager of events. It will be used by the Map/Marker/etc in order to support
      * the listenning of the different events supported by the parent element.

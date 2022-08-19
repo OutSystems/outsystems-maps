@@ -1,30 +1,30 @@
 ///<reference path="../AbstractEventsManager.ts"/>
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Event.OSMap {
+namespace OSFramework.Maps.Event.OSMap {
     /**
      * Class that will be responsible for managing the events of the Map.
      *
      * @export
      * @class MapEventsManager
-     * @extends {AbstractEventsManager<MapEventType, OSFramework.OSMap.IMap>}
+     * @extends {AbstractEventsManager<MapEventType, OSFramework.Maps.OSMap.IMap>}
      */
     export class MapEventsManager extends AbstractEventsManager<
         MapEventType,
-        OSFramework.OSMap.IMap
+        OSFramework.Maps.OSMap.IMap
     > {
-        private _map: OSFramework.OSMap.IMap;
+        private _map: OSFramework.Maps.OSMap.IMap;
 
-        constructor(map: OSFramework.OSMap.IMap) {
+        constructor(map: OSFramework.Maps.OSMap.IMap) {
             super();
             this._map = map;
         }
 
         protected getInstanceOfEventType(
             eventType: MapEventType
-        ): OSFramework.Event.IEvent<OSFramework.OSMap.IMap> {
+        ): OSFramework.Maps.Event.IEvent<OSFramework.Maps.OSMap.IMap> {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            let event: OSFramework.Event.IEvent<OSFramework.OSMap.IMap>;
+            let event: OSFramework.Maps.Event.IEvent<OSFramework.Maps.OSMap.IMap>;
 
             switch (eventType) {
                 case MapEventType.Initialized:
@@ -79,7 +79,7 @@ namespace OSFramework.Event.OSMap {
         public trigger(
             eventType: MapEventType,
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            map?: OSFramework.OSMap.IMap,
+            map?: OSFramework.Maps.OSMap.IMap,
             eventInfo?: string,
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             ...args: any

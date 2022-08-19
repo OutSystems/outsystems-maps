@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.DrawingTools {
+namespace OSFramework.Maps.DrawingTools {
     export interface ITool
         extends Interface.IBuilder,
             Interface.ISearchById,

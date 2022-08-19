@@ -48,10 +48,9 @@ namespace Provider.Google {
     export function GetStyleByStyleId(id: number): google.maps.MapTypeStyle[] {
         // Replace all double quotes to single quotes
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const style = Style[OSFramework.Enum.OSMap.Style[id - 1]].style.replace(
-            /'/g,
-            '"'
-        );
+        const style = Style[
+            OSFramework.Maps.Enum.OSMap.Style[id - 1]
+        ].style.replace(/'/g, '"');
         // Parse to JSON and return the value
         return style !== '' ? JSON.parse(style) : '';
     }

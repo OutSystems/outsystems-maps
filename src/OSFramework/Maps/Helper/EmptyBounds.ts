@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Helper {
+namespace OSFramework.Maps.Helper {
     /** Check if all bounds (north, south, east or west) are empty. If one or more are not, then return False */
     export function HasAllEmptyBounds(
         location: OSStructures.OSMap.BoundsString

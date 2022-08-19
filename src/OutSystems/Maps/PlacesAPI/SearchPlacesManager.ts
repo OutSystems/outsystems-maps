@@ -2,9 +2,9 @@
 namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager {
     const searchPlacesMap = new Map<
         string,
-        OSFramework.SearchPlaces.ISearchPlaces
+        OSFramework.Maps.SearchPlaces.ISearchPlaces
     >(); //searchPlaces.uniqueId -> SearchPlaces obj
-    let activeSearchPlaces: OSFramework.SearchPlaces.ISearchPlaces = undefined;
+    let activeSearchPlaces: OSFramework.Maps.SearchPlaces.ISearchPlaces = undefined;
 
     /**
      * Function that will change the property value of a given SearchPlaces.
@@ -37,7 +37,7 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager {
     export function CreateSearchPlaces(
         searchPlacesId: string,
         configs: string
-    ): OSFramework.SearchPlaces.ISearchPlaces {
+    ): OSFramework.Maps.SearchPlaces.ISearchPlaces {
         const _searchPlaces =
             Provider.Google.SearchPlaces.SearchPlacesFactory.MakeSearchPlaces(
                 searchPlacesId,
@@ -64,7 +64,7 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager {
      * @export
      * @returns {*}  {SearchPlaces.ISearchPlaces} instance of the active SearchPlaces.
      */
-    export function GetActiveSearchPlaces(): OSFramework.SearchPlaces.ISearchPlaces {
+    export function GetActiveSearchPlaces(): OSFramework.Maps.SearchPlaces.ISearchPlaces {
         return activeSearchPlaces;
     }
 
@@ -79,8 +79,8 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager {
     export function GetSearchPlacesById(
         searchPlacesId: string,
         raiseError = true
-    ): OSFramework.SearchPlaces.ISearchPlaces {
-        let _searchPlaces: OSFramework.SearchPlaces.ISearchPlaces;
+    ): OSFramework.Maps.SearchPlaces.ISearchPlaces {
+        let _searchPlaces: OSFramework.Maps.SearchPlaces.ISearchPlaces;
 
         //searchPlacesId is the UniqueId
         if (searchPlacesMap.has(searchPlacesId)) {
@@ -108,7 +108,7 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager {
      */
     export function GetSearchPlacessFromPage(): Map<
         string,
-        OSFramework.SearchPlaces.ISearchPlaces
+        OSFramework.Maps.SearchPlaces.ISearchPlaces
     > {
         return searchPlacesMap;
     }
@@ -154,8 +154,8 @@ namespace PlacesAPI.SearchPlacesManager {
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         propertyValue: any
     ): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.ChangeProperty()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.ChangeProperty()'`
         );
         OutSystems.Maps.PlacesAPI.SearchPlacesManager.ChangeProperty(
             searchPlacesId,
@@ -167,9 +167,9 @@ namespace PlacesAPI.SearchPlacesManager {
     export function CreateSearchPlaces(
         searchPlacesId: string,
         configs: string
-    ): OSFramework.SearchPlaces.ISearchPlaces {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage}  'OutSystems.Maps.PlacesAPI.SearchPlacesManager.CreateSearchPlaces()'`
+    ): OSFramework.Maps.SearchPlaces.ISearchPlaces {
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage}  'OutSystems.Maps.PlacesAPI.SearchPlacesManager.CreateSearchPlaces()'`
         );
         return OutSystems.Maps.PlacesAPI.SearchPlacesManager.CreateSearchPlaces(
             searchPlacesId,
@@ -177,9 +177,9 @@ namespace PlacesAPI.SearchPlacesManager {
         );
     }
 
-    export function GetActiveSearchPlaces(): OSFramework.SearchPlaces.ISearchPlaces {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.GetActiveSearchPlaces()'`
+    export function GetActiveSearchPlaces(): OSFramework.Maps.SearchPlaces.ISearchPlaces {
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.GetActiveSearchPlaces()'`
         );
         return OutSystems.Maps.PlacesAPI.SearchPlacesManager.GetActiveSearchPlaces();
     }
@@ -187,9 +187,9 @@ namespace PlacesAPI.SearchPlacesManager {
     export function GetSearchPlacesById(
         searchPlacesId: string,
         raiseError = true
-    ): OSFramework.SearchPlaces.ISearchPlaces {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.GetSearchPlacesById()'`
+    ): OSFramework.Maps.SearchPlaces.ISearchPlaces {
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.GetSearchPlacesById()'`
         );
         return OutSystems.Maps.PlacesAPI.SearchPlacesManager.GetSearchPlacesById(
             searchPlacesId,
@@ -199,17 +199,17 @@ namespace PlacesAPI.SearchPlacesManager {
 
     export function GetSearchPlacessFromPage(): Map<
         string,
-        OSFramework.SearchPlaces.ISearchPlaces
+        OSFramework.Maps.SearchPlaces.ISearchPlaces
     > {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.GetSearchPlacessFromPage()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.GetSearchPlacessFromPage()'`
         );
         return OutSystems.Maps.PlacesAPI.SearchPlacesManager.GetSearchPlacessFromPage();
     }
 
     export function InitializeSearchPlaces(searchPlacesId: string): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.InitializeSearchPlaces()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.InitializeSearchPlaces()'`
         );
         OutSystems.Maps.PlacesAPI.SearchPlacesManager.InitializeSearchPlaces(
             searchPlacesId
@@ -217,8 +217,8 @@ namespace PlacesAPI.SearchPlacesManager {
     }
 
     export function RemoveSearchPlaces(searchPlacesId: string): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.RemoveSearchPlaces()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.RemoveSearchPlaces()'`
         );
         OutSystems.Maps.PlacesAPI.SearchPlacesManager.RemoveSearchPlaces(
             searchPlacesId

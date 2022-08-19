@@ -6,7 +6,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager.Events {
         {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             cb: any;
-            event: OSFramework.Event.DrawingTools.DrawingToolsEventType;
+            event: OSFramework.Maps.Event.DrawingTools.DrawingToolsEventType;
             uniqueId: string; //Event unique identifier
         }[]
     > = new Map<
@@ -14,7 +14,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager.Events {
         {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             cb: any;
-            event: OSFramework.Event.DrawingTools.DrawingToolsEventType;
+            event: OSFramework.Maps.Event.DrawingTools.DrawingToolsEventType;
             uniqueId: string; //Event unique identifier
         }[]
     >();
@@ -26,7 +26,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager.Events {
      * @param {string} drawingTools DrawingTools that is ready for events
      */
     export function CheckPendingEvents(
-        drawingTools: OSFramework.DrawingTools.IDrawingTools
+        drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools
     ): void {
         // For each key of the pendingEvents check if the shape has the key as a widgetId or uniqueId and add the new handler
         for (const key of _pendingEvents.keys()) {
@@ -50,13 +50,13 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager.Events {
      *
      * @export
      * @param {string} toolUniqueId Id of the tool
-     * @param {OSFramework.Event.Map.MapEventType} eventName name fo the event to be attached
+     * @param {OSFramework.Maps.Event.Map.MapEventType} eventName name fo the event to be attached
      * @param {MapAPI.Callbacks.OSMap.Event} callback callback to be invoked when the event occurs
      */
     export function SubscribeByToolUniqueId(
         toolUniqueId: string,
-        eventName: OSFramework.Event.DrawingTools.DrawingToolsEventType,
-        callback: OSFramework.Callbacks.DrawingTools.Event
+        eventName: OSFramework.Maps.Event.DrawingTools.DrawingToolsEventType,
+        callback: OSFramework.Maps.Callbacks.DrawingTools.Event
     ): void {
         // Let's make sure that if the Map doesn't exist, we don't throw and exception but instead add the handler to the pendingEvents
         const drawingToolsId = GetDrawingToolsByToolUniqueId(toolUniqueId);
@@ -92,13 +92,13 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager.Events {
      *
      * @export
      * @param {string} toolUniqueId Id of the tool
-     * @param {OSFramework.Event.Map.MapEventType} eventName name fo the event to be attached
+     * @param {OSFramework.Maps.Event.Map.MapEventType} eventName name fo the event to be attached
      * @param {MapAPI.Callbacks.OSMap.Event} callback callback to be invoked when the event occurs
      */
     export function UnsubscribeByToolId(
         toolUniqueId: string,
-        eventName: OSFramework.Event.DrawingTools.DrawingToolsEventType,
-        callback: OSFramework.Callbacks.DrawingTools.Event
+        eventName: OSFramework.Maps.Event.DrawingTools.DrawingToolsEventType,
+        callback: OSFramework.Maps.Callbacks.DrawingTools.Event
     ): void {
         const drawingToolsId = GetDrawingToolsByToolUniqueId(toolUniqueId);
         const drawingTools = GetDrawingToolsById(drawingToolsId, false);
@@ -129,10 +129,10 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager.Events {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace MapAPI.DrawingToolsManager.Events {
     export function CheckPendingEvents(
-        drawingTools: OSFramework.DrawingTools.IDrawingTools
+        drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools
     ): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.Events.CheckPendingEvents()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.Events.CheckPendingEvents()'`
         );
         OutSystems.Maps.MapAPI.DrawingToolsManager.Events.CheckPendingEvents(
             drawingTools
@@ -141,11 +141,11 @@ namespace MapAPI.DrawingToolsManager.Events {
 
     export function SubscribeByToolUniqueId(
         toolUniqueId: string,
-        eventName: OSFramework.Event.DrawingTools.DrawingToolsEventType,
-        callback: OSFramework.Callbacks.DrawingTools.Event
+        eventName: OSFramework.Maps.Event.DrawingTools.DrawingToolsEventType,
+        callback: OSFramework.Maps.Callbacks.DrawingTools.Event
     ): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.Events.SubscribeByToolUniqueId()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.Events.SubscribeByToolUniqueId()'`
         );
         OutSystems.Maps.MapAPI.DrawingToolsManager.Events.SubscribeByToolUniqueId(
             toolUniqueId,
@@ -156,11 +156,11 @@ namespace MapAPI.DrawingToolsManager.Events {
 
     export function UnsubscribeByToolId(
         toolUniqueId: string,
-        eventName: OSFramework.Event.DrawingTools.DrawingToolsEventType,
-        callback: OSFramework.Callbacks.DrawingTools.Event
+        eventName: OSFramework.Maps.Event.DrawingTools.DrawingToolsEventType,
+        callback: OSFramework.Maps.Callbacks.DrawingTools.Event
     ): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.Events.UnsubscribeByToolId()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.Events.UnsubscribeByToolId()'`
         );
         OutSystems.Maps.MapAPI.DrawingToolsManager.Events.UnsubscribeByToolId(
             toolUniqueId,

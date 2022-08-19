@@ -6,13 +6,13 @@ namespace Provider.Google.HeatmapLayer {
         location: google.maps.LatLng;
         weight: number;
     };
-    export class HeatmapLayer extends OSFramework.HeatmapLayer
+    export class HeatmapLayer extends OSFramework.Maps.HeatmapLayer
         .AbstractHeatmapLayer<
         google.maps.visualization.HeatmapLayer,
-        OSFramework.Configuration.IConfigurationHeatmapLayer
+        OSFramework.Maps.Configuration.IConfigurationHeatmapLayer
     > {
         constructor(
-            map: OSFramework.OSMap.IMap,
+            map: OSFramework.Maps.OSMap.IMap,
             HeatmapLayerId: string,
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             configs: any
@@ -27,14 +27,14 @@ namespace Provider.Google.HeatmapLayer {
         /** In case the gradient is not defined, use the default from GoogleProvider */
         private _gradientColors(gradient: string[]) {
             if (gradient.length === 0) {
-                return OSFramework.Helper.Constants.gradientHeatmapColors;
+                return OSFramework.Maps.Helper.Constants.gradientHeatmapColors;
             }
             return gradient;
         }
 
         /** Convert array of points from OS format into the data points from GoogleProvider */
         private _pointsToData(
-            points: Array<OSFramework.OSStructures.HeatmapLayer.Points>
+            points: Array<OSFramework.Maps.OSStructures.HeatmapLayer.Points>
         ) {
             const data: Array<HeatmapLayer.data | google.maps.LatLng> =
                 points.map((point) => {
@@ -70,32 +70,33 @@ namespace Provider.Google.HeatmapLayer {
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
         public changeProperty(propertyName: string, value: any): void {
             const propValue =
-                OSFramework.Enum.OS_Config_HeatmapLayer[propertyName];
+                OSFramework.Maps.Enum.OS_Config_HeatmapLayer[propertyName];
             super.changeProperty(propertyName, value);
             if (this.isReady) {
                 switch (propValue) {
-                    case OSFramework.Enum.OS_Config_HeatmapLayer.points:
+                    case OSFramework.Maps.Enum.OS_Config_HeatmapLayer.points:
                         return this.provider.setData(
                             this._pointsToData(JSON.parse(value))
                         );
-                    case OSFramework.Enum.OS_Config_HeatmapLayer
+                    case OSFramework.Maps.Enum.OS_Config_HeatmapLayer
                         .dissipateOnZoom:
                         return this.provider.setOptions({
                             dissipating: value
                         });
-                    case OSFramework.Enum.OS_Config_HeatmapLayer.gradient:
+                    case OSFramework.Maps.Enum.OS_Config_HeatmapLayer.gradient:
                         return this.provider.setOptions({
                             gradient: this._gradientColors(JSON.parse(value))
                         });
-                    case OSFramework.Enum.OS_Config_HeatmapLayer.maxIntensity:
+                    case OSFramework.Maps.Enum.OS_Config_HeatmapLayer
+                        .maxIntensity:
                         return this.provider.setOptions({
                             maxIntensity: value
                         });
-                    case OSFramework.Enum.OS_Config_HeatmapLayer.opacity:
+                    case OSFramework.Maps.Enum.OS_Config_HeatmapLayer.opacity:
                         return this.provider.setOptions({
                             opacity: value
                         });
-                    case OSFramework.Enum.OS_Config_HeatmapLayer.radius:
+                    case OSFramework.Maps.Enum.OS_Config_HeatmapLayer.radius:
                         return this.provider.setOptions({
                             radius: value
                         });

@@ -1,7 +1,7 @@
 ///<reference path="AbstractDrawingToolsEvent.ts"/>
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Event.DrawingTools {
+namespace OSFramework.Maps.Event.DrawingTools {
     /**
      * Class that represents the DrawingToolsProviderEvent event.
      *

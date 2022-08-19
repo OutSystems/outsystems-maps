@@ -3,7 +3,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Leaflet.OSMap {
     export class Map
-        extends OSFramework.OSMap.AbstractMap<
+        extends OSFramework.Maps.OSMap.AbstractMap<
             L.Map,
             Configuration.OSMap.LeafletMapConfig
         >
@@ -17,17 +17,17 @@ namespace Provider.Leaflet.OSMap {
         constructor(mapId: string, configs: any) {
             super(
                 mapId,
-                OSFramework.Enum.ProviderType.Leaflet,
+                OSFramework.Maps.Enum.ProviderType.Leaflet,
                 new Configuration.OSMap.LeafletMapConfig(configs),
-                OSFramework.Enum.MapType.Map
+                OSFramework.Maps.Enum.MapType.Map
             );
             this._addedEvents = [];
             // Set the openStreetMapLayer with the URL and the attribution needed
             this._openStreetMapLayer = new L.TileLayer(
-                OSFramework.Helper.Constants.openStreetMapTileLayer.url,
+                OSFramework.Maps.Helper.Constants.openStreetMapTileLayer.url,
                 {
                     attribution:
-                        OSFramework.Helper.Constants.openStreetMapTileLayer
+                        OSFramework.Maps.Helper.Constants.openStreetMapTileLayer
                             .attribution
                 }
             );
@@ -49,7 +49,8 @@ namespace Provider.Leaflet.OSMap {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         private _getProviderConfig(): L.MapOptions {
             // Make sure the center has a default value before the conversion of the location to coordinates
-            this.config.center = OSFramework.Helper.Constants.defaultMapCenter;
+            this.config.center =
+                OSFramework.Maps.Helper.Constants.defaultMapCenter;
 
             return this.config.getProviderConfig();
         }
@@ -60,12 +61,12 @@ namespace Provider.Leaflet.OSMap {
             // Otherwise, we don't want to add them to the google provider listeners (e.g. OnInitialize, OnError, OnTriggeredEvent)
             this.mapEvents.handlers.forEach(
                 (
-                    handler: OSFramework.Event.IEvent<OSFramework.OSMap.IMap>,
+                    handler: OSFramework.Maps.Event.IEvent<OSFramework.Maps.OSMap.IMap>,
                     eventName
                 ) => {
                     if (
                         handler instanceof
-                        OSFramework.Event.OSMap.MapProviderEvent
+                        OSFramework.Maps.Event.OSMap.MapProviderEvent
                     ) {
                         this._addedEvents.push(eventName);
                         this._provider.addEventListener(
@@ -76,7 +77,7 @@ namespace Provider.Leaflet.OSMap {
                             // Trigger the event by specifying the ProviderEvent MapType and the coords (lat, lng) if the callback has the attribute MapMouseEvent
                             (e?: L.LeafletMouseEvent) => {
                                 this.mapEvents.trigger(
-                                    OSFramework.Event.OSMap.MapEventType
+                                    OSFramework.Maps.Event.OSMap.MapEventType
                                         .ProviderEvent,
                                     this,
                                     eventName,
@@ -100,12 +101,12 @@ namespace Provider.Leaflet.OSMap {
         }
 
         public get mapTag(): string {
-            return OSFramework.Helper.Constants.mapTag;
+            return OSFramework.Maps.Helper.Constants.mapTag;
         }
 
         public addDrawingTools(
-            drawingTools: OSFramework.DrawingTools.IDrawingTools
-        ): OSFramework.DrawingTools.IDrawingTools {
+            drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools
+        ): OSFramework.Maps.DrawingTools.IDrawingTools {
             super.addDrawingTools(drawingTools);
 
             if (this.isReady) {
@@ -116,8 +117,8 @@ namespace Provider.Leaflet.OSMap {
         }
 
         public addFileLayer(
-            fileLayer: OSFramework.FileLayer.IFileLayer
-        ): OSFramework.FileLayer.IFileLayer {
+            fileLayer: OSFramework.Maps.FileLayer.IFileLayer
+        ): OSFramework.Maps.FileLayer.IFileLayer {
             super.addFileLayer(fileLayer);
 
             if (this.isReady) {
@@ -128,8 +129,8 @@ namespace Provider.Leaflet.OSMap {
         }
 
         public addHeatmapLayer(
-            fileLayer: OSFramework.HeatmapLayer.IHeatmapLayer
-        ): OSFramework.HeatmapLayer.IHeatmapLayer {
+            fileLayer: OSFramework.Maps.HeatmapLayer.IHeatmapLayer
+        ): OSFramework.Maps.HeatmapLayer.IHeatmapLayer {
             super.addHeatmapLayer(fileLayer);
 
             if (this.isReady) {
@@ -140,8 +141,8 @@ namespace Provider.Leaflet.OSMap {
         }
 
         public addMarker(
-            marker: OSFramework.Marker.IMarker
-        ): OSFramework.Marker.IMarker {
+            marker: OSFramework.Maps.Marker.IMarker
+        ): OSFramework.Maps.Marker.IMarker {
             super.addMarker(marker);
 
             if (this.isReady) {
@@ -152,8 +153,8 @@ namespace Provider.Leaflet.OSMap {
         }
 
         public addShape(
-            shape: OSFramework.Shape.IShape
-        ): OSFramework.Shape.IShape {
+            shape: OSFramework.Maps.Shape.IShape
+        ): OSFramework.Maps.Shape.IShape {
             super.addShape(shape);
 
             if (this.isReady) {
@@ -171,10 +172,10 @@ namespace Provider.Leaflet.OSMap {
             const currentCenter = this.config.center;
 
             this._provider = new L.Map(
-                OSFramework.Helper.GetElementByUniqueId(
+                OSFramework.Maps.Helper.GetElementByUniqueId(
                     this.uniqueId
                 ).querySelector(
-                    OSFramework.Helper.Constants.runtimeMapUniqueIdCss
+                    OSFramework.Maps.Helper.Constants.runtimeMapUniqueIdCss
                 ) as HTMLElement,
                 {
                     ...this._getProviderConfig(),
@@ -273,17 +274,17 @@ namespace Provider.Leaflet.OSMap {
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         public changeProperty(propertyName: string, value: any): void {
-            const propValue = OSFramework.Enum.OS_Config_Map[propertyName];
+            const propValue = OSFramework.Maps.Enum.OS_Config_Map[propertyName];
             super.changeProperty(propertyName, value);
             if (this.isReady) {
                 switch (propValue) {
-                    case OSFramework.Enum.OS_Config_Map.center:
+                    case OSFramework.Maps.Enum.OS_Config_Map.center:
                         return this.features.center.updateCenter(value);
-                    case OSFramework.Enum.OS_Config_Map.offset:
+                    case OSFramework.Maps.Enum.OS_Config_Map.offset:
                         return this.features.offset.setOffset(
                             JSON.parse(value)
                         );
-                    case OSFramework.Enum.OS_Config_Map.zoom:
+                    case OSFramework.Maps.Enum.OS_Config_Map.zoom:
                         return this.features.zoom.setLevel(value);
                 }
             }
@@ -322,9 +323,9 @@ namespace Provider.Leaflet.OSMap {
             // If the configured center position of the map is equal to the default
             const isDefault =
                 position.lat ===
-                    OSFramework.Helper.Constants.defaultMapCenter.lat &&
+                    OSFramework.Maps.Helper.Constants.defaultMapCenter.lat &&
                 position.lng ===
-                    OSFramework.Helper.Constants.defaultMapCenter.lng;
+                    OSFramework.Maps.Helper.Constants.defaultMapCenter.lng;
             // If the Map has the default center position and at least 1 Marker, we want to use the first Marker position as the new center of the Map
             if (
                 isDefault === true &&

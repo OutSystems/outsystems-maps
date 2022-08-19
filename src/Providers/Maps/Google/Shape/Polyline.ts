@@ -7,12 +7,12 @@ namespace Provider.Google.Shape {
             Configuration.Shape.BasicShapeConfig,
             google.maps.Polyline
         >
-        implements OSFramework.Shape.IShapePolyshape
+        implements OSFramework.Maps.Shape.IShapePolyshape
     {
         constructor(
-            map: OSFramework.OSMap.IMap,
+            map: OSFramework.Maps.OSMap.IMap,
             shapeId: string,
-            type: OSFramework.Enum.ShapeType,
+            type: OSFramework.Maps.Enum.ShapeType,
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             configs: any
         ) {
@@ -25,7 +25,7 @@ namespace Provider.Google.Shape {
         }
 
         protected _createProvider(
-            path: Array<OSFramework.OSStructures.OSMap.Coordinates>
+            path: Array<OSFramework.Maps.OSStructures.OSMap.Coordinates>
         ): google.maps.Polyline {
             return new google.maps.Polyline({
                 map: this.map.provider,
@@ -34,13 +34,13 @@ namespace Provider.Google.Shape {
             });
         }
 
-        protected get invalidShapeLocationErrorCode(): OSFramework.Enum.ErrorCodes {
-            return OSFramework.Enum.ErrorCodes
+        protected get invalidShapeLocationErrorCode(): OSFramework.Maps.Enum.ErrorCodes {
+            return OSFramework.Maps.Enum.ErrorCodes
                 .CFG_InvalidPolylineShapeLocations;
         }
 
         public get shapeTag(): string {
-            return OSFramework.Helper.Constants.shapePolylineTag;
+            return OSFramework.Maps.Helper.Constants.shapePolylineTag;
         }
     }
 }

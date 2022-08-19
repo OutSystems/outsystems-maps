@@ -5,7 +5,7 @@ namespace Provider.Google.Marker {
     export class MarkerPopup
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         extends Marker
-        implements OSFramework.Marker.IMarkerPopup
+        implements OSFramework.Maps.Marker.IMarkerPopup
     {
         private _contentString: string;
 
@@ -26,7 +26,7 @@ namespace Provider.Google.Marker {
         }
 
         public get markerTag(): string {
-            return OSFramework.Helper.Constants.markerPopupTag;
+            return OSFramework.Maps.Helper.Constants.markerPopupTag;
         }
 
         public closePopup(): void {
@@ -39,9 +39,11 @@ namespace Provider.Google.Marker {
         }
 
         public refreshPopupContent(): void {
-            this._contentString = OSFramework.Helper.GetElementByUniqueId(
+            this._contentString = OSFramework.Maps.Helper.GetElementByUniqueId(
                 this.uniqueId
-            ).querySelector(OSFramework.Helper.Constants.markerPopup).innerHTML;
+            ).querySelector(
+                OSFramework.Maps.Helper.Constants.markerPopup
+            ).innerHTML;
             this.map.features.infoWindow.setPopupContent(this._contentString);
         }
     }

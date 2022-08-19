@@ -1,12 +1,12 @@
 ///<reference path="AbstractSearchPlacesEvent.ts"/>
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Event.SearchPlaces {
+namespace OSFramework.Maps.Event.SearchPlaces {
     /**
      * Class that represents the the Initialized event.
      *
      * @class SearchPlacesOnError
-     * @extends {AbstractEvent<OSFramework.OSSearchPlaces.ISearchPlaces>}
+     * @extends {AbstractEvent<OSFramework.Maps.OSSearchPlaces.ISearchPlaces>}
      */
     export class SearchPlacesOnError extends AbstractSearchPlacesEvent {
         /**
@@ -18,7 +18,7 @@ namespace OSFramework.Event.SearchPlaces {
          */
         public trigger(
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            searchPlacesObj: OSFramework.SearchPlaces.ISearchPlaces,
+            searchPlacesObj: OSFramework.Maps.SearchPlaces.ISearchPlaces,
             searchPlacesId: string,
             eventName: string,
             errorMessage?: string

@@ -7,12 +7,12 @@ namespace Provider.Google.Shape {
             Configuration.Shape.RectangleShapeConfig,
             google.maps.Rectangle
         >
-        implements OSFramework.Shape.IShapeRectangle
+        implements OSFramework.Maps.Shape.IShapeRectangle
     {
         constructor(
-            map: OSFramework.OSMap.IMap,
+            map: OSFramework.Maps.OSMap.IMap,
             shapeId: string,
-            type: OSFramework.Enum.ShapeType,
+            type: OSFramework.Maps.Enum.ShapeType,
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             configs: any
         ) {
@@ -28,12 +28,12 @@ namespace Provider.Google.Shape {
         // For instance (north: string -> north: number)
         private _buildBounds(
             boundsString: string
-        ): Promise<OSFramework.OSStructures.OSMap.Bounds> {
-            const bounds: OSFramework.OSStructures.OSMap.BoundsString =
+        ): Promise<OSFramework.Maps.OSStructures.OSMap.Bounds> {
+            const bounds: OSFramework.Maps.OSStructures.OSMap.BoundsString =
                 JSON.parse(boundsString);
             // If the Shape doesn't have the minimum valid address/coordinates, then throw an error
-            if (OSFramework.Helper.HasAnyEmptyBound(bounds)) {
-                OSFramework.Helper.ThrowError(
+            if (OSFramework.Maps.Helper.HasAnyEmptyBound(bounds)) {
+                OSFramework.Maps.Helper.ThrowError(
                     this.map,
                     this.invalidShapeLocationErrorCode
                 );
@@ -51,12 +51,13 @@ namespace Provider.Google.Shape {
          * This Promise will only get resolved after the provider gets built (asynchronously)
          */
         private _convertStringToBounds(
-            bounds: OSFramework.OSStructures.OSMap.BoundsString
-        ): Promise<OSFramework.OSStructures.OSMap.Bounds> {
+            bounds: OSFramework.Maps.OSStructures.OSMap.BoundsString
+        ): Promise<OSFramework.Maps.OSStructures.OSMap.Bounds> {
             const cardinalDirections = ['north', 'south', 'east', 'west'];
             return new Promise((resolve, reject) => {
                 let boundsLength = 0;
-                const newBounds = new OSFramework.OSStructures.OSMap.Bounds();
+                const newBounds =
+                    new OSFramework.Maps.OSStructures.OSMap.Bounds();
                 cardinalDirections.forEach((cd) => {
                     // Regex that validates if string is a coordinate (latitude or longitude)
                     const regexValidator = /^-{0,1}\d*\.{0,1}\d*$/;
@@ -95,7 +96,7 @@ namespace Provider.Google.Shape {
         }
 
         protected _createProvider(
-            bounds: OSFramework.OSStructures.OSMap.Bounds
+            bounds: OSFramework.Maps.OSStructures.OSMap.Bounds
         ): google.maps.Rectangle {
             return new google.maps.Rectangle({
                 map: this.map.provider,
@@ -104,14 +105,15 @@ namespace Provider.Google.Shape {
             });
         }
 
-        protected get invalidShapeLocationErrorCode(): OSFramework.Enum.ErrorCodes {
-            return OSFramework.Enum.ErrorCodes.CFG_InvalidRectangleShapeBounds;
+        protected get invalidShapeLocationErrorCode(): OSFramework.Maps.Enum.ErrorCodes {
+            return OSFramework.Maps.Enum.ErrorCodes
+                .CFG_InvalidRectangleShapeBounds;
         }
 
-        public get bounds(): OSFramework.OSStructures.OSMap.Bounds {
+        public get bounds(): OSFramework.Maps.OSStructures.OSMap.Bounds {
             const providerBounds: google.maps.LatLngBounds =
                 this.provider.getBounds();
-            const bounds = new OSFramework.OSStructures.OSMap.Bounds();
+            const bounds = new OSFramework.Maps.OSStructures.OSMap.Bounds();
 
             // Map providerBounds into OSFramework bounds structure
             bounds.east = providerBounds.getNorthEast().lng();
@@ -130,7 +132,7 @@ namespace Provider.Google.Shape {
         }
 
         public get shapeTag(): string {
-            return OSFramework.Helper.Constants.shapeRectangleTag;
+            return OSFramework.Maps.Helper.Constants.shapeRectangleTag;
         }
 
         public build(): void {
@@ -144,14 +146,15 @@ namespace Provider.Google.Shape {
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         public changeProperty(propertyName: string, value: any): void {
-            const propValue = OSFramework.Enum.OS_Config_Shape[propertyName];
+            const propValue =
+                OSFramework.Maps.Enum.OS_Config_Shape[propertyName];
             super.changeProperty(propertyName, value);
             if (this.isReady) {
                 switch (propValue) {
-                    case OSFramework.Enum.OS_Config_Shape.fillColor:
-                    case OSFramework.Enum.OS_Config_Shape.fillOpacity:
+                    case OSFramework.Maps.Enum.OS_Config_Shape.fillColor:
+                    case OSFramework.Maps.Enum.OS_Config_Shape.fillOpacity:
                         return this.provider.set(propertyName, value);
-                    case OSFramework.Enum.OS_Config_Shape.bounds:
+                    case OSFramework.Maps.Enum.OS_Config_Shape.bounds:
                         // eslint-disable-next-line no-case-declarations
                         const shapeBounds = this._buildBounds(value);
                         // If path is undefined (should be a promise) -> don't create the shape
@@ -161,9 +164,9 @@ namespace Provider.Google.Shape {
                                     this.provider.setBounds(bounds);
                                 })
                                 .catch((error) => {
-                                    OSFramework.Helper.ThrowError(
+                                    OSFramework.Maps.Helper.ThrowError(
                                         this.map,
-                                        OSFramework.Enum.ErrorCodes
+                                        OSFramework.Maps.Enum.ErrorCodes
                                             .LIB_FailedGeocodingShapeLocations,
                                         error
                                     );

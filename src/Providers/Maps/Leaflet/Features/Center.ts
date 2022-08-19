@@ -1,19 +1,21 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Leaflet.Feature {
     export class Center
-        implements OSFramework.Feature.ICenter, OSFramework.Interface.IBuilder
+        implements
+            OSFramework.Maps.Feature.ICenter,
+            OSFramework.Maps.Interface.IBuilder
     {
         /** Current center position of the Map that changes whenever a marker is added or by enabling the Autofit on Zoom feature */
-        private _currentCenter: OSFramework.OSStructures.OSMap.Coordinates;
+        private _currentCenter: OSFramework.Maps.OSStructures.OSMap.Coordinates;
         /** Center position of the Map defined by the configuration
          * (can be changed after running the changeParameter method or is set by initializing the Map)
          */
-        private _initialCenter: OSFramework.OSStructures.OSMap.Coordinates;
+        private _initialCenter: OSFramework.Maps.OSStructures.OSMap.Coordinates;
         private _map: OSMap.IMapLeaflet;
 
         constructor(
             map: OSMap.IMapLeaflet,
-            center: OSFramework.OSStructures.OSMap.Coordinates
+            center: OSFramework.Maps.OSStructures.OSMap.Coordinates
         ) {
             this._map = map;
             this._initialCenter = center;
@@ -22,16 +24,16 @@ namespace Provider.Leaflet.Feature {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         public build(): void {}
 
-        public getCenter(): OSFramework.OSStructures.OSMap.Coordinates {
+        public getCenter(): OSFramework.Maps.OSStructures.OSMap.Coordinates {
             return this._initialCenter;
         }
 
-        public getCurrentCenter(): OSFramework.OSStructures.OSMap.Coordinates {
+        public getCurrentCenter(): OSFramework.Maps.OSStructures.OSMap.Coordinates {
             return this._currentCenter;
         }
 
         public refreshCenter(
-            value: OSFramework.OSStructures.OSMap.Coordinates
+            value: OSFramework.Maps.OSStructures.OSMap.Coordinates
         ): void {
             const coordinates = new L.LatLng(value.lat, value.lng);
             this._map.provider.setView(coordinates);
@@ -39,7 +41,7 @@ namespace Provider.Leaflet.Feature {
         }
 
         public setCurrentCenter(
-            value: OSFramework.OSStructures.OSMap.Coordinates
+            value: OSFramework.Maps.OSStructures.OSMap.Coordinates
         ): void {
             this._currentCenter = value;
         }
@@ -53,9 +55,9 @@ namespace Provider.Leaflet.Feature {
                 })
                 .catch(() => {
                     this._map.mapEvents.trigger(
-                        OSFramework.Event.OSMap.MapEventType.OnError,
+                        OSFramework.Maps.Event.OSMap.MapEventType.OnError,
                         this._map,
-                        OSFramework.Enum.ErrorCodes
+                        OSFramework.Maps.Enum.ErrorCodes
                             .LIB_FailedGeocodingLeafletMap
                     );
                 });

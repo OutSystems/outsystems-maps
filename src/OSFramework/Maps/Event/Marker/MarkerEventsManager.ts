@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Event.Marker {
+namespace OSFramework.Maps.Event.Marker {
     /**
      * Class that will be responsible for managing the events of the Markers.
      *
@@ -11,18 +11,18 @@ namespace OSFramework.Event.Marker {
         MarkerEventType,
         string
     > {
-        private _marker: OSFramework.Marker.IMarker;
+        private _marker: OSFramework.Maps.Marker.IMarker;
 
-        constructor(marker: OSFramework.Marker.IMarker) {
+        constructor(marker: OSFramework.Maps.Marker.IMarker) {
             super();
             this._marker = marker;
         }
 
         protected getInstanceOfEventType(
             eventType: MarkerEventType
-        ): OSFramework.Event.IEvent<string> {
+        ): OSFramework.Maps.Event.IEvent<string> {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            let event: OSFramework.Event.IEvent<string>;
+            let event: OSFramework.Maps.Event.IEvent<string>;
 
             // The following events are being deprecated. They should get removed soon.
             switch (eventType) {

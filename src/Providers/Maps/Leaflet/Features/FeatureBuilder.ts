@@ -1,32 +1,32 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Leaflet.Feature {
     export interface IFeatures {
-        features: OSFramework.Feature.ExposedFeatures;
+        features: OSFramework.Maps.Feature.ExposedFeatures;
         dispose(): void;
     }
 
     export abstract class AbstractFactoryBuilder
-        implements IFeatures, OSFramework.Interface.IBuilder
+        implements IFeatures, OSFramework.Maps.Interface.IBuilder
     {
-        protected _featureList: OSFramework.Interface.IBuilder[];
-        protected _features: OSFramework.Feature.ExposedFeatures;
-        protected _map: OSFramework.OSMap.IMap;
+        protected _featureList: OSFramework.Maps.Interface.IBuilder[];
+        protected _features: OSFramework.Maps.Feature.ExposedFeatures;
+        protected _map: OSFramework.Maps.OSMap.IMap;
 
-        constructor(map: OSFramework.OSMap.IMap) {
+        constructor(map: OSFramework.Maps.OSMap.IMap) {
             this._map = map;
             this._featureList = [];
-            this._features = new OSFramework.Feature.ExposedFeatures();
+            this._features = new OSFramework.Maps.Feature.ExposedFeatures();
         }
 
         // eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/no-explicit-any
         private _instanceOfIDisposable(
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             object: any
-        ): object is OSFramework.Interface.IDisposable {
+        ): object is OSFramework.Maps.Interface.IDisposable {
             return 'dispose' in object;
         }
 
-        protected _makeItem<T extends OSFramework.Interface.IBuilder>(
+        protected _makeItem<T extends OSFramework.Maps.Interface.IBuilder>(
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             c: new (...args: any) => T,
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -37,7 +37,7 @@ namespace Provider.Leaflet.Feature {
             return o;
         }
 
-        public get features(): OSFramework.Feature.ExposedFeatures {
+        public get features(): OSFramework.Maps.Feature.ExposedFeatures {
             return this._features;
         }
 
@@ -48,7 +48,7 @@ namespace Provider.Leaflet.Feature {
         public dispose(): void {
             this._featureList.forEach((p) => {
                 this._instanceOfIDisposable(p) &&
-                    (p as OSFramework.Interface.IDisposable).dispose();
+                    (p as OSFramework.Maps.Interface.IDisposable).dispose();
                 p = undefined;
             });
         }
@@ -56,7 +56,7 @@ namespace Provider.Leaflet.Feature {
 
     export class FeatureBuilder extends AbstractFactoryBuilder {
         private _makeCenter(
-            center: OSFramework.OSStructures.OSMap.Coordinates
+            center: OSFramework.Maps.OSStructures.OSMap.Coordinates
         ): FeatureBuilder {
             this._features.center = this._makeItem(Center, center);
             return this;
@@ -70,12 +70,14 @@ namespace Provider.Leaflet.Feature {
             return this;
         }
         private _makeOffset(
-            offset: OSFramework.OSStructures.OSMap.Offset
+            offset: OSFramework.Maps.OSStructures.OSMap.Offset
         ): FeatureBuilder {
             this._features.offset = this._makeItem(Offset, offset);
             return this;
         }
-        private _makeZoom(level: OSFramework.Enum.OSMap.Zoom): FeatureBuilder {
+        private _makeZoom(
+            level: OSFramework.Maps.Enum.OSMap.Zoom
+        ): FeatureBuilder {
             this._features.zoom = this._makeItem(Zoom, level);
             return this;
         }
@@ -86,7 +88,7 @@ namespace Provider.Leaflet.Feature {
 
             this._makeZoom(config.zoom)
                 ._makeCenter(
-                    config.center as OSFramework.OSStructures.OSMap.Coordinates
+                    config.center as OSFramework.Maps.OSStructures.OSMap.Coordinates
                 )
                 ._makeDirections()
                 ._makeOffset(config.offset)

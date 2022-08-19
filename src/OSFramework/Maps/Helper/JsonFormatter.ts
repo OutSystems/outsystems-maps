@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Helper {
+namespace OSFramework.Maps.Helper {
     export function JsonFormatter(text: string): JSON {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let json: any = {};

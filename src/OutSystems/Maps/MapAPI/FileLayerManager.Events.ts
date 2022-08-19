@@ -6,7 +6,7 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager.Events {
         {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             cb: any;
-            event: OSFramework.Event.FileLayer.FileLayersEventType;
+            event: OSFramework.Maps.Event.FileLayer.FileLayersEventType;
             uniqueId: string; //Event unique identifier
         }[]
     > = new Map<
@@ -14,7 +14,7 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager.Events {
         {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             cb: any;
-            event: OSFramework.Event.FileLayer.FileLayersEventType;
+            event: OSFramework.Maps.Event.FileLayer.FileLayersEventType;
             uniqueId: string; //Event unique identifier
         }[]
     >();
@@ -26,7 +26,7 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager.Events {
      * @param {string} fileLayer FileLayer that is ready for events
      */
     export function CheckPendingEvents(
-        fileLayer: OSFramework.FileLayer.IFileLayer
+        fileLayer: OSFramework.Maps.FileLayer.IFileLayer
     ): void {
         // For each key of the pendingEvents check if the shape has the key as a widgetId or uniqueId and add the new handler
         for (const key of _pendingEvents.keys()) {
@@ -51,13 +51,13 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager.Events {
      *
      * @export
      * @param {string} fileLayerId FileLayer where the events will get attached
-     * @param {OSFramework.Event.FileLayer.FileLayerEventType} eventName name of the event to get attached
-     * @param {OSFramework.Callbacks.FileLayer.ClickEvent} callback to be invoked when the event occurs
+     * @param {OSFramework.Maps.Event.FileLayer.FileLayerEventType} eventName name of the event to get attached
+     * @param {OSFramework.Maps.Callbacks.FileLayer.ClickEvent} callback to be invoked when the event occurs
      */
     export function Subscribe(
         fileLayerId: string,
-        eventName: OSFramework.Event.FileLayer.FileLayersEventType,
-        callback: OSFramework.Callbacks.FileLayer.Event
+        eventName: OSFramework.Maps.Event.FileLayer.FileLayersEventType,
+        callback: OSFramework.Maps.Callbacks.FileLayer.Event
     ): void {
         const fileLayer = GetFileLayerById(fileLayerId, false);
         if (fileLayer === undefined) {
@@ -91,13 +91,13 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager.Events {
      *
      * @export
      * @param {string} eventUniqueId Event Id that will get removed
-     * @param {OSFramework.Event.Map.MapEventType} eventName name of the event to be removed
+     * @param {OSFramework.Maps.Event.Map.MapEventType} eventName name of the event to be removed
      * @param {MapAPI.Callbacks.OSMap.Event} callback callback that will be removed
      */
     export function Unsubscribe(
         fileLayerId: string,
-        eventName: OSFramework.Event.FileLayer.FileLayersEventType,
-        callback: OSFramework.Callbacks.FileLayer.Event
+        eventName: OSFramework.Maps.Event.FileLayer.FileLayersEventType,
+        callback: OSFramework.Maps.Callbacks.FileLayer.Event
     ): void {
         const fileLayer = GetFileLayerById(fileLayerId, false);
 
@@ -128,10 +128,10 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager.Events {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace MapAPI.FileLayerManager.Events {
     export function CheckPendingEvents(
-        fileLayer: OSFramework.FileLayer.IFileLayer
+        fileLayer: OSFramework.Maps.FileLayer.IFileLayer
     ): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.Events.CheckPendingEvents()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.Events.CheckPendingEvents()'`
         );
         OutSystems.Maps.MapAPI.FileLayerManager.Events.CheckPendingEvents(
             fileLayer
@@ -140,11 +140,11 @@ namespace MapAPI.FileLayerManager.Events {
 
     export function Subscribe(
         fileLayerId: string,
-        eventName: OSFramework.Event.FileLayer.FileLayersEventType,
-        callback: OSFramework.Callbacks.FileLayer.Event
+        eventName: OSFramework.Maps.Event.FileLayer.FileLayersEventType,
+        callback: OSFramework.Maps.Callbacks.FileLayer.Event
     ): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.Events.Subscribe()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.Events.Subscribe()'`
         );
         OutSystems.Maps.MapAPI.FileLayerManager.Events.Subscribe(
             fileLayerId,
@@ -155,11 +155,11 @@ namespace MapAPI.FileLayerManager.Events {
 
     export function Unsubscribe(
         fileLayerId: string,
-        eventName: OSFramework.Event.FileLayer.FileLayersEventType,
-        callback: OSFramework.Callbacks.FileLayer.Event
+        eventName: OSFramework.Maps.Event.FileLayer.FileLayersEventType,
+        callback: OSFramework.Maps.Callbacks.FileLayer.Event
     ): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.Events.Unsubscribe()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.Events.Unsubscribe()'`
         );
         OutSystems.Maps.MapAPI.FileLayerManager.Events.Unsubscribe(
             fileLayerId,

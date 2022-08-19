@@ -3,9 +3,9 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Leaflet.Shape {
     export abstract class AbstractProviderShape<
-        T extends OSFramework.Configuration.IConfigurationShape,
+        T extends OSFramework.Maps.Configuration.IConfigurationShape,
         W extends L.Path
-    > extends OSFramework.Shape.AbstractShape<W, T> {
+    > extends OSFramework.Maps.Shape.AbstractShape<W, T> {
         private _shapeChangedEventTimeout: number;
 
         /** Checks if the Shape has associated events */
@@ -44,9 +44,11 @@ namespace Provider.Leaflet.Shape {
         /** Builds the provider (asynchronously) by receving a set of multiple coordinates (creating a path for the shape) or just one (creating the center of the shape) */
         protected buildProvider(
             coordinates:
-                | Promise<OSFramework.OSStructures.OSMap.Coordinates>
-                | Promise<Array<OSFramework.OSStructures.OSMap.Coordinates>>
-                | Promise<OSFramework.OSStructures.OSMap.Bounds>
+                | Promise<OSFramework.Maps.OSStructures.OSMap.Coordinates>
+                | Promise<
+                      Array<OSFramework.Maps.OSStructures.OSMap.Coordinates>
+                  >
+                | Promise<OSFramework.Maps.OSStructures.OSMap.Bounds>
         ): void {
             // First build coords from locations
             // Then, create the provider (Leaflet maps Shape)
@@ -71,9 +73,9 @@ namespace Provider.Leaflet.Shape {
                         this.finishBuild();
                     })
                     .catch((error) => {
-                        OSFramework.Helper.ThrowError(
+                        OSFramework.Maps.Helper.ThrowError(
                             this.map,
-                            OSFramework.Enum.ErrorCodes
+                            OSFramework.Maps.Enum.ErrorCodes
                                 .LIB_FailedGeocodingShapeLocations,
                             error
                         );
@@ -88,12 +90,12 @@ namespace Provider.Leaflet.Shape {
             // OnClick Event
             if (
                 this.shapeEvents.hasHandlers(
-                    OSFramework.Event.Shape.ShapeEventType.OnClick
+                    OSFramework.Maps.Event.Shape.ShapeEventType.OnClick
                 )
             ) {
                 this.provider.addEventListener('click', () => {
                     this.shapeEvents.trigger(
-                        OSFramework.Event.Shape.ShapeEventType.OnClick
+                        OSFramework.Maps.Event.Shape.ShapeEventType.OnClick
                     );
                 });
             }
@@ -102,17 +104,17 @@ namespace Provider.Leaflet.Shape {
             // If the Event type of each handler is ShapeProviderEvent, we want to make sure to add that event to the listeners of the leaflet shape provider (e.g. dblclick, dragend, etc)
             this.shapeEvents.handlers.forEach(
                 (
-                    handler: OSFramework.Event.IEvent<string>,
+                    handler: OSFramework.Maps.Event.IEvent<string>,
                     eventName: string
                 ) => {
                     if (
                         handler instanceof
-                        OSFramework.Event.Shape.ShapeProviderEvent
+                        OSFramework.Maps.Event.Shape.ShapeProviderEvent
                     ) {
                         // Take care of the shape_changed provider events
                         if (
                             eventName ===
-                            OSFramework.Helper.Constants.shapeChangedEvent
+                            OSFramework.Maps.Helper.Constants.shapeChangedEvent
                         ) {
                             this._addedEvents.push(eventName);
                             this.providerEventsList.forEach((event) =>
@@ -126,12 +128,12 @@ namespace Provider.Leaflet.Shape {
                                         () =>
                                             this.shapeEvents.trigger(
                                                 // EventType
-                                                OSFramework.Event.Shape
+                                                OSFramework.Maps.Event.Shape
                                                     .ShapeEventType
                                                     .ProviderEvent,
                                                 // EventName
-                                                OSFramework.Helper.Constants
-                                                    .shapeChangedEvent
+                                                OSFramework.Maps.Helper
+                                                    .Constants.shapeChangedEvent
                                             ),
                                         500
                                     );
@@ -149,7 +151,7 @@ namespace Provider.Leaflet.Shape {
                             this.provider.addEventListener(eventName, () => {
                                 this.shapeEvents.trigger(
                                     // EventType
-                                    OSFramework.Event.Shape.ShapeEventType
+                                    OSFramework.Maps.Event.Shape.ShapeEventType
                                         .ProviderEvent,
                                     // EventName
                                     eventName
@@ -163,23 +165,24 @@ namespace Provider.Leaflet.Shape {
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         public changeProperty(propertyName: string, value: any): void {
-            const propValue = OSFramework.Enum.OS_Config_Shape[propertyName];
+            const propValue =
+                OSFramework.Maps.Enum.OS_Config_Shape[propertyName];
             super.changeProperty(propertyName, value);
             if (this.isReady) {
                 switch (propValue) {
-                    case OSFramework.Enum.OS_Config_Shape.allowDrag:
+                    case OSFramework.Maps.Enum.OS_Config_Shape.allowDrag:
                         this._setDragEditConfigs(value, this.config.allowEdit);
                         return;
-                    case OSFramework.Enum.OS_Config_Shape.allowEdit:
+                    case OSFramework.Maps.Enum.OS_Config_Shape.allowEdit:
                         this._setDragEditConfigs(this.config.allowDrag, value);
                         return;
-                    case OSFramework.Enum.OS_Config_Shape.strokeOpacity:
+                    case OSFramework.Maps.Enum.OS_Config_Shape.strokeOpacity:
                         this.provider.setStyle({ opacity: value });
                         return;
-                    case OSFramework.Enum.OS_Config_Shape.strokeColor:
+                    case OSFramework.Maps.Enum.OS_Config_Shape.strokeColor:
                         this.provider.setStyle({ color: value });
                         return;
-                    case OSFramework.Enum.OS_Config_Shape.strokeWeight:
+                    case OSFramework.Maps.Enum.OS_Config_Shape.strokeWeight:
                         this.provider.setStyle({ weight: value });
                         return;
                 }
@@ -200,9 +203,9 @@ namespace Provider.Leaflet.Shape {
 
         protected abstract createProvider(
             locations:
-                | Array<OSFramework.OSStructures.OSMap.Coordinates>
-                | OSFramework.OSStructures.OSMap.Coordinates
-                | OSFramework.OSStructures.OSMap.Bounds
+                | Array<OSFramework.Maps.OSStructures.OSMap.Coordinates>
+                | OSFramework.Maps.OSStructures.OSMap.Coordinates
+                | OSFramework.Maps.OSStructures.OSMap.Bounds
         ): W;
 
         public abstract get providerEventsList(): Array<string>;

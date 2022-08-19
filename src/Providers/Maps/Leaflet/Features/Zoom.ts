@@ -1,17 +1,19 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Leaflet.Feature {
     export class Zoom
-        implements OSFramework.Feature.IZoom, OSFramework.Interface.IBuilder
+        implements
+            OSFramework.Maps.Feature.IZoom,
+            OSFramework.Maps.Interface.IBuilder
     {
         /** Boolean that indicates whether the Map is using Autofit (Zoom = Auto) or not */
         private _autofitEnabled: boolean;
         /** Current Zoom level of the Map that changes whenever a marker is added or by enabling the Autofit on Zoom feature */
-        private _level: OSFramework.Enum.OSMap.Zoom;
+        private _level: OSFramework.Maps.Enum.OSMap.Zoom;
         private _map: OSMap.IMapLeaflet;
 
         constructor(
             map: OSMap.IMapLeaflet,
-            level: OSFramework.Enum.OSMap.Zoom
+            level: OSFramework.Maps.Enum.OSMap.Zoom
         ) {
             this._map = map;
             this._level = level;
@@ -23,14 +25,16 @@ namespace Provider.Leaflet.Feature {
         }
 
         public build(): void {
-            this._setAutofit(this._level === OSFramework.Enum.OSMap.Zoom.Auto);
+            this._setAutofit(
+                this._level === OSFramework.Maps.Enum.OSMap.Zoom.Auto
+            );
         }
 
         public get isAutofit(): boolean {
             return this._autofitEnabled;
         }
 
-        public get level(): OSFramework.Enum.OSMap.Zoom {
+        public get level(): OSFramework.Maps.Enum.OSMap.Zoom {
             return this._level;
         }
 
@@ -39,7 +43,7 @@ namespace Provider.Leaflet.Feature {
                 let bounds: L.LatLngBounds;
                 if (this._map.markers.length <= 1) {
                     this._map.provider.setZoom(
-                        OSFramework.Helper.Constants.zoomAutofit
+                        OSFramework.Maps.Helper.Constants.zoomAutofit
                     );
                 } else if (this._map.markers.length >= 2) {
                     this._map.markers.forEach(function (marker) {
@@ -60,9 +64,9 @@ namespace Provider.Leaflet.Feature {
             }
         }
 
-        public setLevel(value: OSFramework.Enum.OSMap.Zoom): void {
+        public setLevel(value: OSFramework.Maps.Enum.OSMap.Zoom): void {
             this._level = value;
-            this._setAutofit(value === OSFramework.Enum.OSMap.Zoom.Auto);
+            this._setAutofit(value === OSFramework.Maps.Enum.OSMap.Zoom.Auto);
             this._map.refresh();
         }
     }

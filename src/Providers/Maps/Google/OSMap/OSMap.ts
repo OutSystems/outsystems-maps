@@ -3,7 +3,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Google.OSMap {
     export class Map
-        extends OSFramework.OSMap.AbstractMap<
+        extends OSFramework.Maps.OSMap.AbstractMap<
             google.maps.Map,
             Configuration.OSMap.GoogleMapConfig
         >
@@ -13,15 +13,15 @@ namespace Provider.Google.OSMap {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         private _advancedFormatObj: any;
         private _fBuilder: Feature.FeatureBuilder;
-        private _scriptCallback: OSFramework.Callbacks.Generic;
+        private _scriptCallback: OSFramework.Maps.Callbacks.Generic;
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         constructor(mapId: string, configs: any) {
             super(
                 mapId,
-                OSFramework.Enum.ProviderType.Google,
+                OSFramework.Maps.Enum.ProviderType.Google,
                 new Configuration.OSMap.GoogleMapConfig(configs),
-                OSFramework.Enum.MapType.Map
+                OSFramework.Maps.Enum.MapType.Map
             );
             this._addedEvents = [];
             this._scriptCallback = this._createGoogleMap.bind(this);
@@ -53,15 +53,15 @@ namespace Provider.Google.OSMap {
          */
         private _createGoogleMap(): void {
             const script = document.getElementById(
-                OSFramework.Helper.Constants.googleMapsScript
+                OSFramework.Maps.Helper.Constants.googleMapsScript
             ) as HTMLScriptElement;
 
             // Make sure the GoogleMaps script in the <head> of the html page contains the same apiKey as the one in the configs.
             const apiKey = /key=(.*)&libraries/.exec(script.src)[1];
             if (this.config.apiKey !== apiKey) {
-                return OSFramework.Helper.ThrowError(
+                return OSFramework.Maps.Helper.ThrowError(
                     this,
-                    OSFramework.Enum.ErrorCodes
+                    OSFramework.Maps.Enum.ErrorCodes
                         .CFG_APIKeyDiffersFromPlacesToMaps
                 );
             }
@@ -75,24 +75,25 @@ namespace Provider.Google.OSMap {
                 const currentCenter = this.config.center;
 
                 this._provider = new google.maps.Map(
-                    OSFramework.Helper.GetElementByUniqueId(
+                    OSFramework.Maps.Helper.GetElementByUniqueId(
                         this.uniqueId
                     ).querySelector(
-                        OSFramework.Helper.Constants.runtimeMapUniqueIdCss
+                        OSFramework.Maps.Helper.Constants.runtimeMapUniqueIdCss
                     ),
                     // The provider config will retrieve the default center position
-                    // (this.config.center = OSFramework.Helper.Constants.defaultMapCenter)
+                    // (this.config.center = OSFramework.Maps.Helper.Constants.defaultMapCenter)
                     // Which will get updated after the Map is rendered
                     this._getProviderConfig()
                 );
                 // Check if the provider has been created with a valid APIKey
-                window[OSFramework.Helper.Constants.googleMapsAuthFailure] =
-                    () =>
-                        this.mapEvents.trigger(
-                            OSFramework.Event.OSMap.MapEventType.OnError,
-                            this,
-                            OSFramework.Enum.ErrorCodes.LIB_InvalidApiKeyMap
-                        );
+                window[
+                    OSFramework.Maps.Helper.Constants.googleMapsAuthFailure
+                ] = () =>
+                    this.mapEvents.trigger(
+                        OSFramework.Maps.Event.OSMap.MapEventType.OnError,
+                        this,
+                        OSFramework.Maps.Enum.ErrorCodes.LIB_InvalidApiKeyMap
+                    );
 
                 this.buildFeatures();
                 this._buildMarkers();
@@ -120,9 +121,10 @@ namespace Provider.Google.OSMap {
 
         private _getProviderConfig(): google.maps.MapOptions {
             // Make sure the center has a default value before the conversion of the location to coordinates
-            this.config.center = OSFramework.Helper.Constants.defaultMapCenter;
+            this.config.center =
+                OSFramework.Maps.Helper.Constants.defaultMapCenter;
             // Take care of the advancedFormat options which can override the previous configuration
-            this._advancedFormatObj = OSFramework.Helper.JsonFormatter(
+            this._advancedFormatObj = OSFramework.Maps.Helper.JsonFormatter(
                 this.config.advancedFormat
             );
 
@@ -137,7 +139,7 @@ namespace Provider.Google.OSMap {
             // TO BE REMOVED SOON
             if (
                 this.mapEvents.hasHandlers(
-                    OSFramework.Event.OSMap.MapEventType.OnEventTriggered
+                    OSFramework.Maps.Event.OSMap.MapEventType.OnEventTriggered
                 ) &&
                 events !== undefined
             ) {
@@ -145,7 +147,7 @@ namespace Provider.Google.OSMap {
                     this._addedEvents.push(eventName);
                     this._provider.addListener(eventName, () => {
                         this.mapEvents.trigger(
-                            OSFramework.Event.OSMap.MapEventType
+                            OSFramework.Maps.Event.OSMap.MapEventType
                                 .OnEventTriggered,
                             this,
                             eventName
@@ -159,12 +161,12 @@ namespace Provider.Google.OSMap {
             // If the Event type of each handler is MapProviderEvent, we want to make sure to add that event to the listeners of the google maps provider (e.g. click, dblclick, contextmenu, etc)
             this.mapEvents.handlers.forEach(
                 (
-                    handler: OSFramework.Event.IEvent<OSFramework.OSMap.IMap>,
+                    handler: OSFramework.Maps.Event.IEvent<OSFramework.Maps.OSMap.IMap>,
                     eventName
                 ) => {
                     if (
                         handler instanceof
-                        OSFramework.Event.OSMap.MapProviderEvent
+                        OSFramework.Maps.Event.OSMap.MapProviderEvent
                     ) {
                         this._addedEvents.push(eventName);
                         this._provider.addListener(
@@ -174,13 +176,13 @@ namespace Provider.Google.OSMap {
                             // Trigger the event by specifying the ProviderEvent MapType and the coords (lat, lng) if the callback has the attribute MapMouseEvent
                             (e?: google.maps.MapMouseEvent) => {
                                 this.mapEvents.trigger(
-                                    OSFramework.Event.OSMap.MapEventType
+                                    OSFramework.Maps.Event.OSMap.MapEventType
                                         .ProviderEvent,
                                     this,
                                     eventName,
                                     e !== undefined
                                         ? JSON.stringify(
-                                              new OSFramework.OSStructures.OSMap.OSCoordinates(
+                                              new OSFramework.Maps.OSStructures.OSMap.OSCoordinates(
                                                   e.latLng.lat(),
                                                   e.latLng.lng()
                                               )
@@ -200,12 +202,12 @@ namespace Provider.Google.OSMap {
         }
 
         public get mapTag(): string {
-            return OSFramework.Helper.Constants.mapTag;
+            return OSFramework.Maps.Helper.Constants.mapTag;
         }
 
         public addDrawingTools(
-            drawingTools: OSFramework.DrawingTools.IDrawingTools
-        ): OSFramework.DrawingTools.IDrawingTools {
+            drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools
+        ): OSFramework.Maps.DrawingTools.IDrawingTools {
             super.addDrawingTools(drawingTools);
 
             if (this.isReady) {
@@ -216,8 +218,8 @@ namespace Provider.Google.OSMap {
         }
 
         public addFileLayer(
-            fileLayer: OSFramework.FileLayer.IFileLayer
-        ): OSFramework.FileLayer.IFileLayer {
+            fileLayer: OSFramework.Maps.FileLayer.IFileLayer
+        ): OSFramework.Maps.FileLayer.IFileLayer {
             super.addFileLayer(fileLayer);
 
             if (this.isReady) {
@@ -228,8 +230,8 @@ namespace Provider.Google.OSMap {
         }
 
         public addHeatmapLayer(
-            fileLayer: OSFramework.HeatmapLayer.IHeatmapLayer
-        ): OSFramework.HeatmapLayer.IHeatmapLayer {
+            fileLayer: OSFramework.Maps.HeatmapLayer.IHeatmapLayer
+        ): OSFramework.Maps.HeatmapLayer.IHeatmapLayer {
             super.addHeatmapLayer(fileLayer);
 
             if (this.isReady) {
@@ -240,8 +242,8 @@ namespace Provider.Google.OSMap {
         }
 
         public addMarker(
-            marker: OSFramework.Marker.IMarker
-        ): OSFramework.Marker.IMarker {
+            marker: OSFramework.Maps.Marker.IMarker
+        ): OSFramework.Maps.Marker.IMarker {
             super.addMarker(marker);
 
             if (this.isReady) {
@@ -252,8 +254,8 @@ namespace Provider.Google.OSMap {
         }
 
         public addShape(
-            shape: OSFramework.Shape.IShape
-        ): OSFramework.Shape.IShape {
+            shape: OSFramework.Maps.Shape.IShape
+        ): OSFramework.Maps.Shape.IShape {
             super.addShape(shape);
 
             if (this.isReady) {
@@ -358,46 +360,49 @@ namespace Provider.Google.OSMap {
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         public changeProperty(propertyName: string, value: any): void {
-            const propValue = OSFramework.Enum.OS_Config_Map[propertyName];
+            const propValue = OSFramework.Maps.Enum.OS_Config_Map[propertyName];
             super.changeProperty(propertyName, value);
             if (this.isReady) {
                 switch (propValue) {
-                    case OSFramework.Enum.OS_Config_Map.apiKey:
+                    case OSFramework.Maps.Enum.OS_Config_Map.apiKey:
                         if (this.config.apiKey !== '') {
                             this.mapEvents.trigger(
-                                OSFramework.Event.OSMap.MapEventType.OnError,
+                                OSFramework.Maps.Event.OSMap.MapEventType
+                                    .OnError,
                                 this,
-                                OSFramework.Enum.ErrorCodes
+                                OSFramework.Maps.Enum.ErrorCodes
                                     .CFG_APIKeyAlreadySetMap
                             );
                         }
                         return;
-                    case OSFramework.Enum.OS_Config_Map.center:
+                    case OSFramework.Maps.Enum.OS_Config_Map.center:
                         return this.features.center.updateCenter(value);
-                    case OSFramework.Enum.OS_Config_Map.offset:
+                    case OSFramework.Maps.Enum.OS_Config_Map.offset:
                         return this.features.offset.setOffset(
                             JSON.parse(value)
                         );
-                    case OSFramework.Enum.OS_Config_Map.zoom:
+                    case OSFramework.Maps.Enum.OS_Config_Map.zoom:
                         return this.features.zoom.setLevel(value);
-                    case OSFramework.Enum.OS_Config_Map.type:
+                    case OSFramework.Maps.Enum.OS_Config_Map.type:
                         return this._provider.setMapTypeId(value);
-                    case OSFramework.Enum.OS_Config_Map.style:
+                    case OSFramework.Maps.Enum.OS_Config_Map.style:
                         return this._provider.setOptions({
                             styles: GetStyleByStyleId(value)
                         });
-                    case OSFramework.Enum.OS_Config_Map.advancedFormat:
-                        value = OSFramework.Helper.JsonFormatter(value);
+                    case OSFramework.Maps.Enum.OS_Config_Map.advancedFormat:
+                        value = OSFramework.Maps.Helper.JsonFormatter(value);
                         // Make sure the MapEvents that are associated in the advancedFormat get updated
                         this._setMapEvents(value.mapEvents);
                         return this._provider.setOptions(value);
-                    case OSFramework.Enum.OS_Config_Map.showTraffic:
+                    case OSFramework.Maps.Enum.OS_Config_Map.showTraffic:
                         return this.features.trafficLayer.setState(value);
-                    case OSFramework.Enum.OS_Config_Map.markerClustererActive:
-                    case OSFramework.Enum.OS_Config_Map.markerClustererMaxZoom:
-                    case OSFramework.Enum.OS_Config_Map
+                    case OSFramework.Maps.Enum.OS_Config_Map
+                        .markerClustererActive:
+                    case OSFramework.Maps.Enum.OS_Config_Map
+                        .markerClustererMaxZoom:
+                    case OSFramework.Maps.Enum.OS_Config_Map
                         .markerClustererMinClusterSize:
-                    case OSFramework.Enum.OS_Config_Map
+                    case OSFramework.Maps.Enum.OS_Config_Map
                         .markerClustererZoomOnClick:
                         return this.features.markerClusterer.changeProperty(
                             propertyName,
@@ -440,9 +445,9 @@ namespace Provider.Google.OSMap {
             // If the configured center position of the map is equal to the default
             const isDefault =
                 position.lat ===
-                    OSFramework.Helper.Constants.defaultMapCenter.lat &&
+                    OSFramework.Maps.Helper.Constants.defaultMapCenter.lat &&
                 position.lng ===
-                    OSFramework.Helper.Constants.defaultMapCenter.lng;
+                    OSFramework.Maps.Helper.Constants.defaultMapCenter.lng;
             // If the Map has the default center position and at least 1 Marker, we want to use the first Marker position as the new center of the Map
             if (
                 isDefault === true &&

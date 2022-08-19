@@ -83,8 +83,8 @@ namespace OutSystems.Maps.MapAPI.Directions {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace MapAPI.Directions {
     export function GetLegsFromDirection(mapId: string): string {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.Directions.GetLegsFromDirection()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.Directions.GetLegsFromDirection()'`
         );
         return OutSystems.Maps.MapAPI.Directions.GetLegsFromDirection(mapId);
     }
@@ -92,8 +92,8 @@ namespace MapAPI.Directions {
     export function GetTotalDistanceFromDirection(
         mapId: string
     ): Promise<number> {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.Directions.GetTotalDistanceFromDirection()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.Directions.GetTotalDistanceFromDirection()'`
         );
         return OutSystems.Maps.MapAPI.Directions.GetTotalDistanceFromDirection(
             mapId
@@ -103,8 +103,8 @@ namespace MapAPI.Directions {
     export function GetTotalDurationFromDirection(
         mapId: string
     ): Promise<number> {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.Directions.GetTotalDurationFromDirection()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.Directions.GetTotalDurationFromDirection()'`
         );
         return OutSystems.Maps.MapAPI.Directions.GetTotalDurationFromDirection(
             mapId
@@ -116,8 +116,8 @@ namespace MapAPI.Directions {
         providerName: string,
         apiKey: string
     ): string {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.Directions.LoadPlugin()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.Directions.LoadPlugin()'`
         );
         return OutSystems.Maps.MapAPI.Directions.LoadPlugin(
             mapId,
@@ -130,15 +130,15 @@ namespace MapAPI.Directions {
         mapId: string,
         options: string
     ): Promise<string> {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.Directions.SetDirections()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.Directions.SetDirections()'`
         );
         return OutSystems.Maps.MapAPI.Directions.SetDirections(mapId, options);
     }
 
     export function RemoveDirections(mapId: string): string {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.Directions.RemoveDirections()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.Directions.RemoveDirections()'`
         );
         return OutSystems.Maps.MapAPI.Directions.RemoveDirections(mapId);
     }

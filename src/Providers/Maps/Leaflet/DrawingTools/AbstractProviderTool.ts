@@ -3,15 +3,15 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Leaflet.DrawingTools {
     export abstract class AbstractProviderTool<
-        T extends OSFramework.Configuration.IConfigurationTool
-    > extends OSFramework.DrawingTools.AbstractTool<T> {
+        T extends OSFramework.Maps.Configuration.IConfigurationTool
+    > extends OSFramework.Maps.DrawingTools.AbstractTool<T> {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         protected internalOptions: any; //TODO: create structure for this (repeatmode:,editable ..., shapeOptions:{???})
         protected newElm;
 
         constructor(
-            map: OSFramework.OSMap.IMap,
-            drawingTools: OSFramework.DrawingTools.IDrawingTools,
+            map: OSFramework.Maps.OSMap.IMap,
+            drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
             drawingToolsId: string,
             type: string,
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
@@ -25,7 +25,7 @@ namespace Provider.Leaflet.DrawingTools {
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         private _addCompletedEventHandler(event: any): void {
-            const uniqueId = OSFramework.Helper.GenerateUniqueId();
+            const uniqueId = OSFramework.Maps.Helper.GenerateUniqueId();
             // create the shape/marker element
             this.newElm = this.createElement(
                 uniqueId,
@@ -61,7 +61,7 @@ namespace Provider.Leaflet.DrawingTools {
         ): void {
             this.drawingTools.drawingToolsEvents.trigger(
                 // EventType
-                OSFramework.Event.DrawingTools.DrawingToolsEventType
+                OSFramework.Maps.Event.DrawingTools.DrawingToolsEventType
                     .ProviderEvent,
                 // EventName
                 this.completedToolEventName,

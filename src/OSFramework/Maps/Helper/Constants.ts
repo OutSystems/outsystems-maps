@@ -2,7 +2,7 @@
  * Used to store the tags used to find DOM elements
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Helper.Constants {
+namespace OSFramework.Maps.Helper.Constants {
     /************************** */
     /**       DATA BLOCKS       */
     /************************** */

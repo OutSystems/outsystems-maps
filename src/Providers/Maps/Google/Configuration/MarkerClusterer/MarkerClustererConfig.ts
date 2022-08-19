@@ -1,15 +1,15 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Google.Configuration.MarkerClusterer {
     export class MarkerClustererConfig
-        extends OSFramework.Configuration.AbstractConfiguration
-        implements OSFramework.Configuration.IConfigurationMarkerClusterer
+        extends OSFramework.Maps.Configuration.AbstractConfiguration
+        implements OSFramework.Maps.Configuration.IConfigurationMarkerClusterer
     {
         public clusterClass: string;
         public markerClustererActive: boolean;
         public markerClustererMaxZoom: number;
         public markerClustererMinClusterSize: number;
         public markerClustererZoomOnClick: boolean;
-        public styles: Array<OSFramework.OSStructures.Clusterer.Style>;
+        public styles: Array<OSFramework.Maps.OSStructures.Clusterer.Style>;
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         constructor(config: any) {
@@ -24,7 +24,7 @@ namespace Provider.Google.Configuration.MarkerClusterer {
                 maxZoom: this.markerClustererMaxZoom || 2,
                 minClusterSize: this.markerClustererMinClusterSize,
                 zoomOnClick: this.markerClustererZoomOnClick,
-                clusterClass: OSFramework.Helper.Constants.clusterIconCSSClass,
+                clusterClass: OSFramework.Maps.Helper.Constants.clusterIconCSSClass,
                 styles: ClustererStyle
             };
 

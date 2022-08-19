@@ -7,13 +7,13 @@ namespace Provider.Leaflet.Helper.Conversions {
      */
     export function ValidateCoordinates(
         location: string
-    ): Promise<OSFramework.OSStructures.OSMap.Coordinates> {
+    ): Promise<OSFramework.Maps.OSStructures.OSMap.Coordinates> {
         return new Promise((resolve, reject) => {
             if (location === undefined || location.trim().length === 0) {
                 console.warn(
                     'Invalid location. Using the default location -> { lat: 42.3517926, lng: -71.0467845 }'
                 );
-                resolve(OSFramework.Helper.Constants.defaultMapCenter);
+                resolve(OSFramework.Maps.Helper.Constants.defaultMapCenter);
             }
 
             // Regex that validates if string is a set of coordinates
@@ -23,7 +23,7 @@ namespace Provider.Leaflet.Helper.Conversions {
             // If the provided location is a set of coordinates
             if (regexValidator.test(location)) {
                 const coordinates =
-                    new OSFramework.OSStructures.OSMap.Coordinates();
+                    new OSFramework.Maps.OSStructures.OSMap.Coordinates();
                 // split the coordinates into latitude and longitude
                 if (location.indexOf(',') > -1) {
                     coordinates.lat = parseFloat(

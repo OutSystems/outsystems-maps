@@ -6,8 +6,8 @@ namespace Provider.Leaflet.DrawingTools {
         private _defaultIcon: L.DivIcon;
 
         constructor(
-            map: OSFramework.OSMap.IMap,
-            drawingTools: OSFramework.DrawingTools.IDrawingTools,
+            map: OSFramework.Maps.OSMap.IMap,
+            drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
             drawingToolsId: string,
             type: string,
             configs: Configuration.DrawingTools.DrawMarkerConfig
@@ -66,10 +66,12 @@ namespace Provider.Leaflet.DrawingTools {
             return icon;
         }
 
-        private _setOnChangeEvent(_marker: OSFramework.Marker.IMarker): void {
+        private _setOnChangeEvent(
+            _marker: OSFramework.Maps.Marker.IMarker
+        ): void {
             _marker.markerEvents.addHandler(
                 // changing the marker location is only available via the drag-and-drop, so the solution passes by adding the dragend event listener as the marker's OnChanged event
-                'dragend' as OSFramework.Event.Marker.MarkerEventType,
+                'dragend' as OSFramework.Maps.Event.Marker.MarkerEventType,
                 // Trigger the onDrawingChangeEvent with the extra information (marker uniqueId and flag indicating that the element is not new)
                 () =>
                     this.triggerOnDrawingChangeEvent(
@@ -83,7 +85,7 @@ namespace Provider.Leaflet.DrawingTools {
 
         /** Get the constant for the event markercomplete */
         protected get completedToolEventName(): string {
-            return OSFramework.Helper.Constants.drawingMarkerCompleted;
+            return OSFramework.Maps.Helper.Constants.drawingMarkerCompleted;
         }
 
         public get options(): L.MarkerOptions {
@@ -104,7 +106,7 @@ namespace Provider.Leaflet.DrawingTools {
             marker: L.Marker,
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             configs: any
-        ): OSFramework.Marker.IMarker {
+        ): OSFramework.Maps.Marker.IMarker {
             const location = `${marker.getLatLng().lat},${
                 marker.getLatLng().lng
             }`;
@@ -115,7 +117,7 @@ namespace Provider.Leaflet.DrawingTools {
             const _marker = Marker.MarkerFactory.MakeMarker(
                 this.map,
                 uniqueId,
-                OSFramework.Enum.MarkerType.Marker,
+                OSFramework.Maps.Enum.MarkerType.Marker,
                 finalConfigs
             );
 
@@ -156,11 +158,12 @@ namespace Provider.Leaflet.DrawingTools {
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
         public changeProperty(propertyName: string, value: any): void {
-            const propValue = OSFramework.Enum.OS_Config_Marker[propertyName];
+            const propValue =
+                OSFramework.Maps.Enum.OS_Config_Marker[propertyName];
             super.changeProperty(propertyName, value);
             if (this.drawingTools.isReady) {
                 switch (propValue) {
-                    case OSFramework.Enum.OS_Config_Marker.iconUrl:
+                    case OSFramework.Maps.Enum.OS_Config_Marker.iconUrl:
                         this.options = { icon: this._createIcon(value) };
                         return;
                 }

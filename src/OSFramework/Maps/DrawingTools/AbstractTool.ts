@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.DrawingTools {
+namespace OSFramework.Maps.DrawingTools {
     export abstract class AbstractTool<
         T extends Configuration.IConfigurationTool
     > implements ITool

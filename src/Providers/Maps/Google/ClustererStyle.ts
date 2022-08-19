@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Google {
-    export const ClustererStyle: Array<OSFramework.OSStructures.Clusterer.Style> =
+    export const ClustererStyle: Array<OSFramework.Maps.OSStructures.Clusterer.Style> =
         [
             {
                 width: 30,

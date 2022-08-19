@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.HeatmapLayer {
+namespace OSFramework.Maps.HeatmapLayer {
     export abstract class AbstractHeatmapLayer<
         W,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars

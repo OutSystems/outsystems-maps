@@ -1,12 +1,12 @@
 ///<reference path="AbstractDrawingToolsEvent.ts"/>
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Event.DrawingTools {
+namespace OSFramework.Maps.Event.DrawingTools {
     /**
      * Class that represents the the Initialized event.
      *
      * @class DrawingToolsInitializedEvent
-     * @extends {AbstractEvent<OSFramework.DrawingTools.IDrawingTools>}
+     * @extends {AbstractEvent<OSFramework.Maps.DrawingTools.IDrawingTools>}
      */
     export class DrawingToolsInitializedEvent extends AbstractDrawingToolsEvent {}
 }

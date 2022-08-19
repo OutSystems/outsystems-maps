@@ -6,20 +6,20 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
     /* pending tools map holds the tools to be created if the drawing tools block is not ready to add new tools */
     const _pendingTools = new Map<
         string,
-        Array<OSFramework.OSStructures.API.PendingTools>
+        Array<OSFramework.Maps.OSStructures.API.PendingTools>
     >(); //drawingTools.uniqueId -> Array<tool.uniqueId, tool.type, tool.configs>
 
     function CreateTool(
-        drawingTools: OSFramework.DrawingTools.IDrawingTools,
+        drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
         toolId: string,
-        type: OSFramework.Enum.DrawingToolsTypes,
+        type: OSFramework.Maps.Enum.DrawingToolsTypes,
         configs: string
-    ): OSFramework.DrawingTools.ITool {
+    ): OSFramework.Maps.DrawingTools.ITool {
         if (
             !drawingTools.hasTool(toolId) &&
             !drawingTools.toolAlreadyExists(type)
         ) {
-            const _tool = OSFramework.DrawingTools.DrawingToolsFactory.MakeTool(
+            const _tool = OSFramework.Maps.DrawingTools.DrawingToolsFactory.MakeTool(
                 drawingTools.map,
                 drawingTools,
                 toolId,
@@ -30,9 +30,9 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
             Events.CheckPendingEvents(drawingTools);
             return _tool;
         } else {
-            OSFramework.Helper.ThrowError(
+            OSFramework.Maps.Helper.ThrowError(
                 drawingTools.map,
-                OSFramework.Enum.ErrorCodes.GEN_ToolTypeAlreadyExists,
+                OSFramework.Maps.Enum.ErrorCodes.GEN_ToolTypeAlreadyExists,
                 type
             );
         }
@@ -46,8 +46,8 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     function GetMapByDrawingToolsId(
         drawingToolsId: string
-    ): OSFramework.OSMap.IMap {
-        let map: OSFramework.OSMap.IMap;
+    ): OSFramework.Maps.OSMap.IMap {
+        let map: OSFramework.Maps.OSMap.IMap;
 
         //drawingToolsId is the UniqueId
         if (drawingToolsMap.has(drawingToolsId)) {
@@ -59,7 +59,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
         //UniqueID not found
         else {
             // Try to find its reference on DOM
-            const elem = OSFramework.Helper.GetElementByUniqueId(
+            const elem = OSFramework.Maps.Helper.GetElementByUniqueId(
                 drawingToolsId,
                 false
             );
@@ -67,7 +67,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
             // If element is found, means that the DOM was rendered
             if (elem !== undefined) {
                 //Find the closest Map
-                const mapId = OSFramework.Helper.GetClosestMapId(elem);
+                const mapId = OSFramework.Maps.Helper.GetClosestMapId(elem);
                 map = OutSystems.Maps.MapAPI.MapManager.GetMapById(mapId);
             }
         }
@@ -80,14 +80,14 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
      * (If the DrawingTools Block to which the Tool belongs is not created, adds the tool into a pending list)
      *
      * @param toolId identifier of the new tool
-     * @param type type of the new tool (OSFramework.Enum.DrawingToolsTypes)
+     * @param type type of the new tool (OSFramework.Maps.Enum.DrawingToolsTypes)
      * @param configs stringified configuration for the new tool
      */
     export function AddTool(
         toolId: string,
-        type: OSFramework.Enum.DrawingToolsTypes,
+        type: OSFramework.Maps.Enum.DrawingToolsTypes,
         configs: string
-    ): OSFramework.DrawingTools.ITool {
+    ): OSFramework.Maps.DrawingTools.ITool {
         // Let's make sure that if the Map doesn't exist, we don't throw and exception but instead add the handler to the pendingEvents
         const drawingToolsId = GetDrawingToolsByToolUniqueId(toolId);
         const drawingTools = GetDrawingToolsById(drawingToolsId, false);
@@ -164,7 +164,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
      * @param {string} drawingTools DrawingTools that is ready for events
      */
     export function CheckPendingTools(
-        drawingTools: OSFramework.DrawingTools.IDrawingTools
+        drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools
     ): void {
         // For each key of the pendingEvents check if the shape has the key as a widgetId or uniqueId and add the new handler
         for (const key of _pendingTools.keys()) {
@@ -194,19 +194,19 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
     export function CreateDrawingTools(
         drawingToolsId: string,
         configs: string
-    ): OSFramework.DrawingTools.IDrawingTools {
+    ): OSFramework.Maps.DrawingTools.IDrawingTools {
         const map = GetMapByDrawingToolsId(drawingToolsId);
         if (
-            OSFramework.Helper.ValidateFeatureProvider(
+            OSFramework.Maps.Helper.ValidateFeatureProvider(
                 map,
-                OSFramework.Enum.Feature.DrawingTools
+                OSFramework.Maps.Enum.Feature.DrawingTools
             ) === false
         ) {
             return;
         }
         if (!map.drawingTools) {
             const _drawingTools =
-                OSFramework.DrawingTools.DrawingToolsFactory.MakeDrawingTools(
+                OSFramework.Maps.DrawingTools.DrawingToolsFactory.MakeDrawingTools(
                     map,
                     drawingToolsId,
                     JSON.parse(configs)
@@ -234,8 +234,8 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
     export function GetDrawingToolsById(
         drawingToolsId: string,
         raiseError = true
-    ): OSFramework.DrawingTools.IDrawingTools {
-        const drawingTools: OSFramework.DrawingTools.IDrawingTools =
+    ): OSFramework.Maps.DrawingTools.IDrawingTools {
+        const drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools =
             drawingToolsElement &&
             drawingToolsElement.equalsToID(drawingToolsId)
                 ? drawingToolsElement
@@ -257,8 +257,8 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
     ): string {
         //Try to find in DOM only if not present on Map
         const toolElement =
-            OSFramework.Helper.GetElementByUniqueId(toolUniqueId);
-        return OSFramework.Helper.GetClosestDrawingToolsId(toolElement);
+            OSFramework.Maps.Helper.GetElementByUniqueId(toolUniqueId);
+        return OSFramework.Maps.Helper.GetClosestDrawingToolsId(toolElement);
     }
 
     /**
@@ -297,11 +297,11 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 namespace MapAPI.DrawingToolsManager {
     export function AddTool(
         toolId: string,
-        type: OSFramework.Enum.DrawingToolsTypes,
+        type: OSFramework.Maps.Enum.DrawingToolsTypes,
         configs: string
-    ): OSFramework.DrawingTools.ITool {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.AddTool()'`
+    ): OSFramework.Maps.DrawingTools.ITool {
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.AddTool()'`
         );
         return OutSystems.Maps.MapAPI.DrawingToolsManager.AddTool(
             toolId,
@@ -316,8 +316,8 @@ namespace MapAPI.DrawingToolsManager {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
         propertyValue: any
     ): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.ChangeProperty()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.ChangeProperty()'`
         );
         OutSystems.Maps.MapAPI.DrawingToolsManager.ChangeProperty(
             drawingToolsId,
@@ -332,8 +332,8 @@ namespace MapAPI.DrawingToolsManager {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
         propertyValue: any
     ): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.ChangeToolProperty()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.ChangeToolProperty()'`
         );
         OutSystems.Maps.MapAPI.DrawingToolsManager.ChangeToolProperty(
             toolId,
@@ -343,10 +343,10 @@ namespace MapAPI.DrawingToolsManager {
     }
 
     export function CheckPendingTools(
-        drawingTools: OSFramework.DrawingTools.IDrawingTools
+        drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools
     ): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.CheckPendingTools()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.CheckPendingTools()'`
         );
         OutSystems.Maps.MapAPI.DrawingToolsManager.CheckPendingTools(
             drawingTools
@@ -356,9 +356,9 @@ namespace MapAPI.DrawingToolsManager {
     export function CreateDrawingTools(
         drawingToolsId: string,
         configs: string
-    ): OSFramework.DrawingTools.IDrawingTools {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.CreateDrawingTools()'`
+    ): OSFramework.Maps.DrawingTools.IDrawingTools {
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.CreateDrawingTools()'`
         );
         return OutSystems.Maps.MapAPI.DrawingToolsManager.CreateDrawingTools(
             drawingToolsId,
@@ -369,9 +369,9 @@ namespace MapAPI.DrawingToolsManager {
     export function GetDrawingToolsById(
         drawingToolsId: string,
         raiseError = true
-    ): OSFramework.DrawingTools.IDrawingTools {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.GetDrawingToolsById()'`
+    ): OSFramework.Maps.DrawingTools.IDrawingTools {
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.GetDrawingToolsById()'`
         );
 
         return OutSystems.Maps.MapAPI.DrawingToolsManager.GetDrawingToolsById(
@@ -383,8 +383,8 @@ namespace MapAPI.DrawingToolsManager {
     export function GetDrawingToolsByToolUniqueId(
         toolUniqueId: string
     ): string {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.GetDrawingToolsByToolUniqueId()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.GetDrawingToolsByToolUniqueId()'`
         );
         return OutSystems.Maps.MapAPI.DrawingToolsManager.GetDrawingToolsByToolUniqueId(
             toolUniqueId
@@ -392,8 +392,8 @@ namespace MapAPI.DrawingToolsManager {
     }
 
     export function RemoveDrawingTools(drawingToolsId: string): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.RemoveDrawingTools()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.RemoveDrawingTools()'`
         );
         OutSystems.Maps.MapAPI.DrawingToolsManager.RemoveDrawingTools(
             drawingToolsId
@@ -401,8 +401,8 @@ namespace MapAPI.DrawingToolsManager {
     }
 
     export function RemoveTool(toolId: string): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.RemoveTool()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.RemoveTool()'`
         );
         OutSystems.Maps.MapAPI.DrawingToolsManager.RemoveTool(toolId);
     }

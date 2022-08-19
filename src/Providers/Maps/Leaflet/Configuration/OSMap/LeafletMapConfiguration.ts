@@ -1,14 +1,14 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Leaflet.Configuration.OSMap {
     export class LeafletMapConfig
-        extends OSFramework.Configuration.AbstractConfiguration
-        implements OSFramework.Configuration.IConfigurationMap
+        extends OSFramework.Maps.Configuration.AbstractConfiguration
+        implements OSFramework.Maps.Configuration.IConfigurationMap
     {
-        public center: string | OSFramework.OSStructures.OSMap.Coordinates;
+        public center: string | OSFramework.Maps.OSStructures.OSMap.Coordinates;
         public height: string;
-        public offset: OSFramework.OSStructures.OSMap.Offset;
+        public offset: OSFramework.Maps.OSStructures.OSMap.Offset;
         public uniqueId: string;
-        public zoom: OSFramework.Enum.OSMap.Zoom;
+        public zoom: OSFramework.Maps.Enum.OSMap.Zoom;
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         constructor(config: any) {

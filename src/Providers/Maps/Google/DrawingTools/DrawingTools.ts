@@ -2,14 +2,14 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Google.DrawingTools {
-    export class DrawingTools extends OSFramework.DrawingTools
+    export class DrawingTools extends OSFramework.Maps.DrawingTools
         .AbstractDrawingTools<
         google.maps.drawing.DrawingManager,
-        OSFramework.Configuration.IConfigurationDrawingTools
+        OSFramework.Maps.Configuration.IConfigurationDrawingTools
     > {
         protected _provider: google.maps.drawing.DrawingManager;
         constructor(
-            map: OSFramework.OSMap.IMap,
+            map: OSFramework.Maps.OSMap.IMap,
             drawingToolsId: string,
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             configs: any
@@ -67,8 +67,8 @@ namespace Provider.Google.DrawingTools {
         }
 
         public addTool(
-            tool: OSFramework.DrawingTools.ITool
-        ): OSFramework.DrawingTools.ITool {
+            tool: OSFramework.Maps.DrawingTools.ITool
+        ): OSFramework.Maps.DrawingTools.ITool {
             super.addTool(tool);
 
             if (this.isReady) {
@@ -82,7 +82,7 @@ namespace Provider.Google.DrawingTools {
         public build(): void {
             super.build();
 
-            const configs: OSFramework.Configuration.IConfigurationDrawingTools =
+            const configs: OSFramework.Maps.Configuration.IConfigurationDrawingTools =
                 this.getProviderConfig();
 
             this._provider = new google.maps.drawing.DrawingManager({
@@ -93,7 +93,8 @@ namespace Provider.Google.DrawingTools {
                         google.maps.ControlPosition[configs.position]
                     ),
                     drawingModes: this.tools.map(
-                        (tool) => OSFramework.Enum.DrawingToolsTypes[tool.type]
+                        (tool) =>
+                            OSFramework.Maps.Enum.DrawingToolsTypes[tool.type]
                     )
                 },
                 polylineOptions: {},
@@ -111,11 +112,11 @@ namespace Provider.Google.DrawingTools {
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
         public changeProperty(propertyName: string, value: any): void {
             const propValue =
-                OSFramework.Enum.OS_Config_DrawingTools[propertyName];
+                OSFramework.Maps.Enum.OS_Config_DrawingTools[propertyName];
             super.changeProperty(propertyName, value);
             if (this.isReady) {
                 switch (propValue) {
-                    case OSFramework.Enum.OS_Config_DrawingTools.position:
+                    case OSFramework.Maps.Enum.OS_Config_DrawingTools.position:
                         this.controlOptions = {
                             position: parseInt(
                                 google.maps.ControlPosition[value]

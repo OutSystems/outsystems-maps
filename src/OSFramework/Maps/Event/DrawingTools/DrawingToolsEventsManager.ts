@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Event.DrawingTools {
+namespace OSFramework.Maps.Event.DrawingTools {
     /**
      * Class that will be responsible for managing the events of the DrawingTools.
      *
@@ -11,18 +11,18 @@ namespace OSFramework.Event.DrawingTools {
         DrawingToolsEventType,
         string
     > {
-        private _drawingTools: OSFramework.DrawingTools.IDrawingTools;
+        private _drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools;
 
-        constructor(drawingTools: OSFramework.DrawingTools.IDrawingTools) {
+        constructor(drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools) {
             super();
             this._drawingTools = drawingTools;
         }
 
         protected getInstanceOfEventType(
             eventType: DrawingToolsEventType
-        ): OSFramework.Event.IEvent<string> {
+        ): OSFramework.Maps.Event.IEvent<string> {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            let event: OSFramework.Event.IEvent<string>;
+            let event: OSFramework.Maps.Event.IEvent<string>;
 
             switch (eventType) {
                 case DrawingToolsEventType.Initialized:

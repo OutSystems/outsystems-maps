@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OutSystems.Maps.MapAPI.ShapeManager {
     const shapeMap = new Map<string, string>(); //shape.uniqueId -> map.uniqueId
-    const shapeArr = new Array<OSFramework.Shape.IShape>();
+    const shapeArr = new Array<OSFramework.Maps.Shape.IShape>();
 
     /**
      * Changes the property value of a given Shape.
@@ -34,12 +34,12 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
      */
     export function CreateShape(
         shapeId: string,
-        shapeType: OSFramework.Enum.ShapeType,
+        shapeType: OSFramework.Maps.Enum.ShapeType,
         configs: string
-    ): OSFramework.Shape.IShape {
+    ): OSFramework.Maps.Shape.IShape {
         const map = GetMapByShapeId(shapeId);
         if (!map.hasShape(shapeId)) {
-            const _shape = OSFramework.Shape.ShapeFactory.MakeShape(
+            const _shape = OSFramework.Maps.Shape.ShapeFactory.MakeShape(
                 map,
                 shapeId,
                 shapeType,
@@ -63,19 +63,19 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
      * @param shapeId Id of the Shape
      */
     export function GetCircle(shapeId: string): string {
-        const shape = GetShapeById(shapeId) as OSFramework.Shape.IShapeCircle;
+        const shape = GetShapeById(shapeId) as OSFramework.Maps.Shape.IShapeCircle;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const properties = new OSFramework.OSStructures.API.CircleProperties();
-        if (shape.type === OSFramework.Enum.ShapeType.Circle) {
+        const properties = new OSFramework.Maps.OSStructures.API.CircleProperties();
+        if (shape.type === OSFramework.Maps.Enum.ShapeType.Circle) {
             properties.Center = {
                 Lat: shape.providerCenter.lat,
                 Lng: shape.providerCenter.lng
             };
             properties.Radius = shape.providerRadius;
         } else {
-            OSFramework.Helper.ThrowError(
+            OSFramework.Maps.Helper.ThrowError(
                 shape.map,
-                OSFramework.Enum.ErrorCodes.API_FailedGettingCircleShape
+                OSFramework.Maps.Enum.ErrorCodes.API_FailedGettingCircleShape
             );
         }
         // If properties are empty/undefined, then we want to stringify an empty string
@@ -88,8 +88,8 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
      * @param {string} shapeId Id of the Shape that exists on the Map
      * @returns {*}  {ShapeMapper} this structure has the id of Map, and the reference to the instance of the Map
      */
-    function GetMapByShapeId(shapeId: string): OSFramework.OSMap.IMap {
-        let map: OSFramework.OSMap.IMap;
+    function GetMapByShapeId(shapeId: string): OSFramework.Maps.OSMap.IMap {
+        let map: OSFramework.Maps.OSMap.IMap;
 
         //shapeId is the UniqueId
         if (shapeMap.has(shapeId)) {
@@ -98,7 +98,7 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
         //UniqueID not found
         else {
             // Try to find its reference on DOM
-            const elem = OSFramework.Helper.GetElementByUniqueId(
+            const elem = OSFramework.Maps.Helper.GetElementByUniqueId(
                 shapeId,
                 false
             );
@@ -106,7 +106,7 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
             // If element is found, means that the DOM was rendered
             if (elem !== undefined) {
                 //Find the closest Map
-                const mapId = OSFramework.Helper.GetClosestMapId(elem);
+                const mapId = OSFramework.Maps.Helper.GetClosestMapId(elem);
                 map = MapManager.GetMapById(mapId);
             }
         }
@@ -121,8 +121,8 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
     export function GetShapeById(
         shapeId: string,
         raiseError = true
-    ): OSFramework.Shape.IShape {
-        let shape: OSFramework.Shape.IShape = shapeArr.find(
+    ): OSFramework.Maps.Shape.IShape {
+        let shape: OSFramework.Maps.Shape.IShape = shapeArr.find(
             (p) => p && p.equalsToID(shapeId)
         );
 
@@ -132,11 +132,11 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
             const allMaps = [...MapManager.GetMapsFromPage().values()];
 
             // On each map, look for all drawingTools and on each one look, on the createdElements array, for the shapeId passed
-            allMaps.find((map: OSFramework.OSMap.IMap) => {
+            allMaps.find((map: OSFramework.Maps.OSMap.IMap) => {
                 return (shape =
                     map.drawingTools &&
                     map.drawingTools.createdElements.find(
-                        (shape: OSFramework.Shape.IShape) =>
+                        (shape: OSFramework.Maps.Shape.IShape) =>
                             shape.equalsToID(shapeId)
                     ));
             });
@@ -157,19 +157,19 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
     export function GetShapePath(shapeId: string): string {
         const shape = GetShapeById(
             shapeId
-        ) as OSFramework.Shape.IShapePolyshape;
+        ) as OSFramework.Maps.Shape.IShapePolyshape;
         const providerPath = shape.providerPath;
         let shapePath = [];
         if (providerPath !== undefined) {
             shapePath = providerPath.map(
-                (coords: OSFramework.OSStructures.OSMap.Coordinates) => {
+                (coords: OSFramework.Maps.OSStructures.OSMap.Coordinates) => {
                     return { Lat: coords.lat, Lng: coords.lng };
                 }
             );
         } else {
-            OSFramework.Helper.ThrowError(
+            OSFramework.Maps.Helper.ThrowError(
                 shape.map,
-                OSFramework.Enum.ErrorCodes.API_FailedGettingShapePath
+                OSFramework.Maps.Enum.ErrorCodes.API_FailedGettingShapePath
             );
         }
 
@@ -207,8 +207,8 @@ namespace MapAPI.ShapeManager {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
         propertyValue: any
     ): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.ShapeManager.ChangeProperty()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.ShapeManager.ChangeProperty()'`
         );
         OutSystems.Maps.MapAPI.ShapeManager.ChangeProperty(
             shapeId,
@@ -220,11 +220,11 @@ namespace MapAPI.ShapeManager {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     export function CreateShape(
         shapeId: string,
-        shapeType: OSFramework.Enum.ShapeType,
+        shapeType: OSFramework.Maps.Enum.ShapeType,
         configs: string
-    ): OSFramework.Shape.IShape {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.ShapeManager.CreateShape()'`
+    ): OSFramework.Maps.Shape.IShape {
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.ShapeManager.CreateShape()'`
         );
         return OutSystems.Maps.MapAPI.ShapeManager.CreateShape(
             shapeId,
@@ -234,8 +234,8 @@ namespace MapAPI.ShapeManager {
     }
 
     export function GetCircle(shapeId: string): string {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.ShapeManager.GetCircle()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.ShapeManager.GetCircle()'`
         );
         return OutSystems.Maps.MapAPI.ShapeManager.GetCircle(shapeId);
     }
@@ -243,9 +243,9 @@ namespace MapAPI.ShapeManager {
     export function GetShapeById(
         shapeId: string,
         raiseError = true
-    ): OSFramework.Shape.IShape {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.ShapeManager.GetShapeById()'`
+    ): OSFramework.Maps.Shape.IShape {
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.ShapeManager.GetShapeById()'`
         );
 
         return OutSystems.Maps.MapAPI.ShapeManager.GetShapeById(
@@ -255,15 +255,15 @@ namespace MapAPI.ShapeManager {
     }
 
     export function GetShapePath(shapeId: string): string {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.ShapeManager.GetShapePath()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.ShapeManager.GetShapePath()'`
         );
         return OutSystems.Maps.MapAPI.ShapeManager.GetShapePath(shapeId);
     }
 
     export function RemoveShape(shapeId: string): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.ShapeManager.RemoveShape()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.ShapeManager.RemoveShape()'`
         );
         OutSystems.Maps.MapAPI.ShapeManager.RemoveShape(shapeId);
     }

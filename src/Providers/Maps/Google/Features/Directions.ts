@@ -2,9 +2,9 @@
 namespace Provider.Google.Feature {
     export class Directions
         implements
-            OSFramework.Feature.IDirections,
-            OSFramework.Interface.IBuilder,
-            OSFramework.Interface.IDisposable
+            OSFramework.Maps.Feature.IDirections,
+            OSFramework.Maps.Interface.IBuilder,
+            OSFramework.Maps.Interface.IDisposable
     {
         private _directionsRenderer: google.maps.DirectionsRenderer;
         private _directionsService: google.maps.DirectionsService;
@@ -41,7 +41,7 @@ namespace Provider.Google.Feature {
             this._directionsService = undefined;
             this._directionsRenderer = undefined;
         }
-        public getLegsFromDirection(): Array<OSFramework.OSStructures.Directions.DirectionLegs> {
+        public getLegsFromDirection(): Array<OSFramework.Maps.OSStructures.Directions.DirectionLegs> {
             // If the Map has the directions disabled return 0 (meters)
             if (this._isEnabled === false) return [];
 
@@ -49,7 +49,7 @@ namespace Provider.Google.Feature {
                 .getDirections()
                 .routes[0].legs.reduce(
                     (
-                        acc: Array<OSFramework.OSStructures.Directions.DirectionLegs>,
+                        acc: Array<OSFramework.Maps.OSStructures.Directions.DirectionLegs>,
                         curr: google.maps.DirectionsLeg
                     ) => {
                         // For each leg, push an object containing the origin (coords), distination (coords), distance (in meters) and duration (in seconds)
@@ -98,7 +98,7 @@ namespace Provider.Google.Feature {
                 resolve(duration);
             });
         }
-        public removeRoute(): OSFramework.OSStructures.ReturnMessage {
+        public removeRoute(): OSFramework.Maps.OSStructures.ReturnMessage {
             this.setState(false);
             if (this._directionsRenderer.getMap() === null) {
                 return {
@@ -106,7 +106,7 @@ namespace Provider.Google.Feature {
                 };
             } else {
                 return {
-                    code: OSFramework.Enum.ErrorCodes.API_FailedRemoveDirections
+                    code: OSFramework.Maps.Enum.ErrorCodes.API_FailedRemoveDirections
                 };
             }
         }
@@ -119,17 +119,17 @@ namespace Provider.Google.Feature {
             providerName: string,
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             apiKey: string
-        ): OSFramework.OSStructures.ReturnMessage {
-            OSFramework.Helper.ThrowError(
+        ): OSFramework.Maps.OSStructures.ReturnMessage {
+            OSFramework.Maps.Helper.ThrowError(
                 this._map,
-                OSFramework.Enum.ErrorCodes.GEN_NoPluginDirectionsNeeded
+                OSFramework.Maps.Enum.ErrorCodes.GEN_NoPluginDirectionsNeeded
             );
             return;
         }
 
         public setRoute(
-            directionOptions: OSFramework.OSStructures.Directions.Options
-        ): Promise<OSFramework.OSStructures.ReturnMessage> {
+            directionOptions: OSFramework.Maps.OSStructures.Directions.Options
+        ): Promise<OSFramework.Maps.OSStructures.ReturnMessage> {
             const waypts: google.maps.DirectionsWaypoint[] =
                 this._waypointsCleanup(directionOptions.waypoints);
             return (
@@ -171,7 +171,7 @@ namespace Provider.Google.Feature {
                     .catch((reason: string) => {
                         this.setState(false);
                         return {
-                            code: OSFramework.Enum.ErrorCodes
+                            code: OSFramework.Maps.Enum.ErrorCodes
                                 .LIB_FailedSetDirections,
                             message: `${reason}`
                         };

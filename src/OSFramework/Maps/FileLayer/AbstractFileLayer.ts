@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.FileLayer {
+namespace OSFramework.Maps.FileLayer {
     export abstract class AbstractFileLayer<
         W,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars

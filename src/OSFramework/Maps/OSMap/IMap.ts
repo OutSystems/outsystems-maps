@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.OSMap {
+namespace OSFramework.Maps.OSMap {
     export interface IMap
         extends Interface.IBuilder,
             Interface.ISearchById,
@@ -7,11 +7,11 @@ namespace OSFramework.OSMap {
         /** Map configuration */
         config: Configuration.IConfigurationMap;
         /** Get the DrawingTools from the Map */
-        drawingTools: OSFramework.DrawingTools.IDrawingTools;
+        drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools;
         /** Exposed features of the Map */
-        features: OSFramework.Feature.ExposedFeatures;
+        features: OSFramework.Maps.Feature.ExposedFeatures;
         /** Get all FileLayers from the Map */
-        fileLayers: Array<OSFramework.FileLayer.IFileLayer>;
+        fileLayers: Array<OSFramework.Maps.FileLayer.IFileLayer>;
         /** Boolean that indicates if the Map is ready */
         isReady: boolean;
         /** Events from the Map */
@@ -19,7 +19,7 @@ namespace OSFramework.OSMap {
         /** Tag of the Map Block from OS */
         mapTag: string;
         /** Get all Markers from the Map */
-        markers: Array<OSFramework.Marker.IMarker>;
+        markers: Array<OSFramework.Maps.Marker.IMarker>;
         /** Get all Markers that have finished building its provider */
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         markersReady: Array<any>;
@@ -27,7 +27,7 @@ namespace OSFramework.OSMap {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         provider: any;
         /** Map provider Type (google, leaflet) */
-        providerType: OSFramework.Enum.ProviderType;
+        providerType: OSFramework.Maps.Enum.ProviderType;
         /** Id of the Map */
         uniqueId: string;
         /** Id of the Map widget */
@@ -39,38 +39,38 @@ namespace OSFramework.OSMap {
          * @returns DrawingTools that has been created
          */
         addDrawingTools(
-            drawingTools: OSFramework.DrawingTools.IDrawingTools
-        ): OSFramework.DrawingTools.IDrawingTools;
+            drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools
+        ): OSFramework.Maps.DrawingTools.IDrawingTools;
         /**
          * Add new FileLayer Element to the Map
          * @param fileLayer FileLayer that will be added to the Map
          * @returns FileLayer that has been created
          */
         addFileLayer(
-            fileLayer: OSFramework.FileLayer.IFileLayer
-        ): OSFramework.FileLayer.IFileLayer;
+            fileLayer: OSFramework.Maps.FileLayer.IFileLayer
+        ): OSFramework.Maps.FileLayer.IFileLayer;
         /**
          * Add new HeatmapLayer Element to the Map
          * @param heatmapLayer HeatmapLayer that will be added to the Map
          * @returns HeatmapLayer that has been created
          */
         addHeatmapLayer(
-            heatmapLayer: OSFramework.HeatmapLayer.IHeatmapLayer
-        ): OSFramework.HeatmapLayer.IHeatmapLayer;
+            heatmapLayer: OSFramework.Maps.HeatmapLayer.IHeatmapLayer
+        ): OSFramework.Maps.HeatmapLayer.IHeatmapLayer;
         /**
          * Add new Marker to the Map
          * @param marker Marker that will be added to the Map
          * @returns Marker that has been created
          */
         addMarker(
-            marker: OSFramework.Marker.IMarker
-        ): OSFramework.Marker.IMarker;
+            marker: OSFramework.Maps.Marker.IMarker
+        ): OSFramework.Maps.Marker.IMarker;
         /**
          * Add new Shape to the Map
          * @param shape Shape that will be added to the Map
          * @returns Shape that has been created
          */
-        addShape(shape: OSFramework.Shape.IShape): OSFramework.Shape.IShape;
+        addShape(shape: OSFramework.Maps.Shape.IShape): OSFramework.Maps.Shape.IShape;
         /**
          * Change property of a drawingTools from the DrawingTools by specifying the property name and the new value
          * @param drawingToolsId id of the DrawingTools
@@ -143,19 +143,19 @@ namespace OSFramework.OSMap {
          * @param fileLayerId id of the FileLayer
          * @returns FileLayer found via the specified fileLayerId
          */
-        getFileLayer(fileLayerId: string): OSFramework.FileLayer.IFileLayer;
+        getFileLayer(fileLayerId: string): OSFramework.Maps.FileLayer.IFileLayer;
         /**
          * Get the Marker from the Map by giving a markerId
          * @param markerId id of the marker
          * @returns Marker found via the specified markerId
          */
-        getMarker(markerId: string): OSFramework.Marker.IMarker;
+        getMarker(markerId: string): OSFramework.Maps.Marker.IMarker;
         /**
          * Get the Shape from the Map by giving a shapeId
          * @param shapeId id of the shape
          * @returns Shape found via the specified shapeId
          */
-        getShape(shapeId: string): OSFramework.Shape.IShape;
+        getShape(shapeId: string): OSFramework.Maps.Shape.IShape;
         /**
          * Checks if the Map has a specific FileLayer by giving a fileLayerId
          * @param fileLayerId id of the fileLayer

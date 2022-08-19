@@ -1,12 +1,12 @@
 ///<reference path="AbstractMapEvent.ts"/>
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Event.OSMap {
+namespace OSFramework.Maps.Event.OSMap {
     /**
      * Class that represents the the Initialized event.
      *
      * @class MapOnError
-     * @extends {AbstractEvent<OSFramework.OSMap.IMap>}
+     * @extends {AbstractEvent<OSFramework.Maps.OSMap.IMap>}
      */
     export class MapOnError extends AbstractMapEvent {
         /**
@@ -18,7 +18,7 @@ namespace OSFramework.Event.OSMap {
          */
         public trigger(
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            mapObj: OSFramework.OSMap.IMap,
+            mapObj: OSFramework.Maps.OSMap.IMap,
             mapId: string,
             eventName: string,
             errorMessage?: string

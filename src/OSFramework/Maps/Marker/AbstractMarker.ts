@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Marker {
+namespace OSFramework.Maps.Marker {
     export abstract class AbstractMarker<
         W,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars

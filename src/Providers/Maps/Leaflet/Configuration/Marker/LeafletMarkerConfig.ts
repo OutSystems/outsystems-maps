@@ -3,8 +3,8 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Leaflet.Configuration.Marker {
     export class LeafletMarkerConfig
-        extends OSFramework.Configuration.AbstractConfiguration
-        implements OSFramework.Configuration.IConfigurationMarker
+        extends OSFramework.Maps.Configuration.AbstractConfiguration
+        implements OSFramework.Maps.Configuration.IConfigurationMarker
     {
         public allowDrag: boolean;
         public iconHeight: number;

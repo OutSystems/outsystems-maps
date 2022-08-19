@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.SearchPlaces {
+namespace OSFramework.Maps.SearchPlaces {
     export interface ISearchPlaces
         extends Interface.IBuilder,
             Interface.ISearchById,

@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Event {
+namespace OSFramework.Maps.Event {
     type Handler = {
         eventHandler: Callbacks.Generic;
         uniqueId: string; //Event unique identifier

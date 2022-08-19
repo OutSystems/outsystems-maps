@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Feature {
+namespace OSFramework.Maps.Feature {
     export interface IMarkerClusterer {
         /** Checks if the marker clusterer feature is activated */
         isEnabled: boolean;
@@ -9,7 +9,7 @@ namespace OSFramework.Feature {
          * Adds a marker into the cluster
          * @param marker Marker Object from OSFramework that is going to be added into the cluster
          */
-        addMarker(marker: OSFramework.Marker.IMarker): void;
+        addMarker(marker: OSFramework.Maps.Marker.IMarker): void;
         /**
          * Sets the marker clusterer configs
          * @param configs Configurations from the structure MarkerClusterer
@@ -20,7 +20,7 @@ namespace OSFramework.Feature {
          * Removes a marker from the cluster
          * @param marker Marker Object from OSFramework that is going to be removed from the cluster
          */
-        removeMarker(marker: OSFramework.Marker.IMarker): void;
+        removeMarker(marker: OSFramework.Maps.Marker.IMarker): void;
         /** Repaints the whole cluster, invoking all the operations from the provider related to the repainting */
         repaint(): void;
     }

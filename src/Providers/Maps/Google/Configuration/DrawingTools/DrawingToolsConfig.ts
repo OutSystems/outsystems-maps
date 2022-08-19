@@ -3,8 +3,8 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Google.Configuration.DrawingTools {
     export class DrawingToolsConfig
-        extends OSFramework.Configuration.AbstractConfiguration
-        implements OSFramework.Configuration.IConfigurationDrawingTools
+        extends OSFramework.Maps.Configuration.AbstractConfiguration
+        implements OSFramework.Maps.Configuration.IConfigurationDrawingTools
     {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public position: string;

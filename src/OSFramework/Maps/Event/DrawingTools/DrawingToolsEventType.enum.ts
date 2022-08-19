@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Event.DrawingTools {
+namespace OSFramework.Maps.Event.DrawingTools {
     /**
      * Events currently supported in the DrawingTools element.
      *

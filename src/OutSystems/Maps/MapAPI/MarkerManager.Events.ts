@@ -6,7 +6,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
         {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             cb: any;
-            event: OSFramework.Event.Marker.MarkerEventType;
+            event: OSFramework.Maps.Event.Marker.MarkerEventType;
             uniqueId: string; //Event unique identifier
         }[]
     > = new Map<
@@ -14,7 +14,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
         {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             cb: any;
-            event: OSFramework.Event.Marker.MarkerEventType;
+            event: OSFramework.Maps.Event.Marker.MarkerEventType;
             uniqueId: string; //Event unique identifier
         }[]
     >();
@@ -28,7 +28,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
      * @param {string} map Map that is ready for events
      */
     export function CheckPendingEvents(
-        marker: OSFramework.Marker.IMarker
+        marker: OSFramework.Maps.Marker.IMarker
     ): void {
         // For each key of the pendingEvents check if the map has the key as a widgetId or uniqueId and add the new handler
         for (const key of _pendingEvents.keys()) {
@@ -58,9 +58,9 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
         //Try to find in DOM only if not present on Map
         if (lookUpDOM && !_eventsToMarkerId.has(eventUniqueId)) {
             const eventElement =
-                OSFramework.Helper.GetElementByUniqueId(eventUniqueId);
+                OSFramework.Maps.Helper.GetElementByUniqueId(eventUniqueId);
             const markerId =
-                OSFramework.Helper.GetClosestMarkerId(eventElement);
+                OSFramework.Maps.Helper.GetClosestMarkerId(eventElement);
             _eventsToMarkerId.set(eventUniqueId, markerId);
         }
 
@@ -73,14 +73,14 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
      *
      * @export
      * @param {string} markerId Marker where the events will get attached
-     * @param {OSFramework.Event.Marker.MarkerEventType} eventName name of the event to get attached
-     * @param {OSFramework.Callbacks.Marker.ClickEvent} callback to be invoked when the event occurs
+     * @param {OSFramework.Maps.Event.Marker.MarkerEventType} eventName name of the event to get attached
+     * @param {OSFramework.Maps.Callbacks.Marker.ClickEvent} callback to be invoked when the event occurs
      */
     export function Subscribe(
         markerId: string,
-        eventName: OSFramework.Event.Marker.MarkerEventType,
+        eventName: OSFramework.Maps.Event.Marker.MarkerEventType,
         // eslint-disable-next-line
-        callback: OSFramework.Callbacks.Marker.Event
+        callback: OSFramework.Maps.Callbacks.Marker.Event
     ): void {
         const marker = GetMarkerById(markerId);
         marker.markerEvents.addHandler(eventName, callback, markerId);
@@ -91,14 +91,14 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
      *
      * @export
      * @param {string} eventUniqueId Id of the Event to be attached
-     * @param {OSFramework.Event.Map.MapEventType} eventName name fo the event to be attached
+     * @param {OSFramework.Maps.Event.Map.MapEventType} eventName name fo the event to be attached
      * @param {MapAPI.Callbacks.OSMap.Event} callback callback to be invoked when the event occurs
      */
     export function SubscribeByUniqueId(
         eventUniqueId: string,
-        eventName: OSFramework.Event.Marker.MarkerEventType,
+        eventName: OSFramework.Maps.Event.Marker.MarkerEventType,
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        callback: OSFramework.Callbacks.Marker.Event
+        callback: OSFramework.Maps.Callbacks.Marker.Event
     ): void {
         // Let's make sure that if the Map doesn't exist, we don't throw and exception but instead add the handler to the pendingEvents
         const markerId = GetMarkerIdByEventUniqueId(eventUniqueId);
@@ -129,14 +129,14 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
      * API method to subscribe to events on all the Markers from a specific Map - TO BE REMOVED
      *
      * @param {string} mapId Map where all the markers will get the event attached
-     * @param {OSFramework.Event.Marker.MarkerEventType} eventName name of the event to get attached
-     * @param {OSFramework.Callbacks.Marker.ClickEvent} callback to be invoked when the event occurs
+     * @param {OSFramework.Maps.Event.Marker.MarkerEventType} eventName name of the event to get attached
+     * @param {OSFramework.Maps.Callbacks.Marker.ClickEvent} callback to be invoked when the event occurs
      */
     export function SubscribeAll(
         mapId: string,
-        eventName: OSFramework.Event.Marker.MarkerEventType,
+        eventName: OSFramework.Maps.Event.Marker.MarkerEventType,
         // eslint-disable-next-line
-        callback: OSFramework.Callbacks.Marker.Event
+        callback: OSFramework.Maps.Callbacks.Marker.Event
     ): void {
         const map = MapManager.GetMapById(mapId);
         map.markers.forEach((marker) => {
@@ -149,14 +149,14 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
      *
      * @export
      * @param {string} eventUniqueId Map where the event will be removed
-     * @param {OSFramework.Event.Map.MapEventType} eventName name of the event to be removed
+     * @param {OSFramework.Maps.Event.Map.MapEventType} eventName name of the event to be removed
      * @param {MapAPI.Callbacks.OSMap.Event} callback callback that will be removed
      */
     export function Unsubscribe(
         eventUniqueId: string,
-        eventName: OSFramework.Event.Marker.MarkerEventType,
+        eventName: OSFramework.Maps.Event.Marker.MarkerEventType,
         // eslint-disable-next-line
-        callback: OSFramework.Callbacks.Marker.Event
+        callback: OSFramework.Maps.Callbacks.Marker.Event
     ): void {
         const markerId = GetMarkerIdByEventUniqueId(eventUniqueId);
         const marker = GetMarkerById(markerId, false);
@@ -186,10 +186,10 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace MapAPI.MarkerManager.Events {
     export function CheckPendingEvents(
-        marker: OSFramework.Marker.IMarker
+        marker: OSFramework.Maps.Marker.IMarker
     ): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.Events.CheckPendingEvents()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.Events.CheckPendingEvents()'`
         );
         OutSystems.Maps.MapAPI.MarkerManager.Events.CheckPendingEvents(marker);
     }
@@ -198,8 +198,8 @@ namespace MapAPI.MarkerManager.Events {
         eventUniqueId: string,
         lookUpDOM = true
     ): string {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.Events.GetMarkerIdByEventUniqueId()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.Events.GetMarkerIdByEventUniqueId()'`
         );
         return OutSystems.Maps.MapAPI.MarkerManager.Events.GetMarkerIdByEventUniqueId(
             eventUniqueId,
@@ -209,12 +209,12 @@ namespace MapAPI.MarkerManager.Events {
 
     export function Subscribe(
         markerId: string,
-        eventName: OSFramework.Event.Marker.MarkerEventType,
+        eventName: OSFramework.Maps.Event.Marker.MarkerEventType,
         // eslint-disable-next-line
-        callback: OSFramework.Callbacks.Marker.Event
+        callback: OSFramework.Maps.Callbacks.Marker.Event
     ): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.Events.Subscribe()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.Events.Subscribe()'`
         );
         OutSystems.Maps.MapAPI.MarkerManager.Events.Subscribe(
             markerId,
@@ -225,12 +225,12 @@ namespace MapAPI.MarkerManager.Events {
 
     export function SubscribeByUniqueId(
         eventUniqueId: string,
-        eventName: OSFramework.Event.Marker.MarkerEventType,
+        eventName: OSFramework.Maps.Event.Marker.MarkerEventType,
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        callback: OSFramework.Callbacks.Marker.Event
+        callback: OSFramework.Maps.Callbacks.Marker.Event
     ): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.Events.SubscribeByUniqueId()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.Events.SubscribeByUniqueId()'`
         );
         OutSystems.Maps.MapAPI.MarkerManager.Events.SubscribeByUniqueId(
             eventUniqueId,
@@ -241,12 +241,12 @@ namespace MapAPI.MarkerManager.Events {
 
     export function SubscribeAll(
         mapId: string,
-        eventName: OSFramework.Event.Marker.MarkerEventType,
+        eventName: OSFramework.Maps.Event.Marker.MarkerEventType,
         // eslint-disable-next-line
-        callback: OSFramework.Callbacks.Marker.Event
+        callback: OSFramework.Maps.Callbacks.Marker.Event
     ): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.Events.SubscribeAll()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.Events.SubscribeAll()'`
         );
         OutSystems.Maps.MapAPI.MarkerManager.Events.SubscribeAll(
             mapId,
@@ -257,12 +257,12 @@ namespace MapAPI.MarkerManager.Events {
 
     export function Unsubscribe(
         eventUniqueId: string,
-        eventName: OSFramework.Event.Marker.MarkerEventType,
+        eventName: OSFramework.Maps.Event.Marker.MarkerEventType,
         // eslint-disable-next-line
-        callback: OSFramework.Callbacks.Marker.Event
+        callback: OSFramework.Maps.Callbacks.Marker.Event
     ): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.Events.Unsubscribe()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.Events.Unsubscribe()'`
         );
         OutSystems.Maps.MapAPI.MarkerManager.Events.Unsubscribe(
             eventUniqueId,

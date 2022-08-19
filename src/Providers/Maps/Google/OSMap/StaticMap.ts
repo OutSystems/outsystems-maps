@@ -8,7 +8,7 @@ namespace Provider.Google.OSMap {
     };
 
     export class StaticMap
-        extends OSFramework.OSMap.AbstractMap<
+        extends OSFramework.Maps.OSMap.AbstractMap<
             google.maps.Map,
             Configuration.OSMap.GoogleStaticMapConfig
         >
@@ -17,15 +17,15 @@ namespace Provider.Google.OSMap {
         private _center: string;
         private _markerString: string;
         private _size: Size;
-        private _type: OSFramework.Enum.OSMap.Type;
+        private _type: OSFramework.Maps.Enum.OSMap.Type;
         private _zoom: number;
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         constructor(mapId: string, configs: any) {
             super(
                 mapId,
-                OSFramework.Enum.ProviderType.Google,
+                OSFramework.Maps.Enum.ProviderType.Google,
                 new Configuration.OSMap.GoogleStaticMapConfig(configs),
-                OSFramework.Enum.MapType.StaticMap
+                OSFramework.Maps.Enum.MapType.StaticMap
             );
         }
 
@@ -68,7 +68,7 @@ namespace Provider.Google.OSMap {
         }
 
         private _getSize(): Size {
-            const container = OSFramework.Helper.GetElementByUniqueId(
+            const container = OSFramework.Maps.Helper.GetElementByUniqueId(
                 this.uniqueId
             );
             const width = container.offsetWidth;
@@ -84,12 +84,12 @@ namespace Provider.Google.OSMap {
             // If level is undefined, use the config zoom as the default
             if (level === undefined) level = this.config.zoom;
 
-            if (level === OSFramework.Enum.OSMap.Zoom.Auto) {
+            if (level === OSFramework.Maps.Enum.OSMap.Zoom.Auto) {
                 if (this.markers.length > 0) {
                     // If zoom is set to Auto, we don't need to set the zoom so let's use -1 to help rendering the image
                     return -1;
                 } else {
-                    return OSFramework.Enum.OSMap.Zoom.Zoom8;
+                    return OSFramework.Maps.Enum.OSMap.Zoom.Zoom8;
                 }
             } else {
                 return level;
@@ -100,16 +100,16 @@ namespace Provider.Google.OSMap {
          * Change the source of the image with the new url from GoogleAPI
          */
         private _renderImage(): void {
-            const container = OSFramework.Helper.GetElementByUniqueId(
+            const container = OSFramework.Maps.Helper.GetElementByUniqueId(
                 this.uniqueId
             );
             const image = container.querySelector(
-                OSFramework.Helper.Constants.staticMapCss
+                OSFramework.Maps.Helper.Constants.staticMapCss
             ) as HTMLImageElement;
 
             image.src =
                 /* eslint-disable prettier/prettier */
-                `${OSFramework.Helper.Constants.googleMapsApiStaticMap}?` +
+                `${OSFramework.Maps.Helper.Constants.googleMapsApiStaticMap}?` +
                 'key=' +
                 this.config.apiKey +
                 '&center=' +
@@ -129,9 +129,9 @@ namespace Provider.Google.OSMap {
             image.onerror = () => {
                 // Check if needed
                 this.mapEvents.trigger(
-                    OSFramework.Event.OSMap.MapEventType.OnError,
+                    OSFramework.Maps.Event.OSMap.MapEventType.OnError,
                     this,
-                    OSFramework.Enum.ErrorCodes.LIB_InvalidApiKeyStaticMap
+                    OSFramework.Maps.Enum.ErrorCodes.LIB_InvalidApiKeyStaticMap
                 );
                 // Invalid API key
                 image.alt = 'Image could not be loaded due to invalid APIKey.';
@@ -139,7 +139,7 @@ namespace Provider.Google.OSMap {
         }
 
         public get mapTag(): string {
-            return OSFramework.Helper.Constants.staticMapTag;
+            return OSFramework.Maps.Helper.Constants.staticMapTag;
         }
 
         public get addedEvents(): Array<string> {
@@ -147,13 +147,13 @@ namespace Provider.Google.OSMap {
         }
 
         public addMarker(
-            marker: OSFramework.Marker.IMarker
-        ): OSFramework.Marker.IMarker {
+            marker: OSFramework.Maps.Marker.IMarker
+        ): OSFramework.Maps.Marker.IMarker {
             if (this.isReady) {
                 this.mapEvents.trigger(
-                    OSFramework.Event.OSMap.MapEventType.OnError,
+                    OSFramework.Maps.Event.OSMap.MapEventType.OnError,
                     this,
-                    OSFramework.Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
+                    OSFramework.Maps.Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
                 );
                 return;
             }
@@ -185,9 +185,9 @@ namespace Provider.Google.OSMap {
             propertyValue: any
         ): void {
             this.mapEvents.trigger(
-                OSFramework.Event.OSMap.MapEventType.OnError,
+                OSFramework.Maps.Event.OSMap.MapEventType.OnError,
                 this,
-                OSFramework.Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
+                OSFramework.Maps.Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
             );
             return;
         }
@@ -202,9 +202,9 @@ namespace Provider.Google.OSMap {
             propertyValue: any
         ): void {
             this.mapEvents.trigger(
-                OSFramework.Event.OSMap.MapEventType.OnError,
+                OSFramework.Maps.Event.OSMap.MapEventType.OnError,
                 this,
-                OSFramework.Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
+                OSFramework.Maps.Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
             );
             return;
         }
@@ -219,9 +219,9 @@ namespace Provider.Google.OSMap {
             propertyValue: any
         ): void {
             this.mapEvents.trigger(
-                OSFramework.Event.OSMap.MapEventType.OnError,
+                OSFramework.Maps.Event.OSMap.MapEventType.OnError,
                 this,
-                OSFramework.Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
+                OSFramework.Maps.Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
             );
             return;
         }
@@ -236,9 +236,9 @@ namespace Provider.Google.OSMap {
             propertyValue: any
         ): void {
             this.mapEvents.trigger(
-                OSFramework.Event.OSMap.MapEventType.OnError,
+                OSFramework.Maps.Event.OSMap.MapEventType.OnError,
                 this,
-                OSFramework.Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
+                OSFramework.Maps.Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
             );
             return;
         }
@@ -249,41 +249,41 @@ namespace Provider.Google.OSMap {
             // If the StaticMap is already rendered then throw an error
             if (this.isReady) {
                 this.mapEvents.trigger(
-                    OSFramework.Event.OSMap.MapEventType.OnError,
+                    OSFramework.Maps.Event.OSMap.MapEventType.OnError,
                     this,
-                    OSFramework.Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
+                    OSFramework.Maps.Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
                 );
                 return;
             }
 
             const propValue =
-                OSFramework.Enum.OS_Config_StaticMap[propertyName];
+                OSFramework.Maps.Enum.OS_Config_StaticMap[propertyName];
 
             switch (propValue) {
-                case OSFramework.Enum.OS_Config_StaticMap.apiKey:
+                case OSFramework.Maps.Enum.OS_Config_StaticMap.apiKey:
                     if (this.config.apiKey !== '') {
                         this.mapEvents.trigger(
-                            OSFramework.Event.OSMap.MapEventType.OnError,
+                            OSFramework.Maps.Event.OSMap.MapEventType.OnError,
                             this,
-                            OSFramework.Enum.ErrorCodes
+                            OSFramework.Maps.Enum.ErrorCodes
                                 .CFG_APIKeyAlreadySetStaticMap
                         );
                     }
                     return super.changeProperty(propertyName, value);
-                case OSFramework.Enum.OS_Config_StaticMap.center:
+                case OSFramework.Maps.Enum.OS_Config_StaticMap.center:
                     this._center = this._getCenter(value);
                     return;
-                case OSFramework.Enum.OS_Config_StaticMap.zoom:
+                case OSFramework.Maps.Enum.OS_Config_StaticMap.zoom:
                     this._zoom = this._getZoom(value);
                     return;
-                case OSFramework.Enum.OS_Config_StaticMap.type:
+                case OSFramework.Maps.Enum.OS_Config_StaticMap.type:
                     this._type = value;
                     return;
                 default:
                     this.mapEvents.trigger(
-                        OSFramework.Event.OSMap.MapEventType.OnError,
+                        OSFramework.Maps.Event.OSMap.MapEventType.OnError,
                         this,
-                        OSFramework.Enum.ErrorCodes
+                        OSFramework.Maps.Enum.ErrorCodes
                             .CFG_CantChangeParamsStaticMap
                     );
                     return;
@@ -299,9 +299,9 @@ namespace Provider.Google.OSMap {
             propertyValue: any
         ): void {
             this.mapEvents.trigger(
-                OSFramework.Event.OSMap.MapEventType.OnError,
+                OSFramework.Maps.Event.OSMap.MapEventType.OnError,
                 this,
-                OSFramework.Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
+                OSFramework.Maps.Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
             );
             return;
         }

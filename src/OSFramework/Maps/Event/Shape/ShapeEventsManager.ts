@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Event.Shape {
+namespace OSFramework.Maps.Event.Shape {
     /**
      * Class that will be responsible for managing the events of the Shapes.
      *
@@ -11,18 +11,18 @@ namespace OSFramework.Event.Shape {
         ShapeEventType,
         string
     > {
-        private _shape: OSFramework.Shape.IShape;
+        private _shape: OSFramework.Maps.Shape.IShape;
 
-        constructor(shape: OSFramework.Shape.IShape) {
+        constructor(shape: OSFramework.Maps.Shape.IShape) {
             super();
             this._shape = shape;
         }
 
         protected getInstanceOfEventType(
             eventType: ShapeEventType
-        ): OSFramework.Event.IEvent<string> {
+        ): OSFramework.Maps.Event.IEvent<string> {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            let event: OSFramework.Event.IEvent<string>;
+            let event: OSFramework.Maps.Event.IEvent<string>;
 
             switch (eventType) {
                 case ShapeEventType.Initialized:

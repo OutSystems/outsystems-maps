@@ -2,12 +2,12 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Google.FileLayer {
-    export class FileLayer extends OSFramework.FileLayer.AbstractFileLayer<
+    export class FileLayer extends OSFramework.Maps.FileLayer.AbstractFileLayer<
         google.maps.KmlLayer,
-        OSFramework.Configuration.IConfigurationFileLayer
+        OSFramework.Maps.Configuration.IConfigurationFileLayer
     > {
         constructor(
-            map: OSFramework.OSMap.IMap,
+            map: OSFramework.Maps.OSMap.IMap,
             FileLayerId: string,
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             configs: any
@@ -26,7 +26,7 @@ namespace Provider.Google.FileLayer {
             // OnClick Event
             if (
                 this.fileLayerEvents.hasHandlers(
-                    OSFramework.Event.FileLayer.FileLayersEventType.OnClick
+                    OSFramework.Maps.Event.FileLayer.FileLayersEventType.OnClick
                 ) &&
                 this.provider.get('clickable') // Always true. Fallback in case this parameter gets changed in the future.
             ) {
@@ -34,7 +34,7 @@ namespace Provider.Google.FileLayer {
                     'click',
                     (event: google.maps.KmlMouseEvent) => {
                         this.fileLayerEvents.trigger(
-                            OSFramework.Event.FileLayer.FileLayersEventType
+                            OSFramework.Maps.Event.FileLayer.FileLayersEventType
                                 .OnClick,
                             // Extra parameters to be passed as arguments on the callback of the OnClick event handler
                             {
@@ -75,19 +75,21 @@ namespace Provider.Google.FileLayer {
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
         public changeProperty(propertyName: string, value: any): void {
             const propValue =
-                OSFramework.Enum.OS_Config_FileLayer[propertyName];
+                OSFramework.Maps.Enum.OS_Config_FileLayer[propertyName];
             super.changeProperty(propertyName, value);
             if (this.isReady) {
                 switch (propValue) {
-                    case OSFramework.Enum.OS_Config_FileLayer.layerUrl:
+                    case OSFramework.Maps.Enum.OS_Config_FileLayer.layerUrl:
                         return this.provider.setOptions({
                             url: value
                         });
-                    case OSFramework.Enum.OS_Config_FileLayer.preserveViewport:
+                    case OSFramework.Maps.Enum.OS_Config_FileLayer
+                        .preserveViewport:
                         return this.provider.setOptions({
                             preserveViewport: value
                         });
-                    case OSFramework.Enum.OS_Config_FileLayer.suppressPopups:
+                    case OSFramework.Maps.Enum.OS_Config_FileLayer
+                        .suppressPopups:
                         return this.provider.setOptions({
                             suppressInfoWindows: value
                         });

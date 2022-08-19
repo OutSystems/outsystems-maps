@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.SearchPlaces {
+namespace OSFramework.Maps.SearchPlaces {
     export abstract class AbstractSearchPlaces<
         W,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars

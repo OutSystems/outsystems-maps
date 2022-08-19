@@ -2,15 +2,15 @@
 namespace Provider.Leaflet.Marker {
     export namespace MarkerFactory {
         export function MakeMarker(
-            map: OSFramework.OSMap.IMap,
+            map: OSFramework.Maps.OSMap.IMap,
             markerId: string,
-            type: OSFramework.Enum.MarkerType,
+            type: OSFramework.Maps.Enum.MarkerType,
             configs: Configuration.Marker.LeafletMarkerConfig
-        ): OSFramework.Marker.IMarker {
+        ): OSFramework.Maps.Marker.IMarker {
             switch (type) {
-                case OSFramework.Enum.MarkerType.Marker:
+                case OSFramework.Maps.Enum.MarkerType.Marker:
                     return new Marker(map, markerId, type, configs);
-                case OSFramework.Enum.MarkerType.MarkerPopup:
+                case OSFramework.Maps.Enum.MarkerType.MarkerPopup:
                     return new MarkerPopup(map, markerId, type, configs);
                 default:
                     throw new Error(

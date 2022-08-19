@@ -2,8 +2,8 @@
 namespace Provider.Leaflet.Feature {
     export class InfoWindow
         implements
-            OSFramework.Feature.IInfoWindow,
-            OSFramework.Interface.IBuilder
+            OSFramework.Maps.Feature.IInfoWindow,
+            OSFramework.Maps.Interface.IBuilder
     {
         private _infoWindow: L.Popup;
         private _map: OSMap.IMapLeaflet;
@@ -16,7 +16,7 @@ namespace Provider.Leaflet.Feature {
         // This method is a way of getting the options which include the offset.
         // The offset needs to be acquired dynamically as it should change according to the height of the icon applied to the marker.
         private _getOptions(
-            marker: OSFramework.Marker.IMarkerPopup
+            marker: OSFramework.Maps.Marker.IMarkerPopup
         ): L.PopupOptions {
             // Let's use the height of the marker icon as the offsetY. But if the height of the icon is not defined: use the runtime offsetHeight of the marker element
             const offsetHeight =
@@ -39,7 +39,7 @@ namespace Provider.Leaflet.Feature {
             this._popupIsOpened = false;
         }
 
-        public closePopup(marker: OSFramework.Marker.IMarkerPopup): void {
+        public closePopup(marker: OSFramework.Maps.Marker.IMarkerPopup): void {
             if (this._popupIsOpened) {
                 marker.provider.closePopup();
                 // Let's make sure the popup gets unlinked from the Marker
@@ -48,7 +48,7 @@ namespace Provider.Leaflet.Feature {
             }
         }
 
-        public openPopup(marker: OSFramework.Marker.IMarkerPopup): void {
+        public openPopup(marker: OSFramework.Maps.Marker.IMarkerPopup): void {
             if (this._popupIsOpened === true) {
                 this.closePopup(marker);
             }
@@ -64,7 +64,7 @@ namespace Provider.Leaflet.Feature {
 
         public setPopupContent(
             content: string,
-            marker: OSFramework.Marker.IMarkerPopup
+            marker: OSFramework.Maps.Marker.IMarkerPopup
         ): void {
             this._infoWindow.setContent(content);
             this._infoWindow.update();

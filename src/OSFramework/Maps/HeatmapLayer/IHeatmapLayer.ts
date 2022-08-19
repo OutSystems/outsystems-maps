@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.HeatmapLayer {
+namespace OSFramework.Maps.HeatmapLayer {
     export interface IHeatmapLayer
         extends Interface.IBuilder,
             Interface.ISearchById,

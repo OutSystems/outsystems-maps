@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Enum {
+namespace OSFramework.Maps.Enum {
     export enum MapType {
         Map = 'Map',
         StaticMap = 'StaticMap'

@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Event.Marker {
+namespace OSFramework.Maps.Event.Marker {
     /**
      * Events currently supported in the Marker element.
      *

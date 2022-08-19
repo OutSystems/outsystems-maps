@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Event.Shape {
+namespace OSFramework.Maps.Event.Shape {
     /**
      * Class that will make sure that the trigger invokes the handlers
      * with the correct parameters.

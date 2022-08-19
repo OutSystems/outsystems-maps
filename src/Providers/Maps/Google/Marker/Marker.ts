@@ -3,7 +3,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Google.Marker {
     export class Marker
-        extends OSFramework.Marker.AbstractMarker<
+        extends OSFramework.Maps.Marker.AbstractMarker<
             google.maps.Marker,
             Configuration.Marker.GoogleMarkerConfig
         >
@@ -12,9 +12,9 @@ namespace Provider.Google.Marker {
         private _addedEvents: Array<string>;
 
         constructor(
-            map: OSFramework.OSMap.IMap,
+            map: OSFramework.Maps.OSMap.IMap,
             markerId: string,
-            type: OSFramework.Enum.MarkerType,
+            type: OSFramework.Maps.Enum.MarkerType,
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             configs: any
         ) {
@@ -77,9 +77,9 @@ namespace Provider.Google.Marker {
             // If the marker has its location = "" at the moment of its provider creation, then the location value will be the default -> OutSystems, Boston US
             if (typeof this.config.location === 'undefined') {
                 this.map.mapEvents.trigger(
-                    OSFramework.Event.OSMap.MapEventType.OnError,
+                    OSFramework.Maps.Event.OSMap.MapEventType.OnError,
                     this.map,
-                    OSFramework.Enum.ErrorCodes.LIB_FailedGeocodingMarker,
+                    OSFramework.Maps.Enum.ErrorCodes.LIB_FailedGeocodingMarker,
                     `Location of the Marker can't be empty.`
                 );
                 return;
@@ -112,22 +112,24 @@ namespace Provider.Google.Marker {
             // OnClick Event (OS accelerator)
             if (
                 this.markerEvents.hasHandlers(
-                    OSFramework.Event.Marker.MarkerEventType.OnClick
+                    OSFramework.Maps.Event.Marker.MarkerEventType.OnClick
                 )
             ) {
                 this._provider.addListener(
                     'click',
                     (e: google.maps.MapMouseEvent) => {
                         const coordinates =
-                            new OSFramework.OSStructures.OSMap.OSCoordinates(
+                            new OSFramework.Maps.OSStructures.OSMap.OSCoordinates(
                                 e.latLng.lat(),
                                 e.latLng.lng()
                             );
                         this.markerEvents.trigger(
                             // EventType
-                            OSFramework.Event.Marker.MarkerEventType.OnClick,
+                            OSFramework.Maps.Event.Marker.MarkerEventType
+                                .OnClick,
                             // EventName
-                            OSFramework.Event.Marker.MarkerEventType.OnClick,
+                            OSFramework.Maps.Event.Marker.MarkerEventType
+                                .OnClick,
                             // Coords
                             JSON.stringify(coordinates)
                         );
@@ -139,10 +141,10 @@ namespace Provider.Google.Marker {
             // Any events that got added to the markerEvents via the API Subscribe method will have to be taken care here
             // If the Event type of each handler is MarkerProviderEvent, we want to make sure to add that event to the listeners of the google marker provider (e.g. click, dblclick, contextmenu, etc)
             this.markerEvents.handlers.forEach(
-                (handler: OSFramework.Event.IEvent<string>, eventName) => {
+                (handler: OSFramework.Maps.Event.IEvent<string>, eventName) => {
                     if (
                         handler instanceof
-                        OSFramework.Event.Marker.MarkerProviderEvent
+                        OSFramework.Maps.Event.Marker.MarkerProviderEvent
                     ) {
                         this._addedEvents.push(eventName);
                         this._provider.addListener(
@@ -153,8 +155,8 @@ namespace Provider.Google.Marker {
                             (e?: google.maps.MapMouseEvent) => {
                                 this.markerEvents.trigger(
                                     // EventType
-                                    OSFramework.Event.Marker.MarkerEventType
-                                        .ProviderEvent,
+                                    OSFramework.Maps.Event.Marker
+                                        .MarkerEventType.ProviderEvent,
                                     // EventName
                                     eventName,
                                     // Coords
@@ -178,7 +180,7 @@ namespace Provider.Google.Marker {
         }
 
         public get markerTag(): string {
-            return OSFramework.Helper.Constants.markerTag;
+            return OSFramework.Maps.Helper.Constants.markerTag;
         }
 
         public build(): void {
@@ -210,9 +212,9 @@ namespace Provider.Google.Marker {
                     })
                     .catch((error) => {
                         this.map.mapEvents.trigger(
-                            OSFramework.Event.OSMap.MapEventType.OnError,
+                            OSFramework.Maps.Event.OSMap.MapEventType.OnError,
                             this.map,
-                            OSFramework.Enum.ErrorCodes
+                            OSFramework.Maps.Enum.ErrorCodes
                                 .LIB_FailedGeocodingMarker,
                             `${error}`
                         );
@@ -222,11 +224,12 @@ namespace Provider.Google.Marker {
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         public changeProperty(propertyName: string, value: any): void {
-            const propValue = OSFramework.Enum.OS_Config_Marker[propertyName];
+            const propValue =
+                OSFramework.Maps.Enum.OS_Config_Marker[propertyName];
             super.changeProperty(propertyName, value);
             if (this.isReady) {
                 switch (propValue) {
-                    case OSFramework.Enum.OS_Config_Marker.location:
+                    case OSFramework.Maps.Enum.OS_Config_Marker.location:
                         Helper.Conversions.ConvertToCoordinates(
                             value,
                             this.map.config.apiKey
@@ -240,29 +243,29 @@ namespace Provider.Google.Marker {
                             })
                             .catch((error) => {
                                 this.map.mapEvents.trigger(
-                                    OSFramework.Event.OSMap.MapEventType
+                                    OSFramework.Maps.Event.OSMap.MapEventType
                                         .OnError,
                                     this.map,
-                                    OSFramework.Enum.ErrorCodes
+                                    OSFramework.Maps.Enum.ErrorCodes
                                         .LIB_FailedGeocodingMarker,
                                     `${error}`
                                 );
                             });
                         return;
-                    case OSFramework.Enum.OS_Config_Marker.allowDrag:
+                    case OSFramework.Maps.Enum.OS_Config_Marker.allowDrag:
                         return this._provider.setDraggable(value);
-                    case OSFramework.Enum.OS_Config_Marker.iconHeight:
+                    case OSFramework.Maps.Enum.OS_Config_Marker.iconHeight:
                         this._setIconSize();
                         return;
-                    case OSFramework.Enum.OS_Config_Marker.iconUrl:
+                    case OSFramework.Maps.Enum.OS_Config_Marker.iconUrl:
                         this._setIcon(value);
                         return;
-                    case OSFramework.Enum.OS_Config_Marker.iconWidth:
+                    case OSFramework.Maps.Enum.OS_Config_Marker.iconWidth:
                         this._setIconSize();
                         return;
-                    case OSFramework.Enum.OS_Config_Marker.label:
+                    case OSFramework.Maps.Enum.OS_Config_Marker.label:
                         return this._provider.setLabel(value);
-                    case OSFramework.Enum.OS_Config_Marker.title:
+                    case OSFramework.Maps.Enum.OS_Config_Marker.title:
                         return this._provider.setTitle(value);
                 }
             }

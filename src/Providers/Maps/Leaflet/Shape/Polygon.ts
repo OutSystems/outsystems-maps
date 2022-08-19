@@ -7,9 +7,9 @@ namespace Provider.Leaflet.Shape {
         L.Polygon
     > {
         constructor(
-            map: OSFramework.OSMap.IMap,
+            map: OSFramework.Maps.OSMap.IMap,
             shapeId: string,
-            type: OSFramework.Enum.ShapeType,
+            type: OSFramework.Maps.Enum.ShapeType,
             configs: JSON
         ) {
             super(
@@ -20,8 +20,9 @@ namespace Provider.Leaflet.Shape {
             );
         }
 
-        protected get invalidShapeLocationErrorCode(): OSFramework.Enum.ErrorCodes {
-            return OSFramework.Enum.ErrorCodes.CFG_InvalidPolygonShapeLocations;
+        protected get invalidShapeLocationErrorCode(): OSFramework.Maps.Enum.ErrorCodes {
+            return OSFramework.Maps.Enum.ErrorCodes
+                .CFG_InvalidPolygonShapeLocations;
         }
 
         protected get providerObjectPath():
@@ -34,11 +35,11 @@ namespace Provider.Leaflet.Shape {
         }
 
         public get shapeTag(): string {
-            return OSFramework.Helper.Constants.shapePolygonTag;
+            return OSFramework.Maps.Helper.Constants.shapePolygonTag;
         }
 
         protected createProvider(
-            path: Array<OSFramework.OSStructures.OSMap.Coordinates>
+            path: Array<OSFramework.Maps.OSStructures.OSMap.Coordinates>
         ): L.Polygon {
             return new L.Polygon(path, this.getProviderConfig());
         }

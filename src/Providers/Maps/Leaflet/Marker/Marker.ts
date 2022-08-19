@@ -3,7 +3,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Leaflet.Marker {
     export class Marker
-        extends OSFramework.Marker.AbstractMarker<
+        extends OSFramework.Maps.Marker.AbstractMarker<
             L.Marker,
             Configuration.Marker.LeafletMarkerConfig
         >
@@ -14,9 +14,9 @@ namespace Provider.Leaflet.Marker {
         private _defaultTooltip: L.TooltipOptions;
 
         constructor(
-            map: OSFramework.OSMap.IMap,
+            map: OSFramework.Maps.OSMap.IMap,
             markerId: string,
-            type: OSFramework.Enum.MarkerType,
+            type: OSFramework.Maps.Enum.MarkerType,
             configs: Configuration.Marker.LeafletMarkerConfig
         ) {
             super(
@@ -147,9 +147,9 @@ namespace Provider.Leaflet.Marker {
             // If the marker has its location = "" at the moment of its provider creation, then the location value will be the default -> OutSystems, Boston US
             if (typeof this.config.location === 'undefined') {
                 this.map.mapEvents.trigger(
-                    OSFramework.Event.OSMap.MapEventType.OnError,
+                    OSFramework.Maps.Event.OSMap.MapEventType.OnError,
                     this.map,
-                    OSFramework.Enum.ErrorCodes
+                    OSFramework.Maps.Enum.ErrorCodes
                         .LIB_FailedGeocodingLeafletMarker,
                     `Location of the Marker can't be empty.`
                 );
@@ -180,22 +180,24 @@ namespace Provider.Leaflet.Marker {
             // OnClick Event
             if (
                 this.markerEvents.hasHandlers(
-                    OSFramework.Event.Marker.MarkerEventType.OnClick
+                    OSFramework.Maps.Event.Marker.MarkerEventType.OnClick
                 )
             ) {
                 this._provider.addEventListener(
                     'click',
                     (e?: L.LeafletMouseEvent) => {
                         const coordinates =
-                            new OSFramework.OSStructures.OSMap.OSCoordinates(
+                            new OSFramework.Maps.OSStructures.OSMap.OSCoordinates(
                                 e.latlng.lat,
                                 e.latlng.lng
                             );
                         this.markerEvents.trigger(
                             // EventType
-                            OSFramework.Event.Marker.MarkerEventType.OnClick,
+                            OSFramework.Maps.Event.Marker.MarkerEventType
+                                .OnClick,
                             // EventName
-                            OSFramework.Event.Marker.MarkerEventType.OnClick,
+                            OSFramework.Maps.Event.Marker.MarkerEventType
+                                .OnClick,
                             // Coords
                             JSON.stringify(coordinates)
                         );
@@ -207,10 +209,10 @@ namespace Provider.Leaflet.Marker {
             // If the Event type of each handler is MarkerProviderEvent, we want to make sure to add that event to the listeners of the google marker provider (e.g. click, dblclick, contextmenu, etc)
             // Otherwise, we don't want to add them to the google provider listeners (e.g. OnInitialize, OnTriggeredEvent, etc)
             this.markerEvents.handlers.forEach(
-                (handler: OSFramework.Event.IEvent<string>, eventName) => {
+                (handler: OSFramework.Maps.Event.IEvent<string>, eventName) => {
                     if (
                         handler instanceof
-                        OSFramework.Event.Marker.MarkerProviderEvent
+                        OSFramework.Maps.Event.Marker.MarkerProviderEvent
                     ) {
                         this._addedEvents.push(eventName);
                         this._provider.addEventListener(
@@ -221,8 +223,8 @@ namespace Provider.Leaflet.Marker {
                             (e?: L.LeafletMouseEvent) => {
                                 this.markerEvents.trigger(
                                     // EventType
-                                    OSFramework.Event.Marker.MarkerEventType
-                                        .ProviderEvent,
+                                    OSFramework.Maps.Event.Marker
+                                        .MarkerEventType.ProviderEvent,
                                     // EventName
                                     eventName,
                                     // Coords
@@ -247,7 +249,7 @@ namespace Provider.Leaflet.Marker {
         }
 
         public get markerTag(): string {
-            return OSFramework.Helper.Constants.markerTag;
+            return OSFramework.Maps.Helper.Constants.markerTag;
         }
 
         public build(): void {
@@ -279,9 +281,9 @@ namespace Provider.Leaflet.Marker {
                     })
                     .catch(() => {
                         this.map.mapEvents.trigger(
-                            OSFramework.Event.OSMap.MapEventType.OnError,
+                            OSFramework.Maps.Event.OSMap.MapEventType.OnError,
                             this.map,
-                            OSFramework.Enum.ErrorCodes
+                            OSFramework.Maps.Enum.ErrorCodes
                                 .LIB_FailedGeocodingLeafletMarker
                         );
                     });
@@ -290,11 +292,12 @@ namespace Provider.Leaflet.Marker {
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         public changeProperty(propertyName: string, value: any): void {
-            const property = OSFramework.Enum.OS_Config_Marker[propertyName];
+            const property =
+                OSFramework.Maps.Enum.OS_Config_Marker[propertyName];
             super.changeProperty(propertyName, value);
             if (this.isReady) {
                 switch (property) {
-                    case OSFramework.Enum.OS_Config_Marker.location:
+                    case OSFramework.Maps.Enum.OS_Config_Marker.location:
                         Helper.Conversions.ValidateCoordinates(value)
                             .then((response) => {
                                 this._provider.setLatLng({
@@ -305,32 +308,32 @@ namespace Provider.Leaflet.Marker {
                             })
                             .catch(() => {
                                 this.map.mapEvents.trigger(
-                                    OSFramework.Event.OSMap.MapEventType
+                                    OSFramework.Maps.Event.OSMap.MapEventType
                                         .OnError,
                                     this.map,
-                                    OSFramework.Enum.ErrorCodes
+                                    OSFramework.Maps.Enum.ErrorCodes
                                         .LIB_FailedGeocodingLeafletMarker
                                 );
                             });
                         return;
-                    case OSFramework.Enum.OS_Config_Marker.allowDrag:
+                    case OSFramework.Maps.Enum.OS_Config_Marker.allowDrag:
                         value
                             ? this._provider.dragging.enable()
                             : this._provider.dragging.disable();
                         return;
-                    case OSFramework.Enum.OS_Config_Marker.iconHeight:
+                    case OSFramework.Maps.Enum.OS_Config_Marker.iconHeight:
                         this._setIconSize();
                         return;
-                    case OSFramework.Enum.OS_Config_Marker.iconUrl:
+                    case OSFramework.Maps.Enum.OS_Config_Marker.iconUrl:
                         this._setIcon(value);
                         return;
-                    case OSFramework.Enum.OS_Config_Marker.iconWidth:
+                    case OSFramework.Maps.Enum.OS_Config_Marker.iconWidth:
                         this._setIconSize();
                         return;
-                    case OSFramework.Enum.OS_Config_Marker.label:
+                    case OSFramework.Maps.Enum.OS_Config_Marker.label:
                         this._setLabelContent(value);
                         return;
-                    case OSFramework.Enum.OS_Config_Marker.title:
+                    case OSFramework.Maps.Enum.OS_Config_Marker.title:
                         this._provider.getElement().title = value;
                         return;
                 }

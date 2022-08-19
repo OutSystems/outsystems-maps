@@ -6,7 +6,7 @@ namespace OutSystems.Maps.MapAPI.MapManager.Events {
         {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             cb: any;
-            event: OSFramework.Event.OSMap.MapEventType;
+            event: OSFramework.Maps.Event.OSMap.MapEventType;
             uniqueId: string; //Event unique identifier
         }[]
     > = new Map<
@@ -14,7 +14,7 @@ namespace OutSystems.Maps.MapAPI.MapManager.Events {
         {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             cb: any;
-            event: OSFramework.Event.OSMap.MapEventType;
+            event: OSFramework.Maps.Event.OSMap.MapEventType;
             uniqueId: string; //Event unique identifier
         }[]
     >();
@@ -27,7 +27,7 @@ namespace OutSystems.Maps.MapAPI.MapManager.Events {
      * @export
      * @param {string} map Map that is ready for events
      */
-    export function CheckPendingEvents(map: OSFramework.OSMap.IMap): void {
+    export function CheckPendingEvents(map: OSFramework.Maps.OSMap.IMap): void {
         // For each key of the pendingEvents check if the map has the key as a widgetId or uniqueId and add the new handler
         for (const key of _pendingEvents.keys()) {
             if (map.equalsToID(key)) {
@@ -52,8 +52,8 @@ namespace OutSystems.Maps.MapAPI.MapManager.Events {
         //Try to find in DOM only if not present on Map
         if (lookUpDOM && !_eventsToMapId.has(eventUniqueId)) {
             const eventElement =
-                OSFramework.Helper.GetElementByUniqueId(eventUniqueId);
-            const mapId = OSFramework.Helper.GetClosestMapId(eventElement);
+                OSFramework.Maps.Helper.GetElementByUniqueId(eventUniqueId);
+            const mapId = OSFramework.Maps.Helper.GetClosestMapId(eventElement);
             const map = GetMapById(mapId);
 
             if (map) {
@@ -70,14 +70,14 @@ namespace OutSystems.Maps.MapAPI.MapManager.Events {
      *
      * @export
      * @param {string} mapId Map where the event will be attached
-     * @param {OSFramework.Event.Map.MapEventType} eventName name fo the event to be attached
+     * @param {OSFramework.Maps.Event.Map.MapEventType} eventName name fo the event to be attached
      * @param {MapAPI.Callbacks.OSMap.Event} callback callback to be invoked when the event occurs
      */
     export function Subscribe(
         mapId: string,
-        eventName: OSFramework.Event.OSMap.MapEventType,
+        eventName: OSFramework.Maps.Event.OSMap.MapEventType,
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        callback: OSFramework.Callbacks.OSMap.Event
+        callback: OSFramework.Maps.Callbacks.OSMap.Event
     ): void {
         // Let's make sure that if the Map doesn't exist, we don't throw and exception but instead add the handler to the pendingEvents
         const map = GetMapById(mapId, false);
@@ -107,13 +107,13 @@ namespace OutSystems.Maps.MapAPI.MapManager.Events {
      *
      * @export
      * @param {string} uniqueId Id of the Event to be attached
-     * @param {OSFramework.Event.Map.MapEventType} eventName name fo the event to be attached
+     * @param {OSFramework.Maps.Event.Map.MapEventType} eventName name fo the event to be attached
      * @param {MapAPI.Callbacks.OSMap.Event} callback callback to be invoked when the event occurs
      */
     export function SubscribeByUniqueId(
         eventUniqueId: string,
-        eventName: OSFramework.Event.OSMap.MapEventType,
-        callback: OSFramework.Callbacks.OSMap.Event
+        eventName: OSFramework.Maps.Event.OSMap.MapEventType,
+        callback: OSFramework.Maps.Callbacks.OSMap.Event
     ): void {
         // Let's make sure that if the Map doesn't exist, we don't throw and exception but instead add the handler to the pendingEvents
         const mapId = GetMapByEventUniqueId(eventUniqueId);
@@ -146,13 +146,13 @@ namespace OutSystems.Maps.MapAPI.MapManager.Events {
      *
      * @export
      * @param {string} eventUniqueId Event Id that will get removed
-     * @param {OSFramework.Event.Map.MapEventType} eventName name of the event to be removed
+     * @param {OSFramework.Maps.Event.Map.MapEventType} eventName name of the event to be removed
      * @param {MapAPI.Callbacks.OSMap.Event} callback callback that will be removed
      */
     export function Unsubscribe(
         eventUniqueId: string,
-        eventName: OSFramework.Event.OSMap.MapEventType,
-        callback: OSFramework.Callbacks.OSMap.Event
+        eventName: OSFramework.Maps.Event.OSMap.MapEventType,
+        callback: OSFramework.Maps.Callbacks.OSMap.Event
     ): void {
         const mapId = GetMapByEventUniqueId(eventUniqueId);
         const map = GetMapById(mapId, false);
@@ -180,9 +180,9 @@ namespace OutSystems.Maps.MapAPI.MapManager.Events {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace MapAPI.MapManager.Events {
-    export function CheckPendingEvents(map: OSFramework.OSMap.IMap): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.Events.CheckPendingEvents()'`
+    export function CheckPendingEvents(map: OSFramework.Maps.OSMap.IMap): void {
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.Events.CheckPendingEvents()'`
         );
         OutSystems.Maps.MapAPI.MapManager.Events.CheckPendingEvents(map);
     }
@@ -191,8 +191,8 @@ namespace MapAPI.MapManager.Events {
         eventUniqueId: string,
         lookUpDOM = true
     ): string {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.Events.GetMapByEventUniqueId()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.Events.GetMapByEventUniqueId()'`
         );
         return OutSystems.Maps.MapAPI.MapManager.Events.GetMapByEventUniqueId(
             eventUniqueId,
@@ -202,11 +202,11 @@ namespace MapAPI.MapManager.Events {
 
     export function Subscribe(
         mapId: string,
-        eventName: OSFramework.Event.OSMap.MapEventType,
-        callback: OSFramework.Callbacks.OSMap.Event
+        eventName: OSFramework.Maps.Event.OSMap.MapEventType,
+        callback: OSFramework.Maps.Callbacks.OSMap.Event
     ): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.Events.Subscribe()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.Events.Subscribe()'`
         );
         OutSystems.Maps.MapAPI.MapManager.Events.Subscribe(
             mapId,
@@ -217,11 +217,11 @@ namespace MapAPI.MapManager.Events {
 
     export function SubscribeByUniqueId(
         uniqueId: string,
-        eventName: OSFramework.Event.OSMap.MapEventType,
-        callback: OSFramework.Callbacks.OSMap.Event
+        eventName: OSFramework.Maps.Event.OSMap.MapEventType,
+        callback: OSFramework.Maps.Callbacks.OSMap.Event
     ): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.Events.SubscribeByUniqueId()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.Events.SubscribeByUniqueId()'`
         );
         OutSystems.Maps.MapAPI.MapManager.Events.SubscribeByUniqueId(
             uniqueId,
@@ -232,11 +232,11 @@ namespace MapAPI.MapManager.Events {
 
     export function Unsubscribe(
         eventUniqueId: string,
-        eventName: OSFramework.Event.OSMap.MapEventType,
-        callback: OSFramework.Callbacks.OSMap.Event
+        eventName: OSFramework.Maps.Event.OSMap.MapEventType,
+        callback: OSFramework.Maps.Callbacks.OSMap.Event
     ): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.Events.Unsubscribe()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.Events.Unsubscribe()'`
         );
         OutSystems.Maps.MapAPI.MapManager.Events.Unsubscribe(
             eventUniqueId,

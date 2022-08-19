@@ -3,9 +3,9 @@ namespace Provider.Google.Feature {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     export class GoogleMarkerClusterer
         implements
-            OSFramework.Feature.IMarkerClusterer,
-            OSFramework.Interface.IBuilder,
-            OSFramework.Interface.IDisposable
+            OSFramework.Maps.Feature.IMarkerClusterer,
+            OSFramework.Maps.Interface.IBuilder,
+            OSFramework.Maps.Interface.IDisposable
     {
         private _config: Configuration.MarkerClusterer.MarkerClustererConfig;
         private _map: OSMap.IMapGoogle;
@@ -52,7 +52,7 @@ namespace Provider.Google.Feature {
             this._config.markerClustererActive = value;
         }
 
-        public addMarker(marker: OSFramework.Marker.IMarker): void {
+        public addMarker(marker: OSFramework.Maps.Marker.IMarker): void {
             if (this.isEnabled && marker.isReady) {
                 // We need to make sure that a redraw is triggered whenever a new marker is added to the clusters
                 this._markerClusterer.addMarker(marker.provider, false);
@@ -81,14 +81,14 @@ namespace Provider.Google.Feature {
             propertyValue: any
         ): void {
             const propValue =
-                OSFramework.Enum.OS_Config_MarkerClusterer[propertyName];
+                OSFramework.Maps.Enum.OS_Config_MarkerClusterer[propertyName];
             if (this._config.hasOwnProperty(propertyName)) {
                 this._config[propertyName] = propertyValue;
             } else {
                 this._map.mapEvents.trigger(
-                    OSFramework.Event.OSMap.MapEventType.OnError,
+                    OSFramework.Maps.Event.OSMap.MapEventType.OnError,
                     this._map,
-                    OSFramework.Enum.ErrorCodes
+                    OSFramework.Maps.Enum.ErrorCodes
                         .GEN_InvalidChangePropertyMarkerClusterer,
                     `${propertyName}`
                 );
@@ -97,21 +97,21 @@ namespace Provider.Google.Feature {
             // If the clusterer already exists, change its provider configs
             if (this.markerClusterer !== undefined) {
                 switch (propValue) {
-                    case OSFramework.Enum.OS_Config_MarkerClusterer
+                    case OSFramework.Maps.Enum.OS_Config_MarkerClusterer
                         .markerClustererActive:
                         this._setState(propertyValue);
                         break;
-                    case OSFramework.Enum.OS_Config_MarkerClusterer
+                    case OSFramework.Maps.Enum.OS_Config_MarkerClusterer
                         .markerClustererMinClusterSize:
                         this._markerClusterer.setMinimumClusterSize(
                             propertyValue
                         );
                         break;
-                    case OSFramework.Enum.OS_Config_MarkerClusterer
+                    case OSFramework.Maps.Enum.OS_Config_MarkerClusterer
                         .markerClustererMaxZoom:
                         this._markerClusterer.setMaxZoom(propertyValue);
                         break;
-                    case OSFramework.Enum.OS_Config_MarkerClusterer
+                    case OSFramework.Maps.Enum.OS_Config_MarkerClusterer
                         .markerClustererZoomOnClick:
                         this._markerClusterer.setZoomOnClick(propertyValue);
                         break;
@@ -126,7 +126,7 @@ namespace Provider.Google.Feature {
             google.maps.event.removeListener(this._repaintOnTilesLoaded);
         }
 
-        public removeMarker(marker: OSFramework.Marker.IMarker): void {
+        public removeMarker(marker: OSFramework.Maps.Marker.IMarker): void {
             if (this.isEnabled && marker.isReady) {
                 // We need to make sure that a redraw is triggered whenever a new marker is removed from the clusters
                 this._markerClusterer?.removeMarker(marker.provider, false);

@@ -3,8 +3,8 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Google.Configuration.FileLayer {
     export class FileLayerConfig
-        extends OSFramework.Configuration.AbstractConfiguration
-        implements OSFramework.Configuration.IConfigurationFileLayer
+        extends OSFramework.Maps.Configuration.AbstractConfiguration
+        implements OSFramework.Maps.Configuration.IConfigurationFileLayer
     {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public layerUrl: string;

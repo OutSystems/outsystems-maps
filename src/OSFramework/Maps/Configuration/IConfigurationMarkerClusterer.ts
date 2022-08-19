@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Configuration {
+namespace OSFramework.Maps.Configuration {
     /**
      * Used to translate configurations from OS to Provider
      * Defines the basic structure for Map objects

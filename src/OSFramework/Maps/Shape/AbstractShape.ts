@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Shape {
+namespace OSFramework.Maps.Shape {
     export abstract class AbstractShape<
         W,
         T extends Configuration.IConfigurationShape

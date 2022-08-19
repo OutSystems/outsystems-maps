@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Event.SearchPlaces {
+namespace OSFramework.Maps.Event.SearchPlaces {
     /**
      * Events currently supported in the SearchPlaces element.
      *

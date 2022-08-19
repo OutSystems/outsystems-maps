@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.OSMap {
+namespace OSFramework.Maps.OSMap {
     export abstract class AbstractMap<
         W,
         Z extends Configuration.IConfigurationMap

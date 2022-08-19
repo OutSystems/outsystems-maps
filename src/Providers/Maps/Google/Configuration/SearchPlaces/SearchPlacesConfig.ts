@@ -3,13 +3,13 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Google.Configuration.SearchPlaces {
     export class SearchPlacesConfig
-        extends OSFramework.Configuration.AbstractConfiguration
-        implements OSFramework.Configuration.IConfigurationSearchPlaces
+        extends OSFramework.Maps.Configuration.AbstractConfiguration
+        implements OSFramework.Maps.Configuration.IConfigurationSearchPlaces
     {
         public apiKey: string;
         public countries: Array<string>;
-        public searchArea: OSFramework.OSStructures.OSMap.BoundsString;
-        public searchType: OSFramework.Enum.SearchTypes;
+        public searchArea: OSFramework.Maps.OSStructures.OSMap.BoundsString;
+        public searchType: OSFramework.Maps.Enum.SearchTypes;
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         constructor(config: any) {

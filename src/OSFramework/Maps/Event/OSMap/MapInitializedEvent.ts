@@ -1,12 +1,12 @@
 ///<reference path="AbstractMapEvent.ts"/>
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Event.OSMap {
+namespace OSFramework.Maps.Event.OSMap {
     /**
      * Class that represents the the Initialized event.
      *
      * @class MapInitializedEvent
-     * @extends {AbstractEvent<OSFramework.OSMap.IMap>}
+     * @extends {AbstractEvent<OSFramework.Maps.OSMap.IMap>}
      */
     export class MapInitializedEvent extends AbstractMapEvent {}
 }

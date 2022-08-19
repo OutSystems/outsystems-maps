@@ -3,14 +3,14 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Google.Configuration.HeatmapLayer {
     export class HeatmapLayerConfig
-        extends OSFramework.Configuration.AbstractConfiguration
-        implements OSFramework.Configuration.IConfigurationHeatmapLayer
+        extends OSFramework.Maps.Configuration.AbstractConfiguration
+        implements OSFramework.Maps.Configuration.IConfigurationHeatmapLayer
     {
         public dissipateOnZoom: boolean;
         public gradient: Array<string>;
         public maxIntensity: number;
         public opacity: number;
-        public points: Array<OSFramework.OSStructures.HeatmapLayer.Points>;
+        public points: Array<OSFramework.Maps.OSStructures.HeatmapLayer.Points>;
         public radius: number;
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any

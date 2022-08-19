@@ -3,12 +3,12 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Google.DrawingTools {
     export abstract class AbstractProviderTool<
-        T extends OSFramework.Configuration.IConfigurationTool
-    > extends OSFramework.DrawingTools.AbstractTool<T> {
+        T extends OSFramework.Maps.Configuration.IConfigurationTool
+    > extends OSFramework.Maps.DrawingTools.AbstractTool<T> {
         protected newElm;
         constructor(
-            map: OSFramework.OSMap.IMap,
-            drawingTools: OSFramework.DrawingTools.IDrawingTools,
+            map: OSFramework.Maps.OSMap.IMap,
+            drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
             drawingToolsId: string,
             type: string,
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
@@ -19,7 +19,7 @@ namespace Provider.Google.DrawingTools {
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         private _addCompletedEventHandler(element: any): void {
-            const uniqueId = OSFramework.Helper.GenerateUniqueId();
+            const uniqueId = OSFramework.Maps.Helper.GenerateUniqueId();
             // create the shape/marker element
             this.newElm = this.createElement(
                 uniqueId,
@@ -59,7 +59,7 @@ namespace Provider.Google.DrawingTools {
         ): void {
             this.drawingTools.drawingToolsEvents.trigger(
                 // EventType
-                OSFramework.Event.DrawingTools.DrawingToolsEventType
+                OSFramework.Maps.Event.DrawingTools.DrawingToolsEventType
                     .ProviderEvent,
                 // EventName
                 this.completedToolEventName,
@@ -87,11 +87,11 @@ namespace Provider.Google.DrawingTools {
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
         public changeProperty(propertyName: string, value: any): void {
-            const propValue = OSFramework.Enum.OS_Config_Shape[propertyName];
+            const propValue = OSFramework.Maps.Enum.OS_Config_Shape[propertyName];
             super.changeProperty(propertyName, value);
             if (this.drawingTools.isReady) {
                 switch (propValue) {
-                    case OSFramework.Enum.OS_Config_Shape.allowDrag:
+                    case OSFramework.Maps.Enum.OS_Config_Shape.allowDrag:
                         this.options = { draggable: value };
                         return;
                 }

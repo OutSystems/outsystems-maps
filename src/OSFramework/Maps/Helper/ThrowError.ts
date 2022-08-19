@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Helper {
+namespace OSFramework.Maps.Helper {
     export function ThrowError(
         map: OSMap.IMap,
         errorCode: Enum.ErrorCodes,

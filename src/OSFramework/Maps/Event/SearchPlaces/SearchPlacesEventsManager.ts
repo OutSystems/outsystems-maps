@@ -1,28 +1,28 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Event.SearchPlaces {
+namespace OSFramework.Maps.Event.SearchPlaces {
     /**
      * Class that will be responsible for managing the events of the SearchPlaces.
      *
      * @export
      * @class SearchPlacesEventsManager
-     * @extends {AbstractEventsManager<SearchPlacesEventType, OSFramework.SearchPlaces.ISearchPlaces>}
+     * @extends {AbstractEventsManager<SearchPlacesEventType, OSFramework.Maps.SearchPlaces.ISearchPlaces>}
      */
     export class SearchPlacesEventsManager extends AbstractEventsManager<
         SearchPlacesEventType,
-        OSFramework.SearchPlaces.ISearchPlaces
+        OSFramework.Maps.SearchPlaces.ISearchPlaces
     > {
-        private _searchPlaces: OSFramework.SearchPlaces.ISearchPlaces;
+        private _searchPlaces: OSFramework.Maps.SearchPlaces.ISearchPlaces;
 
-        constructor(searchPlaces: OSFramework.SearchPlaces.ISearchPlaces) {
+        constructor(searchPlaces: OSFramework.Maps.SearchPlaces.ISearchPlaces) {
             super();
             this._searchPlaces = searchPlaces;
         }
 
         protected getInstanceOfEventType(
             eventType: SearchPlacesEventType
-        ): OSFramework.Event.IEvent<OSFramework.SearchPlaces.ISearchPlaces> {
+        ): OSFramework.Maps.Event.IEvent<OSFramework.Maps.SearchPlaces.ISearchPlaces> {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            let event: OSFramework.Event.IEvent<OSFramework.SearchPlaces.ISearchPlaces>;
+            let event: OSFramework.Maps.Event.IEvent<OSFramework.Maps.SearchPlaces.ISearchPlaces>;
 
             switch (eventType) {
                 case SearchPlacesEventType.Initialized:
@@ -75,7 +75,7 @@ namespace OSFramework.Event.SearchPlaces {
         public trigger(
             eventType: SearchPlacesEventType,
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            searchPlaces?: OSFramework.SearchPlaces.ISearchPlaces,
+            searchPlaces?: OSFramework.Maps.SearchPlaces.ISearchPlaces,
             eventInfo?: string,
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
             ...args: any

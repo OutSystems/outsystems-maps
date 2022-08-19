@@ -7,9 +7,9 @@ namespace Provider.Leaflet.Shape {
         L.Polyline
     > {
         constructor(
-            map: OSFramework.OSMap.IMap,
+            map: OSFramework.Maps.OSMap.IMap,
             shapeId: string,
-            type: OSFramework.Enum.ShapeType,
+            type: OSFramework.Maps.Enum.ShapeType,
             configs: JSON
         ) {
             super(
@@ -20,8 +20,8 @@ namespace Provider.Leaflet.Shape {
             );
         }
 
-        protected get invalidShapeLocationErrorCode(): OSFramework.Enum.ErrorCodes {
-            return OSFramework.Enum.ErrorCodes
+        protected get invalidShapeLocationErrorCode(): OSFramework.Maps.Enum.ErrorCodes {
+            return OSFramework.Maps.Enum.ErrorCodes
                 .CFG_InvalidPolylineShapeLocations;
         }
 
@@ -33,11 +33,11 @@ namespace Provider.Leaflet.Shape {
         }
 
         public get shapeTag(): string {
-            return OSFramework.Helper.Constants.shapePolylineTag;
+            return OSFramework.Maps.Helper.Constants.shapePolylineTag;
         }
 
         protected createProvider(
-            path: Array<OSFramework.OSStructures.OSMap.Coordinates>
+            path: Array<OSFramework.Maps.OSStructures.OSMap.Coordinates>
         ): L.Polyline {
             return new L.Polyline(path, this.getProviderConfig());
         }

@@ -3,11 +3,11 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Leaflet.Shape {
     export abstract class AbstractPolyshape<
-            T extends OSFramework.Configuration.IConfigurationShape,
+            T extends OSFramework.Maps.Configuration.IConfigurationShape,
             W extends L.Polygon | L.Polyline
         >
         extends AbstractProviderShape<T, W>
-        implements OSFramework.Shape.IShapePolyshape
+        implements OSFramework.Maps.Shape.IShapePolyshape
     {
         public get providerEventsList(): Array<string> {
             return Constants.Shape.ProviderPolyshapeEvents;
@@ -16,9 +16,9 @@ namespace Provider.Leaflet.Shape {
         public get providerPath(): L.LatLng[] {
             const path = this.providerObjectPath;
             if (path === undefined) {
-                OSFramework.Helper.ThrowError(
+                OSFramework.Maps.Helper.ThrowError(
                     this.map,
-                    OSFramework.Enum.ErrorCodes.API_FailedGettingShapePath
+                    OSFramework.Maps.Enum.ErrorCodes.API_FailedGettingShapePath
                 );
                 return [];
             }
@@ -29,7 +29,7 @@ namespace Provider.Leaflet.Shape {
         /** Builds the path from a set of multiple locations (string format) */
         private _buildPath(
             loc: string
-        ): Promise<Array<OSFramework.OSStructures.OSMap.Coordinates>> {
+        ): Promise<Array<OSFramework.Maps.OSStructures.OSMap.Coordinates>> {
             // If the Shape doesn't have the minimum valid address/coordinates, then throw an error
             if (this._validateLocations(loc)) {
                 const _locations = JSON.parse(loc);
@@ -37,7 +37,7 @@ namespace Provider.Leaflet.Shape {
                 return new Promise((resolve, reject) => {
                     const shapePath: Map<
                         number,
-                        OSFramework.OSStructures.OSMap.Coordinates
+                        OSFramework.Maps.OSStructures.OSMap.Coordinates
                     > = new Map();
 
                     // As soon as one location from the locations input is not valid:
@@ -45,8 +45,8 @@ namespace Provider.Leaflet.Shape {
                     // Throw an error for invalid Locations
                     _locations.every((location: string, index: number) => {
                         // Make sure the current location from the array of locations is not empty
-                        if (OSFramework.Helper.IsEmptyString(location)) {
-                            OSFramework.Helper.ThrowError(
+                        if (OSFramework.Maps.Helper.IsEmptyString(location)) {
+                            OSFramework.Maps.Helper.ThrowError(
                                 this.map,
                                 this.invalidShapeLocationErrorCode
                             );
@@ -78,7 +78,7 @@ namespace Provider.Leaflet.Shape {
 
         /** Set the provider path from an array of coordinates */
         private _setProviderPath(
-            path: Array<OSFramework.OSStructures.OSMap.Coordinates>
+            path: Array<OSFramework.Maps.OSStructures.OSMap.Coordinates>
         ): void {
             this._provider.setLatLngs(path);
         }
@@ -86,10 +86,10 @@ namespace Provider.Leaflet.Shape {
         /** Validates if the locations are accepted for the Shape's path considering the minimum valid address/coordinates */
         private _validateLocations(loc: string): boolean {
             if (
-                OSFramework.Helper.IsEmptyString(loc) ||
+                OSFramework.Maps.Helper.IsEmptyString(loc) ||
                 JSON.parse(loc).length < this.minPath
             ) {
-                OSFramework.Helper.ThrowError(
+                OSFramework.Maps.Helper.ThrowError(
                     this.map,
                     this.invalidShapeLocationErrorCode
                 );
@@ -108,11 +108,12 @@ namespace Provider.Leaflet.Shape {
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         public changeProperty(propertyName: string, value: any): void {
-            const propValue = OSFramework.Enum.OS_Config_Shape[propertyName];
+            const propValue =
+                OSFramework.Maps.Enum.OS_Config_Shape[propertyName];
             super.changeProperty(propertyName, value);
             if (this.isReady) {
                 switch (propValue) {
-                    case OSFramework.Enum.OS_Config_Shape.locations:
+                    case OSFramework.Maps.Enum.OS_Config_Shape.locations:
                         // eslint-disable-next-line no-case-declarations
                         const shapePath = this._buildPath(value);
                         // If path is undefined (should be a promise) -> don't create the shape
@@ -122,19 +123,19 @@ namespace Provider.Leaflet.Shape {
                                     this._setProviderPath(path);
                                 })
                                 .catch((error) => {
-                                    OSFramework.Helper.ThrowError(
+                                    OSFramework.Maps.Helper.ThrowError(
                                         this.map,
-                                        OSFramework.Enum.ErrorCodes
+                                        OSFramework.Maps.Enum.ErrorCodes
                                             .LIB_FailedGeocodingShapeLocations,
                                         error
                                     );
                                 });
                         }
                         return;
-                    case OSFramework.Enum.OS_Config_Shape.fillColor:
+                    case OSFramework.Maps.Enum.OS_Config_Shape.fillColor:
                         this.provider.setStyle({ fillColor: value });
                         return;
-                    case OSFramework.Enum.OS_Config_Shape.fillOpacity:
+                    case OSFramework.Maps.Enum.OS_Config_Shape.fillOpacity:
                         this.provider.setStyle({ fillOpacity: value });
                         return;
                 }
@@ -142,7 +143,7 @@ namespace Provider.Leaflet.Shape {
         }
 
         protected abstract createProvider(
-            path: Array<OSFramework.OSStructures.OSMap.Coordinates>
+            path: Array<OSFramework.Maps.OSStructures.OSMap.Coordinates>
         ): W;
 
         /** Get the provider path */

@@ -2,8 +2,8 @@
 namespace Provider.Leaflet.DrawingTools {
     export class DrawPolygon extends AbstractDrawShape<Configuration.DrawingTools.DrawFilledShapeConfig> {
         constructor(
-            map: OSFramework.OSMap.IMap,
-            drawingTools: OSFramework.DrawingTools.IDrawingTools,
+            map: OSFramework.Maps.OSMap.IMap,
+            drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
             drawingToolsId: string,
             type: string,
             configs: Configuration.DrawingTools.DrawFilledShapeConfig
@@ -19,7 +19,7 @@ namespace Provider.Leaflet.DrawingTools {
 
         /** Get the constant for the event polygoncomplete */
         protected get completedToolEventName(): string {
-            return OSFramework.Helper.Constants.drawingPolygonCompleted;
+            return OSFramework.Maps.Helper.Constants.drawingPolygonCompleted;
         }
 
         //TODO: create structure for Polygon options
@@ -64,14 +64,14 @@ namespace Provider.Leaflet.DrawingTools {
             uniqueId: string,
             shape: L.Polygon,
             configs: Configuration.Shape.FilledShapeConfig
-        ): OSFramework.Shape.IShape {
+        ): OSFramework.Maps.Shape.IShape {
             // we need to clean the provided configs and add the locations in order to create the new element
             // DrawPolyline and DrawPolygon use the following method to add the locations into the initial configs
             const finalConfigs = this._createConfigsElement(shape, configs);
 
             return super.createShapeElement(
                 uniqueId,
-                OSFramework.Enum.ShapeType.Polygon,
+                OSFramework.Maps.Enum.ShapeType.Polygon,
                 finalConfigs
             );
         }

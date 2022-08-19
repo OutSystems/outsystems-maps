@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Helper {
+namespace OSFramework.Maps.Helper {
     /**
      * Returns the closest IMap based on an element
      * @param elem Element used as reference or its uniqueId

@@ -2,13 +2,13 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Google.SearchPlaces {
-    export class SearchPlaces extends OSFramework.SearchPlaces
+    export class SearchPlaces extends OSFramework.Maps.SearchPlaces
         .AbstractSearchPlaces<
         google.maps.places.Autocomplete,
-        OSFramework.Configuration.IConfigurationSearchPlaces
+        OSFramework.Maps.Configuration.IConfigurationSearchPlaces
     > {
         private _addedEvents: Array<string>;
-        private _scriptCallback: OSFramework.Callbacks.Generic;
+        private _scriptCallback: OSFramework.Maps.Callbacks.Generic;
 
         constructor(
             searchPlacesId: string,
@@ -27,11 +27,11 @@ namespace Provider.Google.SearchPlaces {
         // For instance (north: string -> north: number)
         private _buildSearchArea(
             boundsString: string
-        ): Promise<OSFramework.OSStructures.OSMap.Bounds> {
-            const searchArea: OSFramework.OSStructures.OSMap.BoundsString =
+        ): Promise<OSFramework.Maps.OSStructures.OSMap.Bounds> {
+            const searchArea: OSFramework.Maps.OSStructures.OSMap.BoundsString =
                 JSON.parse(boundsString);
 
-            if (OSFramework.Helper.HasAllEmptyBounds(searchArea)) {
+            if (OSFramework.Maps.Helper.HasAllEmptyBounds(searchArea)) {
                 return undefined;
             }
 
@@ -45,15 +45,15 @@ namespace Provider.Google.SearchPlaces {
          * This Promise will only get resolved after the provider gets built (asynchronously)
          */
         private _convertStringToBounds(
-            bounds: OSFramework.OSStructures.OSMap.BoundsString
-        ): Promise<OSFramework.OSStructures.OSMap.Bounds> {
+            bounds: OSFramework.Maps.OSStructures.OSMap.BoundsString
+        ): Promise<OSFramework.Maps.OSStructures.OSMap.Bounds> {
             // In case of error converting the string to bounds
             const errorCallback = () => {
                 this.searchPlacesEvents.trigger(
-                    OSFramework.Event.SearchPlaces.SearchPlacesEventType
+                    OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType
                         .OnError,
                     this,
-                    OSFramework.Enum.ErrorCodes
+                    OSFramework.Maps.Enum.ErrorCodes
                         .CFG_InvalidSearchPlacesSearchArea
                 );
             };
@@ -69,17 +69,17 @@ namespace Provider.Google.SearchPlaces {
          */
         private _createGooglePlaces(): void {
             const script = document.getElementById(
-                OSFramework.Helper.Constants.googleMapsScript
+                OSFramework.Maps.Helper.Constants.googleMapsScript
             ) as HTMLScriptElement;
 
             // Make sure the GoogleMaps script in the <head> of the html page contains the same apiKey as the one in the configs.
             const apiKey = /key=(.*)&libraries/.exec(script.src)[1];
             if (this.config.apiKey !== apiKey) {
                 return this.searchPlacesEvents.trigger(
-                    OSFramework.Event.SearchPlaces.SearchPlacesEventType
+                    OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType
                         .OnError,
                     this,
-                    OSFramework.Enum.ErrorCodes
+                    OSFramework.Maps.Enum.ErrorCodes
                         .CFG_APIKeyDiffersFromPlacesToMaps
                 );
             }
@@ -93,8 +93,9 @@ namespace Provider.Google.SearchPlaces {
                 // If not, create a searchArea with the bounds that were specified
                 // But if one of the bounds is empty, throw an error
                 if (
-                    OSFramework.Helper.HasAllEmptyBounds(configs.bounds) ===
-                    false
+                    OSFramework.Maps.Helper.HasAllEmptyBounds(
+                        configs.bounds
+                    ) === false
                 ) {
                     const bounds = this._convertStringToBounds(configs.bounds);
                     // If countries > 5 than throw an error
@@ -109,10 +110,10 @@ namespace Provider.Google.SearchPlaces {
                             })
                             .catch((error) => {
                                 this.searchPlacesEvents.trigger(
-                                    OSFramework.Event.SearchPlaces
+                                    OSFramework.Maps.Event.SearchPlaces
                                         .SearchPlacesEventType.OnError,
                                     this,
-                                    OSFramework.Enum.ErrorCodes
+                                    OSFramework.Maps.Enum.ErrorCodes
                                         .LIB_FailedGeocodingSearchAreaLocations,
                                     `${error}`
                                 );
@@ -132,10 +133,10 @@ namespace Provider.Google.SearchPlaces {
             configs: google.maps.places.AutocompleteOptions
         ): void {
             const input: HTMLInputElement =
-                OSFramework.Helper.GetElementByUniqueId(
+                OSFramework.Maps.Helper.GetElementByUniqueId(
                     this.uniqueId
                 ).querySelector(
-                    `${OSFramework.Helper.Constants.runtimeSearchPlacesUniqueIdCss} input`
+                    `${OSFramework.Maps.Helper.Constants.runtimeSearchPlacesUniqueIdCss} input`
                 );
             if (this._validInput(input) === false) return;
 
@@ -145,13 +146,15 @@ namespace Provider.Google.SearchPlaces {
                 configs
             );
             // Check if the provider has been created with a valid APIKey
-            window[OSFramework.Helper.Constants.googleMapsAuthFailure] = () =>
-                this.searchPlacesEvents.trigger(
-                    OSFramework.Event.SearchPlaces.SearchPlacesEventType
-                        .OnError,
-                    this,
-                    OSFramework.Enum.ErrorCodes.LIB_InvalidApiKeySearchPlaces
-                );
+            window[OSFramework.Maps.Helper.Constants.googleMapsAuthFailure] =
+                () =>
+                    this.searchPlacesEvents.trigger(
+                        OSFramework.Maps.Event.SearchPlaces
+                            .SearchPlacesEventType.OnError,
+                        this,
+                        OSFramework.Maps.Enum.ErrorCodes
+                            .LIB_InvalidApiKeySearchPlaces
+                    );
 
             this.finishBuild();
             this._setSearchPlacesEvents();
@@ -163,7 +166,7 @@ namespace Provider.Google.SearchPlaces {
             // OnPlaceSelect Event
             if (
                 this.searchPlacesEvents.hasHandlers(
-                    OSFramework.Event.SearchPlaces.SearchPlacesEventType
+                    OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType
                         .OnPlaceSelect
                 )
             ) {
@@ -177,7 +180,7 @@ namespace Provider.Google.SearchPlaces {
                         const place = this._provider.getPlace();
                         place.geometry &&
                             this.searchPlacesEvents.trigger(
-                                OSFramework.Event.SearchPlaces
+                                OSFramework.Maps.Event.SearchPlaces
                                     .SearchPlacesEventType.OnPlaceSelect,
                                 this, // searchPlacesObj
                                 Constants.SearchPlaces.Events.OnPlaceSelect, // event name (eventInfo)
@@ -200,10 +203,10 @@ namespace Provider.Google.SearchPlaces {
         private _validCountriesMaxLength(countries: Array<string>): boolean {
             if (countries.length > 5) {
                 this.searchPlacesEvents.trigger(
-                    OSFramework.Event.SearchPlaces.SearchPlacesEventType
+                    OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType
                         .OnError,
                     this,
-                    OSFramework.Enum.ErrorCodes.CFG_MaximumCountriesNumber
+                    OSFramework.Maps.Enum.ErrorCodes.CFG_MaximumCountriesNumber
                 );
                 return false;
             }
@@ -215,10 +218,11 @@ namespace Provider.Google.SearchPlaces {
         private _validInput(input: HTMLInputElement): boolean {
             if (input === undefined) {
                 this.searchPlacesEvents.trigger(
-                    OSFramework.Event.SearchPlaces.SearchPlacesEventType
+                    OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType
                         .OnError,
                     this,
-                    OSFramework.Enum.ErrorCodes.CFG_InvalidInputSearchPlaces
+                    OSFramework.Maps.Enum.ErrorCodes
+                        .CFG_InvalidInputSearchPlaces
                 );
                 return false;
             }
@@ -249,19 +253,22 @@ namespace Provider.Google.SearchPlaces {
         public changeProperty(propertyName: string, value: any): void {
             super.changeProperty(propertyName, value);
             if (this.isReady) {
-                switch (OSFramework.Enum.OS_Config_SearchPlaces[propertyName]) {
-                    case OSFramework.Enum.OS_Config_SearchPlaces.apiKey:
+                switch (
+                    OSFramework.Maps.Enum.OS_Config_SearchPlaces[propertyName]
+                ) {
+                    case OSFramework.Maps.Enum.OS_Config_SearchPlaces.apiKey:
                         if (this.config.apiKey !== '') {
                             this.searchPlacesEvents.trigger(
-                                OSFramework.Event.SearchPlaces
+                                OSFramework.Maps.Event.SearchPlaces
                                     .SearchPlacesEventType.OnError,
                                 this,
-                                OSFramework.Enum.ErrorCodes
+                                OSFramework.Maps.Enum.ErrorCodes
                                     .CFG_APIKeyAlreadySetSearchPlaces
                             );
                         }
                         return;
-                    case OSFramework.Enum.OS_Config_SearchPlaces.searchArea:
+                    case OSFramework.Maps.Enum.OS_Config_SearchPlaces
+                        .searchArea:
                         // eslint-disable-next-line no-case-declarations
                         const searchArea = this._buildSearchArea(value);
                         // If searchArea is undefined (should be a promise) -> don't apply the searchArea (bounds)
@@ -274,10 +281,10 @@ namespace Provider.Google.SearchPlaces {
                                 })
                                 .catch((error) => {
                                     this.searchPlacesEvents.trigger(
-                                        OSFramework.Event.SearchPlaces
+                                        OSFramework.Maps.Event.SearchPlaces
                                             .SearchPlacesEventType.OnError,
                                         this,
-                                        OSFramework.Enum.ErrorCodes
+                                        OSFramework.Maps.Enum.ErrorCodes
                                             .CFG_InvalidSearchPlacesSearchArea,
                                         `${error}`
                                     );
@@ -288,7 +295,7 @@ namespace Provider.Google.SearchPlaces {
                             this.provider.set('strictBounds', false);
                         }
                         return;
-                    case OSFramework.Enum.OS_Config_SearchPlaces.countries:
+                    case OSFramework.Maps.Enum.OS_Config_SearchPlaces.countries:
                         // eslint-disable-next-line no-case-declarations
                         const countries = JSON.parse(value);
                         // If validation returns false -> do nothing
@@ -299,7 +306,8 @@ namespace Provider.Google.SearchPlaces {
                                 country: countries
                             })
                         );
-                    case OSFramework.Enum.OS_Config_SearchPlaces.searchType:
+                    case OSFramework.Maps.Enum.OS_Config_SearchPlaces
+                        .searchType:
                         return this.provider.setTypes([
                             // eslint-disable-next-line @typescript-eslint/no-unused-vars
                             Provider.Google.SearchPlaces.SearchTypes[value]

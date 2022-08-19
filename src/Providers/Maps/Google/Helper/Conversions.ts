@@ -10,11 +10,11 @@ namespace Provider.Google.Helper.Conversions {
     const googleMapsApiGeocode = function (
         location: string,
         apiKey: string
-    ): Promise<OSFramework.OSStructures.OSMap.Coordinates> {
+    ): Promise<OSFramework.Maps.OSStructures.OSMap.Coordinates> {
         // Encodes a location string into a valid format
         location = encodeURIComponent(location);
         return fetch(
-            `${OSFramework.Helper.Constants.googleMapsApiGeocode}?address=${location}&key=${apiKey}`
+            `${OSFramework.Maps.Helper.Constants.googleMapsApiGeocode}?address=${location}&key=${apiKey}`
         )
             .then((response) => {
                 if (response.ok) {
@@ -43,13 +43,13 @@ namespace Provider.Google.Helper.Conversions {
     export function ConvertToCoordinates(
         location: string,
         apiKey: string
-    ): Promise<OSFramework.OSStructures.OSMap.Coordinates> {
+    ): Promise<OSFramework.Maps.OSStructures.OSMap.Coordinates> {
         if (location === undefined || location.trim().length === 0) {
             console.warn(
                 'Invalid location. Using the default location -> 55 Thomson Pl 2nd floor, Boston, MA 02210, United States'
             );
             return new Promise((resolve) => {
-                resolve(OSFramework.Helper.Constants.defaultMapCenter);
+                resolve(OSFramework.Maps.Helper.Constants.defaultMapCenter);
             });
         }
 

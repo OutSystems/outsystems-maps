@@ -1,12 +1,12 @@
 ///<reference path="AbstractFileLayersEvent.ts"/>
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Event.FileLayer {
+namespace OSFramework.Maps.Event.FileLayer {
     /**
      * Class that represents the the OnClick event.
      *
      * @class FileLayerOnClickEvent
-     * @extends {AbstractEvent<OSFramework.FileLayer.IFileLayer>}
+     * @extends {AbstractEvent<OSFramework.Maps.FileLayer.IFileLayer>}
      */
     export class FileLayersOnClickEvent extends AbstractFileLayersEvent {}
 }

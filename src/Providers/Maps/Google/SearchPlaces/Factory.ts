@@ -3,8 +3,8 @@ namespace Provider.Google.SearchPlaces {
     export namespace SearchPlacesFactory {
         export function MakeSearchPlaces(
             searchPlacesId: string,
-            configs: OSFramework.Configuration.IConfiguration
-        ): OSFramework.SearchPlaces.ISearchPlaces {
+            configs: OSFramework.Maps.Configuration.IConfiguration
+        ): OSFramework.Maps.SearchPlaces.ISearchPlaces {
             return new SearchPlaces(
                 searchPlacesId,
                 configs as Configuration.SearchPlaces.SearchPlacesConfig

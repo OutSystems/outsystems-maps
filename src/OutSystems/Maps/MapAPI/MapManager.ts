@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OutSystems.Maps.MapAPI.MapManager {
-    const maps = new Map<string, OSFramework.OSMap.IMap>(); //map.uniqueId -> Map obj
-    let activeMap: OSFramework.OSMap.IMap = undefined;
+    const maps = new Map<string, OSFramework.Maps.OSMap.IMap>(); //map.uniqueId -> Map obj
+    let activeMap: OSFramework.Maps.OSMap.IMap = undefined;
 
     /**
      * Function that will change the property value of a given Map.
@@ -33,11 +33,11 @@ namespace OutSystems.Maps.MapAPI.MapManager {
      */
     export function CreateMap(
         mapId: string,
-        provider: OSFramework.Enum.ProviderType,
-        providerType: OSFramework.Enum.MapType,
+        provider: OSFramework.Maps.Enum.ProviderType,
+        providerType: OSFramework.Maps.Enum.MapType,
         configs: string
-    ): OSFramework.OSMap.IMap {
-        const _map = OSFramework.OSMap.MapFactory.MakeMap(
+    ): OSFramework.Maps.OSMap.IMap {
+        const _map = OSFramework.Maps.OSMap.MapFactory.MakeMap(
             provider,
             providerType,
             mapId,
@@ -64,7 +64,7 @@ namespace OutSystems.Maps.MapAPI.MapManager {
      * @export
      * @returns {*}  {OSMap.IMap} instance of the active Map.
      */
-    export function GetActiveMap(): OSFramework.OSMap.IMap {
+    export function GetActiveMap(): OSFramework.Maps.OSMap.IMap {
         return activeMap;
     }
 
@@ -76,7 +76,7 @@ namespace OutSystems.Maps.MapAPI.MapManager {
      */
     export function GetAllMarkers(
         mapId: string
-    ): Array<OSFramework.Marker.IMarker> {
+    ): Array<OSFramework.Maps.Marker.IMarker> {
         const map = GetMapById(mapId);
 
         return map.markers;
@@ -93,8 +93,8 @@ namespace OutSystems.Maps.MapAPI.MapManager {
     export function GetMapById(
         mapId: string,
         raiseError = true
-    ): OSFramework.OSMap.IMap {
-        let map: OSFramework.OSMap.IMap;
+    ): OSFramework.Maps.OSMap.IMap {
+        let map: OSFramework.Maps.OSMap.IMap;
 
         //mapId is the UniqueId
         if (maps.has(mapId)) {
@@ -120,7 +120,7 @@ namespace OutSystems.Maps.MapAPI.MapManager {
      * Function that will get all the maps from the current page
      * @returns Map structure containing all the maps and the corresponding uniqueId
      */
-    export function GetMapsFromPage(): Map<string, OSFramework.OSMap.IMap> {
+    export function GetMapsFromPage(): Map<string, OSFramework.Maps.OSMap.IMap> {
         return maps;
     }
 
@@ -195,13 +195,13 @@ namespace OutSystems.Maps.MapAPI.MapManager {
         //It would imply that the widgetId would be set in a different moment than what is now.
         //*************************************/
         if (widgetId === undefined) {
-            widgetId = OSFramework.Helper.GetElementByUniqueId(mapId).closest(
+            widgetId = OSFramework.Maps.Helper.GetElementByUniqueId(mapId).closest(
                 map.mapTag
             ).id;
         }
         //*************************************/
 
-        const widget = OSFramework.Helper.GetElementByWidgetId(widgetId);
+        const widget = OSFramework.Maps.Helper.GetElementByWidgetId(widgetId);
 
         if (widget) {
             if (height === '') {
@@ -240,8 +240,8 @@ namespace MapAPI.MapManager {
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         propertyValue: any
     ): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.ChangeProperty()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.ChangeProperty()'`
         );
         OutSystems.Maps.MapAPI.MapManager.ChangeProperty(
             mapId,
@@ -252,12 +252,12 @@ namespace MapAPI.MapManager {
 
     export function CreateMap(
         mapId: string,
-        provider: OSFramework.Enum.ProviderType,
-        providerType: OSFramework.Enum.MapType,
+        provider: OSFramework.Maps.Enum.ProviderType,
+        providerType: OSFramework.Maps.Enum.MapType,
         configs: string
-    ): OSFramework.OSMap.IMap {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.CreateMap()'`
+    ): OSFramework.Maps.OSMap.IMap {
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.CreateMap()'`
         );
         return OutSystems.Maps.MapAPI.MapManager.CreateMap(
             mapId,
@@ -267,18 +267,18 @@ namespace MapAPI.MapManager {
         );
     }
 
-    export function GetActiveMap(): OSFramework.OSMap.IMap {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.GetActiveMap()'`
+    export function GetActiveMap(): OSFramework.Maps.OSMap.IMap {
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.GetActiveMap()'`
         );
         return OutSystems.Maps.MapAPI.MapManager.GetActiveMap();
     }
 
     export function GetAllMarkers(
         mapId: string
-    ): Array<OSFramework.Marker.IMarker> {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.GetAllMarkers()'`
+    ): Array<OSFramework.Maps.Marker.IMarker> {
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.GetAllMarkers()'`
         );
         return OutSystems.Maps.MapAPI.MapManager.GetAllMarkers(mapId);
     }
@@ -286,51 +286,51 @@ namespace MapAPI.MapManager {
     export function GetMapById(
         mapId: string,
         raiseError = true
-    ): OSFramework.OSMap.IMap {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.GetMapById()'`
+    ): OSFramework.Maps.OSMap.IMap {
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.GetMapById()'`
         );
         return OutSystems.Maps.MapAPI.MapManager.GetMapById(mapId, raiseError);
     }
 
-    export function GetMapsFromPage(): Map<string, OSFramework.OSMap.IMap> {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.GetMapsFromPage()'`
+    export function GetMapsFromPage(): Map<string, OSFramework.Maps.OSMap.IMap> {
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.GetMapsFromPage()'`
         );
         return OutSystems.Maps.MapAPI.MapManager.GetMapsFromPage();
     }
 
     export function InitializeMap(mapId: string): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.InitializeMap()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.InitializeMap()'`
         );
         OutSystems.Maps.MapAPI.MapManager.InitializeMap(mapId);
     }
 
     export function RemoveMap(mapId: string): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.RemoveMap()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.RemoveMap()'`
         );
         OutSystems.Maps.MapAPI.MapManager.RemoveMap(mapId);
     }
 
     export function RemoveMarkers(mapId: string): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.RemoveMarkers()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.RemoveMarkers()'`
         );
         OutSystems.Maps.MapAPI.MapManager.RemoveMarkers(mapId);
     }
 
     export function RemoveFileLayers(mapId: string): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.RemoveFileLayers()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.RemoveFileLayers()'`
         );
         OutSystems.Maps.MapAPI.MapManager.RemoveFileLayers(mapId);
     }
 
     export function SetHeight(mapId: string, height: string): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.SetHeight()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.SetHeight()'`
         );
         OutSystems.Maps.MapAPI.MapManager.SetHeight(mapId, height);
     }

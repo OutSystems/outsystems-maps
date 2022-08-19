@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OutSystems.Maps.MapAPI.FileLayerManager {
     const fileLayerMap = new Map<string, string>(); //fileLayer.uniqueId -> map.uniqueId
-    const fileLayerArr = new Array<OSFramework.FileLayer.IFileLayer>();
+    const fileLayerArr = new Array<OSFramework.Maps.FileLayer.IFileLayer>();
 
     /**
      * Gets the Map to which the FileLayer belongs to
@@ -9,8 +9,8 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
      * @param {string} fileLayerId Id of the FileLayer that exists on the Map
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    function GetMapByFileLayerId(fileLayerId: string): OSFramework.OSMap.IMap {
-        let map: OSFramework.OSMap.IMap;
+    function GetMapByFileLayerId(fileLayerId: string): OSFramework.Maps.OSMap.IMap {
+        let map: OSFramework.Maps.OSMap.IMap;
 
         //fileLayerId is the UniqueId
         if (fileLayerMap.has(fileLayerId)) {
@@ -19,7 +19,7 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
         //UniqueID not found
         else {
             // Try to find its reference on DOM
-            const elem = OSFramework.Helper.GetElementByUniqueId(
+            const elem = OSFramework.Maps.Helper.GetElementByUniqueId(
                 fileLayerId,
                 false
             );
@@ -27,7 +27,7 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
             // If element is found, means that the DOM was rendered
             if (elem !== undefined) {
                 //Find the closest Map
-                const mapId = OSFramework.Helper.GetClosestMapId(elem);
+                const mapId = OSFramework.Maps.Helper.GetClosestMapId(elem);
                 map = MapManager.GetMapById(mapId);
             }
         }
@@ -72,12 +72,12 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
     export function CreateFileLayer(
         fileLayerId: string,
         configs: string
-    ): OSFramework.FileLayer.IFileLayer {
+    ): OSFramework.Maps.FileLayer.IFileLayer {
         const map = GetMapByFileLayerId(fileLayerId);
         if (
-            OSFramework.Helper.ValidateFeatureProvider(
+            OSFramework.Maps.Helper.ValidateFeatureProvider(
                 map,
-                OSFramework.Enum.Feature.FileLayer
+                OSFramework.Maps.Enum.Feature.FileLayer
             ) === false
         ) {
             return;
@@ -110,8 +110,8 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
     export function GetFileLayerById(
         fileLayerId: string,
         raiseError = true
-    ): OSFramework.FileLayer.IFileLayer {
-        const fileLayer: OSFramework.FileLayer.IFileLayer = fileLayerArr.find(
+    ): OSFramework.Maps.FileLayer.IFileLayer {
+        const fileLayer: OSFramework.Maps.FileLayer.IFileLayer = fileLayerArr.find(
             (p) => p && p.equalsToID(fileLayerId)
         );
 
@@ -152,8 +152,8 @@ namespace MapAPI.FileLayerManager {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
         propertyValue: any
     ): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.ChangeProperty()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.ChangeProperty()'`
         );
         OutSystems.Maps.MapAPI.FileLayerManager.ChangeProperty(
             fileLayerId,
@@ -165,9 +165,9 @@ namespace MapAPI.FileLayerManager {
     export function CreateFileLayer(
         fileLayerId: string,
         configs: string
-    ): OSFramework.FileLayer.IFileLayer {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.CreateFileLayer()'`
+    ): OSFramework.Maps.FileLayer.IFileLayer {
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.CreateFileLayer()'`
         );
         return OutSystems.Maps.MapAPI.FileLayerManager.CreateFileLayer(
             fileLayerId,
@@ -178,9 +178,9 @@ namespace MapAPI.FileLayerManager {
     export function GetFileLayerById(
         fileLayerId: string,
         raiseError = true
-    ): OSFramework.FileLayer.IFileLayer {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.GetFileLayerById()'`
+    ): OSFramework.Maps.FileLayer.IFileLayer {
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.GetFileLayerById()'`
         );
         return OutSystems.Maps.MapAPI.FileLayerManager.GetFileLayerById(
             fileLayerId,
@@ -189,8 +189,8 @@ namespace MapAPI.FileLayerManager {
     }
 
     export function RemoveFileLayer(fileLayerId: string): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.RemoveFileLayer()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.RemoveFileLayer()'`
         );
         return OutSystems.Maps.MapAPI.FileLayerManager.RemoveFileLayer(
             fileLayerId

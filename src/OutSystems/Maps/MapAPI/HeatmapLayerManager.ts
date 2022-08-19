@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OutSystems.Maps.MapAPI.HeatmapLayerManager {
     const heatmapLayerMap = new Map<string, string>(); //heatmapLayer.uniqueId -> map.uniqueId
-    const heatmapLayerArr = new Array<OSFramework.HeatmapLayer.IHeatmapLayer>();
+    const heatmapLayerArr = new Array<OSFramework.Maps.HeatmapLayer.IHeatmapLayer>();
 
     /**
      * Gets the Map to which the HeatmapLayer belongs to
@@ -11,8 +11,8 @@ namespace OutSystems.Maps.MapAPI.HeatmapLayerManager {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     function GetMapByHeatmapLayerId(
         heatmapLayerId: string
-    ): OSFramework.OSMap.IMap {
-        let map: OSFramework.OSMap.IMap;
+    ): OSFramework.Maps.OSMap.IMap {
+        let map: OSFramework.Maps.OSMap.IMap;
 
         //heatmapLayerId is the UniqueId
         if (heatmapLayerMap.has(heatmapLayerId)) {
@@ -24,7 +24,7 @@ namespace OutSystems.Maps.MapAPI.HeatmapLayerManager {
         //UniqueID not found
         else {
             // Try to find its reference on DOM
-            const elem = OSFramework.Helper.GetElementByUniqueId(
+            const elem = OSFramework.Maps.Helper.GetElementByUniqueId(
                 heatmapLayerId,
                 false
             );
@@ -32,7 +32,7 @@ namespace OutSystems.Maps.MapAPI.HeatmapLayerManager {
             // If element is found, means that the DOM was rendered
             if (elem !== undefined) {
                 //Find the closest Map
-                const mapId = OSFramework.Helper.GetClosestMapId(elem);
+                const mapId = OSFramework.Maps.Helper.GetClosestMapId(elem);
                 map = MapManager.GetMapById(mapId);
             }
         }
@@ -77,12 +77,12 @@ namespace OutSystems.Maps.MapAPI.HeatmapLayerManager {
     export function CreateHeatmapLayer(
         heatmapLayerId: string,
         configs: string
-    ): OSFramework.HeatmapLayer.IHeatmapLayer {
+    ): OSFramework.Maps.HeatmapLayer.IHeatmapLayer {
         const map = GetMapByHeatmapLayerId(heatmapLayerId);
         if (
-            OSFramework.Helper.ValidateFeatureProvider(
+            OSFramework.Maps.Helper.ValidateFeatureProvider(
                 map,
-                OSFramework.Enum.Feature.HeatmapLayer
+                OSFramework.Maps.Enum.Feature.HeatmapLayer
             ) === false
         ) {
             return;
@@ -115,8 +115,8 @@ namespace OutSystems.Maps.MapAPI.HeatmapLayerManager {
     export function GetHeatmapLayerById(
         heatmapLayerId: string,
         raiseError = true
-    ): OSFramework.HeatmapLayer.IHeatmapLayer {
-        const heatmapLayer: OSFramework.HeatmapLayer.IHeatmapLayer =
+    ): OSFramework.Maps.HeatmapLayer.IHeatmapLayer {
+        const heatmapLayer: OSFramework.Maps.HeatmapLayer.IHeatmapLayer =
             heatmapLayerArr.find((p) => p && p.equalsToID(heatmapLayerId));
 
         if (heatmapLayer === undefined && raiseError) {
@@ -156,8 +156,8 @@ namespace MapAPI.HeatmapLayerManager {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
         propertyValue: any
     ): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.HeatmapLayerManager.ChangeProperty()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.HeatmapLayerManager.ChangeProperty()'`
         );
         OutSystems.Maps.MapAPI.HeatmapLayerManager.ChangeProperty(
             heatmapLayerId,
@@ -169,9 +169,9 @@ namespace MapAPI.HeatmapLayerManager {
     export function CreateHeatmapLayer(
         heatmapLayerId: string,
         configs: string
-    ): OSFramework.HeatmapLayer.IHeatmapLayer {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.HeatmapLayerManager.CreateHeatmapLayer()'`
+    ): OSFramework.Maps.HeatmapLayer.IHeatmapLayer {
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.HeatmapLayerManager.CreateHeatmapLayer()'`
         );
         return OutSystems.Maps.MapAPI.HeatmapLayerManager.CreateHeatmapLayer(
             heatmapLayerId,
@@ -182,9 +182,9 @@ namespace MapAPI.HeatmapLayerManager {
     export function GetHeatmapLayerById(
         heatmapLayerId: string,
         raiseError = true
-    ): OSFramework.HeatmapLayer.IHeatmapLayer {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.HeatmapLayerManager.GetHeatmapLayerById()'`
+    ): OSFramework.Maps.HeatmapLayer.IHeatmapLayer {
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.HeatmapLayerManager.GetHeatmapLayerById()'`
         );
 
         return OutSystems.Maps.MapAPI.HeatmapLayerManager.GetHeatmapLayerById(
@@ -194,8 +194,8 @@ namespace MapAPI.HeatmapLayerManager {
     }
 
     export function RemoveHeatmapLayer(heatmapLayerId: string): void {
-        OSFramework.Helper.LogWarningMessage(
-            `${OSFramework.Helper.warningMessage} 'OutSystems.Maps.MapAPI.HeatmapLayerManager.RemoveHeatmapLayer()'`
+        OSFramework.Maps.Helper.LogWarningMessage(
+            `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.HeatmapLayerManager.RemoveHeatmapLayer()'`
         );
         OutSystems.Maps.MapAPI.HeatmapLayerManager.RemoveHeatmapLayer(
             heatmapLayerId

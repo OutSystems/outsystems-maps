@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Feature {
+namespace OSFramework.Maps.Feature {
     export interface IOffset {
         /** Sets the current Offset of the Map
          * Get the OffsetX(vertical) and OffsetY(horizontal) in pixels, to apply on map. This will apply based on defined Location.

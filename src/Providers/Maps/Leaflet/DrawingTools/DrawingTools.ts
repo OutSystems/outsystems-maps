@@ -30,10 +30,10 @@ namespace Provider.Leaflet.DrawingTools {
         }
     }
 
-    export class DrawingTools extends OSFramework.DrawingTools
+    export class DrawingTools extends OSFramework.Maps.DrawingTools
         .AbstractDrawingTools<
         L.Control, //TODO - this type should be more specific (Drawing Tool)
-        OSFramework.Configuration.IConfigurationDrawingTools
+        OSFramework.Maps.Configuration.IConfigurationDrawingTools
     > {
         // FeatureGroup <any>: as required by Leaflet
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -44,7 +44,7 @@ namespace Provider.Leaflet.DrawingTools {
         protected _provider: any;
 
         constructor(
-            map: OSFramework.OSMap.IMap,
+            map: OSFramework.Maps.OSMap.IMap,
             drawingToolsId: string,
             configs: Configuration.DrawingTools.DrawingToolsConfig
         ) {
@@ -72,9 +72,10 @@ namespace Provider.Leaflet.DrawingTools {
             if (Constants.DrawingTools.Positions[position] !== undefined) {
                 return Constants.DrawingTools.Positions[position];
             } else {
-                OSFramework.Helper.ThrowError(
+                OSFramework.Maps.Helper.ThrowError(
                     this.map,
-                    OSFramework.Enum.ErrorCodes.CFG_InvalidDrawingToolsPosition,
+                    OSFramework.Maps.Enum.ErrorCodes
+                        .CFG_InvalidDrawingToolsPosition,
                     `${position}`
                 );
                 return;
@@ -86,19 +87,19 @@ namespace Provider.Leaflet.DrawingTools {
             const _tools = new ToolsList();
             this.tools.forEach((tool) => {
                 switch (tool.type) {
-                    case OSFramework.Enum.DrawingToolsTypes.Circle:
+                    case OSFramework.Maps.Enum.DrawingToolsTypes.Circle:
                         _tools.circle = tool.options;
                         break;
-                    case OSFramework.Enum.DrawingToolsTypes.Marker:
+                    case OSFramework.Maps.Enum.DrawingToolsTypes.Marker:
                         _tools.marker = tool.options;
                         break;
-                    case OSFramework.Enum.DrawingToolsTypes.Polygon:
+                    case OSFramework.Maps.Enum.DrawingToolsTypes.Polygon:
                         _tools.polygon = tool.options;
                         break;
-                    case OSFramework.Enum.DrawingToolsTypes.Polyline:
+                    case OSFramework.Maps.Enum.DrawingToolsTypes.Polyline:
                         _tools.polyline = tool.options;
                         break;
-                    case OSFramework.Enum.DrawingToolsTypes.Rectangle:
+                    case OSFramework.Maps.Enum.DrawingToolsTypes.Rectangle:
                         _tools.rectangle = tool.options;
                         break;
                     default:
@@ -129,12 +130,12 @@ namespace Provider.Leaflet.DrawingTools {
         private _setDrawingToolsEvents(): void {
             // Make sure the listeners get removed before adding the new ones
             this.map.provider.off(
-                OSFramework.Helper.Constants.drawingLeafletCompleted
+                OSFramework.Maps.Helper.Constants.drawingLeafletCompleted
             );
 
             // Add the handler that will create the shape/marker element and remove the overlay created by the drawing tool on the map
             this.map.provider.on(
-                OSFramework.Helper.Constants.drawingLeafletCompleted,
+                OSFramework.Maps.Helper.Constants.drawingLeafletCompleted,
                 this._addCompletedEventHandler.bind(this)
             );
         }
@@ -159,8 +160,8 @@ namespace Provider.Leaflet.DrawingTools {
         }
 
         public addTool(
-            tool: OSFramework.DrawingTools.ITool
-        ): OSFramework.DrawingTools.ITool {
+            tool: OSFramework.Maps.DrawingTools.ITool
+        ): OSFramework.Maps.DrawingTools.ITool {
             super.addTool(tool);
 
             if (this.isReady) {
@@ -174,7 +175,7 @@ namespace Provider.Leaflet.DrawingTools {
         public build(): void {
             super.build();
 
-            const configs: OSFramework.Configuration.IConfigurationDrawingTools =
+            const configs: OSFramework.Maps.Configuration.IConfigurationDrawingTools =
                 this.getProviderConfig();
 
             this.map.provider.addLayer(this._toolsGroup);
@@ -202,11 +203,11 @@ namespace Provider.Leaflet.DrawingTools {
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
         public changeProperty(propertyName: string, value: any): void {
             const propValue =
-                OSFramework.Enum.OS_Config_DrawingTools[propertyName];
+                OSFramework.Maps.Enum.OS_Config_DrawingTools[propertyName];
             super.changeProperty(propertyName, value);
             if (this.isReady) {
                 switch (propValue) {
-                    case OSFramework.Enum.OS_Config_DrawingTools.position:
+                    case OSFramework.Maps.Enum.OS_Config_DrawingTools.position:
                         // eslint-disable-next-line no-case-declarations
                         const positionValue =
                             this._getDrawingToolsPosition(value);

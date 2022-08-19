@@ -3,9 +3,9 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Google.Shape {
     export abstract class AbstractProviderShape<
-        T extends OSFramework.Configuration.IConfigurationShape,
+        T extends OSFramework.Maps.Configuration.IConfigurationShape,
         W extends google.maps.MVCObject
-    > extends OSFramework.Shape.AbstractShape<W, T> {
+    > extends OSFramework.Maps.Shape.AbstractShape<W, T> {
         private _shapeChangedEventTimeout: number;
 
         private _resetShapeEvents(): void {
@@ -19,9 +19,11 @@ namespace Provider.Google.Shape {
         /** Builds the provider (asynchronously) by receving a set of multiple coordinates (creating a path for the shape) or just one (creating the center of the shape) */
         protected _buildProvider(
             coordinates:
-                | Promise<OSFramework.OSStructures.OSMap.Coordinates>
-                | Promise<Array<OSFramework.OSStructures.OSMap.Coordinates>>
-                | Promise<OSFramework.OSStructures.OSMap.Bounds>
+                | Promise<OSFramework.Maps.OSStructures.OSMap.Coordinates>
+                | Promise<
+                      Array<OSFramework.Maps.OSStructures.OSMap.Coordinates>
+                  >
+                | Promise<OSFramework.Maps.OSStructures.OSMap.Bounds>
         ): void {
             // First build coords from locations
             // Then, create the provider (Google maps Shape)
@@ -41,9 +43,9 @@ namespace Provider.Google.Shape {
                         this.finishBuild();
                     })
                     .catch((error) => {
-                        OSFramework.Helper.ThrowError(
+                        OSFramework.Maps.Helper.ThrowError(
                             this.map,
-                            OSFramework.Enum.ErrorCodes
+                            OSFramework.Maps.Enum.ErrorCodes
                                 .LIB_FailedGeocodingShapeLocations,
                             error
                         );
@@ -58,13 +60,13 @@ namespace Provider.Google.Shape {
             // OnClick Event
             if (
                 this.shapeEvents.hasHandlers(
-                    OSFramework.Event.Shape.ShapeEventType.OnClick
+                    OSFramework.Maps.Event.Shape.ShapeEventType.OnClick
                 ) &&
                 this.provider.get('clickable') // Always true. Fallback in case this parameter gets changed in the future.
             ) {
                 this.provider.addListener('click', () => {
                     this.shapeEvents.trigger(
-                        OSFramework.Event.Shape.ShapeEventType.OnClick
+                        OSFramework.Maps.Event.Shape.ShapeEventType.OnClick
                     );
                 });
             }
@@ -74,17 +76,17 @@ namespace Provider.Google.Shape {
             // Otherwise, we don't want to add them to the google provider listeners (e.g. OnInitialize, OnClick, etc)
             this.shapeEvents.handlers.forEach(
                 (
-                    handler: OSFramework.Event.IEvent<string>,
+                    handler: OSFramework.Maps.Event.IEvent<string>,
                     eventName: string
                 ) => {
                     if (
                         handler instanceof
-                        OSFramework.Event.Shape.ShapeProviderEvent
+                        OSFramework.Maps.Event.Shape.ShapeProviderEvent
                     ) {
                         // Take care of the shape_changed events
                         if (
                             eventName ===
-                            OSFramework.Helper.Constants.shapeChangedEvent
+                            OSFramework.Maps.Helper.Constants.shapeChangedEvent
                         ) {
                             this._addedEvents.push(eventName);
                             this.providerEventsList.forEach((event) =>
@@ -101,11 +103,12 @@ namespace Provider.Google.Shape {
                                                 () =>
                                                     this.shapeEvents.trigger(
                                                         // EventType
-                                                        OSFramework.Event.Shape
+                                                        OSFramework.Maps.Event
+                                                            .Shape
                                                             .ShapeEventType
                                                             .ProviderEvent,
                                                         // EventName
-                                                        OSFramework.Helper
+                                                        OSFramework.Maps.Helper
                                                             .Constants
                                                             .shapeChangedEvent
                                                     ),
@@ -127,8 +130,8 @@ namespace Provider.Google.Shape {
                                 () => {
                                     this.shapeEvents.trigger(
                                         // EventType
-                                        OSFramework.Event.Shape.ShapeEventType
-                                            .ProviderEvent,
+                                        OSFramework.Maps.Event.Shape
+                                            .ShapeEventType.ProviderEvent,
                                         // EventName
                                         eventName
                                     );
@@ -140,7 +143,7 @@ namespace Provider.Google.Shape {
                             this.provider.addListener(eventName, () => {
                                 this.shapeEvents.trigger(
                                     // EventType
-                                    OSFramework.Event.Shape.ShapeEventType
+                                    OSFramework.Maps.Event.Shape.ShapeEventType
                                         .ProviderEvent,
                                     // EventName
                                     eventName
@@ -167,19 +170,20 @@ namespace Provider.Google.Shape {
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         public changeProperty(propertyName: string, value: any): void {
-            const propValue = OSFramework.Enum.OS_Config_Shape[propertyName];
+            const propValue =
+                OSFramework.Maps.Enum.OS_Config_Shape[propertyName];
             super.changeProperty(propertyName, value);
             if (this.isReady) {
                 switch (propValue) {
-                    case OSFramework.Enum.OS_Config_Shape.allowDrag:
+                    case OSFramework.Maps.Enum.OS_Config_Shape.allowDrag:
                         return this.provider.set('draggable', value);
-                    case OSFramework.Enum.OS_Config_Shape.allowEdit:
+                    case OSFramework.Maps.Enum.OS_Config_Shape.allowEdit:
                         return this.provider.set('editable', value);
-                    case OSFramework.Enum.OS_Config_Shape.strokeOpacity:
+                    case OSFramework.Maps.Enum.OS_Config_Shape.strokeOpacity:
                         return this.provider.set('strokeOpacity', value);
-                    case OSFramework.Enum.OS_Config_Shape.strokeColor:
+                    case OSFramework.Maps.Enum.OS_Config_Shape.strokeColor:
                         return this.provider.set('strokeColor', value);
-                    case OSFramework.Enum.OS_Config_Shape.strokeWeight:
+                    case OSFramework.Maps.Enum.OS_Config_Shape.strokeWeight:
                         return this.provider.set('strokeWeight', value);
                 }
             }
@@ -206,9 +210,9 @@ namespace Provider.Google.Shape {
 
         protected abstract _createProvider(
             locations:
-                | Array<OSFramework.OSStructures.OSMap.Coordinates>
-                | OSFramework.OSStructures.OSMap.Coordinates
-                | OSFramework.OSStructures.OSMap.Bounds
+                | Array<OSFramework.Maps.OSStructures.OSMap.Coordinates>
+                | OSFramework.Maps.OSStructures.OSMap.Coordinates
+                | OSFramework.Maps.OSStructures.OSMap.Bounds
         ): W;
     }
 }

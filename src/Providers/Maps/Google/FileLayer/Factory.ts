@@ -2,10 +2,10 @@
 namespace Provider.Google.FileLayer {
     export namespace FileLayerFactory {
         export function MakeFileLayer(
-            map: OSFramework.OSMap.IMap,
+            map: OSFramework.Maps.OSMap.IMap,
             fileLayerId: string,
-            configs: OSFramework.Configuration.IConfiguration
-        ): OSFramework.FileLayer.IFileLayer {
+            configs: OSFramework.Maps.Configuration.IConfiguration
+        ): OSFramework.Maps.FileLayer.IFileLayer {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             return new FileLayer(
                 map,

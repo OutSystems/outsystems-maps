@@ -1,28 +1,32 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Leaflet.Feature {
     export class Offset
-        implements OSFramework.Feature.IOffset, OSFramework.Interface.IBuilder
+        implements
+            OSFramework.Maps.Feature.IOffset,
+            OSFramework.Maps.Interface.IBuilder
     {
         private _map: OSMap.IMapLeaflet;
         /** Current offset of the Map */
-        private _offset: OSFramework.OSStructures.OSMap.Offset;
+        private _offset: OSFramework.Maps.OSStructures.OSMap.Offset;
 
         constructor(
             map: OSMap.IMapLeaflet,
-            offset: OSFramework.OSStructures.OSMap.Offset
+            offset: OSFramework.Maps.OSStructures.OSMap.Offset
         ) {
             this._map = map;
             this._offset = offset || { offsetX: 0, offsetY: 0 };
         }
 
-        public get getOffset(): OSFramework.OSStructures.OSMap.Offset {
+        public get getOffset(): OSFramework.Maps.OSStructures.OSMap.Offset {
             return this._offset;
         }
 
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         public build(): void {}
 
-        public setOffset(value: OSFramework.OSStructures.OSMap.Offset): void {
+        public setOffset(
+            value: OSFramework.Maps.OSStructures.OSMap.Offset
+        ): void {
             this._offset = {
                 offsetX: value.offsetX || 0,
                 offsetY: value.offsetY || 0

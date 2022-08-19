@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.Event.OSMap {
+namespace OSFramework.Maps.Event.OSMap {
     /**
      * Events currently supported in the Map element.
      *

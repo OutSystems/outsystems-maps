@@ -6,7 +6,7 @@
 namespace Provider.Google.SharedComponents {
     export function InitializeScripts(apiKey: string, cb: () => void): void {
         let script = document.getElementById(
-            OSFramework.Helper.Constants.googleMapsScript
+            OSFramework.Maps.Helper.Constants.googleMapsScript
         ) as HTMLScriptElement;
         if (typeof google === 'object' && typeof google.maps === 'object') {
             cb();
@@ -15,7 +15,7 @@ namespace Provider.Google.SharedComponents {
                 script = document.createElement('script');
                 /* eslint-disable-next-line prettier/prettier */
                 script.src =
-                    OSFramework.Helper.Constants.googleMapsApiMap +
+                    OSFramework.Maps.Helper.Constants.googleMapsApiMap +
                     '?key=' +
                     apiKey +
                     // In order to use the drawingTools we need to add it into the libraries via the URL = drawing
@@ -24,7 +24,7 @@ namespace Provider.Google.SharedComponents {
                     '&libraries=drawing,visualization,places';
                 script.async = true;
                 script.defer = true;
-                script.id = OSFramework.Helper.Constants.googleMapsScript;
+                script.id = OSFramework.Maps.Helper.Constants.googleMapsScript;
                 document.head.appendChild(script);
             }
             script.addEventListener('load', cb);
@@ -36,7 +36,7 @@ namespace Provider.Google.SharedComponents {
      * @param object
      */
     export function RemoveEventsFromProvider(
-        object: OSMap.IMapGoogle | OSFramework.SearchPlaces.ISearchPlaces
+        object: OSMap.IMapGoogle | OSFramework.Maps.SearchPlaces.ISearchPlaces
     ): void {
         // Make sure all the listeners get removed before adding the new ones
         object.addedEvents.forEach((eventListener, index) => {
@@ -52,13 +52,13 @@ namespace Provider.Google.SharedComponents {
      * This Promise will only get resolved after the provider gets built (asynchronously)
      */
     export function ConvertStringToBounds(
-        bounds: OSFramework.OSStructures.OSMap.BoundsString,
+        bounds: OSFramework.Maps.OSStructures.OSMap.BoundsString,
         apiKey: string,
         errorCb: () => void
-    ): Promise<OSFramework.OSStructures.OSMap.Bounds> {
+    ): Promise<OSFramework.Maps.OSStructures.OSMap.Bounds> {
         // If the SearchArea have empty bounds, throw an error
         // make sure the provided bounds (string) have the correct format
-        if (OSFramework.Helper.HasAnyEmptyBound(bounds)) {
+        if (OSFramework.Maps.Helper.HasAnyEmptyBound(bounds)) {
             errorCb();
             return;
         }
@@ -66,7 +66,8 @@ namespace Provider.Google.SharedComponents {
         const cardinalDirections = ['north', 'south', 'east', 'west'];
         return new Promise((resolve, reject) => {
             let boundsLength = 0;
-            const finalBounds = new OSFramework.OSStructures.OSMap.Bounds();
+            const finalBounds =
+                new OSFramework.Maps.OSStructures.OSMap.Bounds();
             // forEach ['north', 'south', 'east', 'west'] cardinal direction
             cardinalDirections.forEach((cd) => {
                 // Use Regex to validate if string is a single coordinate (latitude or longitude)

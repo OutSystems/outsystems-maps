@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace OSFramework.OSStructures.Directions {
+namespace OSFramework.Maps.OSStructures.Directions {
     export class Options {
         public destinationRoute: string;
         public exclude: ExcludeCriteria;

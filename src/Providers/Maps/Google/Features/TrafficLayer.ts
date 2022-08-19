@@ -2,9 +2,9 @@
 namespace Provider.Google.Feature {
     export class TrafficLayer
         implements
-            OSFramework.Feature.ITrafficLayer,
-            OSFramework.Interface.IBuilder,
-            OSFramework.Interface.IDisposable
+            OSFramework.Maps.Feature.ITrafficLayer,
+            OSFramework.Maps.Interface.IBuilder,
+            OSFramework.Maps.Interface.IDisposable
     {
         private _enabled: boolean;
         private _map: OSMap.IMapGoogle;

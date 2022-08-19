@@ -6,8 +6,8 @@ namespace Provider.Leaflet.DrawingTools {
         W extends Configuration.DrawingTools.DrawConfig
     > extends AbstractProviderTool<W> {
         constructor(
-            map: OSFramework.OSMap.IMap,
-            drawingTools: OSFramework.DrawingTools.IDrawingTools,
+            map: OSFramework.Maps.OSMap.IMap,
+            drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
             drawingToolsId: string,
             type: string,
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
@@ -17,16 +17,16 @@ namespace Provider.Leaflet.DrawingTools {
         }
 
         /** Add the onChange event to the new element */
-        private _setOnChangeEvent(_shape: OSFramework.Shape.IShape): void {
+        private _setOnChangeEvent(_shape: OSFramework.Maps.Shape.IShape): void {
             _shape.shapeEvents.addHandler(
                 // changing the shape locations or bounds is only available via the drag-and-drop and resize, so the solution passes by adding the shape_changed event listener as the shape's OnChanged event
-                OSFramework.Helper.Constants
-                    .shapeChangedEvent as OSFramework.Event.Shape.ShapeEventType,
+                OSFramework.Maps.Helper.Constants
+                    .shapeChangedEvent as OSFramework.Maps.Event.Shape.ShapeEventType,
                 () => {
                     this.drawingTools.drawingToolsEvents.trigger(
                         // EventType
-                        OSFramework.Event.DrawingTools.DrawingToolsEventType
-                            .ProviderEvent,
+                        OSFramework.Maps.Event.DrawingTools
+                            .DrawingToolsEventType.ProviderEvent,
                         // EventName
                         this.completedToolEventName,
                         // The extra parameters, uniqueId and isNewElement set to false indicating that the element is not new
@@ -39,10 +39,10 @@ namespace Provider.Leaflet.DrawingTools {
         /** Create the new shape element based on the configurations (already contains the locations, the bounds or the center and radius depending on the type of the new shape) */
         protected createShapeElement(
             uniqueId: string,
-            type: OSFramework.Enum.ShapeType,
+            type: OSFramework.Maps.Enum.ShapeType,
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             configs: any
-        ): OSFramework.Shape.IShape {
+        ): OSFramework.Maps.Shape.IShape {
             const _shape = Shape.ShapeFactory.MakeShape(
                 this.map,
                 uniqueId,
@@ -66,7 +66,7 @@ namespace Provider.Leaflet.DrawingTools {
             }
 
             const finalLocations = locationsArray.map(
-                (coords: OSFramework.OSStructures.OSMap.Coordinates) => {
+                (coords: OSFramework.Maps.OSStructures.OSMap.Coordinates) => {
                     return { Lat: coords[0], Lng: coords[1] };
                 }
             );
@@ -86,24 +86,25 @@ namespace Provider.Leaflet.DrawingTools {
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
         public changeProperty(propertyName: string, value: any): void {
-            const propValue = OSFramework.Enum.OS_Config_Shape[propertyName];
+            const propValue =
+                OSFramework.Maps.Enum.OS_Config_Shape[propertyName];
             super.changeProperty(propertyName, value);
             if (this.drawingTools.isReady) {
                 switch (propValue) {
                     // If the following configurations are not included on the configs of the tool, the AbstractTool will make sure to throw an error
-                    case OSFramework.Enum.OS_Config_Shape.strokeOpacity:
+                    case OSFramework.Maps.Enum.OS_Config_Shape.strokeOpacity:
                         this.options = { shapeOptions: { opacity: value } };
                         return;
-                    case OSFramework.Enum.OS_Config_Shape.strokeColor:
+                    case OSFramework.Maps.Enum.OS_Config_Shape.strokeColor:
                         this.options = { shapeOptions: { color: value } };
                         return;
-                    case OSFramework.Enum.OS_Config_Shape.strokeWeight:
+                    case OSFramework.Maps.Enum.OS_Config_Shape.strokeWeight:
                         this.options = { shapeOptions: { weight: value } };
                         return;
-                    case OSFramework.Enum.OS_Config_Shape.fillOpacity:
+                    case OSFramework.Maps.Enum.OS_Config_Shape.fillOpacity:
                         this.options = { shapeOptions: { fillOpacity: value } };
                         return;
-                    case OSFramework.Enum.OS_Config_Shape.fillColor:
+                    case OSFramework.Maps.Enum.OS_Config_Shape.fillColor:
                         this.options = { shapeOptions: { fillColor: value } };
                         return;
                 }

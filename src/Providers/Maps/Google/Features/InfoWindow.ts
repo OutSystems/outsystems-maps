@@ -2,8 +2,8 @@
 namespace Provider.Google.Feature {
     export class InfoWindow
         implements
-            OSFramework.Feature.IInfoWindow,
-            OSFramework.Interface.IBuilder
+            OSFramework.Maps.Feature.IInfoWindow,
+            OSFramework.Maps.Interface.IBuilder
     {
         private _infoWindow: google.maps.InfoWindow;
         private _map: OSMap.IMapGoogle;
@@ -37,7 +37,7 @@ namespace Provider.Google.Feature {
             }
         }
 
-        public openPopup(marker: OSFramework.Marker.IMarkerPopup): void {
+        public openPopup(marker: OSFramework.Maps.Marker.IMarkerPopup): void {
             if (this._popupIsOpened === true) {
                 this.closePopup();
             }
