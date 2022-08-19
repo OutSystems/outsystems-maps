@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Google.Feature {
+namespace Provider.Maps.Google.Feature {
     export class TrafficLayer
         implements
             OSFramework.Maps.Feature.ITrafficLayer,

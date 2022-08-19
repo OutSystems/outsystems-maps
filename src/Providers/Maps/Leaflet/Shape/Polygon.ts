@@ -1,7 +1,7 @@
 /// <reference path="AbstractPolyshape.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Leaflet.Shape {
+namespace Provider.Maps.Leaflet.Shape {
     export class Polygon extends AbstractPolyshape<
         Configuration.Shape.FilledShapeConfig,
         L.Polygon

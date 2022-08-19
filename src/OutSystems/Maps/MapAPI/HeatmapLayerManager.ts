@@ -89,7 +89,7 @@ namespace OutSystems.Maps.MapAPI.HeatmapLayerManager {
         }
         if (!map.hasHeatmapLayer(heatmapLayerId)) {
             const _heatmapLayer =
-                Provider.Google.HeatmapLayer.HeatmapLayerFactory.MakeHeatmapLayer(
+                Provider.Maps.Google.HeatmapLayer.HeatmapLayerFactory.MakeHeatmapLayer(
                     map,
                     heatmapLayerId,
                     JSON.parse(configs)

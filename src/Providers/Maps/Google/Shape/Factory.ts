@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Google.Shape {
+namespace Provider.Maps.Google.Shape {
     export namespace ShapeFactory {
         export function MakeShape(
             map: OSFramework.Maps.OSMap.IMap,

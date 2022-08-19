@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Google.Feature {
+namespace Provider.Maps.Google.Feature {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     export class GoogleMarkerClusterer
         implements

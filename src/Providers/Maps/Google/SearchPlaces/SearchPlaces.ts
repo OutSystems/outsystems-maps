@@ -1,7 +1,7 @@
 /// <reference path="../../../OSFramework/SearchPlaces/AbstractSearchPlaces.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Google.SearchPlaces {
+namespace Provider.Maps.Google.SearchPlaces {
     export class SearchPlaces extends OSFramework.Maps.SearchPlaces
         .AbstractSearchPlaces<
         google.maps.places.Autocomplete,
@@ -310,7 +310,7 @@ namespace Provider.Google.SearchPlaces {
                         .searchType:
                         return this.provider.setTypes([
                             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                            Provider.Google.SearchPlaces.SearchTypes[value]
+                            Provider.Maps.Google.SearchPlaces.SearchTypes[value]
                         ]);
                 }
             }

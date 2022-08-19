@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Google.Configuration.MarkerClusterer {
+namespace Provider.Maps.Google.Configuration.MarkerClusterer {
     export class MarkerClustererConfig
         extends OSFramework.Maps.Configuration.AbstractConfiguration
         implements OSFramework.Maps.Configuration.IConfigurationMarkerClusterer

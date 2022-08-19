@@ -10,14 +10,14 @@ namespace OSFramework.Maps.Shape {
             switch (map.providerType) {
                 case Enum.ProviderType.Google:
                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                    return Provider.Google.Shape.ShapeFactory.MakeShape(
+                    return Provider.Maps.Google.Shape.ShapeFactory.MakeShape(
                         map,
                         shapeId,
                         type,
                         configs as JSON
                     );
                 case Enum.ProviderType.Leaflet:
-                    return Provider.Leaflet.Shape.ShapeFactory.MakeShape(
+                    return Provider.Maps.Leaflet.Shape.ShapeFactory.MakeShape(
                         map,
                         shapeId,
                         type,

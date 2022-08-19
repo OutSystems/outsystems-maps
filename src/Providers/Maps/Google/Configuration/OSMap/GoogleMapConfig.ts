@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Google.Configuration.OSMap {
+namespace Provider.Maps.Google.Configuration.OSMap {
     export class GoogleMapConfig
         extends OSFramework.Maps.Configuration.AbstractConfiguration
         implements OSFramework.Maps.Configuration.IConfigurationMap

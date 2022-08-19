@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Leaflet.Helper.Conversions {
+namespace Provider.Maps.Leaflet.Helper.Conversions {
     /**
      * Make sure the location is a set of valid coordinates
      *

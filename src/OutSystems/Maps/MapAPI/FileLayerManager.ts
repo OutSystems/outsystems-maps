@@ -84,7 +84,7 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
         }
         if (!map.hasFileLayer(fileLayerId)) {
             const _fileLayer =
-                Provider.Google.FileLayer.FileLayerFactory.MakeFileLayer(
+                Provider.Maps.Google.FileLayer.FileLayerFactory.MakeFileLayer(
                     map,
                     fileLayerId,
                     JSON.parse(configs)

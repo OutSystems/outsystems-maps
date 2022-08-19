@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Google.HeatmapLayer {
+namespace Provider.Maps.Google.HeatmapLayer {
     export namespace HeatmapLayerFactory {
         export function MakeHeatmapLayer(
             map: OSFramework.Maps.OSMap.IMap,

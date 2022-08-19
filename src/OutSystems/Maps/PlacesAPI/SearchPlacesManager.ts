@@ -39,7 +39,7 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager {
         configs: string
     ): OSFramework.Maps.SearchPlaces.ISearchPlaces {
         const _searchPlaces =
-            Provider.Google.SearchPlaces.SearchPlacesFactory.MakeSearchPlaces(
+            Provider.Maps.Google.SearchPlaces.SearchPlacesFactory.MakeSearchPlaces(
                 searchPlacesId,
                 JSON.parse(configs)
             );

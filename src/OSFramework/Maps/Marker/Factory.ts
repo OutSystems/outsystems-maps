@@ -9,19 +9,19 @@ namespace OSFramework.Maps.Marker {
         ): Marker.IMarker {
             switch (map.providerType) {
                 case Enum.ProviderType.Google:
-                    return Provider.Google.Marker.MarkerFactory.MakeMarker(
+                    return Provider.Maps.Google.Marker.MarkerFactory.MakeMarker(
                         map,
                         markerId,
                         type,
-                        configs as Provider.Google.Configuration.Marker.GoogleMarkerConfig
+                        configs as Provider.Maps.Google.Configuration.Marker.GoogleMarkerConfig
                     );
 
                 case Enum.ProviderType.Leaflet:
-                    return Provider.Leaflet.Marker.MarkerFactory.MakeMarker(
+                    return Provider.Maps.Leaflet.Marker.MarkerFactory.MakeMarker(
                         map,
                         markerId,
                         type,
-                        configs as Provider.Leaflet.Configuration.Marker.LeafletMarkerConfig
+                        configs as Provider.Maps.Leaflet.Configuration.Marker.LeafletMarkerConfig
                     );
                 default:
                     throw new Error(

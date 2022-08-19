@@ -1,7 +1,7 @@
 /// <reference path="./FilledShapeConfig.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Leaflet.Configuration.Shape {
+namespace Provider.Maps.Leaflet.Configuration.Shape {
     export class RectangleShapeConfig extends FilledShapeConfig {
         public bounds: string;
 

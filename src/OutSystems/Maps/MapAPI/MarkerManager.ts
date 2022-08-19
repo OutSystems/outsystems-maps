@@ -62,7 +62,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
     ): OSFramework.Maps.Marker.IMarker {
         const map = MapManager.GetMapById(mapId, true);
         if (!map.hasMarker(markerId)) {
-            const _marker = Provider.Google.Marker.MarkerFactory.MakeMarker(
+            const _marker = Provider.Maps.Google.Marker.MarkerFactory.MakeMarker(
                 map,
                 markerId,
                 OSFramework.Maps.Enum.MarkerType.Marker,

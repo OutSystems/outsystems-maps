@@ -1,7 +1,7 @@
 /// <reference path="../../../OSFramework/OSMap/AbstractMap.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Leaflet.OSMap {
+namespace Provider.Maps.Leaflet.OSMap {
     export class Map
         extends OSFramework.Maps.OSMap.AbstractMap<
             L.Map,

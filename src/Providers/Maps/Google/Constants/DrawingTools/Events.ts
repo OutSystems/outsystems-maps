@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Google.Constants.DrawingTools {
+namespace Provider.Maps.Google.Constants.DrawingTools {
     /**
      * Array of strings that define the available Provider Events
      */

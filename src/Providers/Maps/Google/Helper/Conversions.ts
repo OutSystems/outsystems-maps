@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Google.Helper.Conversions {
+namespace Provider.Maps.Google.Helper.Conversions {
     /**
      * GoogleMaps API used to get the coordinates based on the location (address)
      *

@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Google.Feature {
+namespace Provider.Maps.Google.Feature {
     export class Center
         implements OSFramework.Maps.Feature.ICenter, OSFramework.Maps.Interface.IBuilder
     {

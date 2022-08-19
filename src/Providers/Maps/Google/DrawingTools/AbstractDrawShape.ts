@@ -1,7 +1,7 @@
 /// <reference path="AbstractProviderTool.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Google.DrawingTools {
+namespace Provider.Maps.Google.DrawingTools {
     export abstract class AbstractDrawShape<
         T extends Configuration.DrawingTools.DrawConfig
     > extends AbstractProviderTool<T> {

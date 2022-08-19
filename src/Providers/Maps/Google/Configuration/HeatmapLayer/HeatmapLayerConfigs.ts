@@ -1,7 +1,7 @@
 /// <reference path="../../../../OSFramework/Configuration/AbstractConfiguration.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Google.Configuration.HeatmapLayer {
+namespace Provider.Maps.Google.Configuration.HeatmapLayer {
     export class HeatmapLayerConfig
         extends OSFramework.Maps.Configuration.AbstractConfiguration
         implements OSFramework.Maps.Configuration.IConfigurationHeatmapLayer

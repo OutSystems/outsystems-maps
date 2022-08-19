@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Google.Constants.Marker {
+namespace Provider.Maps.Google.Constants.Marker {
     /**
      * Enum that defines the available Provider Events
      */

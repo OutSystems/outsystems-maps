@@ -9,13 +9,13 @@ namespace OSFramework.Maps.OSMap {
         ): OSMap.IMap {
             switch (provider) {
                 case Enum.ProviderType.Google:
-                    return Provider.Google.OSMap.MapFactory.MakeMap(
+                    return Provider.Maps.Google.OSMap.MapFactory.MakeMap(
                         type,
                         mapdId,
                         configs
                     );
                 case Enum.ProviderType.Leaflet:
-                    return Provider.Leaflet.OSMap.MapFactory.MakeMap(
+                    return Provider.Maps.Leaflet.OSMap.MapFactory.MakeMap(
                         type,
                         mapdId,
                         configs

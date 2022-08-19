@@ -1,7 +1,7 @@
 /// <reference path="../../../OSFramework/Marker/AbstractMarker.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Google.Marker {
+namespace Provider.Maps.Google.Marker {
     export class MarkerPopup
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         extends Marker

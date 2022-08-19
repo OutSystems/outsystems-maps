@@ -1,7 +1,7 @@
 /// <reference path="../../../OSFramework/Shape/AbstractShape.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Leaflet.Shape {
+namespace Provider.Maps.Leaflet.Shape {
     export abstract class AbstractProviderShape<
         T extends OSFramework.Maps.Configuration.IConfigurationShape,
         W extends L.Path

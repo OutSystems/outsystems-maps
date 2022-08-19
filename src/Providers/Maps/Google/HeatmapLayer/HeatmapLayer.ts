@@ -1,7 +1,7 @@
 /// <reference path="../../../OSFramework/HeatmapLayer/AbstractHeatmapLayer.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Google.HeatmapLayer {
+namespace Provider.Maps.Google.HeatmapLayer {
     export type data = {
         location: google.maps.LatLng;
         weight: number;

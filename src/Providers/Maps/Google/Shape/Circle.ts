@@ -1,7 +1,7 @@
 /// <reference path="AbstractProviderShape.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Google.Shape {
+namespace Provider.Maps.Google.Shape {
     export class Circle
         extends AbstractProviderShape<
             Configuration.Shape.CircleShapeConfig,

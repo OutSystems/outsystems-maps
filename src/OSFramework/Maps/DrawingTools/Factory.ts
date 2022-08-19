@@ -8,13 +8,13 @@ namespace OSFramework.Maps.DrawingTools {
         ): DrawingTools.IDrawingTools {
             switch (map.providerType) {
                 case Enum.ProviderType.Google:
-                    return Provider.Google.DrawingTools.DrawingToolsFactory.MakeDrawingTools(
+                    return Provider.Maps.Google.DrawingTools.DrawingToolsFactory.MakeDrawingTools(
                         map,
                         drawingToolsId,
                         configs
                     );
                 case Enum.ProviderType.Leaflet:
-                    return Provider.Leaflet.DrawingTools.DrawingToolsFactory.MakeDrawingTools(
+                    return Provider.Maps.Leaflet.DrawingTools.DrawingToolsFactory.MakeDrawingTools(
                         map,
                         drawingToolsId,
                         configs
@@ -35,7 +35,7 @@ namespace OSFramework.Maps.DrawingTools {
         ): DrawingTools.ITool {
             switch (map.providerType) {
                 case Enum.ProviderType.Google:
-                    return Provider.Google.DrawingTools.DrawingToolsFactory.MakeTool(
+                    return Provider.Maps.Google.DrawingTools.DrawingToolsFactory.MakeTool(
                         map,
                         drawingTools,
                         toolId,
@@ -43,7 +43,7 @@ namespace OSFramework.Maps.DrawingTools {
                         configs
                     );
                 case Enum.ProviderType.Leaflet:
-                    return Provider.Leaflet.DrawingTools.DrawingToolsFactory.MakeTool(
+                    return Provider.Maps.Leaflet.DrawingTools.DrawingToolsFactory.MakeTool(
                         map,
                         drawingTools,
                         toolId,

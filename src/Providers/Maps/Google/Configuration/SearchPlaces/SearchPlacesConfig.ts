@@ -1,7 +1,7 @@
 /// <reference path="../../../../OSFramework/Configuration/AbstractConfiguration.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Google.Configuration.SearchPlaces {
+namespace Provider.Maps.Google.Configuration.SearchPlaces {
     export class SearchPlacesConfig
         extends OSFramework.Maps.Configuration.AbstractConfiguration
         implements OSFramework.Maps.Configuration.IConfigurationSearchPlaces

@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Leaflet.DrawingTools {
+namespace Provider.Maps.Leaflet.DrawingTools {
     export class DrawPolyline extends AbstractDrawShape<Configuration.DrawingTools.DrawBasicShapeConfig> {
         constructor(
             map: OSFramework.Maps.OSMap.IMap,

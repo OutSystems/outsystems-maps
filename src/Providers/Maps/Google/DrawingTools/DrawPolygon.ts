@@ -1,7 +1,7 @@
 /// <reference path="AbstractDrawPolyshape.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Google.DrawingTools {
+namespace Provider.Maps.Google.DrawingTools {
     export class DrawPolygon extends AbstractDrawPolyshape<Configuration.DrawingTools.DrawFilledShapeConfig> {
         constructor(
             map: OSFramework.Maps.OSMap.IMap,

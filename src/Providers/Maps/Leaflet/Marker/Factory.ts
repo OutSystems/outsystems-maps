@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Leaflet.Marker {
+namespace Provider.Maps.Leaflet.Marker {
     export namespace MarkerFactory {
         export function MakeMarker(
             map: OSFramework.Maps.OSMap.IMap,

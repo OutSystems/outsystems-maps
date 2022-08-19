@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Leaflet.Feature {
+namespace Provider.Maps.Leaflet.Feature {
     export interface IFeatures {
         features: OSFramework.Maps.Feature.ExposedFeatures;
         dispose(): void;

@@ -1,7 +1,7 @@
 /// <reference path="../../../../OSFramework/Configuration/AbstractConfiguration.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Leaflet.Configuration.Marker {
+namespace Provider.Maps.Leaflet.Configuration.Marker {
     export class LeafletMarkerConfig
         extends OSFramework.Maps.Configuration.AbstractConfiguration
         implements OSFramework.Maps.Configuration.IConfigurationMarker

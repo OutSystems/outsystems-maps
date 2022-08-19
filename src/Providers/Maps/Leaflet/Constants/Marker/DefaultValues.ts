@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Leaflet.Constants.Marker {
+namespace Provider.Maps.Leaflet.Constants.Marker {
     /**
      * Consts that defines the defaults for Marker
      */

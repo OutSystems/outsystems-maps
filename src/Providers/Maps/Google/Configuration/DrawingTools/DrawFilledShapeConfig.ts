@@ -1,7 +1,7 @@
 /// <reference path="./DrawBasicShapeConfig.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Google.Configuration.DrawingTools {
+namespace Provider.Maps.Google.Configuration.DrawingTools {
     export class DrawFilledShapeConfig extends DrawBasicShapeConfig {
         public fillColor: string;
         public fillOpacity: number;

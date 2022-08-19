@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.Google.Feature {
+namespace Provider.Maps.Google.Feature {
     export class InfoWindow
         implements
             OSFramework.Maps.Feature.IInfoWindow,
