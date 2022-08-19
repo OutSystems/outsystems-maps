@@ -1,4 +1,4 @@
-/// <reference path="../../../OSFramework/DrawingTools/AbstractTool.ts" />
+/// <reference path="../../../../OSFramework/Maps/DrawingTools/AbstractTool.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Leaflet.DrawingTools {

@@ -1,4 +1,4 @@
-/// <reference path="../../../OSFramework/SearchPlaces/AbstractSearchPlaces.ts" />
+/// <reference path="../../../../OSFramework/Maps/SearchPlaces/AbstractSearchPlaces.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.SearchPlaces {

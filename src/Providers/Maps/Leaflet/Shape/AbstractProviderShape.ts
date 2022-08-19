@@ -1,4 +1,4 @@
-/// <reference path="../../../OSFramework/Shape/AbstractShape.ts" />
+/// <reference path="../../../../OSFramework/Maps/Shape/AbstractShape.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Leaflet.Shape {

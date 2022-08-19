@@ -1,4 +1,4 @@
-/// <reference path="../../../OSFramework/FileLayer/AbstractFileLayer.ts" />
+/// <reference path="../../../../OSFramework/Maps/FileLayer/AbstractFileLayer.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.FileLayer {

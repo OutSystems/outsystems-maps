@@ -1,4 +1,4 @@
-/// <reference path="../../../OSFramework/Marker/AbstractMarker.ts" />
+/// <reference path="../../../../OSFramework/Maps/Marker/AbstractMarker.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Leaflet.Marker {

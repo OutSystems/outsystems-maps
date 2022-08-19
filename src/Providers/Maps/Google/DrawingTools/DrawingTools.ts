@@ -1,4 +1,4 @@
-/// <reference path="../../../OSFramework/DrawingTools/AbstractDrawingTools.ts" />
+/// <reference path="../../../../OSFramework/Maps/DrawingTools/AbstractDrawingTools.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.DrawingTools {

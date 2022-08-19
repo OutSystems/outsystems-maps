@@ -1,4 +1,4 @@
-/// <reference path="../../../../OSFramework/Configuration/AbstractConfiguration.ts" />
+/// <reference path="../../../../../OSFramework/Maps/Configuration/AbstractConfiguration.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.Configuration.Marker {

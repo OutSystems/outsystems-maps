@@ -1,4 +1,4 @@
-/// <reference path="../../../OSFramework/HeatmapLayer/AbstractHeatmapLayer.ts" />
+/// <reference path="../../../../OSFramework/Maps/HeatmapLayer/AbstractHeatmapLayer.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.HeatmapLayer {
