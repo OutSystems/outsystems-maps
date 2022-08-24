@@ -21,8 +21,8 @@ namespace OSFramework.Maps.Event.OSMap {
             mapObj: OSFramework.Maps.OSMap.IMap,
             mapId: string,
             eventName: string,
-            eventUniqueId: string,
-            coords: string
+            coords: string,
+            eventUniqueId: string
         ): void {
             this.handlers.slice(0).forEach((h) => {
                 // Checks if event block exists on page before calling its callback
