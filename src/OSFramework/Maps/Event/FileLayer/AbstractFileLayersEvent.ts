@@ -20,7 +20,12 @@ namespace OSFramework.Maps.Event.FileLayer {
             this.handlers
                 .slice(0)
                 .forEach((h) =>
-                    Helper.CallbackAsyncInvocation(h, mapId, fileLayerId, ...args)
+                    Helper.CallbackAsyncInvocation(
+                        h,
+                        mapId,
+                        fileLayerId,
+                        ...args
+                    )
                 );
         }
     }

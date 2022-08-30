@@ -70,7 +70,9 @@ namespace OSFramework.Maps.OSMap {
          * @param shape Shape that will be added to the Map
          * @returns Shape that has been created
          */
-        addShape(shape: OSFramework.Maps.Shape.IShape): OSFramework.Maps.Shape.IShape;
+        addShape(
+            shape: OSFramework.Maps.Shape.IShape
+        ): OSFramework.Maps.Shape.IShape;
         /**
          * Change property of a drawingTools from the DrawingTools by specifying the property name and the new value
          * @param drawingToolsId id of the DrawingTools
@@ -143,7 +145,9 @@ namespace OSFramework.Maps.OSMap {
          * @param fileLayerId id of the FileLayer
          * @returns FileLayer found via the specified fileLayerId
          */
-        getFileLayer(fileLayerId: string): OSFramework.Maps.FileLayer.IFileLayer;
+        getFileLayer(
+            fileLayerId: string
+        ): OSFramework.Maps.FileLayer.IFileLayer;
         /**
          * Get the Marker from the Map by giving a markerId
          * @param markerId id of the marker

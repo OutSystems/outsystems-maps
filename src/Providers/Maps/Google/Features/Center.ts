@@ -1,7 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.Feature {
     export class Center
-        implements OSFramework.Maps.Feature.ICenter, OSFramework.Maps.Interface.IBuilder
+        implements
+            OSFramework.Maps.Feature.ICenter,
+            OSFramework.Maps.Interface.IBuilder
     {
         /** Current center position of the Map that changes whenever a marker is added or by enabling the Autofit on Zoom feature */
         private _currentCenter: OSFramework.Maps.OSStructures.OSMap.Coordinates;

@@ -24,7 +24,9 @@ namespace Provider.Maps.Google.DrawingTools {
             );
         }
 
-        private _setOnChangeEvent(_marker: OSFramework.Maps.Marker.IMarker): void {
+        private _setOnChangeEvent(
+            _marker: OSFramework.Maps.Marker.IMarker
+        ): void {
             _marker.markerEvents.addHandler(
                 // changing the marker location is only available via the drag-and-drop, so the solution passes by adding the dragend event listener as the marker's OnChanged event
                 'dragend' as OSFramework.Maps.Event.Marker.MarkerEventType,
@@ -111,7 +113,8 @@ namespace Provider.Maps.Google.DrawingTools {
 
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
         public changeProperty(propertyName: string, value: any): void {
-            const propValue = OSFramework.Maps.Enum.OS_Config_Marker[propertyName];
+            const propValue =
+                OSFramework.Maps.Enum.OS_Config_Marker[propertyName];
             super.changeProperty(propertyName, value);
             if (this.drawingTools.isReady) {
                 switch (propValue) {

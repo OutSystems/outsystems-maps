@@ -19,13 +19,14 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
             !drawingTools.hasTool(toolId) &&
             !drawingTools.toolAlreadyExists(type)
         ) {
-            const _tool = OSFramework.Maps.DrawingTools.DrawingToolsFactory.MakeTool(
-                drawingTools.map,
-                drawingTools,
-                toolId,
-                type,
-                JSON.parse(configs)
-            );
+            const _tool =
+                OSFramework.Maps.DrawingTools.DrawingToolsFactory.MakeTool(
+                    drawingTools.map,
+                    drawingTools,
+                    toolId,
+                    type,
+                    JSON.parse(configs)
+                );
             drawingTools.addTool(_tool);
             Events.CheckPendingEvents(drawingTools);
             return _tool;

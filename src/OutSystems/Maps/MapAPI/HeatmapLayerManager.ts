@@ -1,7 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OutSystems.Maps.MapAPI.HeatmapLayerManager {
     const heatmapLayerMap = new Map<string, string>(); //heatmapLayer.uniqueId -> map.uniqueId
-    const heatmapLayerArr = new Array<OSFramework.Maps.HeatmapLayer.IHeatmapLayer>();
+    const heatmapLayerArr =
+        new Array<OSFramework.Maps.HeatmapLayer.IHeatmapLayer>();
 
     /**
      * Gets the Map to which the HeatmapLayer belongs to

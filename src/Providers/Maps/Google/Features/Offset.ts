@@ -1,7 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.Feature {
     export class Offset
-        implements OSFramework.Maps.Feature.IOffset, OSFramework.Maps.Interface.IBuilder
+        implements
+            OSFramework.Maps.Feature.IOffset,
+            OSFramework.Maps.Interface.IBuilder
     {
         private _map: OSMap.IMapGoogle;
         /** Current offset of the Map */
@@ -22,7 +24,9 @@ namespace Provider.Maps.Google.Feature {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         public build(): void {}
 
-        public setOffset(value: OSFramework.Maps.OSStructures.OSMap.Offset): void {
+        public setOffset(
+            value: OSFramework.Maps.OSStructures.OSMap.Offset
+        ): void {
             this._offset = {
                 offsetX: value.offsetX || 0,
                 offsetY: value.offsetY || 0

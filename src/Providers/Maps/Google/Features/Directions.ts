@@ -106,7 +106,8 @@ namespace Provider.Maps.Google.Feature {
                 };
             } else {
                 return {
-                    code: OSFramework.Maps.Enum.ErrorCodes.API_FailedRemoveDirections
+                    code: OSFramework.Maps.Enum.ErrorCodes
+                        .API_FailedRemoveDirections
                 };
             }
         }

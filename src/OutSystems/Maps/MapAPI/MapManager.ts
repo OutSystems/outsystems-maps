@@ -120,7 +120,10 @@ namespace OutSystems.Maps.MapAPI.MapManager {
      * Function that will get all the maps from the current page
      * @returns Map structure containing all the maps and the corresponding uniqueId
      */
-    export function GetMapsFromPage(): Map<string, OSFramework.Maps.OSMap.IMap> {
+    export function GetMapsFromPage(): Map<
+        string,
+        OSFramework.Maps.OSMap.IMap
+    > {
         return maps;
     }
 
@@ -195,9 +198,9 @@ namespace OutSystems.Maps.MapAPI.MapManager {
         //It would imply that the widgetId would be set in a different moment than what is now.
         //*************************************/
         if (widgetId === undefined) {
-            widgetId = OSFramework.Maps.Helper.GetElementByUniqueId(mapId).closest(
-                map.mapTag
-            ).id;
+            widgetId = OSFramework.Maps.Helper.GetElementByUniqueId(
+                mapId
+            ).closest(map.mapTag).id;
         }
         //*************************************/
 
@@ -293,7 +296,10 @@ namespace MapAPI.MapManager {
         return OutSystems.Maps.MapAPI.MapManager.GetMapById(mapId, raiseError);
     }
 
-    export function GetMapsFromPage(): Map<string, OSFramework.Maps.OSMap.IMap> {
+    export function GetMapsFromPage(): Map<
+        string,
+        OSFramework.Maps.OSMap.IMap
+    > {
         OSFramework.Maps.Helper.LogWarningMessage(
             `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.GetMapsFromPage()'`
         );

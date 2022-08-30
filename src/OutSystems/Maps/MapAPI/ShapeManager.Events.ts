@@ -27,7 +27,9 @@ namespace OutSystems.Maps.MapAPI.ShapeManager.Events {
      * @export
      * @param {string} shape Shape that is ready for events
      */
-    export function CheckPendingEvents(shape: OSFramework.Maps.Shape.IShape): void {
+    export function CheckPendingEvents(
+        shape: OSFramework.Maps.Shape.IShape
+    ): void {
         // For each key of the pendingEvents check if the shape has the key as a widgetId or uniqueId and add the new handler
         for (const key of _pendingEvents.keys()) {
             if (shape.equalsToID(key)) {
@@ -57,7 +59,8 @@ namespace OutSystems.Maps.MapAPI.ShapeManager.Events {
         if (lookUpDOM && !_eventsToShapeId.has(eventUniqueId)) {
             const eventElement =
                 OSFramework.Maps.Helper.GetElementByUniqueId(eventUniqueId);
-            const shapeId = OSFramework.Maps.Helper.GetClosestShapeId(eventElement);
+            const shapeId =
+                OSFramework.Maps.Helper.GetClosestShapeId(eventElement);
             _eventsToShapeId.set(eventUniqueId, shapeId);
         }
 
@@ -162,7 +165,9 @@ namespace OutSystems.Maps.MapAPI.ShapeManager.Events {
 /// Overrides for the old namespace - calls the new one, lets users know this is no longer in use
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace MapAPI.ShapeManager.Events {
-    export function CheckPendingEvents(shape: OSFramework.Maps.Shape.IShape): void {
+    export function CheckPendingEvents(
+        shape: OSFramework.Maps.Shape.IShape
+    ): void {
         OSFramework.Maps.Helper.LogWarningMessage(
             `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.Auxiliary.OutSystems.Maps.MapAPI.ShapeManager.Events.CheckPendingEvents()'`
         );

@@ -10,7 +10,9 @@ namespace OSFramework.Maps.Feature {
         /** Refreshes the Current Center position of the Map
          * Changes whenever a marker is added or by enabling the Autofit on Zoom feature
          */
-        refreshCenter(value: OSFramework.Maps.OSStructures.OSMap.Coordinates): void;
+        refreshCenter(
+            value: OSFramework.Maps.OSStructures.OSMap.Coordinates
+        ): void;
         /** Set Current center position of the Map */
         setCurrentCenter(
             value: OSFramework.Maps.OSStructures.OSMap.Coordinates
