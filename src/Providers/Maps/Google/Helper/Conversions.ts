@@ -12,9 +12,9 @@ namespace Provider.Maps.Google.Helper.Conversions {
         apiKey: string
     ): Promise<OSFramework.Maps.OSStructures.OSMap.Coordinates> {
         // Encodes a location string into a valid format
-        location = encodeURIComponent(location);
+        const encoded_location = encodeURIComponent(location);
         return fetch(
-            `${OSFramework.Maps.Helper.Constants.googleMapsApiGeocode}?address=${location}&key=${apiKey}`
+            `${OSFramework.Maps.Helper.Constants.googleMapsApiGeocode}?address=${encoded_location}&key=${apiKey}`
         )
             .then((response) => {
                 if (response.ok) {
@@ -25,6 +25,9 @@ namespace Provider.Maps.Google.Helper.Conversions {
             })
             .then((json) => {
                 if (json.results.length === 0) {
+                    console.warn(
+                        `No results have been found for address "${location}".`
+                    );
                     throw new Error(
                         json.error_message ?? 'No results have been found.'
                     );
