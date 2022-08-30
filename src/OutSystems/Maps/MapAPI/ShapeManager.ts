@@ -63,9 +63,12 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
      * @param shapeId Id of the Shape
      */
     export function GetCircle(shapeId: string): string {
-        const shape = GetShapeById(shapeId) as OSFramework.Maps.Shape.IShapeCircle;
+        const shape = GetShapeById(
+            shapeId
+        ) as OSFramework.Maps.Shape.IShapeCircle;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const properties = new OSFramework.Maps.OSStructures.API.CircleProperties();
+        const properties =
+            new OSFramework.Maps.OSStructures.API.CircleProperties();
         if (shape.type === OSFramework.Maps.Enum.ShapeType.Circle) {
             properties.Center = {
                 Lat: shape.providerCenter.lat,

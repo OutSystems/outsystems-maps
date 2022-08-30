@@ -88,7 +88,9 @@ namespace Provider.Maps.Google.Feature {
             this._features.trafficLayer = this._makeItem(TrafficLayer, enable);
             return this;
         }
-        private _makeZoom(level: OSFramework.Maps.Enum.OSMap.Zoom): FeatureBuilder {
+        private _makeZoom(
+            level: OSFramework.Maps.Enum.OSMap.Zoom
+        ): FeatureBuilder {
             this._features.zoom = this._makeItem(Zoom, level);
             return this;
         }

@@ -62,12 +62,13 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
     ): OSFramework.Maps.Marker.IMarker {
         const map = MapManager.GetMapById(mapId, true);
         if (!map.hasMarker(markerId)) {
-            const _marker = Provider.Maps.Google.Marker.MarkerFactory.MakeMarker(
-                map,
-                markerId,
-                OSFramework.Maps.Enum.MarkerType.Marker,
-                JSON.parse(configs)
-            );
+            const _marker =
+                Provider.Maps.Google.Marker.MarkerFactory.MakeMarker(
+                    map,
+                    markerId,
+                    OSFramework.Maps.Enum.MarkerType.Marker,
+                    JSON.parse(configs)
+                );
             markerArr.push(_marker);
             markerMap.set(markerId, map.uniqueId);
             map.addMarker(_marker);

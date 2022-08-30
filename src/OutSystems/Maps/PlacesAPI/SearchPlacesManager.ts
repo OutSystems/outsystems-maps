@@ -4,7 +4,8 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager {
         string,
         OSFramework.Maps.SearchPlaces.ISearchPlaces
     >(); //searchPlaces.uniqueId -> SearchPlaces obj
-    let activeSearchPlaces: OSFramework.Maps.SearchPlaces.ISearchPlaces = undefined;
+    let activeSearchPlaces: OSFramework.Maps.SearchPlaces.ISearchPlaces =
+        undefined;
 
     /**
      * Function that will change the property value of a given SearchPlaces.

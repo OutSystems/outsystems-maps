@@ -24,7 +24,8 @@ namespace Provider.Maps.Google.Configuration.MarkerClusterer {
                 maxZoom: this.markerClustererMaxZoom || 2,
                 minClusterSize: this.markerClustererMinClusterSize,
                 zoomOnClick: this.markerClustererZoomOnClick,
-                clusterClass: OSFramework.Maps.Helper.Constants.clusterIconCSSClass,
+                clusterClass:
+                    OSFramework.Maps.Helper.Constants.clusterIconCSSClass,
                 styles: ClustererStyle
             };
 
