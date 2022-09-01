@@ -4,6 +4,10 @@ namespace OSFramework.Maps.Enum {
      * Codes that get the associated to specific returning messages indicated wheter the action had success or not.
      */
     export enum ErrorCodes {
+        // Success
+        SuccessCode = '200',
+        SuccessMessage = 'Success',
+
         // Error Codes - CONFiguration errors - Any error related with missing or wrong configuration of the application.
         CFG_APIKeyAlreadySetMap = 'MAPS-CFG-01001',
         CFG_APIKeyAlreadySetStaticMap = 'MAPS-CFG-02001',
@@ -41,6 +45,7 @@ namespace OSFramework.Maps.Enum {
         API_FailedGettingShapeRadius = 'MAPS-API-05004',
         API_FailedLoadingPlugin = 'MAPS-API-04002',
         API_FailedNoPluginDirections = 'MAPS-API-04003',
+        API_FailedRemoveMarkerFromCluster = 'MAPS-API-09001',
 
         // Error Codes - GENeral error - General or internal Errors of the component. In the situation of simple components without different features/sections inside it, the GEN acronym should be used.
         GEN_InvalidChangePropertyMap = 'MAPS-GEN-01001',
