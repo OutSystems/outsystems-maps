@@ -63,8 +63,6 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
             code: '200'
         };
 
-        console.log('');
-
         try {
             const map = MapManager.GetMapById(mapId, true);
 
