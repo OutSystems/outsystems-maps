@@ -4,10 +4,6 @@ namespace OSFramework.Maps.Enum {
      * Codes that get the associated to specific returning messages indicated wheter the action had success or not.
      */
     export enum ErrorCodes {
-        // Success
-        SuccessCode = '200',
-        SuccessMessage = 'Success',
-
         // Error Codes - CONFiguration errors - Any error related with missing or wrong configuration of the application.
         CFG_APIKeyAlreadySetMap = 'MAPS-CFG-01001',
         CFG_APIKeyAlreadySetStaticMap = 'MAPS-CFG-02001',
