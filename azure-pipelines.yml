@@ -1,4 +1,16 @@
 # File: azure-pipelines.yml
+resources:
+  repositories:
+    - repository: outsystems-maps-tests
+      type: github
+      name: OutSystems/outsystems-maps-tests
+      endpoint: OutSystems
+
+trigger:
+  branches:
+    include:
+      - dev
+
 variables:
   SourcesDirectory: '$(Build.SourcesDirectory)'
   Project: 'outsystems-maps'
@@ -138,3 +150,8 @@ stages:
 
                 print(response.text.encode('utf8'))
 
+  #Run test pipeline
+  - template: 'jobs/azure-pipelines-reactive.yml'
+    parameters:
+      currentBranch: $(CurrentBranchName)
+      sourceBranch: $(SourceBranchName)
