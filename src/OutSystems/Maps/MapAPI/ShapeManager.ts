@@ -211,14 +211,72 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
         pointCoordinates: string,
         coordinatesList: string
     ): string {
-        const map = MapManager.GetMapById(mapId, true);
-        const pluginResponse = map.features.shape.containsLocation(
-            mapId,
-            shapeId,
-            pointCoordinates,
-            coordinatesList
-        );
-        return JSON.stringify(pluginResponse);
+        const map = OutSystems.Maps.MapAPI.MapManager.GetMapById(mapId);
+
+        if (map) {
+            let isInsideShape = '';
+            const markerCoordinates = JSON.parse(
+                pointCoordinates.toLowerCase()
+            );
+            const markerLocation = new google.maps.LatLng(
+                markerCoordinates.Lat,
+                markerCoordinates.Lng
+            );
+
+            // Check if marker is inside shape based on shape element
+            if (shapeId) {
+                isInsideShape = google.maps.geometry.poly
+                    .containsLocation(
+                        markerLocation,
+                        map.getShape(shapeId).provider
+                    )
+                    .toString();
+            } else {
+                const shapeCoordinatesList = JSON.parse(
+                    coordinatesList.toLowerCase()
+                );
+
+                // To create a shape we need at least 3 coordinates
+                if (shapeCoordinatesList.length >= 3) {
+                    const newShape = new google.maps.Polygon({
+                        paths: shapeCoordinatesList
+                    });
+
+                    isInsideShape = google.maps.geometry.poly
+                        .containsLocation(markerLocation, newShape)
+                        .toString();
+                } else {
+                    const temp = {
+                        isSuccess: false,
+                        code: OSFramework.Maps.Enum.ErrorCodes
+                            .CFG_InvalidPolygonShapeLocations
+                    };
+                    return JSON.stringify(temp);
+                }
+            }
+
+            // Check if the validations of shape was applied
+            if (isInsideShape !== '') {
+                const temp = {
+                    isSuccess: true,
+                    message: isInsideShape
+                };
+                return JSON.stringify(temp);
+            } else {
+                const temp = {
+                    isSuccess: false,
+                    code: OSFramework.Maps.Enum.ErrorCodes
+                        .API_FailedContainsLocation
+                };
+                return JSON.stringify(temp);
+            }
+        } else {
+            const temp = {
+                isSuccess: false,
+                code: OSFramework.Maps.Enum.ErrorCodes.CFG_InvalidMapId
+            };
+            return JSON.stringify(temp);
+        }
     }
 }
 
