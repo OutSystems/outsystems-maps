@@ -229,7 +229,7 @@ namespace Provider.Maps.Leaflet.Marker {
                                     eventName,
                                     // Coords
                                     e !== undefined &&
-                                        e.target.getLatLng() !== undefined
+                                        e.target.getLatLng !== undefined
                                         ? JSON.stringify({
                                               Lat: e.target.getLatLng().lat,
                                               Lng: e.target.getLatLng().lng
