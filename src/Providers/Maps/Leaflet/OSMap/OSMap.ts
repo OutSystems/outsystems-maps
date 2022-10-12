@@ -81,10 +81,10 @@ namespace Provider.Maps.Leaflet.OSMap {
                                         .ProviderEvent,
                                     this,
                                     eventName,
-                                    e && e.target.getLatLng !== undefined
+                                    e && e.latlng !== undefined
                                         ? JSON.stringify({
-                                              Lat: e.target.getLatLng().lat,
-                                              Lng: e.target.getLatLng().lng
+                                              Lat: e.latlng.lat,
+                                              Lng: e.latlng.lng
                                           })
                                         : undefined
                                 );
