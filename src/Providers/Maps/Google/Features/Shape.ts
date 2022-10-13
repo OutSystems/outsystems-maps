@@ -6,17 +6,8 @@ namespace Provider.Maps.Google.Feature {
             OSFramework.Maps.Interface.IBuilder,
             OSFramework.Maps.Interface.IDisposable
     {
-        private _isEnabled: boolean;
-        private _map: OSMap.IMapGoogle;
-
-        constructor(map: OSMap.IMapGoogle) {
-            this._map = map;
-            this._isEnabled = false;
-        }
-
-        public build(): void {
-            //
-        }
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        public build(): void {}
 
         public containsLocation(
             mapId: string,
@@ -25,12 +16,17 @@ namespace Provider.Maps.Google.Feature {
             coordinatesList: string
         ): OSFramework.Maps.OSStructures.ReturnMessage {
             const map = OutSystems.Maps.MapAPI.MapManager.GetMapById(mapId);
+            // Set the default return message to prevent different else if's
+            let returnMessage: OSFramework.Maps.OSStructures.ReturnMessage = {
+                isSuccess: false,
+                code: OSFramework.Maps.Enum.ErrorCodes.CFG_InvalidMapId
+            };
 
+            // Check if map exists
             if (map) {
-                let isInsideShape = '';
-                const markerCoordinates = JSON.parse(
-                    pointCoordinates.toLowerCase()
-                );
+                let isInsideShape = false;
+
+                const markerCoordinates = JSON.parse(pointCoordinates);
                 const markerLocation = new google.maps.LatLng(
                     markerCoordinates.Lat,
                     markerCoordinates.Lng
@@ -38,12 +34,38 @@ namespace Provider.Maps.Google.Feature {
 
                 // Check if marker is inside shape based on shape element
                 if (shapeId) {
-                    isInsideShape = google.maps.geometry.poly
-                        .containsLocation(
-                            markerLocation,
-                            map.getShape(shapeId).provider
-                        )
-                        .toString();
+                    const shape =
+                        OutSystems.Maps.MapAPI.ShapeManager.GetShapeById(
+                            shapeId
+                        );
+
+                    // Check if shape contains marker based on shape type
+                    if (
+                        shape.type === OSFramework.Maps.Enum.ShapeType.Rectangle
+                    ) {
+                        isInsideShape = map
+                            .getShape(shapeId)
+                            .provider.getBounds()
+                            .contains(markerLocation);
+                    } else if (
+                        shape.type === OSFramework.Maps.Enum.ShapeType.Circle
+                    ) {
+                        const circleRadius = shape.provider.getRadius();
+                        const circleCenter = shape.provider.getCenter();
+                        const distanceBetweenPoints =
+                            google.maps.geometry.spherical.computeDistanceBetween(
+                                markerLocation,
+                                circleCenter
+                            );
+
+                        isInsideShape = distanceBetweenPoints <= circleRadius;
+                    } else {
+                        isInsideShape =
+                            google.maps.geometry.poly.containsLocation(
+                                markerLocation,
+                                map.getShape(shapeId).provider
+                            );
+                    }
                 } else {
                     const shapeCoordinatesList = JSON.parse(
                         coordinatesList.toLowerCase()
@@ -55,11 +77,13 @@ namespace Provider.Maps.Google.Feature {
                             paths: shapeCoordinatesList
                         });
 
-                        isInsideShape = google.maps.geometry.poly
-                            .containsLocation(markerLocation, newShape)
-                            .toString();
+                        isInsideShape =
+                            google.maps.geometry.poly.containsLocation(
+                                markerLocation,
+                                newShape
+                            );
                     } else {
-                        return {
+                        returnMessage = {
                             isSuccess: false,
                             code: OSFramework.Maps.Enum.ErrorCodes
                                 .CFG_InvalidPolygonShapeLocations
@@ -67,29 +91,17 @@ namespace Provider.Maps.Google.Feature {
                     }
                 }
 
-                // Check if the validations of shape was applied
-                if (isInsideShape !== '') {
-                    return {
-                        isSuccess: true,
-                        message: isInsideShape
-                    };
-                } else {
-                    return {
-                        isSuccess: false,
-                        code: OSFramework.Maps.Enum.ErrorCodes
-                            .API_FailedContainsLocation
-                    };
-                }
-            } else {
-                return {
-                    isSuccess: false,
-                    code: OSFramework.Maps.Enum.ErrorCodes.CFG_InvalidMapId
+                // Set the result checking if the shape contains the marker
+                returnMessage = {
+                    isSuccess: true,
+                    message: isInsideShape.toString()
                 };
             }
+
+            return returnMessage;
         }
 
-        public dispose(): void {
-            //
-        }
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        public dispose(): void {}
     }
 }

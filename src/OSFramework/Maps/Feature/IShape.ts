@@ -7,6 +7,6 @@ namespace OSFramework.Maps.Feature {
             shapeId: string,
             pointCoordinates: string,
             coordinatesList: string
-        ): Maps.OSStructures.ReturnMessage;
+        ): OSStructures.ReturnMessage;
     }
 }

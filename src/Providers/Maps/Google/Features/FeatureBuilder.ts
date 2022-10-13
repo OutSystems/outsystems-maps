@@ -84,6 +84,10 @@ namespace Provider.Maps.Google.Feature {
             this._features.offset = this._makeItem(Offset, offset);
             return this;
         }
+        private _makeShape(): FeatureBuilder {
+            this._features.shape = this._makeItem(Shape);
+            return this;
+        }
         private _makeTrafficLayer(enable: boolean): FeatureBuilder {
             this._features.trafficLayer = this._makeItem(TrafficLayer, enable);
             return this;
@@ -99,6 +103,7 @@ namespace Provider.Maps.Google.Feature {
             const config = this._map
                 .config as Configuration.OSMap.GoogleMapConfig;
 
+            this._makeShape();
             this._makeTrafficLayer(config.showTraffic)
                 ._makeZoom(config.zoom)
                 ._makeCenter(

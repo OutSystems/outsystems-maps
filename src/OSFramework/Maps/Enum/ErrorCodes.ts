@@ -64,4 +64,8 @@ namespace OSFramework.Maps.Enum {
         GEN_UnsupportedEventSearchPlaces = 'MAPS-GEN-10002',
         GEN_NoPluginDirectionsNeeded = 'MAPS-GEN-04001'
     }
+
+    export enum SuccessCodes {
+        GEN_Success = 'MAPS-GEN-01001'
+    }
 }
