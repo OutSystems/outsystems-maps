@@ -6,33 +6,37 @@ namespace Provider.Maps.Leaflet.Feature {
             OSFramework.Maps.Interface.IBuilder,
             OSFramework.Maps.Interface.IDisposable
     {
-        private _isInsideShape = false;
-        private _map;
-        private _marker;
-        private _renderedSuccessfully = false;
-        private _shape;
+        private _isInsideShape: boolean;
+        private _map: OSFramework.Maps.OSMap.IMap;
+        private _markerCoordinates;
         private _polyPoints = [];
+        private _returnObjCode: string;
+        private _returnObjMessage: string;
+        private _returnObjSuccess: boolean;
+        private _shape: OSFramework.Maps.Shape.IShape;
 
         // Method for shape circle exception
         private _shapeCircle(): void {
             const circleCenter = this._shape.provider.getLatLng();
             const circleRadius = this._shape.provider.getRadius();
-            this._marker = L.latLng(this._marker.Lat, this._marker.Lng);
+            this._markerCoordinates = L.latLng(
+                this._markerCoordinates.Lat,
+                this._markerCoordinates.Lng
+            );
             const distanceBetweenPoints = this._map.provider.distance(
-                this._marker,
+                this._markerCoordinates,
                 circleCenter
             );
 
             // Check if circle contains the marker coordinates
             this._isInsideShape = distanceBetweenPoints < circleRadius;
-            this._renderedSuccessfully = true;
+            this._returnObjSuccess = true;
+            this._returnObjCode = OSFramework.Maps.Enum.Success.code;
+            this._returnObjMessage = this._isInsideShape.toString();
         }
 
         // Method to apply the default calculations for shapes
         private _shapeDefault(): void {
-            // Check if shape contains marker based on shape type
-            this._polyPoints = this._shape.provider.getLatLngs()[0];
-
             // axis points to compare the shape coordinates
             let xi;
             let yi;
@@ -41,6 +45,7 @@ namespace Provider.Maps.Leaflet.Feature {
             let intersect;
             let previousPolyPoint = this._polyPoints.length - 1;
 
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             for (const { index } of this._polyPoints.map((value, index) => ({
                 value,
                 index
@@ -59,9 +64,12 @@ namespace Provider.Maps.Leaflet.Feature {
 
                 // Check the intersection of the points based on axis coordinates
                 intersect =
-                    yi > this._marker.Lng !== yj > this._marker.Lng &&
-                    this._marker.Lat <
-                        ((xj - xi) * (this._marker.Lng - yi)) / (yj - yi) + xi;
+                    yi > this._markerCoordinates.Lng !==
+                        yj > this._markerCoordinates.Lng &&
+                    this._markerCoordinates.Lat <
+                        ((xj - xi) * (this._markerCoordinates.Lng - yi)) /
+                            (yj - yi) +
+                            xi;
 
                 // Check if has intersection with each point on shape
                 if (intersect) {
@@ -71,13 +79,14 @@ namespace Provider.Maps.Leaflet.Feature {
                 // Increment the previousPolyPoint to compare with the next coordinate
                 previousPolyPoint = ++previousPolyPoint;
             }
-            this._renderedSuccessfully = true;
+            this._returnObjSuccess = true;
+            this._returnObjCode = OSFramework.Maps.Enum.Success.code;
+            this._returnObjMessage = this._isInsideShape.toString();
         }
         public build(): void {
             //
         }
 
-        // Checkk if marker is inside of provided shape
         public containsLocation(
             mapId: string,
             shapeId: string,
@@ -86,36 +95,39 @@ namespace Provider.Maps.Leaflet.Feature {
         ): OSFramework.Maps.OSStructures.ReturnMessage {
             this._map = OutSystems.Maps.MapAPI.MapManager.GetMapById(mapId);
             // Set the default return message to prevent different else if's
-            let returnMessage: OSFramework.Maps.OSStructures.ReturnMessage = {
-                isSuccess: false,
-                code: OSFramework.Maps.Enum.ErrorCodes.CFG_InvalidMapId
-            };
+            this._returnObjSuccess = false;
+            this._returnObjCode =
+                OSFramework.Maps.Enum.ErrorCodes.CFG_InvalidMapId;
 
             // Check if map exists
             if (this._map) {
-                this._marker = JSON.parse(pointCoordinates);
+                this._isInsideShape = false;
+                this._markerCoordinates = JSON.parse(pointCoordinates);
 
-                // Check if marker is inside shape based on shape element
+                // Check if shape exists
                 if (shapeId) {
                     this._shape =
                         OutSystems.Maps.MapAPI.ShapeManager.GetShapeById(
                             shapeId
                         );
 
+                    // Check if shape contains marker based on shape type
                     switch (this._shape.type) {
                         case OSFramework.Maps.Enum.ShapeType.Polyline:
                             // The Polyline is an unsupported shape to use the ContainsLocation API
-                            return (returnMessage = {
-                                isSuccess: this._renderedSuccessfully,
-                                code: OSFramework.Maps.Enum.Unsupported.code,
-                                message:
-                                    OSFramework.Maps.Enum.Unsupported.message
-                            });
+                            this._returnObjCode =
+                                OSFramework.Maps.Enum.Unsupported.code;
+                            this._returnObjMessage =
+                                OSFramework.Maps.Enum.Unsupported.message;
+                            break;
                         case OSFramework.Maps.Enum.ShapeType.Circle: {
                             this._shapeCircle();
                             break;
                         }
                         default: {
+                            // Default validations to check if marker is inside shape
+                            this._polyPoints =
+                                this._shape.provider.getLatLngs()[0];
                             this._shapeDefault();
                         }
                     }
@@ -127,19 +139,17 @@ namespace Provider.Maps.Leaflet.Feature {
                         shapeCoordinatesList.forEach((item) => {
                             this._polyPoints.push(L.latLng(item.Lat, item.Lng));
                         });
+
+                        this._shapeDefault();
                     }
                 }
-                returnMessage = {
-                    isSuccess: this._renderedSuccessfully,
-                    code: this._renderedSuccessfully
-                        ? OSFramework.Maps.Enum.Success.code
-                        : OSFramework.Maps.Enum.ErrorCodes
-                              .CFG_InvalidPolygonShapeLocations,
-                    message: this._renderedSuccessfully
-                        ? this._isInsideShape.toString()
-                        : OSFramework.Maps.Enum.Success.message
-                };
             }
+            // Set the return message to expose values
+            const returnMessage = {
+                isSuccess: this._returnObjSuccess,
+                code: this._returnObjCode,
+                message: this._returnObjMessage
+            };
 
             return returnMessage;
         }
