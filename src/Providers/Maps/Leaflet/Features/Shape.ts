@@ -45,7 +45,6 @@ namespace Provider.Maps.Leaflet.Feature {
             let intersect;
             let previousPolyPoint = this._polyPoints.length - 1;
 
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             for (const { index } of this._polyPoints.map((value, index) => ({
                 value,
                 index
