@@ -95,8 +95,6 @@ namespace Provider.Maps.Google.Feature {
                                 markerLocation,
                                 newShape
                             );
-                    } else {
-                        renderedSuccessfully = false;
                     }
                 }
                 returnMessage = {

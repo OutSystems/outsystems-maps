@@ -118,8 +118,6 @@ namespace Provider.Maps.Leaflet.Feature {
                         shapeCoordinatesList.forEach((item) => {
                             polyPoints.push(L.latLng(item.Lat, item.Lng));
                         });
-                    } else {
-                        renderedSuccessfully = false;
                     }
                 }
                 returnMessage = {
