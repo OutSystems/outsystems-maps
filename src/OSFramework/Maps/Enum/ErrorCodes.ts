@@ -3,6 +3,17 @@ namespace OSFramework.Maps.Enum {
     /**
      * Codes that get the associated to specific returning messages indicated wheter the action had success or not.
      */
+    export const Success = {
+        code: '200',
+        message: 'Success'
+    };
+
+    export const Unsupported = {
+        code: 'MAPS-GEN-01003',
+        message:
+            'The Polyline is invalid to check if the marker are inside the provided area. Please use a Circle, Rectangle or a Polygon.'
+    };
+
     export enum ErrorCodes {
         // Error Codes - CONFiguration errors - Any error related with missing or wrong configuration of the application.
         CFG_APIKeyAlreadySetMap = 'MAPS-CFG-01001',
@@ -63,9 +74,5 @@ namespace OSFramework.Maps.Enum {
         GEN_InvalidChangePropertySearchPlaces = 'MAPS-GEN-10001',
         GEN_UnsupportedEventSearchPlaces = 'MAPS-GEN-10002',
         GEN_NoPluginDirectionsNeeded = 'MAPS-GEN-04001'
-    }
-
-    export enum SuccessCodes {
-        GEN_Success = 'MAPS-GEN-01001'
     }
 }

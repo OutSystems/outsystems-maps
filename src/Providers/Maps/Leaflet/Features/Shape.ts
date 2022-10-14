@@ -16,9 +16,10 @@ namespace Provider.Maps.Leaflet.Feature {
             coordinatesList: string
         ): OSFramework.Maps.OSStructures.ReturnMessage {
             const map = OutSystems.Maps.MapAPI.MapManager.GetMapById(mapId);
+            let renderedSuccessfully = false;
             // Set the default return message to prevent different else if's
             let returnMessage: OSFramework.Maps.OSStructures.ReturnMessage = {
-                isSuccess: false,
+                isSuccess: renderedSuccessfully,
                 code: OSFramework.Maps.Enum.ErrorCodes.CFG_InvalidMapId
             };
 
@@ -28,7 +29,6 @@ namespace Provider.Maps.Leaflet.Feature {
 
                 let marker = JSON.parse(pointCoordinates);
                 let polyPoints = [];
-                let isSuccess = false;
 
                 // Check if marker is inside shape based on shape element
                 if (shapeId) {
@@ -36,7 +36,17 @@ namespace Provider.Maps.Leaflet.Feature {
                         OutSystems.Maps.MapAPI.ShapeManager.GetShapeById(
                             shapeId
                         );
-
+                    if (
+                        shape.type === OSFramework.Maps.Enum.ShapeType.Polyline
+                    ) {
+                        // The Polyline is an unsupported shape to use the ContainsLocation API
+                        returnMessage = {
+                            isSuccess: renderedSuccessfully,
+                            code: OSFramework.Maps.Enum.Unsupported.code,
+                            message: OSFramework.Maps.Enum.Unsupported.message
+                        };
+                        return returnMessage;
+                    }
                     // Exception added for circle
                     if (shape.type === OSFramework.Maps.Enum.ShapeType.Circle) {
                         const circleCenter = shape.provider.getLatLng();
@@ -49,17 +59,10 @@ namespace Provider.Maps.Leaflet.Feature {
 
                         // Check if circle contains the marker coordinates
                         isInsideShape = distanceBetweenPoints < circleRadius;
-                        isSuccess = true;
+                        renderedSuccessfully = true;
                     } else {
                         // Check if shape contains marker based on shape type
-                        if (
-                            shape.type ===
-                            OSFramework.Maps.Enum.ShapeType.Polyline
-                        ) {
-                            polyPoints = shape.provider.getLatLngs();
-                        } else {
-                            polyPoints = shape.provider.getLatLngs()[0];
-                        }
+                        polyPoints = shape.provider.getLatLngs()[0];
 
                         // axis points to compare the shape coordinates
                         let xi;
@@ -104,7 +107,7 @@ namespace Provider.Maps.Leaflet.Feature {
                             // Increment the previousPolyPoint to compare with the next coordinate
                             previousPolyPoint = ++previousPolyPoint;
                         }
-                        isSuccess = true;
+                        renderedSuccessfully = true;
                     }
                 } else {
                     const shapeCoordinatesList = JSON.parse(coordinatesList);
@@ -115,23 +118,18 @@ namespace Provider.Maps.Leaflet.Feature {
                             polyPoints.push(L.latLng(item.Lat, item.Lng));
                         });
                     } else {
-                        isSuccess = false;
-                        returnMessage = {
-                            isSuccess: false,
-                            code: OSFramework.Maps.Enum.ErrorCodes
-                                .CFG_InvalidPolygonShapeLocations
-                        };
+                        renderedSuccessfully = false;
                     }
                 }
-
                 returnMessage = {
-                    isSuccess: isSuccess,
-                    code: isSuccess
-                        ? OSFramework.Maps.Enum.ErrorCodes
-                              .CFG_InvalidPolygonShapeLocations
+                    isSuccess: renderedSuccessfully,
+                    code: renderedSuccessfully
+                        ? OSFramework.Maps.Enum.Success.code
                         : OSFramework.Maps.Enum.ErrorCodes
                               .CFG_InvalidPolygonShapeLocations,
-                    message: isInsideShape.toString()
+                    message: renderedSuccessfully
+                        ? isInsideShape.toString()
+                        : OSFramework.Maps.Enum.Success.message
                 };
             }
 

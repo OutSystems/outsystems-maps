@@ -16,9 +16,10 @@ namespace Provider.Maps.Google.Feature {
             coordinatesList: string
         ): OSFramework.Maps.OSStructures.ReturnMessage {
             const map = OutSystems.Maps.MapAPI.MapManager.GetMapById(mapId);
+            let renderedSuccessfully = false;
             // Set the default return message to prevent different else if's
             let returnMessage: OSFramework.Maps.OSStructures.ReturnMessage = {
-                isSuccess: false,
+                isSuccess: renderedSuccessfully,
                 code: OSFramework.Maps.Enum.ErrorCodes.CFG_InvalidMapId
             };
 
@@ -41,6 +42,16 @@ namespace Provider.Maps.Google.Feature {
 
                     // Check if shape contains marker based on shape type
                     if (
+                        shape.type === OSFramework.Maps.Enum.ShapeType.Polyline
+                    ) {
+                        // The Polyline is an unsupported shape to use the ContainsLocation API
+                        returnMessage = {
+                            isSuccess: renderedSuccessfully,
+                            code: OSFramework.Maps.Enum.Unsupported.code,
+                            message: OSFramework.Maps.Enum.Unsupported.message
+                        };
+                        return returnMessage;
+                    } else if (
                         shape.type === OSFramework.Maps.Enum.ShapeType.Rectangle
                     ) {
                         isInsideShape = map
@@ -66,6 +77,7 @@ namespace Provider.Maps.Google.Feature {
                                 map.getShape(shapeId).provider
                             );
                     }
+                    renderedSuccessfully = true;
                 } else {
                     const shapeCoordinatesList = JSON.parse(
                         coordinatesList.toLowerCase()
@@ -83,18 +95,18 @@ namespace Provider.Maps.Google.Feature {
                                 newShape
                             );
                     } else {
-                        returnMessage = {
-                            isSuccess: false,
-                            code: OSFramework.Maps.Enum.ErrorCodes
-                                .CFG_InvalidPolygonShapeLocations
-                        };
+                        renderedSuccessfully = false;
                     }
                 }
-
-                // Set the result checking if the shape contains the marker
                 returnMessage = {
-                    isSuccess: true,
-                    message: isInsideShape.toString()
+                    isSuccess: renderedSuccessfully,
+                    code: renderedSuccessfully
+                        ? OSFramework.Maps.Enum.Success.code
+                        : OSFramework.Maps.Enum.ErrorCodes
+                              .CFG_InvalidPolygonShapeLocations,
+                    message: renderedSuccessfully
+                        ? isInsideShape.toString()
+                        : OSFramework.Maps.Enum.Success.message
                 };
             }
 
