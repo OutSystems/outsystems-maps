@@ -11,6 +11,7 @@ namespace Provider.Maps.Leaflet.Feature {
         private _marker;
         private _renderedSuccessfully = false;
         private _shape;
+        private _polyPoints = [];
 
         // Method for shape circle exception
         private _shapeCircle(): void {
@@ -30,7 +31,7 @@ namespace Provider.Maps.Leaflet.Feature {
         // Method to apply the default calculations for shapes
         private _shapeDefault(): void {
             // Check if shape contains marker based on shape type
-            const polyPoints = this._shape.provider.getLatLngs()[0];
+            this._polyPoints = this._shape.provider.getLatLngs()[0];
 
             // axis points to compare the shape coordinates
             let xi;
@@ -38,24 +39,23 @@ namespace Provider.Maps.Leaflet.Feature {
             let xj;
             let yj;
             let intersect;
-            let previousPolyPoint = polyPoints.length - 1;
+            let previousPolyPoint = this._polyPoints.length - 1;
 
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            for (const { index } of polyPoints.map((value, index) => ({
+            for (const { index } of this._polyPoints.map((value, index) => ({
                 value,
                 index
             }))) {
                 // Check if the index of polyPoints is higher then the length
                 // If true, set it to the first index element
-                if (previousPolyPoint > polyPoints.length - 1) {
+                if (previousPolyPoint > this._polyPoints.length - 1) {
                     previousPolyPoint = index - 1;
                 }
 
                 // Set the axis coordinates to compare
-                xi = polyPoints[index].lat;
-                yi = polyPoints[index].lng;
-                xj = polyPoints[previousPolyPoint].lat;
-                yj = polyPoints[previousPolyPoint].lng;
+                xi = this._polyPoints[index].lat;
+                yi = this._polyPoints[index].lng;
+                xj = this._polyPoints[previousPolyPoint].lat;
+                yj = this._polyPoints[previousPolyPoint].lng;
 
                 // Check the intersection of the points based on axis coordinates
                 intersect =
@@ -105,7 +105,6 @@ namespace Provider.Maps.Leaflet.Feature {
                     switch (this._shape.type) {
                         case OSFramework.Maps.Enum.ShapeType.Polyline:
                             // The Polyline is an unsupported shape to use the ContainsLocation API
-
                             return (returnMessage = {
                                 isSuccess: this._renderedSuccessfully,
                                 code: OSFramework.Maps.Enum.Unsupported.code,
@@ -122,12 +121,11 @@ namespace Provider.Maps.Leaflet.Feature {
                     }
                 } else {
                     const shapeCoordinatesList = JSON.parse(coordinatesList);
-                    const polyPoints = [];
 
                     // To create a shape we need at least 3 coordinates
                     if (shapeCoordinatesList.length >= 3) {
                         shapeCoordinatesList.forEach((item) => {
-                            polyPoints.push(L.latLng(item.Lat, item.Lng));
+                            this._polyPoints.push(L.latLng(item.Lat, item.Lng));
                         });
                     }
                 }
