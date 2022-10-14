@@ -6,8 +6,9 @@ namespace Provider.Maps.Google.Feature {
             OSFramework.Maps.Interface.IBuilder,
             OSFramework.Maps.Interface.IDisposable
     {
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        public build(): void {}
+        public build(): void {
+            //
+        }
 
         public containsLocation(
             mapId: string,
@@ -16,16 +17,16 @@ namespace Provider.Maps.Google.Feature {
             coordinatesList: string
         ): OSFramework.Maps.OSStructures.ReturnMessage {
             const map = OutSystems.Maps.MapAPI.MapManager.GetMapById(mapId);
-            let renderedSuccessfully = false;
             // Set the default return message to prevent different else if's
             let returnMessage: OSFramework.Maps.OSStructures.ReturnMessage = {
-                isSuccess: renderedSuccessfully,
+                isSuccess: false,
                 code: OSFramework.Maps.Enum.ErrorCodes.CFG_InvalidMapId
             };
 
             // Check if map exists
             if (map) {
                 let isInsideShape = false;
+                let renderedSuccessfully = false;
 
                 const markerCoordinates = JSON.parse(pointCoordinates);
                 const markerLocation = new google.maps.LatLng(
@@ -113,7 +114,8 @@ namespace Provider.Maps.Google.Feature {
             return returnMessage;
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        public dispose(): void {}
+        public dispose(): void {
+            //
+        }
     }
 }
