@@ -134,6 +134,7 @@ namespace Provider.Maps.Leaflet.Feature {
                     }
                 } else {
                     const shapeCoordinatesList = JSON.parse(coordinatesList);
+                    this._polyPoints = [];
 
                     // To create a shape we need at least 3 coordinates
                     if (shapeCoordinatesList.length >= 3) {
