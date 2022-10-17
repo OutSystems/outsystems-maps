@@ -1,6 +1,11 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.Feature {
-    export class Shape implements OSFramework.Maps.Feature.IShape {
+    export class Shape
+        implements
+            OSFramework.Maps.Feature.IShape,
+            OSFramework.Maps.Interface.IBuilder,
+            OSFramework.Maps.Interface.IDisposable
+    {
         private _isInsideShape: boolean;
         private _map: OSFramework.Maps.OSMap.IMap;
         private _markerCoordinates;
@@ -45,6 +50,10 @@ namespace Provider.Maps.Google.Feature {
             this._returnObjSuccess = true;
             this._returnObjCode = OSFramework.Maps.Enum.Success.code;
             this._returnObjMessage = this._isInsideShape.toString();
+        }
+
+        public build(): void {
+            //
         }
 
         public containsLocation(
@@ -129,6 +138,10 @@ namespace Provider.Maps.Google.Feature {
                 code: this._returnObjCode,
                 message: this._returnObjMessage
             };
+        }
+
+        public dispose(): void {
+            //
         }
     }
 }

@@ -1,6 +1,11 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Leaflet.Feature {
-    export class Shape implements OSFramework.Maps.Feature.IShape {
+    export class Shape
+        implements
+            OSFramework.Maps.Feature.IShape,
+            OSFramework.Maps.Interface.IBuilder,
+            OSFramework.Maps.Interface.IDisposable
+    {
         private _isInsideShape: boolean;
         private _map: OSFramework.Maps.OSMap.IMap;
         private _markerCoordinates: L.LatLng;
@@ -77,6 +82,9 @@ namespace Provider.Maps.Leaflet.Feature {
             this._returnObjCode = OSFramework.Maps.Enum.Success.code;
             this._returnObjMessage = this._isInsideShape.toString();
         }
+        public build(): void {
+            //
+        }
 
         public containsLocation(
             mapId: string,
@@ -144,6 +152,10 @@ namespace Provider.Maps.Leaflet.Feature {
                 code: this._returnObjCode,
                 message: this._returnObjMessage
             };
+        }
+
+        public dispose(): void {
+            //
         }
     }
 }
