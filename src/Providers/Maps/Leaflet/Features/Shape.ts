@@ -8,8 +8,8 @@ namespace Provider.Maps.Leaflet.Feature {
     {
         private _isInsideShape: boolean;
         private _map: OSFramework.Maps.OSMap.IMap;
-        private _markerCoordinates;
-        private _polyPoints = [];
+        private _markerCoordinates: L.LatLng;
+        private _polyPoints: L.LatLng[];
         private _returnObjCode: string;
         private _returnObjMessage: string;
         private _returnObjSuccess: boolean;
@@ -19,9 +19,9 @@ namespace Provider.Maps.Leaflet.Feature {
         private _shapeCircle(): void {
             const circleCenter = this._shape.provider.getLatLng();
             const circleRadius = this._shape.provider.getRadius();
-            this._markerCoordinates = L.latLng(
-                this._markerCoordinates.Lat,
-                this._markerCoordinates.Lng
+            this._markerCoordinates = new L.LatLng(
+                this._markerCoordinates.lat,
+                this._markerCoordinates.lng
             );
             const distanceBetweenPoints = this._map.provider.distance(
                 this._markerCoordinates,
@@ -63,10 +63,10 @@ namespace Provider.Maps.Leaflet.Feature {
 
                 // Check the intersection of the points based on axis coordinates
                 intersect =
-                    yi > this._markerCoordinates.Lng !==
-                        yj > this._markerCoordinates.Lng &&
-                    this._markerCoordinates.Lat <
-                        ((xj - xi) * (this._markerCoordinates.Lng - yi)) /
+                    yi > this._markerCoordinates.lng !==
+                        yj > this._markerCoordinates.lng &&
+                    this._markerCoordinates.lat <
+                        ((xj - xi) * (this._markerCoordinates.lng - yi)) /
                             (yj - yi) +
                             xi;
 
@@ -101,7 +101,9 @@ namespace Provider.Maps.Leaflet.Feature {
             // Check if map exists
             if (this._map) {
                 this._isInsideShape = false;
-                this._markerCoordinates = JSON.parse(pointCoordinates);
+                this._markerCoordinates = JSON.parse(
+                    pointCoordinates.toLocaleLowerCase()
+                );
 
                 // Check if shape exists
                 if (shapeId) {

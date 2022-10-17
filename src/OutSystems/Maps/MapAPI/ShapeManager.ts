@@ -200,7 +200,7 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
     }
 
     /**
-     * Comment here
+     * Function that will returns if a marker is inside a shape (Circle, Rectangle or Polygon)
      *
      * @export
      * @param {string} shapeId id of the Shape that is about to be removed
