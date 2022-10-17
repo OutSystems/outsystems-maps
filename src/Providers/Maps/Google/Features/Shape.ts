@@ -9,7 +9,6 @@ namespace Provider.Maps.Google.Feature {
         private _isInsideShape: boolean;
         private _map: OSFramework.Maps.OSMap.IMap;
         private _markerCoordinates;
-        private _polyPoints = [];
         private _returnObjCode: string;
         private _returnObjMessage: string;
         private _returnObjSuccess: boolean;
@@ -118,11 +117,17 @@ namespace Provider.Maps.Google.Feature {
                             paths: shapeCoordinatesList
                         });
 
+                        // Set hidden a shape into the existing map to validate if the marker is inside
+                        newShape.setMap(null);
                         this._isInsideShape =
                             google.maps.geometry.poly.containsLocation(
                                 this._markerCoordinates,
                                 newShape
                             );
+                        this._returnObjSuccess = true;
+                        this._returnObjCode =
+                            OSFramework.Maps.Enum.Success.code;
+                        this._returnObjMessage = this._isInsideShape.toString();
                     }
                 }
             }
