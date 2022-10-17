@@ -1,11 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Leaflet.Feature {
-    export class Shape
-        implements
-            OSFramework.Maps.Feature.IShape,
-            OSFramework.Maps.Interface.IBuilder,
-            OSFramework.Maps.Interface.IDisposable
-    {
+    export class Shape implements OSFramework.Maps.Feature.IShape {
         private _isInsideShape: boolean;
         private _map: OSFramework.Maps.OSMap.IMap;
         private _markerCoordinates: L.LatLng;
@@ -16,7 +11,7 @@ namespace Provider.Maps.Leaflet.Feature {
         private _shape: OSFramework.Maps.Shape.IShape;
 
         // Method for shape circle exception
-        private _shapeCircle(): void {
+        private _checkCircleInsideMarker(): void {
             const circleCenter = this._shape.provider.getLatLng();
             const circleRadius = this._shape.provider.getRadius();
             this._markerCoordinates = new L.LatLng(
@@ -36,7 +31,7 @@ namespace Provider.Maps.Leaflet.Feature {
         }
 
         // Method to apply the default calculations for shapes
-        private _shapeDefault(): void {
+        private _checkInsideMarker(): void {
             // axis points to compare the shape coordinates
             let xi;
             let yi;
@@ -82,9 +77,6 @@ namespace Provider.Maps.Leaflet.Feature {
             this._returnObjCode = OSFramework.Maps.Enum.Success.code;
             this._returnObjMessage = this._isInsideShape.toString();
         }
-        public build(): void {
-            //
-        }
 
         public containsLocation(
             mapId: string,
@@ -122,14 +114,14 @@ namespace Provider.Maps.Leaflet.Feature {
                                 OSFramework.Maps.Enum.Unsupported.message;
                             break;
                         case OSFramework.Maps.Enum.ShapeType.Circle: {
-                            this._shapeCircle();
+                            this._checkCircleInsideMarker();
                             break;
                         }
                         default: {
                             // Default validations to check if marker is inside shape
                             this._polyPoints =
                                 this._shape.provider.getLatLngs()[0];
-                            this._shapeDefault();
+                            this._checkInsideMarker();
                         }
                     }
                 } else {
@@ -142,7 +134,7 @@ namespace Provider.Maps.Leaflet.Feature {
                             this._polyPoints.push(L.latLng(item.Lat, item.Lng));
                         });
 
-                        this._shapeDefault();
+                        this._checkInsideMarker();
                     }
                 }
             }
@@ -152,10 +144,6 @@ namespace Provider.Maps.Leaflet.Feature {
                 code: this._returnObjCode,
                 message: this._returnObjMessage
             };
-        }
-
-        public dispose(): void {
-            //
         }
     }
 }

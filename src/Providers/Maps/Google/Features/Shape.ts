@@ -1,11 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.Feature {
-    export class Shape
-        implements
-            OSFramework.Maps.Feature.IShape,
-            OSFramework.Maps.Interface.IBuilder,
-            OSFramework.Maps.Interface.IDisposable
-    {
+    export class Shape implements OSFramework.Maps.Feature.IShape {
         private _isInsideShape: boolean;
         private _map: OSFramework.Maps.OSMap.IMap;
         private _markerCoordinates;
@@ -15,7 +10,7 @@ namespace Provider.Maps.Google.Feature {
         private _shape: OSFramework.Maps.Shape.IShape;
 
         // Method for shape circle exception
-        private _shapeCircle(): void {
+        private _checkCircleInsideMarker(): void {
             const circleRadius = this._shape.provider.getRadius();
             const circleCenter = this._shape.provider.getCenter();
             const distanceBetweenPoints =
@@ -31,7 +26,7 @@ namespace Provider.Maps.Google.Feature {
         }
 
         // Method to apply the default calculations for shapes
-        private _shapeDefault(): void {
+        private _checkInsideMarker(): void {
             this._isInsideShape = google.maps.geometry.poly.containsLocation(
                 this._markerCoordinates,
                 this._map.getShape(this._shape.widgetId).provider
@@ -42,7 +37,7 @@ namespace Provider.Maps.Google.Feature {
         }
 
         // Method for shape rectangle exception
-        private _shapeRectangle(): void {
+        private _checkRectangleInsideMarker(): void {
             this._isInsideShape = this._map
                 .getShape(this._shape.widgetId)
                 .provider.getBounds()
@@ -50,10 +45,6 @@ namespace Provider.Maps.Google.Feature {
             this._returnObjSuccess = true;
             this._returnObjCode = OSFramework.Maps.Enum.Success.code;
             this._returnObjMessage = this._isInsideShape.toString();
-        }
-
-        public build(): void {
-            //
         }
 
         public containsLocation(
@@ -96,14 +87,14 @@ namespace Provider.Maps.Google.Feature {
                                 OSFramework.Maps.Enum.Unsupported.message;
                             break;
                         case OSFramework.Maps.Enum.ShapeType.Rectangle:
-                            this._shapeRectangle();
+                            this._checkRectangleInsideMarker();
                             break;
                         case OSFramework.Maps.Enum.ShapeType.Circle:
-                            this._shapeCircle();
+                            this._checkCircleInsideMarker();
                             break;
 
                         default: {
-                            this._shapeDefault();
+                            this._checkInsideMarker();
                         }
                     }
                 } else {
@@ -138,10 +129,6 @@ namespace Provider.Maps.Google.Feature {
                 code: this._returnObjCode,
                 message: this._returnObjMessage
             };
-        }
-
-        public dispose(): void {
-            //
         }
     }
 }
