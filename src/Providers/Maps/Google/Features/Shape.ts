@@ -128,13 +128,11 @@ namespace Provider.Maps.Google.Feature {
             }
 
             // Set the return message to expose values
-            const returnMessage = {
+            return {
                 isSuccess: this._returnObjSuccess,
                 code: this._returnObjCode,
                 message: this._returnObjMessage
             };
-
-            return returnMessage;
         }
 
         public dispose(): void {
