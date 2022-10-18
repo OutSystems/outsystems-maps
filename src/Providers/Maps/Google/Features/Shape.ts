@@ -24,9 +24,9 @@ namespace Provider.Maps.Google.Feature {
                 );
 
             this._isInsideShape = distanceBetweenPoints <= circleRadius;
-            this._returnObjSuccess = true;
-            this._returnObjCode = OSFramework.Maps.Enum.Success.code;
-            this._returnObjMessage = this._isInsideShape.toString();
+
+            // Update the return message
+            this._updateReturnMessage();
         }
 
         // Method to apply the default calculations for shapes
@@ -35,9 +35,8 @@ namespace Provider.Maps.Google.Feature {
                 this._markerCoordinates,
                 this._map.getShape(this._shape.widgetId).provider
             );
-            this._returnObjSuccess = true;
-            this._returnObjCode = OSFramework.Maps.Enum.Success.code;
-            this._returnObjMessage = this._isInsideShape.toString();
+            // Update the return message
+            this._updateReturnMessage();
         }
 
         // Method for shape rectangle exception
@@ -46,6 +45,13 @@ namespace Provider.Maps.Google.Feature {
                 .getShape(this._shape.widgetId)
                 .provider.getBounds()
                 .contains(this._markerCoordinates);
+
+            // Update the return message
+            this._updateReturnMessage();
+        }
+
+        // Method to update the return message
+        private _updateReturnMessage(): void {
             this._returnObjSuccess = true;
             this._returnObjCode = OSFramework.Maps.Enum.Success.code;
             this._returnObjMessage = this._isInsideShape.toString();
@@ -123,10 +129,9 @@ namespace Provider.Maps.Google.Feature {
                                 this._markerCoordinates,
                                 newShape
                             );
-                        this._returnObjSuccess = true;
-                        this._returnObjCode =
-                            OSFramework.Maps.Enum.Success.code;
-                        this._returnObjMessage = this._isInsideShape.toString();
+
+                        // Update the return message
+                        this._updateReturnMessage();
                     }
                 }
             }

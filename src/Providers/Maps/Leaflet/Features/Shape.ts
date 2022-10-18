@@ -29,9 +29,9 @@ namespace Provider.Maps.Leaflet.Feature {
 
             // Check if circle contains the marker coordinates
             this._isInsideShape = distanceBetweenPoints < circleRadius;
-            this._returnObjSuccess = true;
-            this._returnObjCode = OSFramework.Maps.Enum.Success.code;
-            this._returnObjMessage = this._isInsideShape.toString();
+
+            // Update the return message
+            this._updateReturnMessage();
         }
 
         // Method to apply the default calculations for shapes
@@ -77,10 +77,18 @@ namespace Provider.Maps.Leaflet.Feature {
                 // Increment the previousPolyPoint to compare with the next coordinate
                 previousPolyPoint = ++previousPolyPoint;
             }
+
+            // Update the return message
+            this._updateReturnMessage();
+        }
+
+        // Method to update the return message
+        private _updateReturnMessage(): void {
             this._returnObjSuccess = true;
             this._returnObjCode = OSFramework.Maps.Enum.Success.code;
             this._returnObjMessage = this._isInsideShape.toString();
         }
+
         public build(): void {
             //
         }
