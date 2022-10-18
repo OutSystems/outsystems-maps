@@ -3,8 +3,7 @@ namespace Provider.Maps.Google.Feature {
     export class Shape
         implements
             OSFramework.Maps.Feature.IShape,
-            OSFramework.Maps.Interface.IBuilder,
-            OSFramework.Maps.Interface.IDisposable
+            OSFramework.Maps.Interface.IBuilder
     {
         private _isInsideShape: boolean;
         private _map: OSFramework.Maps.OSMap.IMap;
@@ -138,10 +137,6 @@ namespace Provider.Maps.Google.Feature {
                 code: this._returnObjCode,
                 message: this._returnObjMessage
             };
-        }
-
-        public dispose(): void {
-            //
         }
     }
 }
