@@ -15,7 +15,7 @@ namespace Provider.Maps.Leaflet.Feature {
         private _shape: OSFramework.Maps.Shape.IShape;
 
         // Method for shape circle exception
-        private _checkCircleInsideMarker(): void {
+        private _checkCircleContainsMarker(): void {
             const circleCenter = this._shape.provider.getLatLng();
             const circleRadius = this._shape.provider.getRadius();
             this._markerCoordinates = new L.LatLng(
@@ -35,7 +35,7 @@ namespace Provider.Maps.Leaflet.Feature {
         }
 
         // Method to apply the default calculations for shapes
-        private _checkInsideMarker(): void {
+        private _checkContainsMarker(): void {
             // axis points to compare the shape coordinates
             let xi;
             let yi;
@@ -121,14 +121,14 @@ namespace Provider.Maps.Leaflet.Feature {
                                 OSFramework.Maps.Enum.Unsupported.message;
                             break;
                         case OSFramework.Maps.Enum.ShapeType.Circle: {
-                            this._checkCircleInsideMarker();
+                            this._checkCircleContainsMarker();
                             break;
                         }
                         default: {
                             // Default validations to check if marker is inside shape
                             this._polyPoints =
                                 this._shape.provider.getLatLngs()[0];
-                            this._checkInsideMarker();
+                            this._checkContainsMarker();
                         }
                     }
                 } else {
@@ -141,7 +141,7 @@ namespace Provider.Maps.Leaflet.Feature {
                             this._polyPoints.push(L.latLng(item.Lat, item.Lng));
                         });
 
-                        this._checkInsideMarker();
+                        this._checkContainsMarker();
                     }
                 }
             }

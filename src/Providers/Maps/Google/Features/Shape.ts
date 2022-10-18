@@ -14,7 +14,7 @@ namespace Provider.Maps.Google.Feature {
         private _shape: OSFramework.Maps.Shape.IShape;
 
         // Method for shape circle exception
-        private _checkCircleInsideMarker(): void {
+        private _checkCircleContainsMarker(): void {
             const circleRadius = this._shape.provider.getRadius();
             const circleCenter = this._shape.provider.getCenter();
             const distanceBetweenPoints =
@@ -30,7 +30,7 @@ namespace Provider.Maps.Google.Feature {
         }
 
         // Method to apply the default calculations for shapes
-        private _checkInsideMarker(): void {
+        private _checkContainsMarker(): void {
             this._isInsideShape = google.maps.geometry.poly.containsLocation(
                 this._markerCoordinates,
                 this._map.getShape(this._shape.widgetId).provider
@@ -41,7 +41,7 @@ namespace Provider.Maps.Google.Feature {
         }
 
         // Method for shape rectangle exception
-        private _checkRectangleInsideMarker(): void {
+        private _checkRectangleContainsMarker(): void {
             this._isInsideShape = this._map
                 .getShape(this._shape.widgetId)
                 .provider.getBounds()
@@ -95,14 +95,14 @@ namespace Provider.Maps.Google.Feature {
                                 OSFramework.Maps.Enum.Unsupported.message;
                             break;
                         case OSFramework.Maps.Enum.ShapeType.Rectangle:
-                            this._checkRectangleInsideMarker();
+                            this._checkRectangleContainsMarker();
                             break;
                         case OSFramework.Maps.Enum.ShapeType.Circle:
-                            this._checkCircleInsideMarker();
+                            this._checkCircleContainsMarker();
                             break;
 
                         default: {
-                            this._checkInsideMarker();
+                            this._checkContainsMarker();
                         }
                     }
                 } else {
