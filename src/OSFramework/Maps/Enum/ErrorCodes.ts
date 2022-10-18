@@ -11,7 +11,7 @@ namespace OSFramework.Maps.Enum {
     export const Unsupported = {
         code: 'MAPS-GEN-01003',
         message:
-            'The Polyline is invalid to check if the marker are inside the provided area. Please use a Circle, Rectangle or a Polygon.'
+            'The action ContainsLocation can’t verify if a given marker is inside a Polyline shape. Please, change the ShapeWidgetId parameter to a Circle, Rectangle, or Polygon.'
     };
 
     export enum ErrorCodes {
