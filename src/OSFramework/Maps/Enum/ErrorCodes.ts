@@ -3,6 +3,17 @@ namespace OSFramework.Maps.Enum {
     /**
      * Codes that get the associated to specific returning messages indicated wheter the action had success or not.
      */
+    export const Success = {
+        code: '200',
+        message: 'Success'
+    };
+
+    export const Unsupported = {
+        code: 'MAPS-GEN-01003',
+        message:
+            'The Polyline is invalid to check if the marker are inside the provided area. Please use a Circle, Rectangle or a Polygon.'
+    };
+
     export enum ErrorCodes {
         // Error Codes - CONFiguration errors - Any error related with missing or wrong configuration of the application.
         CFG_APIKeyAlreadySetMap = 'MAPS-CFG-01001',
@@ -19,6 +30,7 @@ namespace OSFramework.Maps.Enum {
         CFG_InvalidInputSearchPlaces = 'MAPS-CFG-10004',
         CFG_InvalidTravelMode = 'MAPS-CFG-04001',
         CFG_InvalidDrawingToolsPosition = 'MAPS-CFG-06001',
+        CFG_InvalidMapId = 'MAPS-CFG-10005',
 
         // Error Codes - LIB errors - Specific errors generated when consuming a third party lib / providers
         LIB_InvalidApiKeyMap = 'MAPS-LIB-01001',
@@ -42,6 +54,7 @@ namespace OSFramework.Maps.Enum {
         API_FailedLoadingPlugin = 'MAPS-API-04002',
         API_FailedNoPluginDirections = 'MAPS-API-04003',
         API_FailedRemoveMarkerFromCluster = 'MAPS-API-09001',
+        API_FailedContainsLocation = 'MAPS-API-05005',
 
         // Error Codes - GENeral error - General or internal Errors of the component. In the situation of simple components without different features/sections inside it, the GEN acronym should be used.
         GEN_InvalidChangePropertyMap = 'MAPS-GEN-01001',

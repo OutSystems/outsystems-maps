@@ -198,6 +198,28 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
             1
         );
     }
+
+    /**
+     * Function that will returns if a marker is inside a shape (Circle, Rectangle or Polygon)
+     *
+     * @export
+     * @param {string} shapeId id of the Shape that is about to be removed
+     */
+    export function ContainsLocation(
+        mapId: string,
+        shapeId: string,
+        pointCoordinates: string,
+        coordinatesList: string
+    ): string {
+        const map = MapManager.GetMapById(mapId, true);
+        const containsLocationResponse = map.features.shape.containsLocation(
+            mapId,
+            shapeId,
+            pointCoordinates,
+            coordinatesList
+        );
+        return JSON.stringify(containsLocationResponse);
+    }
 }
 
 /// Overrides for the old namespace - calls the new one, lets users know this is no longer in use

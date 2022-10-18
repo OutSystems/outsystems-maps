@@ -7,6 +7,7 @@ namespace OSFramework.Maps.Feature {
         public infoWindow: IInfoWindow;
         public markerClusterer: IMarkerClusterer;
         public offset: IOffset;
+        public shape: IShape;
         public trafficLayer: ITrafficLayer;
         public zoom: IZoom;
     }
