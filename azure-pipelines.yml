@@ -22,14 +22,14 @@ stages:
           - task: Npm@1
             displayName: 'npm install'
             inputs:
-              workingDir: './code'
+              workingDir: './'
               verbose: false
 
           #Compile typescript files
           - task: Npm@1
             displayName: 'npm run build'
             inputs:
-              workingDir: './code'
+              workingDir: './'
               command: custom
               verbose: false
               customCommand: 'run build'
@@ -38,7 +38,7 @@ stages:
           - task: PublishBuildArtifacts@1
             displayName: 'Publish OutSystemsMaps.js'
             inputs:
-              PathtoPublish: './code/dist/OutSystemsMaps.js'
+              PathtoPublish: './dist/OutSystemsMaps.js'
               ArtifactName: 'OutSystemsMaps.js'
               publishLocation: 'Container'
 
@@ -46,7 +46,7 @@ stages:
           - task: PublishBuildArtifacts@1
             displayName: 'Publish Map.css'
             inputs:
-              PathtoPublish: './code/styles/Map.css'
+              PathtoPublish: './styles/Map.css'
               ArtifactName: 'Map.css'
               publishLocation: 'Container'
 

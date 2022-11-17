@@ -1,0 +1,693 @@
+.map-wrapper {
+    -webkit-transition: opacity linear 150ms;
+    transition: opacity linear 150ms;
+    height: 100%;
+    width: 100%;
+}
+
+/* 
+* This pseudo element, will force the .map-wrapper to occupy all the possibly width.
+* This is specially important when insidethe map is inside an if and an inline map
+* key is passed. 
+*/
+.map-wrapper:before {
+    -servicestudio-content: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+    -servicestudio-display: block;
+    -servicestudio-height: 0;
+    -servicestudio-overflow: hidden;
+    -servicestudio-word-break: break-all;
+}
+
+.map-wrapper.is--hidden {
+    opacity: 0;
+    -servicestudio-opacity: 1;
+}
+
+.runtime-map-container {
+    -servicestudio-display: none !important;
+    height: 100%;
+    z-index: 0;
+}
+
+.map-wrapper .staticMap-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+html[data-uieditorversion^='1'] .map-wrapper .staticMap-image {
+    -servicestudio-height: auto;
+}
+
+.map-container {
+    -servicestudio-background: var(--map-container-image-google);
+    -servicestudio-background-repeat: no-repeat;
+    -servicestudio-background-size: cover;
+    -servicestudio-display: table;
+    height: var(--map-height);
+    max-width: 100%;
+    width: 100%;
+}
+
+.map-container.provider-leaflet {
+    -servicestudio-background: var(--map-container-image-leaflet) center;
+    -servicestudio-background-repeat: no-repeat;
+    -servicestudio-background-size: cover;
+}
+
+/***********************************************************************/
+/**/
+/***********************************************************************/
+.map-wrapper .license-message {
+    -servicestudio-background: #e9ecef;
+    -servicestudio-color: #938e8e;
+    -servicestudio-font-family: 'Verdana';
+    -servicestudio-font-size: 12px;
+    -servicestudio-padding: 15px 15px;
+}
+
+.map-wrapper .license-message:before {
+    -servicestudio-content: '🛈 The Map component requires a valid API key to display the map correctly and remove the "development purpose" watermark. You can get an API key for  Google Maps here: ';
+}
+
+.map-wrapper .license-message > .license-link {
+    -servicestudio-color: #4d5c66;
+    -servicestudio-font-weight: bold;
+}
+
+/***********************************************************************/
+/**/
+/***********************************************************************/
+
+.event-preview {
+    -servicestudio-background-color: white;
+    -servicestudio-border: 1px solid darkgray;
+    -servicestudio-border-radius: 5px;
+    -servicestudio-display: flex;
+    -servicestudio-flex-direction: row;
+    -servicestudio-flex-wrap: nowrap;
+    -servicestudio-font-family: Arial;
+    -servicestudio-margin: 5px;
+    -servicestudio-padding: 5px 10px;
+    -servicestudio-position: relative;
+    -servicestudio-z-index: 2;
+}
+
+.event-preview > img {
+    -servicestudio-width: 24px;
+}
+
+.event-preview > div {
+    -servicestudio-display: flex;
+    -servicestudio-flex-direction: row;
+}
+
+.event-preview-origin {
+    -servicestudio-color: darkgray;
+}
+
+.event-preview-name {
+    -servicestudio-font-weight: bold;
+}
+
+.event-preview-name,
+.event-preview-origin {
+    -servicestudio-align-self: center;
+    -servicestudio-font-size: 12px;
+    -servicestudio-margin-left: 5px;
+}
+
+/***********************************************************************/
+/**/
+/***********************************************************************/
+.map-preview {
+    -servicestudio-display: flex;
+    -servicestudio-justify-content: center;
+    -servicestudio-position: relative;
+}
+
+.map-preview:not(.map-container) {
+    -servicestudio-height: 100%;
+}
+
+/***********************************************************************/
+/**/
+/***********************************************************************/
+.map-preview-ss {
+    -servicestudio-height: 100%;
+    -servicestudio-position: absolute;
+    -servicestudio-width: 100%;
+}
+
+.map-preview-ss > .control-type {
+    -servicestudio-left: 10px;
+    -servicestudio-top: 10px;
+}
+
+.map-preview-ss > .control-zoom {
+    -servicestudio-right: 10px;
+    -servicestudio-bottom: 10px;
+}
+
+.map-preview-ss > .control-full {
+    -servicestudio-right: 10px;
+    -servicestudio-top: 10px;
+}
+
+.map-preview-ss > .control-type,
+.map-preview-ss > .control-zoom,
+.map-preview-ss > .control-full {
+    -servicestudio-position: absolute;
+}
+
+/***********************************************************************/
+/**/
+/***********************************************************************/
+
+.map-preview-message-container {
+    -servicestudio-left: 0%;
+    -servicestudio-top: 8px;
+    -servicestudio-position: absolute;
+    -servicestudio-right: 0%;
+    -servicestudio-text-align: center;
+}
+
+.map-preview-height {
+    -servicestudio-background: #dcecfdbb;
+    -servicestudio-color: #000000;
+}
+
+.map-preview-location {
+    -servicestudio-background: #00aad8bb;
+    -servicestudio-color: #fff;
+    -servicestudio-margin: 0 10px;
+    position: relative;
+    z-index: 3;
+}
+
+.map-preview-location,
+.map-preview-height {
+    -servicestudio-border-radius: 5px;
+    -servicestudio-display: inline-block;
+    -servicestudio-margin-top: 5px;
+    -servicestudio-padding: 5px 25px;
+    -servicestudio-text-align: center;
+}
+
+.map-preview-location:empty,
+.map-preview-height:empty {
+    -servicestudio-display: none;
+}
+
+/***********************************************************************/
+/**/
+/***********************************************************************/
+.map-preview > span {
+    -servicestudio-width: 100%;
+}
+
+.map-preview-addons {
+    -servicestudio-align-items: flex-start;
+    -servicestudio-position: relative;
+    -servicestudio-width: calc(100% - 73px);
+    -servicestudio-margin: 60px 60px 0px 13px;
+    -servicestudio-min-height: calc(var(--map-height) - 80px);
+}
+
+.map-preview-addons:empty:after {
+    -servicestudio-align-self: center;
+    -servicestudio-background: #ffffffa0;
+    -servicestudio-border-radius: 5px;
+    -servicestudio-content: 'Drag AddOns here';
+    -servicestudio-padding: 15px 25px;
+}
+
+.map-preview-addons > * {
+    -servicestudio-align-self: flex-start;
+}
+
+.map-preview-events {
+    -servicestudio-align-items: center;
+    -servicestudio-border-radius: 0 0 3px 3px;
+    -servicestudio-min-height: 42px;
+}
+
+.map-preview-events:empty:after {
+    -servicestudio-content: 'Drag map events here';
+}
+
+.map-preview-addons,
+.map-preview-events {
+    display: none;
+    -servicestudio-background-color: rgba(200, 200, 200, 0.3);
+    -servicestudio-border: 1px dashed rgba(1, 1, 1, 0.2);
+    -servicestudio-border-radius: 3px;
+    -servicestudio-display: flex;
+    -servicestudio-flex-wrap: wrap;
+    -servicestudio-position: relative;
+}
+
+.map-preview-addons:after,
+.map-preview-events:after {
+    -servicestudio-color: grey;
+    -servicestudio-font-family: Arial;
+    -servicestudio-left: 50%;
+    -servicestudio-position: absolute;
+    -servicestudio-transform: translateX(-50%);
+    -servicestudio-text-align: center;
+    -servicestudio-z-index: 0;
+}
+
+/***********************************************************************/
+/**/
+/***********************************************************************/
+
+.ss-marker {
+    -servicestudio-background: white;
+    -servicestudio-border-radius: 3px;
+    -servicestudio-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+        0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    -servicestudio-margin: 3px;
+    -servicestudio-max-width: 200px;
+    -servicestudio-min-width: 200px;
+}
+
+.ss-marker-icon {
+    -servicestudio-display: flex;
+    -servicestudio-justify-content: center;
+    -servicestudio-padding: 10px 10px 0 10px;
+}
+
+.ss-marker-location {
+    -servicestudio-display: block;
+    -servicestudio-font-family: Arial;
+    -servicestudio-font-size: 14px;
+    -servicestudio-font-weight: 600;
+    -servicestudio-margin: 10px;
+    -servicestudio-text-align: center;
+}
+
+.ss-marker-location:empty {
+    -servicestudio-display: none;
+}
+
+/***********************************************************************/
+/**/
+/***********************************************************************/
+
+.ss-marker-events {
+    -servicestudio-background-color: rgba(200, 200, 200, 0.3);
+    -servicestudio-box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0.03);
+    -servicestudio-margin: 10px;
+    -servicestudio-min-height: 20px;
+    -servicestudio-position: relative;
+    -servicestudio-padding-bottom: 10px;
+}
+
+.ss-marker-events:empty:after {
+    -servicestudio-color: lightgrey;
+    -servicestudio-content: 'Drag marker events to here';
+    -servicestudio-font-family: Arial;
+    -servicestudio-font-size: 11px;
+    -servicestudio-left: 50%;
+    -servicestudio-position: absolute;
+    -servicestudio-top: 50%;
+    -servicestudio-transform: translate(-50%, -50%);
+    -servicestudio-white-space: nowrap;
+    -servicestudio-z-index: 0;
+}
+
+.ss-marker-events .event-preview {
+    margin-top: 0;
+}
+
+.ss-marker-events .event-preview > div {
+    -servicestudio-flex-direction: column;
+    -servicestudio-margin-left: 10px;
+}
+
+.ss-marker-events .event-preview > img {
+    -servicestudio-align-self: center;
+    -servicestudio-width: 20px;
+}
+
+.ss-marker-events .event-preview-origin {
+    -servicestudio-font-size: 11px;
+    -servicestudio-font-weight: normal;
+    -servicestudio-margin-bottom: 2px;
+}
+
+/***********************************************************************/
+/**/
+/***********************************************************************/
+
+.marker-popup-layout {
+    display: flex;
+    flex-direction: column;
+    max-width: 200px;
+}
+
+body.safari .marker-popup-layout,
+body.chrome .marker-popup-layout {
+    margin-left: 6px;
+}
+
+@supports (-webkit-touch-callout: none) {
+    body.safari .marker-popup-layout,
+    body.chrome .marker-popup-layout {
+        margin-left: 0px;
+        padding: 6px 18px 6px 6px;
+    }
+}
+
+.marker-popup-placeholder {
+    -servicestudio-background: white;
+    -servicestudio-border: 1px dashed #efefef;
+    -servicestudio-margin: 15px 15px 0 15px;
+    -servicestudio-min-height: 60px;
+    -servicestudio-position: relative;
+}
+
+.marker-popup-placeholder::empty {
+    -servicestudio-background-color: rgba(200, 200, 200, 0.3);
+    -servicestudio-box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0.03);
+}
+
+.marker-popup-placeholder::before {
+    -servicestudio-color: lightgray;
+    -servicestudio-content: 'x';
+    -servicestudio-position: absolute;
+    -servicestudio-right: -10px;
+    -servicestudio-top: -18px;
+    -servicestudio-z-index: 2;
+}
+
+.marker-layout-image {
+    height: 100px;
+    width: 100%;
+}
+
+.marker-layout-image-default,
+.marker-layout-image img {
+    border-radius: 8px;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+}
+
+.marker-layout-image-default:empty {
+    width: 100%;
+    content: var(--popup-default-image);
+}
+
+.marker-layout-header {
+    margin: 10px 0 5px;
+}
+
+.marker-layout-description {
+    color: var(--color-neutral-7);
+}
+
+.marker-layout-header:empty + .marker-layout-description {
+    margin-top: 10px;
+}
+
+.marker-layout-header:empty,
+.marker-layout-description:empty {
+    display: none;
+    -servicestudio-display: block;
+}
+
+.marker-layout-link {
+    padding: 10px 0 5px;
+    text-align: center;
+}
+
+.marker-layout-link a {
+    display: block;
+}
+
+.marker-layout-link a:hover,
+.marker-layout-link a:focus {
+    text-decoration: none;
+}
+
+.marker-leaflet-icon {
+    background: var(--marker-leaflet-icon);
+    text-align: center;
+}
+
+.marker-leaflet-icon-wp {
+    background: var(--marker-leaflet-icon-wp);
+    text-align: center;
+}
+
+.leaflet-tooltip.marker-leaflet-transparent-tooltip,
+.leaflet-tooltip.marker-leaflet-transparent-tooltip-wp,
+.leaflet-tooltip.marker-leaflet-transparent-tooltip::before,
+.leaflet-tooltip.marker-leaflet-transparent-tooltip-wp::before {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.leaflet-tooltip.marker-leaflet-transparent-tooltip-wp,
+.leaflet-tooltip.marker-leaflet-transparent-tooltip-wp::before {
+    color: white;
+    margin-top: -10px;
+}
+
+/***********************************************************************/
+/*                          SS Hybrid version                          */
+/***********************************************************************/
+
+/* MAKE IF FULLWIDTH
+This is to make the first and only if, directly inside the
+map-preview block to be fullwidth. We rather not apply this
+to all IFs in the page or even in the map placeholder due
+to the potential side effect.
+*/
+html[data-uieditorversion^='1'] .map-preview > .uieditor-if-widget-container {
+    -servicestudio-width: 100% !important;
+}
+
+/* MAKE THE IF's TRUE BRANCH HIDDEN
+This condition enable us to completely hide the true branch
+in development time, to improve the code readability.
+*/
+html[data-uieditorversion^='1']
+    .hide-true-branch
+    > .uieditor-if-widget-container
+    > :first-child {
+    -servicestudio-display: none !important;
+}
+
+/* MAKE THE IF's FALSE BRANCH HIDDEN
+This condition enable us to completely hide the true .hide-true-branch
+in development time, to improve the code readability.
+*/
+html[data-uieditorversion^='1']
+    .hide-false-branch
+    > .uieditor-if-widget-container
+    > :last-child {
+    -servicestudio-display: none !important;
+}
+
+/* MAKE THE CUSTOM PLACEHOLDER MESSAGES DISAPPEAR ON MOUSE HOVER
+We are using custom placeholders messages, set by CSS - in
+order to improve the developer experience, however in SS hybrid
+is actually overlapping with the default placeholder message, that
+appears once the mouse is over the drawing canvas.
+This rule, will make our custom messages disappear once the developer
+has the mouse over the canvas.
+*/
+html[data-uieditorversion^='1']:hover .ss-marker-events:empty:after,
+html[data-uieditorversion^='1']:hover .map-preview-addons:empty:after,
+html[data-uieditorversion^='1']:hover .map-preview-events:empty:after {
+    -servicestudio-display: none !important;
+}
+
+.map-wrapper .force-hide {
+    -servicestudio-display: none !important;
+}
+/***********************************************************************/
+/**/
+/***********************************************************************/
+
+.ss-shape {
+    -servicestudio-background: white;
+    -servicestudio-border-radius: 3px;
+    -servicestudio-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+        0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    -servicestudio-margin: 3px;
+    -servicestudio-max-width: 200px;
+    -servicestudio-min-width: 200px;
+}
+
+.ss-shape-icon {
+    -servicestudio-display: flex;
+    -servicestudio-justify-content: center;
+    -servicestudio-padding: 10px 10px 0 10px;
+}
+
+/***********************************************************************/
+/**/
+/***********************************************************************/
+
+.ss-shape-events {
+    -servicestudio-background-color: rgba(200, 200, 200, 0.3);
+    -servicestudio-box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0.03);
+    -servicestudio-margin: 10px;
+    -servicestudio-min-height: 20px;
+    -servicestudio-position: relative;
+    -servicestudio-padding-bottom: 10px;
+}
+
+.ss-shape-events:empty:after {
+    -servicestudio-color: lightgrey;
+    -servicestudio-content: 'Drag shape events here';
+    -servicestudio-font-family: Arial;
+    -servicestudio-font-size: 11px;
+    -servicestudio-left: 50%;
+    -servicestudio-position: absolute;
+    -servicestudio-top: 50%;
+    -servicestudio-transform: translate(-50%, -50%);
+    -servicestudio-white-space: nowrap;
+    -servicestudio-z-index: 0;
+}
+
+.ss-shape-events .event-preview {
+    margin-top: 0;
+}
+
+.ss-shape-events .event-preview > div {
+    -servicestudio-flex-direction: column;
+    -servicestudio-margin-left: 10px;
+}
+
+.ss-shape-events .event-preview > img {
+    -servicestudio-align-self: center;
+    -servicestudio-width: 20px;
+}
+
+.ss-shape-events .event-preview-origin {
+    -servicestudio-font-size: 11px;
+    -servicestudio-font-weight: normal;
+    -servicestudio-margin-bottom: 2px;
+}
+
+/***********************************************************************/
+/**/
+/***********************************************************************/
+
+.ss-drawingTools {
+    -servicestudio-background: white;
+    -servicestudio-border-radius: 3px;
+    -servicestudio-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+        0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    -servicestudio-margin: 3px;
+    -servicestudio-max-width: 200px;
+    -servicestudio-min-height: 50px;
+    -servicestudio-min-width: 200px;
+}
+
+.ss-drawingTools-hand {
+    -servicestudio-margin-top: 1px;
+}
+
+.ss-drawingTools-hand,
+.ss-drawingTools-icon {
+    -servicestudio-height: 27px;
+    -servicestudio-width: 27px;
+}
+
+.ss-drawingTools-icon img {
+    -servicestudio-height: 27px;
+}
+
+.ss-drawingTools-tools {
+    -servicestudio-display: flex;
+    -servicestudio-padding: 10px 10px 10px 10px;
+}
+
+.ss-drawingTools-placeholder {
+    -servicestudio-border: 1px dashed #efefef;
+    -servicestudio-flex: 1;
+    -servicestudio-min-height: 30px;
+    -servicestudio-position: relative;
+}
+
+.ss-drawingTools-placeholder * {
+    -servicestudio-display: inline-block;
+}
+
+.ss-drawingTools-placeholder:empty:after {
+    -servicestudio-color: lightgrey;
+    -servicestudio-content: 'Drag draw blocks here';
+    -servicestudio-font-family: Arial;
+    -servicestudio-font-size: 11px;
+    -servicestudio-left: 50%;
+    -servicestudio-position: absolute;
+    -servicestudio-top: 50%;
+    -servicestudio-transform: translate(-50%, -50%);
+    -servicestudio-white-space: nowrap;
+    -servicestudio-z-index: 0;
+}
+
+/***********************************************************************/
+/**/
+/***********************************************************************/
+
+.ss-fileLayer,
+.ss-heatmapLayer {
+    -servicestudio-background: white;
+    -servicestudio-border-radius: 3px;
+    -servicestudio-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+        0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    -servicestudio-margin: 3px;
+    -servicestudio-max-width: 200px;
+    -servicestudio-min-width: 200px;
+    -servicestudio-padding-bottom: 10px;
+}
+
+.ss-fileLayer-icon,
+.ss-heatmapLayer-icon {
+    -servicestudio-display: flex;
+    -servicestudio-justify-content: center;
+    -servicestudio-padding: 10px 10px 0 10px;
+}
+
+/***********************/
+
+.custom-clustericon {
+    align-items: center;
+    color: #fff;
+    display: flex;
+    font-size: 14px;
+}
+
+.custom-clustericon-1::before,
+.custom-clustericon-2::before,
+.custom-clustericon-3::before {
+    content: '';
+    height: 100%;
+    left: 50%;
+    opacity: 1;
+    padding: 15px;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    width: 100%;
+}
+
+.custom-clustericon-1::before {
+    background: var(--cluster-default-image-1) no-repeat center;
+}
+
+.custom-clustericon-2::before {
+    background: var(--cluster-default-image-2) no-repeat center;
+}
+
+.custom-clustericon-3::before {
+    background: var(--cluster-default-image-3) no-repeat center;
+}
