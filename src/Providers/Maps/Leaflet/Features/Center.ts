@@ -54,7 +54,7 @@ namespace Provider.Maps.Leaflet.Feature {
                 responseObj.isSuccess = false;
                 responseObj.message = error.message;
                 responseObj.code =
-                    OSFramework.Maps.Enum.ErrorCodes.API_FailedCenterCoordinates;
+                    OSFramework.Maps.Enum.ErrorCodes.API_FailedGettingCenterCoordinates;
             }
 
             return responseObj;
