@@ -36,17 +36,20 @@ namespace Provider.Maps.Leaflet.Feature {
             // Set the default return message
             const responseObj = {
                 isSuccess: true,
-                message: 'Success',
-                code: '200',
-                center: {}
+                message: OSFramework.Maps.Enum.Success.message,
+                code: OSFramework.Maps.Enum.Success.code
             };
 
             try {
-                // Set the coordinates to expose on return message
-                responseObj.center = {
+                // Set the message structure, to pass the center coordinates on message
+                const messageInfo = {
+                    message: OSFramework.Maps.Enum.Success.message,
                     lat: this._map.provider.getCenter().lat,
                     lng: this._map.provider.getCenter().lng
                 };
+
+                // Set the coordinates to expose on return message
+                responseObj.message = JSON.stringify(messageInfo);
             } catch (error) {
                 responseObj.isSuccess = false;
                 responseObj.message = error.message;
