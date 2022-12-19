@@ -21,6 +21,34 @@ namespace Provider.Maps.Google.Feature {
             this._initialCenter = center;
         }
 
+        public getMapCenter(): OSFramework.Maps.OSStructures.ReturnMessage {
+            // Set the default return message
+            const responseObj = {
+                isSuccess: true,
+                message: OSFramework.Maps.Enum.Success.message,
+                code: OSFramework.Maps.Enum.Success.code
+            };
+
+            try {
+                // Set the message structure, to pass the center coordinates on message
+                const messageInfo = {
+                    message: OSFramework.Maps.Enum.Success.message,
+                    lat: this._map.provider.getCenter().lat(),
+                    lng: this._map.provider.getCenter().lng()
+                };
+
+                // Set the coordinates to expose on return message
+                responseObj.message = JSON.stringify(messageInfo);
+            } catch (error) {
+                responseObj.isSuccess = false;
+                responseObj.message = error.message;
+                responseObj.code =
+                    OSFramework.Maps.Enum.ErrorCodes.API_FailedGettingCenterCoordinates;
+            }
+
+            return responseObj;
+        }
+
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         public build(): void {}
 

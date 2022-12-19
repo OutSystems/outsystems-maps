@@ -115,7 +115,18 @@ namespace OutSystems.Maps.MapAPI.MapManager {
 
         return map;
     }
-
+    /**
+     * Function that will return the center coordinates of a given map.
+     *
+     * @export
+     * @param {string} mapId Id of the Map where the change will occur.
+     * @returns {*}  {OSMap.IMap} instance of the Map.
+     */
+    export function GetMapCenter(mapId: string): string {
+        const map = MapManager.GetMapById(mapId, true);
+        const getMapCenterResponse = map.features.center.getMapCenter();
+        return JSON.stringify(getMapCenterResponse);
+    }
     /**
      * Function that will get all the maps from the current page
      * @returns Map structure containing all the maps and the corresponding uniqueId
