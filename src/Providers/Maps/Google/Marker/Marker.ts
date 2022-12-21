@@ -82,7 +82,6 @@ namespace Provider.Maps.Google.Marker {
                     OSFramework.Maps.Enum.ErrorCodes.LIB_FailedGeocodingMarker,
                     `Location of the Marker can't be empty.`
                 );
-                return;
             } else {
                 // Let's return a promise that will be resolved or rejected according to the result
                 return new Promise((resolve, reject) => {
@@ -201,6 +200,9 @@ namespace Provider.Maps.Google.Marker {
                             map: this.map.provider
                         });
 
+                        // Call this method so icon respects the sizes that are on config
+                        this._setIconSize();
+
                         // We can only set the events on the provider after its creation
                         this._setMarkerEvents();
 
@@ -255,13 +257,11 @@ namespace Provider.Maps.Google.Marker {
                     case OSFramework.Maps.Enum.OS_Config_Marker.allowDrag:
                         return this._provider.setDraggable(value);
                     case OSFramework.Maps.Enum.OS_Config_Marker.iconHeight:
+                    case OSFramework.Maps.Enum.OS_Config_Marker.iconWidth:
                         this._setIconSize();
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Marker.iconUrl:
                         this._setIcon(value);
-                        return;
-                    case OSFramework.Maps.Enum.OS_Config_Marker.iconWidth:
-                        this._setIconSize();
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Marker.label:
                         return this._provider.setLabel(value);
