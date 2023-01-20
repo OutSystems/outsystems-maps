@@ -75,6 +75,10 @@ namespace Provider.Maps.Leaflet.Feature {
             this._features.offset = this._makeItem(Offset, offset);
             return this;
         }
+        private _makeShape(): FeatureBuilder {
+            this._features.shape = this._makeItem(Shape);
+            return this;
+        }
         private _makeZoom(
             level: OSFramework.Maps.Enum.OSMap.Zoom
         ): FeatureBuilder {
@@ -86,6 +90,7 @@ namespace Provider.Maps.Leaflet.Feature {
             const config = this._map
                 .config as Configuration.OSMap.LeafletMapConfig;
 
+            this._makeShape();
             this._makeZoom(config.zoom)
                 ._makeCenter(
                     config.center as OSFramework.Maps.OSStructures.OSMap.Coordinates

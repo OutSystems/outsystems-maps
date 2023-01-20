@@ -7,6 +7,8 @@ namespace OSFramework.Maps.Feature {
         getCenter(): OSStructures.OSMap.Coordinates;
         /** Current center position of the Map that changes whenever a marker is added or by enabling the Autofit on Zoom feature */
         getCurrentCenter(): OSFramework.Maps.OSStructures.OSMap.Coordinates;
+        /* Get the current position of map */
+        getMapCenter(): OSStructures.ReturnMessage;
         /** Refreshes the Current Center position of the Map
          * Changes whenever a marker is added or by enabling the Autofit on Zoom feature
          */
