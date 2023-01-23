@@ -18,9 +18,9 @@ stages:
       - bash: |
             declare BRANCH 
             BRANCH=$(system.pullRequest.sourceBranch)
-            echo "Map_Regressions_${BRANCH//[-]/}"
-            echo "##vso[task.setvariable variable=branch;]Map_Regressions_${BRANCH//[-]/}"
-            echo "##vso[task.setvariable variable=module;isoutput=true]Map_Regressions_${BRANCH//[-]/}"
+            echo "Maps_Automation_${BRANCH//[-]/}"
+            echo "##vso[task.setvariable variable=branch;]Maps_Automation_${BRANCH//[-]/}"
+            echo "##vso[task.setvariable variable=module;isoutput=true]Maps_Automation_${BRANCH//[-]/}"
         name: branch_name
 
       #Ping sample test page
