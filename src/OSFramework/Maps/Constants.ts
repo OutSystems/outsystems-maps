@@ -2,4 +2,5 @@
 namespace OSFramework.Maps.Constants {
     /* OutSystems Maps Version */
     export const OSMapsVersion = '1.6.4';
+
 }

@@ -1,7 +1,11 @@
 /// <reference path="./FilledShapeConfig.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
+<<<<<<<< HEAD:src/Providers/Maps/Google/Configuration/Shape/RectangleShapeConfig.ts
 namespace Provider.Maps.Google.Configuration.Shape {
+========
+namespace Provider.Maps.Leaflet.Configuration.Shape {
+>>>>>>>> rc1.6.3:src/Providers/Maps/Leaflet/Configuration/Shape/RectangleShapeConfig.ts
     export class RectangleShapeConfig extends FilledShapeConfig {
         public bounds: string;
 
