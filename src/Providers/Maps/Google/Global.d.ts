@@ -1,9 +1,10 @@
 import OriginalMarkerClusterer from '@googlemaps/markerclustererplus';
 
 declare global {
-    //eslint-disable-next-line @typescript-eslint/naming-convention
     interface Window {
-        MarkerClusterer: typeof OriginalMarkerClusterer;
+        GMCB: () => void;
+        MarkerClusterer: typeof OriginalMarkerClusterer; 
     }
     type MarkerClusterer = OriginalMarkerClusterer;
 }
+window.GMCB = window.GMCB || {};

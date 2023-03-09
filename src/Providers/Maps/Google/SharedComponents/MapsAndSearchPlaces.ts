@@ -12,6 +12,10 @@ namespace Provider.Maps.Google.SharedComponents {
             cb();
         } else {
             if (script === null) {
+                window.GMCB = () => {
+                    //this method is just to avoid unnecessary warning on the console;
+                    window.GMCB = undefined;
+                };
                 script = document.createElement('script');
                 /* eslint-disable-next-line prettier/prettier */
                 script.src =
@@ -21,13 +25,14 @@ namespace Provider.Maps.Google.SharedComponents {
                     // In order to use the drawingTools we need to add it into the libraries via the URL = drawing
                     // In order to use the heatmap we need to add it into the libraries via the URL = visualization
                     // In order to use the searchplaces we need to add it into the libraries via the URL = places (in case the Map is the first to import the scripts)
-                    '&libraries=drawing,visualization,places';
+                    '&libraries=drawing,visualization,places&callback=GMCB';
                 script.async = true;
                 script.defer = true;
                 script.id = OSFramework.Maps.Helper.Constants.googleMapsScript;
                 document.head.appendChild(script);
             }
             script.addEventListener('load', cb);
+            // We have to use this listener instead of the callback of the library because the callback will only work of 1st map on the page
         }
     }
 
