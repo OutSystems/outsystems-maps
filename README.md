@@ -1,4 +1,4 @@
-# OutSystems Maps · [![GitHub license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](https://github.com/OutSystems/outsystems-maps/blob/master/LICENSE) ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg) [![Build Status](https://dev.azure.com/OutSystemsRD/Data%20Grid/_apis/build/status/OutSystems.outsystems-maps?branchName=dev&stageName=Build)](https://dev.azure.com/OutSystemsRD/Data%20Grid/_build/latest?definitionId=800&branchName=dev) ![Release Status](https://vsrm.dev.azure.com/OutSystemsRD/_apis/public/Release/badge/a4246f2c-63f1-4b1a-8070-9328d5d3ea38/5/5)
+# OutSystems Maps · [![GitHub license](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/OutSystems/outsystems-maps/blob/master/LICENSE) ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg) 
 Add maps to your applications **OutSystems Reactive Web apps** with a single or multiple locations. Fully customizable and adaptable, allows you to change map behaviors, customize your map, add markers and customize each of them, according to your use case.
 
 ## About the component
@@ -26,7 +26,7 @@ The code is written in TypeScript🖤, and you are welcome to branch it and PR y
 
 ### What tools should you use?
 We highly recommend the usage of the following tools:
-* [Visual Code](https://code.visualstudio.com/)
+* [Visual Studio Code](https://code.visualstudio.com/)
 * With these extensions:
   * Document This
   * ESLint
@@ -34,14 +34,14 @@ We highly recommend the usage of the following tools:
 
 ### How to use change this code?
 1. Create a branch based in the branch **master** (lastest & greatest release)
-2. Open your Visual Code in your branch
-3. Run the following command in Visual Code terminal: `npm install` (this will install all the dependencies that you need)
+2. Open your Visual Studio Code in your branch
+3. Run the following command in Visual Studio Code terminal: `npm install` (this will install all the dependencies that you need)
 4. Do your magic! :)
 5. **Document your code** (with the extension "Document This", start typing `/**` and the extension will give you a good starting point
-6. Compile and fix errors and warnings (in Visual Code terminal: `npm run build`)
-7. Check if the code format is following our conventions (in Visual Code terminal: `npm run lint`)
-   - Some of the conventions can be fixed automatically by lint (in Visual Code terminal: `npm run lintfix`)
-   - Although the script above execute the prettier conventions, you may want to run it over all project files (in Visual Code terminal: `npm run prettier`)
+6. Compile and fix errors and warnings (in Visual Studio Code terminal: `npm run build`)
+7. Check if the code format is following our conventions (in Visual Studio Code terminal: `npm run lint`)
+   - Some of the conventions can be fixed automatically by lint (in Visual Studio Code terminal: `npm run lintfix`)
+   - Although the script above execute the prettier conventions, you may want to run it over all project files (in Visual Studio Code terminal: `npm run prettier`)
 8. Fix all errors & warnings! :)
 9. Create a PR, describing what was the (mis)behavior, what you changed and please provide a sample 
 
