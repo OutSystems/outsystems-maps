@@ -2,7 +2,7 @@
   "name": "outsystems-maps",
   "version": "1.6.5",
   "description": "Outsystems Maps",
-  "license": "Apache v2.0",
+  "license": "BSD-3-Clause",
   "scripts": {
     "build": "tsc",
     "lint": "eslint ./src/**/*.ts",
@@ -12,7 +12,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "docs": "npx typedoc"
   },
-  "author": "OutSystems R&D",
+  "author": "UI Components Team",
   "dependencies": {
     "typescript": "^4.4.4"
   },
