@@ -41,6 +41,18 @@ namespace Provider.Maps.Leaflet.Shape {
                 : providerShape.dragging.disable();
         }
 
+        private _triggerShapeChangedEvent(shape: any) {
+            const shapeProperties = this.getShapeProperties();
+
+            this.shapeEvents.trigger(
+                // EventType
+                OSFramework.Maps.Event.Shape.ShapeEventType.ProviderEvent,
+                // EventName
+                OSFramework.Maps.Helper.Constants.shapeChangedEvent,
+                shapeProperties // retornar apenas location e radius etc
+            );
+        }
+
         /** Builds the provider (asynchronously) by receving a set of multiple coordinates (creating a path for the shape) or just one (creating the center of the shape) */
         protected buildProvider(
             coordinates:
@@ -118,26 +130,24 @@ namespace Provider.Maps.Leaflet.Shape {
                         ) {
                             this._addedEvents.push(eventName);
                             this.providerEventsList.forEach((event) =>
-                                this.provider.addEventListener(event, () => {
-                                    if (this._shapeChangedEventTimeout) {
-                                        clearTimeout(
-                                            this._shapeChangedEventTimeout
-                                        );
+                                this.provider.addEventListener(
+                                    event,
+                                    (eventData: L.LeafletEvent) => {
+                                        if (this._shapeChangedEventTimeout) {
+                                            clearTimeout(
+                                                this._shapeChangedEventTimeout
+                                            );
+                                        }
+                                        this._shapeChangedEventTimeout =
+                                            setTimeout(
+                                                this._triggerShapeChangedEvent.bind(
+                                                    this,
+                                                    eventData.target
+                                                ),
+                                                500
+                                            );
                                     }
-                                    this._shapeChangedEventTimeout = setTimeout(
-                                        () =>
-                                            this.shapeEvents.trigger(
-                                                // EventType
-                                                OSFramework.Maps.Event.Shape
-                                                    .ShapeEventType
-                                                    .ProviderEvent,
-                                                // EventName
-                                                OSFramework.Maps.Helper
-                                                    .Constants.shapeChangedEvent
-                                            ),
-                                        500
-                                    );
-                                })
+                                )
                             );
                         } else if (
                             // If the eventName is included inside the ProviderSpecialEvents then add the listener
@@ -210,5 +220,6 @@ namespace Provider.Maps.Leaflet.Shape {
 
         public abstract get providerEventsList(): Array<string>;
         public abstract get shapeTag(): string;
+        protected abstract getShapeProperties(): any;
     }
 }

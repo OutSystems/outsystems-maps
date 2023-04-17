@@ -143,5 +143,18 @@ namespace Provider.Maps.Leaflet.Shape {
                 }
             }
         }
+
+        protected getShapeProperties() {
+            return {
+                coordinates: {
+                    Lat: this.providerCenter.lat,
+                    Lng: this.providerCenter.lng
+                },
+                location: {
+                    location: `${this.providerCenter.lat.toString()},${this.providerCenter.lng.toString()}`,
+                    radius: this.providerRadius
+                }
+            };
+        }
     }
 }

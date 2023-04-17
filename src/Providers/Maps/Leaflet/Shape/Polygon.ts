@@ -43,5 +43,23 @@ namespace Provider.Maps.Leaflet.Shape {
         ): L.Polygon {
             return new L.Polygon(path, this.getProviderConfig());
         }
+
+        protected getShapeProperties() {
+            const locations = (this.providerObjectPath as Array<L.LatLng>).map(
+                (elm) => `${elm.lat},${elm.lng}`
+            );
+            const coordinates = (
+                this.providerObjectPath as Array<L.LatLng>
+            ).map((elm) => {
+                return {
+                    Lat: elm.lat,
+                    Lng: elm.lng
+                };
+            });
+            return {
+                location: locations,
+                coordinates: coordinates
+            };
+        }
     }
 }

@@ -179,5 +179,18 @@ namespace Provider.Maps.Leaflet.Shape {
                 }
             }
         }
+
+        protected getShapeProperties() {
+            const bounds = {
+                north: this.bounds.north,
+                south: this.bounds.south,
+                west: this.bounds.west,
+                east: this.bounds.east
+            };
+            return {
+                location: bounds,
+                coordinates: bounds
+            };
+        }
     }
 }

@@ -22,7 +22,12 @@ namespace Provider.Maps.Leaflet.DrawingTools {
                 // changing the shape locations or bounds is only available via the drag-and-drop and resize, so the solution passes by adding the shape_changed event listener as the shape's OnChanged event
                 OSFramework.Maps.Helper.Constants
                     .shapeChangedEvent as OSFramework.Maps.Event.Shape.ShapeEventType,
-                () => {
+                (
+                    mapId: string,
+                    shapeId: string,
+                    eventName: string,
+                    shapeProperties: any
+                ) => {
                     this.drawingTools.drawingToolsEvents.trigger(
                         // EventType
                         OSFramework.Maps.Event.DrawingTools
@@ -30,7 +35,14 @@ namespace Provider.Maps.Leaflet.DrawingTools {
                         // EventName
                         this.completedToolEventName,
                         // The extra parameters, uniqueId and isNewElement set to false indicating that the element is not new
-                        { uniqueId: _shape.uniqueId, isNewElement: false }
+                        {
+                            uniqueId: _shape.uniqueId,
+                            isNewElement: false,
+                            location: JSON.stringify(shapeProperties.location),
+                            coordinates: JSON.stringify(
+                                shapeProperties.coordinates
+                            )
+                        }
                     );
                 }
             );

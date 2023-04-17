@@ -19,12 +19,19 @@ namespace OSFramework.Maps.Event.Shape {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             mapId: string,
             shapeId: string,
-            eventName: string
+            eventName: string,
+            args
         ): void {
             this.handlers
                 .slice(0)
                 .forEach((h) =>
-                    Helper.CallbackAsyncInvocation(h, mapId, shapeId, eventName)
+                    Helper.CallbackAsyncInvocation(
+                        h,
+                        mapId,
+                        shapeId,
+                        eventName,
+                        args
+                    )
                 );
         }
     }
