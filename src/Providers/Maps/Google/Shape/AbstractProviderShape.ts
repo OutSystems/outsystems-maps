@@ -16,6 +16,18 @@ namespace Provider.Maps.Google.Shape {
             });
         }
 
+        private _triggerShapeChangedEvent() {
+            const shapeProperties = this.getShapeProperties();
+
+            this.shapeEvents.trigger(
+                // EventType
+                OSFramework.Maps.Event.Shape.ShapeEventType.ProviderEvent,
+                // EventName
+                OSFramework.Maps.Helper.Constants.shapeChangedEvent,
+                shapeProperties // retornar apenas location e radius etc
+            );
+        }
+
         /** Builds the provider (asynchronously) by receving a set of multiple coordinates (creating a path for the shape) or just one (creating the center of the shape) */
         protected _buildProvider(
             coordinates:
@@ -100,18 +112,9 @@ namespace Provider.Maps.Google.Shape {
                                         }
                                         this._shapeChangedEventTimeout =
                                             setTimeout(
-                                                () =>
-                                                    this.shapeEvents.trigger(
-                                                        // EventType
-                                                        OSFramework.Maps.Event
-                                                            .Shape
-                                                            .ShapeEventType
-                                                            .ProviderEvent,
-                                                        // EventName
-                                                        OSFramework.Maps.Helper
-                                                            .Constants
-                                                            .shapeChangedEvent
-                                                    ),
+                                                this._triggerShapeChangedEvent.bind(
+                                                    this
+                                                ),
                                                 500
                                             );
                                     }
@@ -207,6 +210,8 @@ namespace Provider.Maps.Google.Shape {
         public abstract get providerObjectListener(): any;
 
         public abstract get shapeTag(): string;
+
+        protected abstract getShapeProperties(): any;
 
         protected abstract _createProvider(
             locations:

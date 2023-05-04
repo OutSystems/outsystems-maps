@@ -67,6 +67,19 @@ namespace Provider.Maps.Google.Shape {
                 .CFG_InvalidCircleShapeCenter;
         }
 
+        protected getShapeProperties() {
+            return {
+                coordinates: {
+                    Lat: this.providerCenter.lat,
+                    Lng: this.providerCenter.lng
+                },
+                location: {
+                    location: `${this.providerCenter.lat.toString()},${this.providerCenter.lng.toString()}`,
+                    radius: this.providerRadius
+                }
+            };
+        }
+
         public get providerCenter(): OSFramework.Maps.OSStructures.OSMap.Coordinates {
             const center = this.provider.get('center');
             if (center === undefined) {
