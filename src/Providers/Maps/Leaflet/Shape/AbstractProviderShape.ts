@@ -41,7 +41,7 @@ namespace Provider.Maps.Leaflet.Shape {
                 : providerShape.dragging.disable();
         }
 
-        private _triggerShapeChangedEvent(shape: any) {
+        private _triggerShapeChangedEvent() {
             const shapeProperties = this.getShapeProperties();
 
             this.shapeEvents.trigger(
@@ -141,8 +141,7 @@ namespace Provider.Maps.Leaflet.Shape {
                                         this._shapeChangedEventTimeout =
                                             setTimeout(
                                                 this._triggerShapeChangedEvent.bind(
-                                                    this,
-                                                    eventData.target
+                                                    this
                                                 ),
                                                 500
                                             );

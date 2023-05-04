@@ -20,7 +20,6 @@ namespace OSFramework.Maps.Event.DrawingTools {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             mapId: string,
             drawingToolsId: string,
-            eventName: string,
             isNewElement: boolean,
             coordinates:
                 | OSStructures.OSMap.Coordinates
@@ -34,7 +33,6 @@ namespace OSFramework.Maps.Event.DrawingTools {
                         h,
                         mapId,
                         drawingToolsId,
-                        eventName,
                         isNewElement,
                         coordinates,
                         location
