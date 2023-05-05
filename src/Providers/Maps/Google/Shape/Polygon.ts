@@ -40,16 +40,10 @@ namespace Provider.Maps.Google.Shape {
             coordinates: Array<OSFramework.Maps.OSStructures.OSMap.OSCoordinates>;
             location: Array<string>;
         } {
-            const locations = (
-                this
-                    .providerObjectPath as google.maps.MVCArray<google.maps.LatLng>
-            )
+            const locations = this.providerObjectPath
                 .getArray()
                 .map((elm) => `${elm.lat()},${elm.lng()}`);
-            const coordinates = (
-                this
-                    .providerObjectPath as google.maps.MVCArray<google.maps.LatLng>
-            )
+            const coordinates = this.providerObjectPath
                 .getArray()
                 .map((elm) => {
                     return {
