@@ -67,7 +67,13 @@ namespace Provider.Maps.Google.Shape {
                 .CFG_InvalidCircleShapeCenter;
         }
 
-        protected getShapeProperties() {
+        protected getShapeProperties(): {
+            coordinates: OSFramework.Maps.OSStructures.OSMap.OSCoordinates;
+            location: {
+                location: string;
+                radius: number;
+            };
+        } {
             return {
                 coordinates: {
                     Lat: this.providerCenter.lat,

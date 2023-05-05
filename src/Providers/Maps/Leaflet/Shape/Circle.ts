@@ -97,6 +97,25 @@ namespace Provider.Maps.Leaflet.Shape {
             return new L.Circle(center, this.getProviderConfig());
         }
 
+        protected getShapeProperties(): {
+            coordinates: OSFramework.Maps.OSStructures.OSMap.OSCoordinates;
+            location: {
+                location: string;
+                radius: number;
+            };
+        } {
+            return {
+                coordinates: {
+                    Lat: this.providerCenter.lat,
+                    Lng: this.providerCenter.lng
+                },
+                location: {
+                    location: `${this.providerCenter.lat.toString()},${this.providerCenter.lng.toString()}`,
+                    radius: this.providerRadius
+                }
+            };
+        }
+
         public build(): void {
             super.build();
             // First build center coordinates based on the location
@@ -142,19 +161,6 @@ namespace Provider.Maps.Leaflet.Shape {
                         return;
                 }
             }
-        }
-
-        protected getShapeProperties() {
-            return {
-                coordinates: {
-                    Lat: this.providerCenter.lat,
-                    Lng: this.providerCenter.lng
-                },
-                location: {
-                    location: `${this.providerCenter.lat.toString()},${this.providerCenter.lng.toString()}`,
-                    radius: this.providerRadius
-                }
-            };
         }
     }
 }

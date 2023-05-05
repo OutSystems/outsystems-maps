@@ -21,7 +21,7 @@ namespace OSFramework.Maps.Event.Shape {
             mapId: string,
             shapeId: string,
             eventName: string,
-            args
+            args: any
         ): void {
             this.handlers
                 .slice(0)

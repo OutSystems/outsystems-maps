@@ -42,7 +42,10 @@ namespace Provider.Maps.Leaflet.Shape {
             return new L.Polyline(path, this.getProviderConfig());
         }
 
-        protected getShapeProperties() {
+        protected getShapeProperties(): {
+            coordinates: Array<OSFramework.Maps.OSStructures.OSMap.OSCoordinates>;
+            location: Array<string>;
+        } {
             const locations = (this.providerObjectPath as Array<L.LatLng>).map(
                 (elm) => `${elm.lat},${elm.lng}`
             );

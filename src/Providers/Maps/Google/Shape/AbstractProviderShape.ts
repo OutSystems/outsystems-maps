@@ -211,13 +211,13 @@ namespace Provider.Maps.Google.Shape {
 
         public abstract get shapeTag(): string;
 
-        protected abstract getShapeProperties(): any;
-
         protected abstract _createProvider(
             locations:
                 | Array<OSFramework.Maps.OSStructures.OSMap.Coordinates>
                 | OSFramework.Maps.OSStructures.OSMap.Coordinates
                 | OSFramework.Maps.OSStructures.OSMap.Bounds
         ): W;
+
+        protected abstract getShapeProperties(): any;
     }
 }

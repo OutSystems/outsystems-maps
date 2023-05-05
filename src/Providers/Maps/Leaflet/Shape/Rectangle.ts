@@ -130,6 +130,22 @@ namespace Provider.Maps.Leaflet.Shape {
             });
         }
 
+        protected getShapeProperties(): {
+            coordinates: OSFramework.Maps.OSStructures.OSMap.Bounds;
+            location: OSFramework.Maps.OSStructures.OSMap.Bounds;
+        } {
+            const bounds = {
+                north: this.bounds.north,
+                south: this.bounds.south,
+                west: this.bounds.west,
+                east: this.bounds.east
+            };
+            return {
+                location: bounds,
+                coordinates: bounds
+            };
+        }
+
         public build(): void {
             super.build();
 
@@ -178,19 +194,6 @@ namespace Provider.Maps.Leaflet.Shape {
                         return;
                 }
             }
-        }
-
-        protected getShapeProperties() {
-            const bounds = {
-                north: this.bounds.north,
-                south: this.bounds.south,
-                west: this.bounds.west,
-                east: this.bounds.east
-            };
-            return {
-                location: bounds,
-                coordinates: bounds
-            };
         }
     }
 }

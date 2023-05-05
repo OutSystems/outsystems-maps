@@ -34,7 +34,10 @@ namespace Provider.Maps.Google.Shape {
             });
         }
 
-        protected getShapeProperties() {
+        protected getShapeProperties(): {
+            coordinates: Array<OSFramework.Maps.OSStructures.OSMap.OSCoordinates>;
+            location: Array<string>;
+        } {
             const locations = (
                 this
                     .providerObjectPath as google.maps.MVCArray<google.maps.LatLng>
