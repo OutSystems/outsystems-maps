@@ -221,6 +221,10 @@ namespace Provider.Maps.Leaflet.Marker {
                             // Callback CAN have an attribute (e) which is of the type MapMouseEvent
                             // Trigger the event by specifying the ProviderEvent MarkerType and the coords (lat, lng) if the callback has the attribute MapMouseEvent
                             (e?: L.LeafletMouseEvent) => {
+                                const coordinates = {
+                                    Lat: e.target.getLatLng().lat,
+                                    Lng: e.target.getLatLng().lng
+                                };
                                 this.markerEvents.trigger(
                                     // EventType
                                     OSFramework.Maps.Event.Marker
@@ -230,10 +234,11 @@ namespace Provider.Maps.Leaflet.Marker {
                                     // Coords
                                     e !== undefined &&
                                         e.target.getLatLng !== undefined
-                                        ? JSON.stringify({
-                                              Lat: e.target.getLatLng().lat,
-                                              Lng: e.target.getLatLng().lng
-                                          })
+                                        ? {
+                                              coordinates:
+                                                  JSON.stringify(coordinates),
+                                              location: `${coordinates.Lat},${coordinates.Lng}`
+                                          }
                                         : undefined
                                 );
                             }

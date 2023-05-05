@@ -31,12 +31,12 @@ namespace Provider.Maps.Google.DrawingTools {
                 // changing the marker location is only available via the drag-and-drop, so the solution passes by adding the dragend event listener as the marker's OnChanged event
                 'dragend' as OSFramework.Maps.Event.Marker.MarkerEventType,
                 // Trigger the onDrawingChangeEvent with the extra information (marker uniqueId and flag indicating that the element is not new)
-                () =>
+                (mapId, uniqueId, eventType, locationInfo) =>
                     this.triggerOnDrawingChangeEvent(
-                        _marker.uniqueId,
+                        uniqueId,
                         false,
-                        JSON.stringify(this._latLng),
-                        _marker.config.location
+                        locationInfo.coordinates,
+                        locationInfo.location
                     )
             );
         }

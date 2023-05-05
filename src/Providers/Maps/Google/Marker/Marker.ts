@@ -152,6 +152,11 @@ namespace Provider.Maps.Google.Marker {
                             // Callback CAN have an attribute (e) which is of the type MapMouseEvent
                             // Trigger the event by specifying the ProviderEvent MarkerType and the coords (lat, lng) if the callback has the attribute MapMouseEvent
                             (e?: google.maps.MapMouseEvent) => {
+                                const coordinates =
+                                    new OSFramework.Maps.OSStructures.OSMap.OSCoordinates(
+                                        e.latLng.lat(),
+                                        e.latLng.lng()
+                                    );
                                 this.markerEvents.trigger(
                                     // EventType
                                     OSFramework.Maps.Event.Marker
@@ -160,10 +165,11 @@ namespace Provider.Maps.Google.Marker {
                                     eventName,
                                     // Coords
                                     e !== undefined
-                                        ? JSON.stringify({
-                                              Lat: e.latLng.lat(),
-                                              Lng: e.latLng.lng()
-                                          })
+                                        ? {
+                                              coordinates:
+                                                  JSON.stringify(coordinates),
+                                              location: `${coordinates.Lat},${coordinates.Lng}`
+                                          }
                                         : undefined
                                 );
                             }

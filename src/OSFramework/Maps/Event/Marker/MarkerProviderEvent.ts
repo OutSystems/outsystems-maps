@@ -21,7 +21,7 @@ namespace OSFramework.Maps.Event.Marker {
             mapId: string,
             markerId: string,
             eventName: string,
-            coords: string
+            coords: object
         ): void {
             this.handlers
                 .slice(0)
