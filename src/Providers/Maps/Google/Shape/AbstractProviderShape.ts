@@ -24,7 +24,7 @@ namespace Provider.Maps.Google.Shape {
                 OSFramework.Maps.Event.Shape.ShapeEventType.ProviderEvent,
                 // EventName
                 OSFramework.Maps.Helper.Constants.shapeChangedEvent,
-                shapeProperties // retornar apenas location e radius etc
+                shapeProperties
             );
         }
 

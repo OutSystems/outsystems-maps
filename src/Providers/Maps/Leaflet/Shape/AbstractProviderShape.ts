@@ -49,7 +49,7 @@ namespace Provider.Maps.Leaflet.Shape {
                 OSFramework.Maps.Event.Shape.ShapeEventType.ProviderEvent,
                 // EventName
                 OSFramework.Maps.Helper.Constants.shapeChangedEvent,
-                shapeProperties // retornar apenas location e radius etc
+                shapeProperties
             );
         }
 
@@ -130,23 +130,19 @@ namespace Provider.Maps.Leaflet.Shape {
                         ) {
                             this._addedEvents.push(eventName);
                             this.providerEventsList.forEach((event) =>
-                                this.provider.addEventListener(
-                                    event,
-                                    (eventData: L.LeafletEvent) => {
-                                        if (this._shapeChangedEventTimeout) {
-                                            clearTimeout(
-                                                this._shapeChangedEventTimeout
-                                            );
-                                        }
-                                        this._shapeChangedEventTimeout =
-                                            setTimeout(
-                                                this._triggerShapeChangedEvent.bind(
-                                                    this
-                                                ),
-                                                500
-                                            );
+                                this.provider.addEventListener(event, () => {
+                                    if (this._shapeChangedEventTimeout) {
+                                        clearTimeout(
+                                            this._shapeChangedEventTimeout
+                                        );
                                     }
-                                )
+                                    this._shapeChangedEventTimeout = setTimeout(
+                                        this._triggerShapeChangedEvent.bind(
+                                            this
+                                        ),
+                                        500
+                                    );
+                                })
                             );
                         } else if (
                             // If the eventName is included inside the ProviderSpecialEvents then add the listener
