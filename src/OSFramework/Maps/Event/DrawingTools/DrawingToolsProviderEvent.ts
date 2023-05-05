@@ -13,8 +13,9 @@ namespace OSFramework.Maps.Event.DrawingTools {
          * Method that will trigger the event with the correct parameters.
          * @param mapId Id of the Map that is raising the event
          * @param drawingToolsId Id of the DrawingTools that is raising the event
-         * @param eventName Name of the event that got raised
          * @param isNewElement IsNewShape/IsNewMarker (empty if the provider event is not handled by the element creator or changer)
+         * @param coordinates string contaning the shape coordinates
+         * @param location string contaning the shape coordinates and other properties as circle radius
          */
         public trigger(
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
