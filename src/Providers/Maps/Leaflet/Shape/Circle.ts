@@ -97,13 +97,7 @@ namespace Provider.Maps.Leaflet.Shape {
             return new L.Circle(center, this.getProviderConfig());
         }
 
-        protected getShapeProperties(): {
-            coordinates: OSFramework.Maps.OSStructures.OSMap.OSCoordinates;
-            location: {
-                location: string;
-                radius: number;
-            };
-        } {
+        protected getShapeCoordinates(): OSFramework.Maps.OSStructures.OSMap.CircleCoordinates {
             return {
                 coordinates: {
                     Lat: this.providerCenter.lat,

@@ -26,7 +26,7 @@ namespace Provider.Maps.Google.DrawingTools {
                     mapId: string,
                     shapeId: string,
                     eventName: string,
-                    shapeProperties: any
+                    shapeCoordinates: OSFramework.Maps.OSStructures.OSMap.OSShapeCoordinates
                 ) => {
                     this.drawingTools.drawingToolsEvents.trigger(
                         // EventType
@@ -38,9 +38,9 @@ namespace Provider.Maps.Google.DrawingTools {
                         {
                             uniqueId: _shape.uniqueId,
                             isNewElement: false,
-                            location: JSON.stringify(shapeProperties.location),
+                            location: JSON.stringify(shapeCoordinates.location),
                             coordinates: JSON.stringify(
-                                shapeProperties.coordinates
+                                shapeCoordinates.coordinates
                             )
                         }
                     );

@@ -44,10 +44,7 @@ namespace Provider.Maps.Leaflet.Shape {
             return new L.Polygon(path, this.getProviderConfig());
         }
 
-        protected getShapeProperties(): {
-            coordinates: Array<OSFramework.Maps.OSStructures.OSMap.OSCoordinates>;
-            location: Array<string>;
-        } {
+        protected getShapeCoordinates(): OSFramework.Maps.OSStructures.OSMap.PolylineCoordinates {
             const locations = (this.providerObjectPath as Array<L.LatLng>).map(
                 (elm) => `${elm.lat},${elm.lng}`
             );

@@ -105,10 +105,7 @@ namespace Provider.Maps.Google.Shape {
             });
         }
 
-        protected getShapeProperties(): {
-            coordinates: OSFramework.Maps.OSStructures.OSMap.Bounds;
-            location: OSFramework.Maps.OSStructures.OSMap.Bounds;
-        } {
+        protected getShapeCoordinates(): OSFramework.Maps.OSStructures.OSMap.RectangleCoordinates {
             const bounds = {
                 north: this.bounds.north,
                 south: this.bounds.south,
