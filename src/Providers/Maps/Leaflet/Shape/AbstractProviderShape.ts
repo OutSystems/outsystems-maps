@@ -41,18 +41,6 @@ namespace Provider.Maps.Leaflet.Shape {
                 : providerShape.dragging.disable();
         }
 
-        private _triggerShapeChangedEvent() {
-            const shapeProperties = this.getShapeProperties();
-
-            this.shapeEvents.trigger(
-                // EventType
-                OSFramework.Maps.Event.Shape.ShapeEventType.ProviderEvent,
-                // EventName
-                OSFramework.Maps.Helper.Constants.shapeChangedEvent,
-                shapeProperties
-            );
-        }
-
         /** Builds the provider (asynchronously) by receving a set of multiple coordinates (creating a path for the shape) or just one (creating the center of the shape) */
         protected buildProvider(
             coordinates:
@@ -137,7 +125,7 @@ namespace Provider.Maps.Leaflet.Shape {
                                         );
                                     }
                                     this._shapeChangedEventTimeout = setTimeout(
-                                        this._triggerShapeChangedEvent.bind(
+                                        this.triggerShapeChangedEvent.bind(
                                             this
                                         ),
                                         500
@@ -215,6 +203,5 @@ namespace Provider.Maps.Leaflet.Shape {
 
         public abstract get providerEventsList(): Array<string>;
         public abstract get shapeTag(): string;
-        protected abstract getShapeProperties(): any;
     }
 }

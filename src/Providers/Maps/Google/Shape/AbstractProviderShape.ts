@@ -16,18 +16,6 @@ namespace Provider.Maps.Google.Shape {
             });
         }
 
-        private _triggerShapeChangedEvent() {
-            const shapeProperties = this.getShapeProperties();
-
-            this.shapeEvents.trigger(
-                // EventType
-                OSFramework.Maps.Event.Shape.ShapeEventType.ProviderEvent,
-                // EventName
-                OSFramework.Maps.Helper.Constants.shapeChangedEvent,
-                shapeProperties
-            );
-        }
-
         /** Builds the provider (asynchronously) by receving a set of multiple coordinates (creating a path for the shape) or just one (creating the center of the shape) */
         protected _buildProvider(
             coordinates:
@@ -112,7 +100,7 @@ namespace Provider.Maps.Google.Shape {
                                         }
                                         this._shapeChangedEventTimeout =
                                             setTimeout(
-                                                this._triggerShapeChangedEvent.bind(
+                                                this.triggerShapeChangedEvent.bind(
                                                     this
                                                 ),
                                                 500
@@ -217,7 +205,5 @@ namespace Provider.Maps.Google.Shape {
                 | OSFramework.Maps.OSStructures.OSMap.Coordinates
                 | OSFramework.Maps.OSStructures.OSMap.Bounds
         ): W;
-
-        protected abstract getShapeProperties(): any;
     }
 }
