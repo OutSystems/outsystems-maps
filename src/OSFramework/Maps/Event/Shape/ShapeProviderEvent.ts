@@ -14,14 +14,14 @@ namespace OSFramework.Maps.Event.Shape {
          * @param mapId Id of the Map that is raising the event
          * @param shapeId Id of the Shape that is raising the event
          * @param eventName Name of the event that got raised
-         * @param args Event properties as coordinates and location
+         * @param coords Event properties as coordinates and location
          */
         public trigger(
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             mapId: string,
             shapeId: string,
             eventName: string,
-            args: OSFramework.Maps.OSStructures.OSMap.OSShapeCoordinates
+            coords: OSFramework.Maps.OSStructures.OSMap.OSShapeCoordinates
         ): void {
             this.handlers
                 .slice(0)
@@ -31,7 +31,7 @@ namespace OSFramework.Maps.Event.Shape {
                         mapId,
                         shapeId,
                         eventName,
-                        args
+                        coords
                     )
                 );
         }
