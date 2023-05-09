@@ -36,9 +36,32 @@ namespace Provider.Maps.Google.Shape {
             });
         }
 
+        protected getShapeCoordinates(): OSFramework.Maps.OSStructures.OSMap.PolylineCoordinates {
+            const locations = this.providerObjectPath
+                .getArray()
+                .map((elm) => `${elm.lat()},${elm.lng()}`);
+            const coordinates = this.providerObjectPath
+                .getArray()
+                .map((elm) => {
+                    return {
+                        Lat: elm.lat(),
+                        Lng: elm.lng()
+                    };
+                });
+            return {
+                location: locations,
+                coordinates: coordinates
+            };
+        }
+
         protected get invalidShapeLocationErrorCode(): OSFramework.Maps.Enum.ErrorCodes {
             return OSFramework.Maps.Enum.ErrorCodes
                 .CFG_InvalidPolygonShapeLocations;
+        }
+
+        protected get providerObjectPath(): google.maps.MVCArray<google.maps.LatLng> {
+            // We need to get the first position of the Array because here the latLngs are inside an
+            return this.provider.getPath();
         }
 
         public get shapeTag(): string {

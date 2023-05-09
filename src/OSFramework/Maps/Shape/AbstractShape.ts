@@ -120,8 +120,21 @@ namespace OSFramework.Maps.Shape {
             return this.shapeProviderEvents.indexOf(eventName) !== -1;
         }
 
+        protected triggerShapeChangedEvent() {
+            const shapeLocation = this.getShapeCoordinates();
+
+            this.shapeEvents.trigger(
+                // EventType
+                OSFramework.Maps.Event.Shape.ShapeEventType.ProviderEvent,
+                // EventName
+                OSFramework.Maps.Helper.Constants.shapeChangedEvent,
+                shapeLocation
+            );
+        }
+
         protected abstract get invalidShapeLocationErrorCode(): Enum.ErrorCodes;
 
+        protected abstract getShapeCoordinates(): OSFramework.Maps.OSStructures.OSMap.OSShapeCoordinates;
         public abstract refreshProviderEvents(): void;
         public abstract get shapeProviderEvents(): Array<string>;
         public abstract get shapeTag(): string;
