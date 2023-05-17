@@ -39,7 +39,9 @@ namespace Provider.Maps.Google.DrawingTools {
                             Lat: _marker.provider.getPosition().lat(),
                             Lng: _marker.provider.getPosition().lng()
                         }),
-                        _marker.config.location
+                        `${_marker.provider
+                            .getPosition()
+                            .lat()},${_marker.provider.getPosition().lng()}`
                     )
             );
         }

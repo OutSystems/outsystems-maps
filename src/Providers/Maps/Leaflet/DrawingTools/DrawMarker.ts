@@ -81,7 +81,9 @@ namespace Provider.Maps.Leaflet.DrawingTools {
                             Lat: _marker.provider.getLatLng().lat,
                             Lng: _marker.provider.getLatLng().lng
                         }),
-                        _marker.config.location
+                        `${_marker.provider.getLatLng().lat},${
+                            _marker.provider.getLatLng().lng
+                        }`
                     )
             );
         }
