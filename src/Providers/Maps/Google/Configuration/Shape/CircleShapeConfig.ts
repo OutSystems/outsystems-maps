@@ -1,11 +1,7 @@
 /// <reference path="./FilledShapeConfig.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-<<<<<<<< HEAD:src/Providers/Maps/Google/Configuration/Shape/CircleShapeConfig.ts
 namespace Provider.Maps.Google.Configuration.Shape {
-========
-namespace Provider.Maps.Leaflet.Configuration.Shape {
->>>>>>>> rc1.6.3:src/Providers/Maps/Leaflet/Configuration/Shape/CircleShapeConfig.ts
     export class CircleShapeConfig extends FilledShapeConfig {
         public center: string;
         public radius: number;
