@@ -48,6 +48,67 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
     }
 
     /**
+     * Function that will remove a map marker with a given position from a cluster.
+     *
+     * @param mapId Id of the Map
+     * @param markerPosition Defines the location of the marker. Works with addresses and coordinates (latitude and longitude).
+     */
+    export function RemoveMarkerFromCluster(
+        mapId: string,
+        markerPosition: string
+    ): string {
+        const responseObj = {
+            isSuccess: true,
+            message: 'Success',
+            code: '200'
+        };
+
+        try {
+            const map = MapManager.GetMapById(mapId, true);
+
+            // Marker Clustering is only available for GoogleMaps
+            if (
+                map.providerType === OSFramework.Maps.Enum.ProviderType.Google
+            ) {
+                // Check if the feature is enabled!
+                if (map.hasMarkerClusterer()) {
+                    const marker = map.markers.find(
+                        (marker) => marker.provider.location === markerPosition
+                    );
+
+                    // Check if there is a marker with the given Position/Location
+                    if (marker !== undefined) {
+                        map.features.markerClusterer.removeMarker(marker);
+                        marker.provider.setMap(map.provider);
+                    } else {
+                        responseObj.isSuccess = false;
+                        responseObj.message = `There are not a marker with position:'${markerPosition}' to be removed.`;
+                        responseObj.code =
+                            OSFramework.Maps.Enum.ErrorCodes.API_FailedRemoveMarkerFromCluster;
+                    }
+                } else {
+                    responseObj.isSuccess = false;
+                    responseObj.message = `Map with Id:'${mapId}' does not contain Marker Clustering.`;
+                    responseObj.code =
+                        OSFramework.Maps.Enum.ErrorCodes.API_FailedRemoveMarkerFromCluster;
+                }
+            } else {
+                responseObj.isSuccess = false;
+                responseObj.message = `Marker Clustering not available for '${map.providerType}' provider type.`;
+                responseObj.code =
+                    OSFramework.Maps.Enum.ErrorCodes.API_FailedRemoveMarkerFromCluster;
+            }
+        } catch (error) {
+            responseObj.isSuccess = false;
+            responseObj.message = error.message;
+            responseObj.code =
+                OSFramework.Maps.Enum.ErrorCodes.API_FailedRemoveMarkerFromCluster;
+        }
+
+        return JSON.stringify(responseObj);
+    }
+
+    /**
      * Function that will create an instance of Map object with the configurations passed
      *
      * @export
