@@ -17,4 +17,27 @@ namespace OSFramework.Maps.OSStructures.OSMap {
             this.Lng = lng;
         }
     }
+
+    export type PolylineCoordinates = {
+        coordinates: Array<OSCoordinates>;
+        location: Array<string>;
+    };
+
+    export type CircleCoordinates = {
+        coordinates: OSCoordinates;
+        location: {
+            location: string;
+            radius: number;
+        };
+    };
+
+    export type RectangleCoordinates = {
+        coordinates: Bounds;
+        location: Bounds;
+    };
+
+    export type OSShapeCoordinates =
+        | PolylineCoordinates // Polyline and Polygon type
+        | CircleCoordinates
+        | RectangleCoordinates;
 }

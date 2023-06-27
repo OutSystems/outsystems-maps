@@ -105,6 +105,19 @@ namespace Provider.Maps.Google.Shape {
             });
         }
 
+        protected getShapeCoordinates(): OSFramework.Maps.OSStructures.OSMap.RectangleCoordinates {
+            const bounds = {
+                north: this.bounds.north,
+                south: this.bounds.south,
+                west: this.bounds.west,
+                east: this.bounds.east
+            };
+            return {
+                location: bounds,
+                coordinates: bounds
+            };
+        }
+
         protected get invalidShapeLocationErrorCode(): OSFramework.Maps.Enum.ErrorCodes {
             return OSFramework.Maps.Enum.ErrorCodes
                 .CFG_InvalidRectangleShapeBounds;

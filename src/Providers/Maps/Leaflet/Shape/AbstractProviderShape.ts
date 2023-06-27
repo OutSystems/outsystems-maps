@@ -125,16 +125,9 @@ namespace Provider.Maps.Leaflet.Shape {
                                         );
                                     }
                                     this._shapeChangedEventTimeout = setTimeout(
-                                        () =>
-                                            this.shapeEvents.trigger(
-                                                // EventType
-                                                OSFramework.Maps.Event.Shape
-                                                    .ShapeEventType
-                                                    .ProviderEvent,
-                                                // EventName
-                                                OSFramework.Maps.Helper
-                                                    .Constants.shapeChangedEvent
-                                            ),
+                                        this.triggerShapeChangedEvent.bind(
+                                            this
+                                        ),
                                         500
                                     );
                                 })

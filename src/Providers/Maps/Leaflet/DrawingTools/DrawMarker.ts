@@ -77,8 +77,13 @@ namespace Provider.Maps.Leaflet.DrawingTools {
                     this.triggerOnDrawingChangeEvent(
                         _marker.uniqueId,
                         false,
-                        JSON.stringify(this.config.iconUrl),
-                        _marker.config.location
+                        JSON.stringify({
+                            Lat: _marker.provider.getLatLng().lat,
+                            Lng: _marker.provider.getLatLng().lng
+                        }),
+                        `${_marker.provider.getLatLng().lat},${
+                            _marker.provider.getLatLng().lng
+                        }`
                     )
             );
         }

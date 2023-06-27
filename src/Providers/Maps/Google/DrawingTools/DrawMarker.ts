@@ -35,8 +35,13 @@ namespace Provider.Maps.Google.DrawingTools {
                     this.triggerOnDrawingChangeEvent(
                         _marker.uniqueId,
                         false,
-                        JSON.stringify(this._latLng),
-                        _marker.config.location
+                        JSON.stringify({
+                            Lat: _marker.provider.getPosition().lat(),
+                            Lng: _marker.provider.getPosition().lng()
+                        }),
+                        `${_marker.provider
+                            .getPosition()
+                            .lat()},${_marker.provider.getPosition().lng()}`
                     )
             );
         }
