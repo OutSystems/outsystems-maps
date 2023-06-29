@@ -16,6 +16,38 @@ namespace Provider.Maps.Google.DrawingTools {
             super(map, drawingTools, drawingToolsId, type, configs);
         }
 
+        /** Add the onChange event to the new element */
+        private _setOnChangeEvent(_shape: OSFramework.Maps.Shape.IShape): void {
+            _shape.shapeEvents.addHandler(
+                // changing the shape locations or bounds is only available via the drag-and-drop and resize, so the solution passes by adding the shape_changed event listener as the shape's OnChanged event
+                OSFramework.Maps.Helper.Constants
+                    .shapeChangedEvent as OSFramework.Maps.Event.Shape.ShapeEventType,
+                (
+                    mapId: string,
+                    shapeId: string,
+                    eventName: string,
+                    shapeCoordinates: OSFramework.Maps.OSStructures.OSMap.OSShapeCoordinates
+                ) => {
+                    this.drawingTools.drawingToolsEvents.trigger(
+                        // EventType
+                        OSFramework.Maps.Event.DrawingTools
+                            .DrawingToolsEventType.ProviderEvent,
+                        // EventName
+                        this.completedToolEventName,
+                        // The extra parameters, uniqueId and isNewElement set to false indicating that the element is not new
+                        {
+                            uniqueId: _shape.uniqueId,
+                            isNewElement: false,
+                            location: JSON.stringify(shapeCoordinates.location),
+                            coordinates: JSON.stringify(
+                                shapeCoordinates.coordinates
+                            )
+                        }
+                    );
+                }
+            );
+        }
+
         /** Create the new shape element based on the configurations (already contains the locations, the bounds or the center and radius depending on the type of the new shape) */
         protected createShapeElement(
             uniqueId: string,
@@ -31,38 +63,11 @@ namespace Provider.Maps.Google.DrawingTools {
             );
 
             // Add the onChange event to the new element
-            this.setOnChangeEvent(_shape, _shape.config.locations);
+            this._setOnChangeEvent(_shape);
             // Add the new element to the map
             this.map.addShape(_shape);
 
             return _shape;
-        }
-
-        /** Add the onChange event to the new element */
-        protected setOnChangeEvent(
-            _shape: OSFramework.Maps.Shape.IShape,
-            locations: string
-        ): void {
-            _shape.shapeEvents.addHandler(
-                // changing the shape locations or bounds is only available via the drag-and-drop and resize, so the solution passes by adding the shape_changed event listener as the shape's OnChanged event
-                OSFramework.Maps.Helper.Constants
-                    .shapeChangedEvent as OSFramework.Maps.Event.Shape.ShapeEventType,
-                () => {
-                    this.drawingTools.drawingToolsEvents.trigger(
-                        // EventType
-                        OSFramework.Maps.Event.DrawingTools
-                            .DrawingToolsEventType.ProviderEvent,
-                        // EventName
-                        this.completedToolEventName,
-                        // The extra parameters, uniqueId and isNewElement set to false indicating that the element is not new
-                        {
-                            uniqueId: _shape.uniqueId,
-                            isNewElement: false,
-                            locations
-                        }
-                    );
-                }
-            );
         }
 
         public build(): void {
