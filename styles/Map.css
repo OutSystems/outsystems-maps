@@ -35,6 +35,11 @@
     object-fit: cover;
 }
 
+.runtime-staticMap-container-hide {
+    display: none;
+    height: 0;
+}
+
 html[data-uieditorversion^='1'] .map-wrapper .staticMap-image {
     -servicestudio-height: auto;
 }
