@@ -175,6 +175,7 @@ namespace Provider.Maps.Google.OSMap {
                             // Callback CAN have an attribute (e) which is of the type MapMouseEvent
                             // Trigger the event by specifying the ProviderEvent MapType and the coords (lat, lng) if the callback has the attribute MapMouseEvent
                             (e?: google.maps.MapMouseEvent) => {
+                                const _center = this.provider.getCenter();
                                 this.mapEvents.trigger(
                                     OSFramework.Maps.Event.OSMap.MapEventType
                                         .ProviderEvent,
@@ -187,7 +188,12 @@ namespace Provider.Maps.Google.OSMap {
                                                   e.latLng.lng()
                                               )
                                           )
-                                        : undefined
+                                        : JSON.stringify(
+                                              new OSFramework.Maps.OSStructures.OSMap.OSCoordinates(
+                                                  _center.lat(),
+                                                  _center.lng()
+                                              )
+                                          )
                                 );
                             }
                         );

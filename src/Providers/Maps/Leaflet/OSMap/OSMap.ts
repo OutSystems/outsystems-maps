@@ -76,6 +76,7 @@ namespace Provider.Maps.Leaflet.OSMap {
                             // Callback CAN have an attribute (e) which is of the type MapMouseEvent
                             // Trigger the event by specifying the ProviderEvent MapType and the coords (lat, lng) if the callback has the attribute MapMouseEvent
                             (e?: L.LeafletMouseEvent) => {
+                                const _center = this.provider.getCenter();
                                 this.mapEvents.trigger(
                                     OSFramework.Maps.Event.OSMap.MapEventType
                                         .ProviderEvent,
@@ -86,7 +87,10 @@ namespace Provider.Maps.Leaflet.OSMap {
                                               Lat: e.latlng.lat,
                                               Lng: e.latlng.lng
                                           })
-                                        : undefined
+                                        : JSON.stringify({
+                                              Lat: _center.lat,
+                                              Lng: _center.lng
+                                          })
                                 );
                             }
                         );
