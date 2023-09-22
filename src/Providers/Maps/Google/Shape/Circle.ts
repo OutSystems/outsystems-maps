@@ -37,10 +37,7 @@ namespace Provider.Maps.Google.Shape {
             }
 
             return new Promise((resolve, reject) => {
-                Helper.Conversions.ConvertToCoordinates(
-                    location,
-                    this.map.config.apiKey
-                )
+                Helper.Conversions.ConvertToCoordinates(location)
                     .then((response) => {
                         const coordinates = {
                             lat: response.lat,
