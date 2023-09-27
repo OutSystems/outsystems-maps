@@ -275,6 +275,32 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
             1
         );
     }
+
+    /**
+     * Removes all markers from a given map.
+     *
+     * @export
+     * @param {string} mapId id of the map from which all the markers will be removed.
+     */
+    export function RemoveAllMarkers(mapId: string): void {
+        const toRemove: number[] = [];
+        markerArr
+            .slice(0)
+            .forEach(
+                (marker: OSFramework.Maps.Marker.IMarker, index: number) => {
+                    if (marker.map && marker.map.equalsToID(mapId)) {
+                        const markerId = marker.uniqueId;
+                        marker.map.removeMarker(markerId);
+                        markerMap.delete(markerId);
+                        markerArr[index] = undefined;
+                        toRemove.push(index);
+                    }
+                }
+            );
+        for (let i = toRemove.length - 1; i >= 0; i--) {
+            markerArr.splice(toRemove[i], 1);
+        }
+    }
 }
 
 /// Overrides for the old namespace - calls the new one, lets users know this is no longer in use
