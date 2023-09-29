@@ -283,22 +283,15 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
      * @param {string} mapId id of the map from which all the markers will be removed.
      */
     export function RemoveAllMarkers(mapId: string): void {
-        const toRemove: number[] = [];
-        markerArr
-            .slice(0)
-            .forEach(
-                (marker: OSFramework.Maps.Marker.IMarker, index: number) => {
-                    if (marker.map && marker.map.equalsToID(mapId)) {
-                        const markerId = marker.uniqueId;
-                        marker.map.removeMarker(markerId);
-                        markerMap.delete(markerId);
-                        markerArr[index] = undefined;
-                        toRemove.push(index);
-                    }
-                }
-            );
-        for (let i = toRemove.length - 1; i >= 0; i--) {
-            markerArr.splice(toRemove[i], 1);
+        const clonedArray = markerArr.slice(0);
+        for (let index = clonedArray.length - 1; index >= 0; index--) {
+            const currMarker = clonedArray[index];
+            if (currMarker.map && currMarker.map.equalsToID(mapId)) {
+                const currMarkerId = currMarker.uniqueId;
+                currMarker.map.removeMarker(currMarkerId);
+                markerMap.delete(currMarkerId);
+                markerArr.splice(index, 1);
+            }
         }
     }
 }
