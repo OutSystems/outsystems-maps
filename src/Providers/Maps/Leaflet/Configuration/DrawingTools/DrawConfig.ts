@@ -9,12 +9,7 @@ namespace Provider.Maps.Leaflet.Configuration.DrawingTools {
         public allowDrag: boolean;
         public uniqueId: string;
 
-        constructor(
-            config:
-                | Configuration.DrawingTools.DrawFilledShapeConfig
-                | Configuration.DrawingTools.DrawBasicShapeConfig
-                | Configuration.DrawingTools.DrawMarkerConfig
-        ) {
+        constructor(config: JSON) {
             super(config);
         }
 

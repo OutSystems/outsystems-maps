@@ -11,15 +11,13 @@ namespace Provider.Maps.Google.Configuration.SearchPlaces {
         public searchArea: OSFramework.Maps.OSStructures.OSMap.BoundsString;
         public searchType: OSFramework.Maps.Enum.SearchTypes;
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        constructor(config: any) {
+        constructor(config: JSON) {
             super(config);
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public getProviderConfig(): any {
+        public getProviderConfig(): ISearchPlacesProviderConfig {
             // eslint-disable-next-line prefer-const
-            let provider = {
+            let provider: ISearchPlacesProviderConfig = {
                 bounds: this.searchArea,
                 strictBounds: !!this.searchArea,
                 componentRestrictions: this.countries

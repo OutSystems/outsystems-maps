@@ -9,8 +9,7 @@ namespace Provider.Maps.Google.FileLayer {
         constructor(
             map: OSFramework.Maps.OSMap.IMap,
             FileLayerId: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
+            configs: JSON
         ) {
             super(
                 map,

@@ -5,7 +5,7 @@ namespace Provider.Maps.Leaflet.Shape {
             map: OSFramework.Maps.OSMap.IMap,
             shapeId: string,
             type: OSFramework.Maps.Enum.ShapeType,
-            configs: JSON
+            configs: OSFramework.Maps.Configuration.IConfigurationShape
         ): OSFramework.Maps.Shape.IShape {
             switch (type) {
                 case OSFramework.Maps.Enum.ShapeType.Polygon:

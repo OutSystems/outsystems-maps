@@ -55,10 +55,8 @@ namespace OSFramework.Maps.Event.Shape {
          */
         public trigger(
             eventType: ShapeEventType,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             eventInfo?: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-            ...args: any
+            ...args: unknown[]
         ): void {
             // Let's first check if the shape has any events associated
             // If the event type is ProviderEvent than we need to get the handlers for the eventInfo -> name of the event

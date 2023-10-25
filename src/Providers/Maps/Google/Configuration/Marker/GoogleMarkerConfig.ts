@@ -14,8 +14,7 @@ namespace Provider.Maps.Google.Configuration.Marker {
         public location: string;
         public title: string;
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        constructor(config: any) {
+        constructor(config: unknown) {
             super(config);
         }
 

@@ -6,25 +6,23 @@ namespace Provider.Maps.Leaflet.Configuration.Marker {
         extends OSFramework.Maps.Configuration.AbstractConfiguration
         implements OSFramework.Maps.Configuration.IConfigurationMarker
     {
-        public allowDrag: boolean;
-        public iconHeight: number;
-        public iconUrl: string;
-        public iconWidth: number;
-        public label: string;
+        public allowDrag?: boolean;
+        public iconHeight?: number;
+        public iconUrl?: string;
+        public iconWidth?: number;
+        public label?: string;
         public location: string;
-        public title: string;
+        public title?: string;
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        constructor(config: any) {
+        constructor(
+            config: JSON | OSFramework.Maps.Configuration.IConfigurationMarker
+        ) {
             super(config);
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public getProviderConfig(): any {
-            const provider = {
+        public getProviderConfig(): L.MarkerOptions {
+            const provider: L.MarkerOptions = {
                 draggable: this.allowDrag,
-                iconUrl: this.iconUrl,
-                label: this.label,
                 title: this.title
             };
 

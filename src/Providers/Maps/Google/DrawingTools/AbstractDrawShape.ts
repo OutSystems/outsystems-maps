@@ -10,8 +10,7 @@ namespace Provider.Maps.Google.DrawingTools {
             drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
             drawingToolsId: string,
             type: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
+            configs: T
         ) {
             super(map, drawingTools, drawingToolsId, type, configs);
         }
@@ -55,8 +54,7 @@ namespace Provider.Maps.Google.DrawingTools {
         protected createShapeElement(
             uniqueId: string,
             type: OSFramework.Maps.Enum.ShapeType,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
+            configs: unknown
         ): OSFramework.Maps.Shape.IShape {
             const _shape = Shape.ShapeFactory.MakeShape(
                 this.map,

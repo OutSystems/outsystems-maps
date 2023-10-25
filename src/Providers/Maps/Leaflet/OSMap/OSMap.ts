@@ -13,8 +13,7 @@ namespace Provider.Maps.Leaflet.OSMap {
         private _fBuilder: Feature.FeatureBuilder;
         private _openStreetMapLayer: L.TileLayer;
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        constructor(mapId: string, configs: any) {
+        constructor(mapId: string, configs: JSON) {
             super(
                 mapId,
                 OSFramework.Maps.Enum.ProviderType.Leaflet,
@@ -46,7 +45,6 @@ namespace Provider.Maps.Leaflet.OSMap {
             this.shapes.forEach((shape) => shape.build());
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         private _getProviderConfig(): L.MapOptions {
             // Make sure the center has a default value before the conversion of the location to coordinates
             this.config.center =
@@ -202,8 +200,7 @@ namespace Provider.Maps.Leaflet.OSMap {
         public changeDrawingToolsProperty(
             drawingToolsId: string,
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            propertyValue: any
+            propertyValue: unknown
         ): void {
             // There is only one (max) drawingTools element per map
             const drawingTools = this.drawingTools;
@@ -223,8 +220,7 @@ namespace Provider.Maps.Leaflet.OSMap {
         public changeFileLayerProperty(
             fileLayerId: string,
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            propertyValue: any
+            propertyValue: unknown
         ): void {
             // There is only one (max) drawingTools element per map
             const fileLayer = this.getFileLayer(fileLayerId);
@@ -241,8 +237,7 @@ namespace Provider.Maps.Leaflet.OSMap {
         public changeHeatmapLayerProperty(
             heatmapLayerId: string,
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            propertyValue: any
+            propertyValue: unknown
         ): void {
             const heatmapLayer = this.getHeatmapLayer(heatmapLayerId);
 
@@ -258,8 +253,7 @@ namespace Provider.Maps.Leaflet.OSMap {
         public changeMarkerProperty(
             markerId: string,
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            propertyValue: any
+            propertyValue: unknown
         ): void {
             const marker = this.getMarker(markerId);
 
@@ -272,20 +266,23 @@ namespace Provider.Maps.Leaflet.OSMap {
             }
         }
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        public changeProperty(propertyName: string, value: any): void {
+        public changeProperty(propertyName: string, value: unknown): void {
             const propValue = OSFramework.Maps.Enum.OS_Config_Map[propertyName];
             super.changeProperty(propertyName, value);
             if (this.isReady) {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_Map.center:
-                        return this.features.center.updateCenter(value);
+                        return this.features.center.updateCenter(
+                            value as string
+                        );
                     case OSFramework.Maps.Enum.OS_Config_Map.offset:
                         return this.features.offset.setOffset(
-                            JSON.parse(value)
+                            JSON.parse(value as string)
                         );
                     case OSFramework.Maps.Enum.OS_Config_Map.zoom:
-                        return this.features.zoom.setLevel(value);
+                        return this.features.zoom.setLevel(
+                            value as OSFramework.Maps.Enum.OSMap.Zoom
+                        );
                 }
             }
         }
@@ -293,8 +290,7 @@ namespace Provider.Maps.Leaflet.OSMap {
         public changeShapeProperty(
             shapeId: string,
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            propertyValue: any
+            propertyValue: unknown
         ): void {
             const shape = this.getShape(shapeId);
 

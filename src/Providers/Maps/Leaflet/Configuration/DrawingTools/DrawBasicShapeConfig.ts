@@ -8,11 +8,7 @@ namespace Provider.Maps.Leaflet.Configuration.DrawingTools {
         public strokeOpacity: number;
         public strokeWeight: number;
 
-        constructor(
-            config:
-                | Configuration.DrawingTools.DrawFilledShapeConfig
-                | Configuration.DrawingTools.DrawBasicShapeConfig
-        ) {
+        constructor(config: JSON) {
             super(config);
         }
 

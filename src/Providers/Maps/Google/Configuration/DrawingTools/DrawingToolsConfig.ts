@@ -6,12 +6,10 @@ namespace Provider.Maps.Google.Configuration.DrawingTools {
         extends OSFramework.Maps.Configuration.AbstractConfiguration
         implements OSFramework.Maps.Configuration.IConfigurationDrawingTools
     {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public position: string;
         public uniqueId: string;
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        constructor(config: any) {
+        constructor(config: JSON) {
             super(config);
         }
 

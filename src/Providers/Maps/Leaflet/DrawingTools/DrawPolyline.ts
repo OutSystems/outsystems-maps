@@ -6,7 +6,7 @@ namespace Provider.Maps.Leaflet.DrawingTools {
             drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
             drawingToolsId: string,
             type: string,
-            configs: Configuration.DrawingTools.DrawBasicShapeConfig
+            configs: JSON
         ) {
             super(
                 map,

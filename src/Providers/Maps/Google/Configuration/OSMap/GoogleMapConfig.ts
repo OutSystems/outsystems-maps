@@ -16,8 +16,7 @@ namespace Provider.Maps.Google.Configuration.OSMap {
         public uniqueId: string;
         public zoom: OSFramework.Maps.Enum.OSMap.Zoom;
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        constructor(config: any) {
+        constructor(config: JSON) {
             super(config);
         }
 

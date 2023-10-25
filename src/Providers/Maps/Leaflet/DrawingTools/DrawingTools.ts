@@ -5,17 +5,12 @@ namespace Provider.Maps.Leaflet.DrawingTools {
     class ToolsList {
         //TODO - Create/optimize types for all the tools by using a global.d.ts or ussi
         //     - In that moment each tool should be boolean | NEW_TYPE because the empty state is false.
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        public circle: any;
+        public circle: unknown;
         public circlemarker: boolean;
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        public marker: any;
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        public polygon: any;
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        public polyline: any;
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        public rectangle: any;
+        public marker: unknown;
+        public polygon: unknown;
+        public polyline: unknown;
+        public rectangle: unknown;
 
         constructor() {
             this.circlemarker = false; // this tool isn't provided by our experience
@@ -36,12 +31,10 @@ namespace Provider.Maps.Leaflet.DrawingTools {
         OSFramework.Maps.Configuration.IConfigurationDrawingTools
     > {
         // FeatureGroup <any>: as required by Leaflet
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        private _toolsGroup: L.FeatureGroup<any>;
+        private _toolsGroup: L.FeatureGroup<unknown>;
         //TODO - At the moment the type is not well defined and it doesn't included setDrawingOptions for example,
         //     - When this is done the overwrite of the _provider is not needed anymore.
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        protected _provider: any;
+        //protected _provider: any;
 
         constructor(
             map: OSFramework.Maps.OSMap.IMap,
@@ -116,6 +109,8 @@ namespace Provider.Maps.Leaflet.DrawingTools {
                 ...drawingOptions,
                 draw: this._getTools()
             };
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-ignore
             this._provider.setDrawingOptions(finalDrawingOptions.draw);
         }
 
@@ -143,13 +138,16 @@ namespace Provider.Maps.Leaflet.DrawingTools {
         // We don't have the types for the drawingTools features
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         protected get controlOptions(): any {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-ignore
             return this._provider.get('drawingControlOptions');
         }
 
         // We don't have the types for the drawingTools features
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        protected set controlOptions(options: any) {
+        protected set controlOptions(options: unknown[]) {
             const allOptions = { ...this.controlOptions, ...options };
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-ignore
             this._provider.setOptions({
                 drawingControlOptions: allOptions
             });
@@ -200,8 +198,7 @@ namespace Provider.Maps.Leaflet.DrawingTools {
             this.finishBuild();
         }
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-        public changeProperty(propertyName: string, value: any): void {
+        public changeProperty(propertyName: string, value: unknown): void {
             const propValue =
                 OSFramework.Maps.Enum.OS_Config_DrawingTools[propertyName];
             super.changeProperty(propertyName, value);
@@ -209,8 +206,9 @@ namespace Provider.Maps.Leaflet.DrawingTools {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_DrawingTools.position:
                         // eslint-disable-next-line no-case-declarations
-                        const positionValue =
-                            this._getDrawingToolsPosition(value);
+                        const positionValue = this._getDrawingToolsPosition(
+                            value as string
+                        );
                         positionValue &&
                             this.provider.setPosition(positionValue);
                         return;

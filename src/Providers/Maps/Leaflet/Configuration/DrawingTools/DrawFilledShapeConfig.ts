@@ -6,7 +6,7 @@ namespace Provider.Maps.Leaflet.Configuration.DrawingTools {
         public fillColor: string;
         public fillOpacity: number;
 
-        constructor(config: Configuration.DrawingTools.DrawFilledShapeConfig) {
+        constructor(config: JSON) {
             super(config);
         }
 

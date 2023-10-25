@@ -1,18 +1,16 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.Maps.Configuration {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     export abstract class AbstractConfiguration implements IConfiguration {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-        constructor(config: any) {
+        constructor(config: unknown) {
+            const _localConfig = config as unknown[];
             let key;
-            for (key in config) {
-                if (config[key] !== undefined) {
-                    this[key] = config[key];
+            for (key in _localConfig) {
+                if (_localConfig[key] !== undefined) {
+                    this[key] = _localConfig[key];
                 }
             }
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public abstract getProviderConfig(): any;
+        public abstract getProviderConfig(): unknown;
     }
 }

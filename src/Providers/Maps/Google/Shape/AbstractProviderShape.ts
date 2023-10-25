@@ -159,8 +159,7 @@ namespace Provider.Maps.Google.Shape {
             return Constants.Shape.Events;
         }
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        public changeProperty(propertyName: string, value: any): void {
+        public changeProperty(propertyName: string, value: unknown): void {
             const propValue =
                 OSFramework.Maps.Enum.OS_Config_Shape[propertyName];
             super.changeProperty(propertyName, value);
@@ -194,8 +193,9 @@ namespace Provider.Maps.Google.Shape {
 
         public abstract get providerEventsList(): Array<string>;
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public abstract get providerObjectListener(): any;
+        public abstract get providerObjectListener(): {
+            addListener: (eventName: string, cb: () => void) => void;
+        };
 
         public abstract get shapeTag(): string;
 

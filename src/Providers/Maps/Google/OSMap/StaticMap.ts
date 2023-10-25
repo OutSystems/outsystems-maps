@@ -19,8 +19,7 @@ namespace Provider.Maps.Google.OSMap {
         private _size: Size;
         private _type: OSFramework.Maps.Enum.OSMap.Type;
         private _zoom: number;
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        constructor(mapId: string, configs: any) {
+        constructor(mapId: string, configs: JSON) {
             super(
                 mapId,
                 OSFramework.Maps.Enum.ProviderType.Google,
@@ -153,7 +152,8 @@ namespace Provider.Maps.Google.OSMap {
                 this.mapEvents.trigger(
                     OSFramework.Maps.Event.OSMap.MapEventType.OnError,
                     this,
-                    OSFramework.Maps.Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
+                    OSFramework.Maps.Enum.ErrorCodes
+                        .CFG_CantChangeParamsStaticMap
                 );
                 return;
             }
@@ -181,8 +181,8 @@ namespace Provider.Maps.Google.OSMap {
             drawingToolsId: string,
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            propertyValue: any
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            propertyValue: unknown
         ): void {
             this.mapEvents.trigger(
                 OSFramework.Maps.Event.OSMap.MapEventType.OnError,
@@ -198,8 +198,8 @@ namespace Provider.Maps.Google.OSMap {
             fileLayerId: string,
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            propertyValue: any
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            propertyValue: unknown
         ): void {
             this.mapEvents.trigger(
                 OSFramework.Maps.Event.OSMap.MapEventType.OnError,
@@ -215,8 +215,8 @@ namespace Provider.Maps.Google.OSMap {
             heatmapLayerId: string,
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            propertyValue: any
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            propertyValue: unknown
         ): void {
             this.mapEvents.trigger(
                 OSFramework.Maps.Event.OSMap.MapEventType.OnError,
@@ -232,8 +232,8 @@ namespace Provider.Maps.Google.OSMap {
             markerId: string,
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            propertyValue: any
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            propertyValue: unknown
         ): void {
             this.mapEvents.trigger(
                 OSFramework.Maps.Event.OSMap.MapEventType.OnError,
@@ -244,14 +244,14 @@ namespace Provider.Maps.Google.OSMap {
         }
 
         // ChangeProperty method can't be used on a StaticMap
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        public changeProperty(propertyName: string, value: any): void {
+        public changeProperty(propertyName: string, value: unknown): void {
             // If the StaticMap is already rendered then throw an error
             if (this.isReady) {
                 this.mapEvents.trigger(
                     OSFramework.Maps.Event.OSMap.MapEventType.OnError,
                     this,
-                    OSFramework.Maps.Enum.ErrorCodes.CFG_CantChangeParamsStaticMap
+                    OSFramework.Maps.Enum.ErrorCodes
+                        .CFG_CantChangeParamsStaticMap
                 );
                 return;
             }
@@ -271,13 +271,13 @@ namespace Provider.Maps.Google.OSMap {
                     }
                     return super.changeProperty(propertyName, value);
                 case OSFramework.Maps.Enum.OS_Config_StaticMap.center:
-                    this._center = this._getCenter(value);
+                    this._center = this._getCenter(value as string);
                     return;
                 case OSFramework.Maps.Enum.OS_Config_StaticMap.zoom:
-                    this._zoom = this._getZoom(value);
+                    this._zoom = this._getZoom(value as number);
                     return;
                 case OSFramework.Maps.Enum.OS_Config_StaticMap.type:
-                    this._type = value;
+                    this._type = value as OSFramework.Maps.Enum.OSMap.Type;
                     return;
                 default:
                     this.mapEvents.trigger(
@@ -295,8 +295,8 @@ namespace Provider.Maps.Google.OSMap {
             shapeId: string,
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            propertyValue: any
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            propertyValue: unknown
         ): void {
             this.mapEvents.trigger(
                 OSFramework.Maps.Event.OSMap.MapEventType.OnError,

@@ -15,8 +15,7 @@ namespace Provider.Maps.Google.Marker {
             map: OSFramework.Maps.OSMap.IMap,
             markerId: string,
             type: OSFramework.Maps.Enum.MarkerType,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
+            configs: unknown
         ) {
             super(
                 map,
@@ -195,7 +194,7 @@ namespace Provider.Maps.Google.Marker {
                 markerPosition
                     .then((markerOptions) => {
                         this._provider = new google.maps.Marker({
-                            ...this.getProviderConfig(),
+                            ...(this.getProviderConfig() as unknown[]),
                             ...markerOptions,
                             map: this.map.provider
                         });
@@ -224,8 +223,7 @@ namespace Provider.Maps.Google.Marker {
             }
         }
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        public changeProperty(propertyName: string, value: any): void {
+        public changeProperty(propertyName: string, value: unknown): void {
             const propValue =
                 OSFramework.Maps.Enum.OS_Config_Marker[propertyName];
             super.changeProperty(propertyName, value);
@@ -233,7 +231,7 @@ namespace Provider.Maps.Google.Marker {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_Marker.location:
                         Helper.Conversions.ConvertToCoordinates(
-                            value,
+                            value as string,
                             this.map.config.apiKey
                         )
                             .then((response) => {
@@ -255,18 +253,18 @@ namespace Provider.Maps.Google.Marker {
                             });
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Marker.allowDrag:
-                        return this._provider.setDraggable(value);
+                        return this._provider.setDraggable(value as boolean);
                     case OSFramework.Maps.Enum.OS_Config_Marker.iconHeight:
                     case OSFramework.Maps.Enum.OS_Config_Marker.iconWidth:
                         this._setIconSize();
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Marker.iconUrl:
-                        this._setIcon(value);
+                        this._setIcon(value as string);
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Marker.label:
-                        return this._provider.setLabel(value);
+                        return this._provider.setLabel(value as string);
                     case OSFramework.Maps.Enum.OS_Config_Marker.title:
-                        return this._provider.setTitle(value);
+                        return this._provider.setTitle(value as string);
                 }
             }
         }

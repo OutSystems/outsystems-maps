@@ -13,8 +13,7 @@ namespace Provider.Maps.Google.Configuration.HeatmapLayer {
         public points: Array<OSFramework.Maps.OSStructures.HeatmapLayer.Points>;
         public radius: number;
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        constructor(config: any) {
+        constructor(config: JSON) {
             super(config);
         }
 

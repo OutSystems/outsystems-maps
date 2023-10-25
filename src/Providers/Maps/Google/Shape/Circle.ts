@@ -13,8 +13,7 @@ namespace Provider.Maps.Google.Shape {
             map: OSFramework.Maps.OSMap.IMap,
             shapeId: string,
             type: OSFramework.Maps.Enum.ShapeType,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
+            configs: unknown
         ) {
             super(
                 map,
@@ -58,7 +57,7 @@ namespace Provider.Maps.Google.Shape {
             return new google.maps.Circle({
                 map: this.map.provider,
                 center,
-                ...this.getProviderConfig()
+                ...(this.getProviderConfig() as Configuration.Shape.IShapeProviderConfig)
             });
         }
 
@@ -126,8 +125,7 @@ namespace Provider.Maps.Google.Shape {
             super._buildProvider(shapeCenter);
         }
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        public changeProperty(propertyName: string, value: any): void {
+        public changeProperty(propertyName: string, value: unknown): void {
             const propValue =
                 OSFramework.Maps.Enum.OS_Config_Shape[propertyName];
             super.changeProperty(propertyName, value);
@@ -135,7 +133,7 @@ namespace Provider.Maps.Google.Shape {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_Shape.center:
                         // eslint-disable-next-line no-case-declarations
-                        const shapeCenter = this._buildCenter(value);
+                        const shapeCenter = this._buildCenter(value as string);
                         // If path is undefined (should be a promise) -> don't create the shape
                         if (shapeCenter !== undefined) {
                             shapeCenter
@@ -153,7 +151,7 @@ namespace Provider.Maps.Google.Shape {
                         }
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Shape.radius:
-                        return this.provider.setRadius(value);
+                        return this.provider.setRadius(value as number);
                     case OSFramework.Maps.Enum.OS_Config_Shape.fillColor:
                     case OSFramework.Maps.Enum.OS_Config_Shape.fillOpacity:
                         return this.provider.set(propertyName, value);

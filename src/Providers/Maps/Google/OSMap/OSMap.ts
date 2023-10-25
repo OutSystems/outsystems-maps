@@ -15,8 +15,7 @@ namespace Provider.Maps.Google.OSMap {
         private _fBuilder: Feature.FeatureBuilder;
         private _scriptCallback: OSFramework.Maps.Callbacks.Generic;
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        constructor(mapId: string, configs: any) {
+        constructor(mapId: string, configs: JSON) {
             super(
                 mapId,
                 OSFramework.Maps.Enum.ProviderType.Google,
@@ -288,8 +287,7 @@ namespace Provider.Maps.Google.OSMap {
         public changeDrawingToolsProperty(
             drawingToolsId: string,
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            propertyValue: any
+            propertyValue: unknown
         ): void {
             // There is only one (max) drawingTools element per map
             const drawingTools = this.drawingTools;
@@ -309,8 +307,7 @@ namespace Provider.Maps.Google.OSMap {
         public changeFileLayerProperty(
             fileLayerId: string,
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            propertyValue: any
+            propertyValue: unknown
         ): void {
             // There is only one (max) drawingTools element per map
             const fileLayer = this.getFileLayer(fileLayerId);
@@ -327,8 +324,7 @@ namespace Provider.Maps.Google.OSMap {
         public changeHeatmapLayerProperty(
             heatmapLayerId: string,
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            propertyValue: any
+            propertyValue: unknown
         ): void {
             const heatmapLayer = this.getHeatmapLayer(heatmapLayerId);
 
@@ -344,8 +340,7 @@ namespace Provider.Maps.Google.OSMap {
         public changeMarkerProperty(
             markerId: string,
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            propertyValue: any
+            propertyValue: unknown
         ): void {
             const marker = this.getMarker(markerId);
 
@@ -358,8 +353,7 @@ namespace Provider.Maps.Google.OSMap {
             }
         }
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        public changeProperty(propertyName: string, value: any): void {
+        public changeProperty(propertyName: string, value: unknown): void {
             const propValue = OSFramework.Maps.Enum.OS_Config_Map[propertyName];
             super.changeProperty(propertyName, value);
             if (this.isReady) {
@@ -376,26 +370,38 @@ namespace Provider.Maps.Google.OSMap {
                         }
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Map.center:
-                        return this.features.center.updateCenter(value);
+                        return this.features.center.updateCenter(
+                            value as string
+                        );
                     case OSFramework.Maps.Enum.OS_Config_Map.offset:
                         return this.features.offset.setOffset(
-                            JSON.parse(value)
+                            JSON.parse(value as string)
                         );
                     case OSFramework.Maps.Enum.OS_Config_Map.zoom:
-                        return this.features.zoom.setLevel(value);
+                        return this.features.zoom.setLevel(
+                            value as OSFramework.Maps.Enum.OSMap.Zoom
+                        );
                     case OSFramework.Maps.Enum.OS_Config_Map.type:
-                        return this._provider.setMapTypeId(value);
+                        return this._provider.setMapTypeId(value as string);
                     case OSFramework.Maps.Enum.OS_Config_Map.style:
                         return this._provider.setOptions({
-                            styles: GetStyleByStyleId(value)
+                            styles: GetStyleByStyleId(value as number)
                         });
                     case OSFramework.Maps.Enum.OS_Config_Map.advancedFormat:
-                        value = OSFramework.Maps.Helper.JsonFormatter(value);
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        value = OSFramework.Maps.Helper.JsonFormatter(
+                            value as string
+                        );
                         // Make sure the MapEvents that are associated in the advancedFormat get updated
-                        this._setMapEvents(value.mapEvents);
+                        this._setMapEvents(
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            (value as any).mapEvents as string[]
+                        );
                         return this._provider.setOptions(value);
                     case OSFramework.Maps.Enum.OS_Config_Map.showTraffic:
-                        return this.features.trafficLayer.setState(value);
+                        return this.features.trafficLayer.setState(
+                            value as boolean
+                        );
                     case OSFramework.Maps.Enum.OS_Config_Map
                         .markerClustererActive:
                     case OSFramework.Maps.Enum.OS_Config_Map
@@ -415,8 +421,7 @@ namespace Provider.Maps.Google.OSMap {
         public changeShapeProperty(
             shapeId: string,
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            propertyValue: any
+            propertyValue: unknown
         ): void {
             const shape = this.getShape(shapeId);
 

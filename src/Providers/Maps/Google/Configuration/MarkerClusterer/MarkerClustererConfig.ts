@@ -11,8 +11,9 @@ namespace Provider.Maps.Google.Configuration.MarkerClusterer {
         public markerClustererZoomOnClick: boolean;
         public styles: Array<OSFramework.Maps.OSStructures.Clusterer.Style>;
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        constructor(config: any) {
+        constructor(
+            config: OSFramework.Maps.Configuration.IConfigurationMarkerClusterer
+        ) {
             super(config);
         }
 

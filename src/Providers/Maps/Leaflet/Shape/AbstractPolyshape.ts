@@ -106,8 +106,7 @@ namespace Provider.Maps.Leaflet.Shape {
             this.buildProvider(shapePath);
         }
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        public changeProperty(propertyName: string, value: any): void {
+        public changeProperty(propertyName: string, value: unknown): void {
             const propValue =
                 OSFramework.Maps.Enum.OS_Config_Shape[propertyName];
             super.changeProperty(propertyName, value);
@@ -115,7 +114,7 @@ namespace Provider.Maps.Leaflet.Shape {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_Shape.locations:
                         // eslint-disable-next-line no-case-declarations
-                        const shapePath = this._buildPath(value);
+                        const shapePath = this._buildPath(value as string);
                         // If path is undefined (should be a promise) -> don't create the shape
                         if (shapePath !== undefined) {
                             shapePath
@@ -133,10 +132,12 @@ namespace Provider.Maps.Leaflet.Shape {
                         }
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Shape.fillColor:
-                        this.provider.setStyle({ fillColor: value });
+                        this.provider.setStyle({ fillColor: value as string });
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Shape.fillOpacity:
-                        this.provider.setStyle({ fillOpacity: value });
+                        this.provider.setStyle({
+                            fillOpacity: value as number
+                        });
                         return;
                 }
             }
