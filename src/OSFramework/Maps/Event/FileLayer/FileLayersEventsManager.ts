@@ -50,8 +50,9 @@ namespace OSFramework.Maps.Event.FileLayer {
          */
         public trigger(
             eventType: FileLayersEventType,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-            ...args: any
+            data?: string,
+            fileLayerEventParams?: Maps.FileLayer.IFileLayerEventParams,
+            ...args: unknown[]
         ): void {
             // Check if the FileLayer has any events associated
             if (this.handlers.has(eventType)) {
@@ -69,8 +70,9 @@ namespace OSFramework.Maps.Event.FileLayer {
                             this._fileLayer.map.widgetId, // Id of Map block that was clicked
                             this._fileLayer.widgetId ||
                                 this._fileLayer.uniqueId, // Id of File Layer block that was clicked
-                            args[0].coordinates, // LatLng from the click event
-                            args[0].featureData // FeatureData from the FileLayer that was clicked
+                            fileLayerEventParams.coordinates, // LatLng from the click event
+                            fileLayerEventParams.featureData, // FeatureData from the FileLayer that was clicked
+                            ...args
                         );
                         break;
                     // If the event is not valid we can fall in the default case of the switch and throw an error

@@ -178,6 +178,16 @@ namespace Provider.Maps.Google.SearchPlaces {
                     Constants.SearchPlaces.Events.OnPlaceSelect,
                     () => {
                         const place = this._provider.getPlace();
+                        const spparams: OSFramework.Maps.SearchPlaces.ISearchPlacesEventParams =
+                            {
+                                name: place.name,
+                                coordinates: JSON.stringify({
+                                    Lat: place.geometry.location.lat(),
+                                    Lng: place.geometry.location.lng()
+                                }),
+                                address: place.formatted_address
+                            };
+
                         place.geometry &&
                             this.searchPlacesEvents.trigger(
                                 OSFramework.Maps.Event.SearchPlaces
@@ -185,14 +195,7 @@ namespace Provider.Maps.Google.SearchPlaces {
                                 this, // searchPlacesObj
                                 Constants.SearchPlaces.Events.OnPlaceSelect, // event name (eventInfo)
                                 // Extra parameters to be passed as arguments on the callback of the OnPlaceSelect event handler
-                                {
-                                    name: place.name,
-                                    coordinates: JSON.stringify({
-                                        Lat: place.geometry.location.lat(),
-                                        Lng: place.geometry.location.lng()
-                                    }),
-                                    address: place.formatted_address
-                                }
+                                spparams
                             );
                     }
                 );

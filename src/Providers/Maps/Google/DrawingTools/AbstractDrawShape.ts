@@ -28,13 +28,7 @@ namespace Provider.Maps.Google.DrawingTools {
                     eventName: string,
                     shapeCoordinates: OSFramework.Maps.OSStructures.OSMap.OSShapeCoordinates
                 ) => {
-                    this.drawingTools.drawingToolsEvents.trigger(
-                        // EventType
-                        OSFramework.Maps.Event.DrawingTools
-                            .DrawingToolsEventType.ProviderEvent,
-                        // EventName
-                        this.completedToolEventName,
-                        // The extra parameters, uniqueId and isNewElement set to false indicating that the element is not new
+                    const dtparams: OSFramework.Maps.DrawingTools.IDrawingToolsEventParams =
                         {
                             uniqueId: _shape.uniqueId,
                             isNewElement: false,
@@ -42,7 +36,16 @@ namespace Provider.Maps.Google.DrawingTools {
                             coordinates: JSON.stringify(
                                 shapeCoordinates.coordinates
                             )
-                        }
+                        };
+
+                    this.drawingTools.drawingToolsEvents.trigger(
+                        // EventType
+                        OSFramework.Maps.Event.DrawingTools
+                            .DrawingToolsEventType.ProviderEvent,
+                        // EventName
+                        this.completedToolEventName,
+                        // The extra parameters, uniqueId and isNewElement set to false indicating that the element is not new
+                        dtparams
                     );
                 }
             );
