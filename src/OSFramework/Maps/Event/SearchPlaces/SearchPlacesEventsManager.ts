@@ -39,6 +39,7 @@ namespace OSFramework.Maps.Event.SearchPlaces {
                         SearchPlaces.SearchPlacesEventType.OnError,
                         this._searchPlaces,
                         Enum.ErrorCodes.GEN_UnsupportedEventSearchPlaces,
+                        undefined,
                         `${eventType}`
                     );
                     return;

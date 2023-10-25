@@ -115,6 +115,7 @@ namespace Provider.Maps.Google.SearchPlaces {
                                     this,
                                     OSFramework.Maps.Enum.ErrorCodes
                                         .LIB_FailedGeocodingSearchAreaLocations,
+                                    undefined,
                                     `${error}`
                                 );
                             });
