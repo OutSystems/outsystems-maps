@@ -290,6 +290,7 @@ namespace Provider.Maps.Google.SearchPlaces {
                                         this,
                                         OSFramework.Maps.Enum.ErrorCodes
                                             .CFG_InvalidSearchPlacesSearchArea,
+                                        undefined,
                                         `${error}`
                                     );
                                 });
