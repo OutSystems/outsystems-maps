@@ -71,6 +71,7 @@ namespace Provider.Maps.Leaflet.DrawingTools {
 
         // Adds the completedElement (completemarker, completepolyline, etc.) event listeners to the correspondent element.
         // The new handlers will create the shape/markers elements and remove the overlay created by the drawing tool on the map
+        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         public addCompletedEvent(event: any): void {
             this._addCompletedEventHandler(event);
         }
