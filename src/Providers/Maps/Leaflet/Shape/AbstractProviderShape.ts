@@ -156,32 +156,41 @@ namespace Provider.Maps.Leaflet.Shape {
             );
         }
 
-        public changeProperty(propertyName: string, value: unknown): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             const propValue =
                 OSFramework.Maps.Enum.OS_Config_Shape[propertyName];
-            super.changeProperty(propertyName, value);
+            super.changeProperty(propertyName, propertyValue);
             if (this.isReady) {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_Shape.allowDrag:
                         this._setDragEditConfigs(
-                            value as boolean,
+                            propertyValue as boolean,
                             this.config.allowEdit
                         );
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Shape.allowEdit:
                         this._setDragEditConfigs(
                             this.config.allowDrag,
-                            value as boolean
+                            propertyValue as boolean
                         );
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Shape.strokeOpacity:
-                        this.provider.setStyle({ opacity: value as number });
+                        this.provider.setStyle({
+                            opacity: propertyValue as number
+                        });
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Shape.strokeColor:
-                        this.provider.setStyle({ color: value as string });
+                        this.provider.setStyle({
+                            color: propertyValue as string
+                        });
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Shape.strokeWeight:
-                        this.provider.setStyle({ weight: value as number });
+                        this.provider.setStyle({
+                            weight: propertyValue as number
+                        });
                         return;
                 }
             }

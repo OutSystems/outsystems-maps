@@ -266,22 +266,25 @@ namespace Provider.Maps.Leaflet.OSMap {
             }
         }
 
-        public changeProperty(propertyName: string, value: unknown): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             const propValue = OSFramework.Maps.Enum.OS_Config_Map[propertyName];
-            super.changeProperty(propertyName, value);
+            super.changeProperty(propertyName, propertyValue);
             if (this.isReady) {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_Map.center:
                         return this.features.center.updateCenter(
-                            value as string
+                            propertyValue as string
                         );
                     case OSFramework.Maps.Enum.OS_Config_Map.offset:
                         return this.features.offset.setOffset(
-                            JSON.parse(value as string)
+                            JSON.parse(propertyValue as string)
                         );
                     case OSFramework.Maps.Enum.OS_Config_Map.zoom:
                         return this.features.zoom.setLevel(
-                            value as OSFramework.Maps.Enum.OSMap.Zoom
+                            propertyValue as OSFramework.Maps.Enum.OSMap.Zoom
                         );
                 }
             }

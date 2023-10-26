@@ -223,15 +223,18 @@ namespace Provider.Maps.Google.Marker {
             }
         }
 
-        public changeProperty(propertyName: string, value: unknown): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             const propValue =
                 OSFramework.Maps.Enum.OS_Config_Marker[propertyName];
-            super.changeProperty(propertyName, value);
+            super.changeProperty(propertyName, propertyValue);
             if (this.isReady) {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_Marker.location:
                         Helper.Conversions.ConvertToCoordinates(
-                            value as string,
+                            propertyValue as string,
                             this.map.config.apiKey
                         )
                             .then((response) => {
@@ -253,18 +256,20 @@ namespace Provider.Maps.Google.Marker {
                             });
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Marker.allowDrag:
-                        return this._provider.setDraggable(value as boolean);
+                        return this._provider.setDraggable(
+                            propertyValue as boolean
+                        );
                     case OSFramework.Maps.Enum.OS_Config_Marker.iconHeight:
                     case OSFramework.Maps.Enum.OS_Config_Marker.iconWidth:
                         this._setIconSize();
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Marker.iconUrl:
-                        this._setIcon(value as string);
+                        this._setIcon(propertyValue as string);
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Marker.label:
-                        return this._provider.setLabel(value as string);
+                        return this._provider.setLabel(propertyValue as string);
                     case OSFramework.Maps.Enum.OS_Config_Marker.title:
-                        return this._provider.setTitle(value as string);
+                        return this._provider.setTitle(propertyValue as string);
                 }
             }
         }

@@ -257,8 +257,11 @@ namespace Provider.Maps.Google.SearchPlaces {
             );
         }
 
-        public changeProperty(propertyName: string, value: unknown): void {
-            super.changeProperty(propertyName, value);
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
+            super.changeProperty(propertyName, propertyValue);
             if (this.isReady) {
                 switch (
                     OSFramework.Maps.Enum.OS_Config_SearchPlaces[propertyName]
@@ -278,7 +281,7 @@ namespace Provider.Maps.Google.SearchPlaces {
                         .searchArea:
                         // eslint-disable-next-line no-case-declarations
                         const searchArea = this._buildSearchArea(
-                            value as string
+                            propertyValue as string
                         );
                         // If searchArea is undefined (should be a promise) -> don't apply the searchArea (bounds)
                         if (searchArea !== undefined) {
@@ -307,7 +310,7 @@ namespace Provider.Maps.Google.SearchPlaces {
                         return;
                     case OSFramework.Maps.Enum.OS_Config_SearchPlaces.countries:
                         // eslint-disable-next-line no-case-declarations
-                        const countries = JSON.parse(value as string);
+                        const countries = JSON.parse(propertyValue as string);
                         // If validation returns false -> do nothing
                         // Else set restrictions to component (apply countries)
                         return (
@@ -321,7 +324,7 @@ namespace Provider.Maps.Google.SearchPlaces {
                         return this.provider.setTypes([
                             // eslint-disable-next-line @typescript-eslint/no-unused-vars
                             Provider.Maps.Google.SearchPlaces.SearchTypes[
-                                value as string
+                                propertyValue as string
                             ]
                         ]);
                 }

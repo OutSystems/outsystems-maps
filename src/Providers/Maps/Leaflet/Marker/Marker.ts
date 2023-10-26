@@ -291,14 +291,19 @@ namespace Provider.Maps.Leaflet.Marker {
             }
         }
 
-        public changeProperty(propertyName: string, value: unknown): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             const property =
                 OSFramework.Maps.Enum.OS_Config_Marker[propertyName];
-            super.changeProperty(propertyName, value);
+            super.changeProperty(propertyName, propertyValue);
             if (this.isReady) {
                 switch (property) {
                     case OSFramework.Maps.Enum.OS_Config_Marker.location:
-                        Helper.Conversions.ValidateCoordinates(value as string)
+                        Helper.Conversions.ValidateCoordinates(
+                            propertyValue as string
+                        )
                             .then((response) => {
                                 this._provider.setLatLng({
                                     lat: response.lat,
@@ -317,7 +322,7 @@ namespace Provider.Maps.Leaflet.Marker {
                             });
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Marker.allowDrag:
-                        value
+                        propertyValue
                             ? this._provider.dragging.enable()
                             : this._provider.dragging.disable();
                         return;
@@ -325,16 +330,17 @@ namespace Provider.Maps.Leaflet.Marker {
                         this._setIconSize();
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Marker.iconUrl:
-                        this._setIcon(value as string);
+                        this._setIcon(propertyValue as string);
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Marker.iconWidth:
                         this._setIconSize();
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Marker.label:
-                        this._setLabelContent(value as string);
+                        this._setLabelContent(propertyValue as string);
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Marker.title:
-                        this._provider.getElement().title = value as string;
+                        this._provider.getElement().title =
+                            propertyValue as string;
                         return;
                 }
             }

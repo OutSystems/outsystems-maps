@@ -156,18 +156,23 @@ namespace Provider.Maps.Google.Shape {
             super._buildProvider(bounds);
         }
 
-        public changeProperty(propertyName: string, value: unknown): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             const propValue =
                 OSFramework.Maps.Enum.OS_Config_Shape[propertyName];
-            super.changeProperty(propertyName, value);
+            super.changeProperty(propertyName, propertyValue);
             if (this.isReady) {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_Shape.fillColor:
                     case OSFramework.Maps.Enum.OS_Config_Shape.fillOpacity:
-                        return this.provider.set(propertyName, value);
+                        return this.provider.set(propertyName, propertyValue);
                     case OSFramework.Maps.Enum.OS_Config_Shape.bounds:
                         // eslint-disable-next-line no-case-declarations
-                        const shapeBounds = this._buildBounds(value as string);
+                        const shapeBounds = this._buildBounds(
+                            propertyValue as string
+                        );
                         // If path is undefined (should be a promise) -> don't create the shape
                         if (shapeBounds !== undefined) {
                             shapeBounds

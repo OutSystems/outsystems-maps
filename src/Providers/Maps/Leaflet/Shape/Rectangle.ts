@@ -151,23 +151,30 @@ namespace Provider.Maps.Leaflet.Shape {
             super.buildProvider(bounds);
         }
 
-        public changeProperty(propertyName: string, value: unknown): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             const propValue =
                 OSFramework.Maps.Enum.OS_Config_Shape[propertyName];
-            super.changeProperty(propertyName, value);
+            super.changeProperty(propertyName, propertyValue);
             if (this.isReady) {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_Shape.fillColor:
-                        this.provider.setStyle({ fillColor: value as string });
+                        this.provider.setStyle({
+                            fillColor: propertyValue as string
+                        });
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Shape.fillOpacity:
                         this.provider.setStyle({
-                            fillOpacity: value as number
+                            fillOpacity: propertyValue as number
                         });
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Shape.bounds:
                         // eslint-disable-next-line no-case-declarations
-                        const shapeBounds = this._buildBounds(value as string);
+                        const shapeBounds = this._buildBounds(
+                            propertyValue as string
+                        );
                         // If path is undefined (should be a promise) -> don't create the shape
                         if (shapeBounds !== undefined) {
                             shapeBounds

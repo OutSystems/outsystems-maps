@@ -125,15 +125,20 @@ namespace Provider.Maps.Google.Shape {
             super._buildProvider(shapeCenter);
         }
 
-        public changeProperty(propertyName: string, value: unknown): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             const propValue =
                 OSFramework.Maps.Enum.OS_Config_Shape[propertyName];
-            super.changeProperty(propertyName, value);
+            super.changeProperty(propertyName, propertyValue);
             if (this.isReady) {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_Shape.center:
                         // eslint-disable-next-line no-case-declarations
-                        const shapeCenter = this._buildCenter(value as string);
+                        const shapeCenter = this._buildCenter(
+                            propertyValue as string
+                        );
                         // If path is undefined (should be a promise) -> don't create the shape
                         if (shapeCenter !== undefined) {
                             shapeCenter
@@ -151,10 +156,10 @@ namespace Provider.Maps.Google.Shape {
                         }
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Shape.radius:
-                        return this.provider.setRadius(value as number);
+                        return this.provider.setRadius(propertyValue as number);
                     case OSFramework.Maps.Enum.OS_Config_Shape.fillColor:
                     case OSFramework.Maps.Enum.OS_Config_Shape.fillOpacity:
-                        return this.provider.set(propertyName, value);
+                        return this.provider.set(propertyName, propertyValue);
                 }
             }
         }

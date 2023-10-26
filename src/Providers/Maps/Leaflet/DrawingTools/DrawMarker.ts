@@ -164,15 +164,18 @@ namespace Provider.Maps.Leaflet.DrawingTools {
             };
         }
 
-        public changeProperty(propertyName: string, value: unknown): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             const propValue =
                 OSFramework.Maps.Enum.OS_Config_Marker[propertyName];
-            super.changeProperty(propertyName, value);
+            super.changeProperty(propertyName, propertyValue);
             if (this.drawingTools.isReady) {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_Marker.iconUrl:
                         this.options = {
-                            icon: this._createIcon(value as string)
+                            icon: this._createIcon(propertyValue as string)
                         };
                         return;
                 }

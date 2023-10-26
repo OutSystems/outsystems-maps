@@ -97,27 +97,40 @@ namespace Provider.Maps.Leaflet.DrawingTools {
             this.options = this.getProviderConfig();
         }
 
-        public changeProperty(propertyName: string, value: unknown): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             const propValue =
                 OSFramework.Maps.Enum.OS_Config_Shape[propertyName];
-            super.changeProperty(propertyName, value);
+            super.changeProperty(propertyName, propertyValue);
             if (this.drawingTools.isReady) {
                 switch (propValue) {
                     // If the following configurations are not included on the configs of the tool, the AbstractTool will make sure to throw an error
                     case OSFramework.Maps.Enum.OS_Config_Shape.strokeOpacity:
-                        this.options = { shapeOptions: { opacity: value } };
+                        this.options = {
+                            shapeOptions: { opacity: propertyValue }
+                        };
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Shape.strokeColor:
-                        this.options = { shapeOptions: { color: value } };
+                        this.options = {
+                            shapeOptions: { color: propertyValue }
+                        };
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Shape.strokeWeight:
-                        this.options = { shapeOptions: { weight: value } };
+                        this.options = {
+                            shapeOptions: { weight: propertyValue }
+                        };
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Shape.fillOpacity:
-                        this.options = { shapeOptions: { fillOpacity: value } };
+                        this.options = {
+                            shapeOptions: { fillOpacity: propertyValue }
+                        };
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Shape.fillColor:
-                        this.options = { shapeOptions: { fillColor: value } };
+                        this.options = {
+                            shapeOptions: { fillColor: propertyValue }
+                        };
                         return;
                 }
             }

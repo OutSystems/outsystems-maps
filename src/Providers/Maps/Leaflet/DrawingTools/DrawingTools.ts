@@ -198,16 +198,19 @@ namespace Provider.Maps.Leaflet.DrawingTools {
             this.finishBuild();
         }
 
-        public changeProperty(propertyName: string, value: unknown): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             const propValue =
                 OSFramework.Maps.Enum.OS_Config_DrawingTools[propertyName];
-            super.changeProperty(propertyName, value);
+            super.changeProperty(propertyName, propertyValue);
             if (this.isReady) {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_DrawingTools.position:
                         // eslint-disable-next-line no-case-declarations
                         const positionValue = this._getDrawingToolsPosition(
-                            value as string
+                            propertyValue as string
                         );
                         positionValue &&
                             this.provider.setPosition(positionValue);

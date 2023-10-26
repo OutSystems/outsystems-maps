@@ -353,9 +353,12 @@ namespace Provider.Maps.Google.OSMap {
             }
         }
 
-        public changeProperty(propertyName: string, value: unknown): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             const propValue = OSFramework.Maps.Enum.OS_Config_Map[propertyName];
-            super.changeProperty(propertyName, value);
+            super.changeProperty(propertyName, propertyValue);
             if (this.isReady) {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_Map.apiKey:
@@ -371,36 +374,38 @@ namespace Provider.Maps.Google.OSMap {
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Map.center:
                         return this.features.center.updateCenter(
-                            value as string
+                            propertyValue as string
                         );
                     case OSFramework.Maps.Enum.OS_Config_Map.offset:
                         return this.features.offset.setOffset(
-                            JSON.parse(value as string)
+                            JSON.parse(propertyValue as string)
                         );
                     case OSFramework.Maps.Enum.OS_Config_Map.zoom:
                         return this.features.zoom.setLevel(
-                            value as OSFramework.Maps.Enum.OSMap.Zoom
+                            propertyValue as OSFramework.Maps.Enum.OSMap.Zoom
                         );
                     case OSFramework.Maps.Enum.OS_Config_Map.type:
-                        return this._provider.setMapTypeId(value as string);
+                        return this._provider.setMapTypeId(
+                            propertyValue as string
+                        );
                     case OSFramework.Maps.Enum.OS_Config_Map.style:
                         return this._provider.setOptions({
-                            styles: GetStyleByStyleId(value as number)
+                            styles: GetStyleByStyleId(propertyValue as number)
                         });
                     case OSFramework.Maps.Enum.OS_Config_Map.advancedFormat:
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        value = OSFramework.Maps.Helper.JsonFormatter(
-                            value as string
+                        propertyValue = OSFramework.Maps.Helper.JsonFormatter(
+                            propertyValue as string
                         );
                         // Make sure the MapEvents that are associated in the advancedFormat get updated
                         this._setMapEvents(
                             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            (value as any).mapEvents as string[]
+                            (propertyValue as any).mapEvents as string[]
                         );
-                        return this._provider.setOptions(value);
+                        return this._provider.setOptions(propertyValue);
                     case OSFramework.Maps.Enum.OS_Config_Map.showTraffic:
                         return this.features.trafficLayer.setState(
-                            value as boolean
+                            propertyValue as boolean
                         );
                     case OSFramework.Maps.Enum.OS_Config_Map
                         .markerClustererActive:
@@ -412,7 +417,7 @@ namespace Provider.Maps.Google.OSMap {
                         .markerClustererZoomOnClick:
                         return this.features.markerClusterer.changeProperty(
                             propertyName,
-                            value
+                            propertyValue
                         );
                 }
             }

@@ -159,22 +159,28 @@ namespace Provider.Maps.Google.Shape {
             return Constants.Shape.Events;
         }
 
-        public changeProperty(propertyName: string, value: unknown): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             const propValue =
                 OSFramework.Maps.Enum.OS_Config_Shape[propertyName];
-            super.changeProperty(propertyName, value);
+            super.changeProperty(propertyName, propertyValue);
             if (this.isReady) {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_Shape.allowDrag:
-                        return this.provider.set('draggable', value);
+                        return this.provider.set('draggable', propertyValue);
                     case OSFramework.Maps.Enum.OS_Config_Shape.allowEdit:
-                        return this.provider.set('editable', value);
+                        return this.provider.set('editable', propertyValue);
                     case OSFramework.Maps.Enum.OS_Config_Shape.strokeOpacity:
-                        return this.provider.set('strokeOpacity', value);
+                        return this.provider.set(
+                            'strokeOpacity',
+                            propertyValue
+                        );
                     case OSFramework.Maps.Enum.OS_Config_Shape.strokeColor:
-                        return this.provider.set('strokeColor', value);
+                        return this.provider.set('strokeColor', propertyValue);
                     case OSFramework.Maps.Enum.OS_Config_Shape.strokeWeight:
-                        return this.provider.set('strokeWeight', value);
+                        return this.provider.set('strokeWeight', propertyValue);
                 }
             }
         }

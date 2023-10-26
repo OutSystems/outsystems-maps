@@ -121,15 +121,20 @@ namespace Provider.Maps.Leaflet.Shape {
             super.buildProvider(shapeCenter);
         }
 
-        public changeProperty(propertyName: string, value: unknown): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             const propValue =
                 OSFramework.Maps.Enum.OS_Config_Shape[propertyName];
-            super.changeProperty(propertyName, value);
+            super.changeProperty(propertyName, propertyValue);
             if (this.isReady) {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_Shape.center:
                         // eslint-disable-next-line no-case-declarations
-                        const shapeCenter = this._buildCenter(value as string);
+                        const shapeCenter = this._buildCenter(
+                            propertyValue as string
+                        );
                         // If path is undefined (should be a promise) -> don't create the shape
                         if (shapeCenter !== undefined) {
                             shapeCenter
@@ -147,14 +152,16 @@ namespace Provider.Maps.Leaflet.Shape {
                         }
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Shape.radius:
-                        this.provider.setRadius(value as number);
+                        this.provider.setRadius(propertyValue as number);
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Shape.fillColor:
-                        this.provider.setStyle({ fillColor: value as string });
+                        this.provider.setStyle({
+                            fillColor: propertyValue as string
+                        });
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Shape.fillOpacity:
                         this.provider.setStyle({
-                            fillOpacity: value as number
+                            fillOpacity: propertyValue as number
                         });
                         return;
                 }

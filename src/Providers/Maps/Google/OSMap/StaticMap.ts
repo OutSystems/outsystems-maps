@@ -244,7 +244,10 @@ namespace Provider.Maps.Google.OSMap {
         }
 
         // ChangeProperty method can't be used on a StaticMap
-        public changeProperty(propertyName: string, value: unknown): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             // If the StaticMap is already rendered then throw an error
             if (this.isReady) {
                 this.mapEvents.trigger(
@@ -269,15 +272,16 @@ namespace Provider.Maps.Google.OSMap {
                                 .CFG_APIKeyAlreadySetStaticMap
                         );
                     }
-                    return super.changeProperty(propertyName, value);
+                    return super.changeProperty(propertyName, propertyValue);
                 case OSFramework.Maps.Enum.OS_Config_StaticMap.center:
-                    this._center = this._getCenter(value as string);
+                    this._center = this._getCenter(propertyValue as string);
                     return;
                 case OSFramework.Maps.Enum.OS_Config_StaticMap.zoom:
-                    this._zoom = this._getZoom(value as number);
+                    this._zoom = this._getZoom(propertyValue as number);
                     return;
                 case OSFramework.Maps.Enum.OS_Config_StaticMap.type:
-                    this._type = value as OSFramework.Maps.Enum.OSMap.Type;
+                    this._type =
+                        propertyValue as OSFramework.Maps.Enum.OSMap.Type;
                     return;
                 default:
                     this.mapEvents.trigger(
