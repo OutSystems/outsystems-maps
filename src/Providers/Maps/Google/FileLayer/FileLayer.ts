@@ -33,7 +33,7 @@ namespace Provider.Maps.Google.FileLayer {
                 this.provider.addListener(
                     'click',
                     (event: google.maps.KmlMouseEvent) => {
-                        const flparams: OSFramework.Maps.FileLayer.IFileLayerEventParams =
+                        const flParams: OSFramework.Maps.FileLayer.IFileLayerEventParams =
                             {
                                 // Coordinates from the event that was triggered (by the click)
                                 coordinates: JSON.stringify({
@@ -53,7 +53,7 @@ namespace Provider.Maps.Google.FileLayer {
                                 .OnClick,
                             undefined,
                             // Extra parameters to be passed as arguments on the callback of the OnClick event handler
-                            flparams
+                            flParams
                         );
                     }
                 );

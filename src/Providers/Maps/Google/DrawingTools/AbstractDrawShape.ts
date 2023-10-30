@@ -28,7 +28,7 @@ namespace Provider.Maps.Google.DrawingTools {
                     eventName: string,
                     shapeCoordinates: OSFramework.Maps.OSStructures.OSMap.OSShapeCoordinates
                 ) => {
-                    const dtparams: OSFramework.Maps.DrawingTools.IDrawingToolsEventParams =
+                    const dtParams: OSFramework.Maps.DrawingTools.IDrawingToolsEventParams =
                         {
                             uniqueId: _shape.uniqueId,
                             isNewElement: false,
@@ -45,7 +45,7 @@ namespace Provider.Maps.Google.DrawingTools {
                         // EventName
                         this.completedToolEventName,
                         // The extra parameters, uniqueId and isNewElement set to false indicating that the element is not new
-                        dtparams
+                        dtParams
                     );
                 }
             );

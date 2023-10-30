@@ -179,7 +179,7 @@ namespace Provider.Maps.Google.SearchPlaces {
                     Constants.SearchPlaces.Events.OnPlaceSelect,
                     () => {
                         const place = this._provider.getPlace();
-                        const spparams: OSFramework.Maps.SearchPlaces.ISearchPlacesEventParams =
+                        const spParams: OSFramework.Maps.SearchPlaces.ISearchPlacesEventParams =
                             {
                                 name: place.name,
                                 coordinates: JSON.stringify({
@@ -196,7 +196,7 @@ namespace Provider.Maps.Google.SearchPlaces {
                                 this, // searchPlacesObj
                                 Constants.SearchPlaces.Events.OnPlaceSelect, // event name (eventInfo)
                                 // Extra parameters to be passed as arguments on the callback of the OnPlaceSelect event handler
-                                spparams
+                                spParams
                             );
                     }
                 );
