@@ -82,6 +82,7 @@ namespace OSFramework.Maps.SearchPlaces {
                     Event.SearchPlaces.SearchPlacesEventType.OnError,
                     this,
                     Enum.ErrorCodes.GEN_InvalidChangePropertySearchPlaces,
+                    undefined,
                     `${propertyName}`
                 );
             }

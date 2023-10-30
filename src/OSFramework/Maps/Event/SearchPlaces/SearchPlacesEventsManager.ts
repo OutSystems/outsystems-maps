@@ -39,6 +39,7 @@ namespace OSFramework.Maps.Event.SearchPlaces {
                         SearchPlaces.SearchPlacesEventType.OnError,
                         this._searchPlaces,
                         Enum.ErrorCodes.GEN_UnsupportedEventSearchPlaces,
+                        undefined,
                         `${eventType}`
                     );
                     return;
@@ -77,8 +78,8 @@ namespace OSFramework.Maps.Event.SearchPlaces {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             searchPlaces?: OSFramework.Maps.SearchPlaces.ISearchPlaces,
             eventInfo?: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-            ...args: any
+            searchPlacesEventParams?: Maps.SearchPlaces.ISearchPlacesEventParams,
+            ...args: unknown[]
         ): void {
             // Check if the FileLayer has any events associated
             if (this.handlers.has(eventType)) {
@@ -103,20 +104,20 @@ namespace OSFramework.Maps.Event.SearchPlaces {
                         break;
                     case SearchPlacesEventType.OnPlaceSelect:
                         handlerEvent.trigger(
-                            this._searchPlaces, // SearchPlaces Object where the place selection occurred.
-                            this._searchPlaces.widgetId ||
-                                this._searchPlaces.uniqueId, // Id of SearchPlaces block that was clicked
-                            args[0].name, // name of the place selected
-                            args[0].coordinates, // coordinates of the place selected
-                            args[0].address // full address of the place selected
+                            searchPlaces, // SearchPlaces Object where the place selection occurred.
+                            searchPlaces.widgetId || searchPlaces.uniqueId, // Id of SearchPlaces block that was clicked
+                            searchPlacesEventParams.name, // name of the place selected
+                            searchPlacesEventParams.coordinates, // coordinates of the place selected
+                            searchPlacesEventParams.address // full address of the place selected
                         );
                         break;
                     // If the event is not valid we can fall in the default case of the switch and throw an error
                     default:
                         this._searchPlaces.searchPlacesEvents.trigger(
                             SearchPlaces.SearchPlacesEventType.OnError,
-                            this._searchPlaces,
+                            searchPlaces,
                             Enum.ErrorCodes.GEN_UnsupportedEventSearchPlaces,
+                            undefined,
                             `${eventType}`
                         );
                         return;
