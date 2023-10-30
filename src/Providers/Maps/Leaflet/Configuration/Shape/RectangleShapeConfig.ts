@@ -5,11 +5,12 @@ namespace Provider.Maps.Leaflet.Configuration.Shape {
     export class RectangleShapeConfig extends FilledShapeConfig {
         public bounds: string;
 
-        constructor(
-            config: OSFramework.Maps.Configuration.IConfigurationShape
-        ) {
-            super(config);
-        }
+        // No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
+        // constructor(
+        //     config: OSFramework.Maps.Configuration.IConfigurationShape
+        // ) {
+        //     super(config);
+        // }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public getProviderConfig(): any {

@@ -11,11 +11,12 @@ namespace Provider.Maps.Google.Configuration.MarkerClusterer {
         public markerClustererZoomOnClick: boolean;
         public styles: Array<OSFramework.Maps.OSStructures.Clusterer.Style>;
 
-        constructor(
-            config: OSFramework.Maps.Configuration.IConfigurationMarkerClusterer
-        ) {
-            super(config);
-        }
+        // No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
+        // constructor(
+        //     config: OSFramework.Maps.Configuration.IConfigurationMarkerClusterer
+        // ) {
+        //     super(config);
+        // }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public getProviderConfig(): any {

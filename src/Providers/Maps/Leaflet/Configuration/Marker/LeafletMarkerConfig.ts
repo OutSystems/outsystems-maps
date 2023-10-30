@@ -14,11 +14,12 @@ namespace Provider.Maps.Leaflet.Configuration.Marker {
         public location: string;
         public title?: string;
 
-        constructor(
-            config: JSON | OSFramework.Maps.Configuration.IConfigurationMarker
-        ) {
-            super(config);
-        }
+        // No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
+        // constructor(
+        //     config: JSON | OSFramework.Maps.Configuration.IConfigurationMarker
+        // ) {
+        //     super(config);
+        // }
 
         public getProviderConfig(): L.MarkerOptions {
             const provider: L.MarkerOptions = {

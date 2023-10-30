@@ -6,11 +6,12 @@ namespace Provider.Maps.Leaflet.Configuration.Shape {
         public center: string;
         public radius: number;
 
-        constructor(
-            config: OSFramework.Maps.Configuration.IConfigurationShape
-        ) {
-            super(config);
-        }
+        // No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
+        // constructor(
+        //     config: OSFramework.Maps.Configuration.IConfigurationShape
+        // ) {
+        //     super(config);
+        // }
 
         public getProviderConfig(): L.CircleOptions {
             const provider = super.getProviderConfig();
