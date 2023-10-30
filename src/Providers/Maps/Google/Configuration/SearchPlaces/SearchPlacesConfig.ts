@@ -11,9 +11,10 @@ namespace Provider.Maps.Google.Configuration.SearchPlaces {
         public searchArea: OSFramework.Maps.OSStructures.OSMap.BoundsString;
         public searchType: OSFramework.Maps.Enum.SearchTypes;
 
-        constructor(config: JSON) {
-            super(config);
-        }
+        // No need for constructor, as it is not doing anything.
+        // constructor(config: JSON) {
+        //     super(config);
+        // }
 
         public getProviderConfig(): ISearchPlacesProviderConfig {
             // eslint-disable-next-line prefer-const

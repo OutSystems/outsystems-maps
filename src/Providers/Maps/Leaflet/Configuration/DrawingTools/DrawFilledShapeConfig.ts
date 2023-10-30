@@ -6,9 +6,10 @@ namespace Provider.Maps.Leaflet.Configuration.DrawingTools {
         public fillColor: string;
         public fillOpacity: number;
 
-        constructor(config: JSON) {
-            super(config);
-        }
+        // No need for constructor, as it is not doing anything.
+        // constructor(config: JSON) {
+        //     super(config);
+        // }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public getProviderConfig(): any {

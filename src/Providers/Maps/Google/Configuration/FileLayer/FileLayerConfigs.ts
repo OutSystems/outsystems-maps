@@ -10,9 +10,10 @@ namespace Provider.Maps.Google.Configuration.FileLayer {
         public preserveViewport: boolean;
         public suppressPopups: boolean;
 
-        constructor(config: JSON) {
-            super(config);
-        }
+        // No need for constructor, as it is not doing anything.
+        // constructor(config: JSON) {
+        //     super(config);
+        // }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public getProviderConfig(): any {

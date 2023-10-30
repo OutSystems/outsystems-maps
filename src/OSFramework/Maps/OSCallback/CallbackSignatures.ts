@@ -6,11 +6,11 @@ namespace OSFramework.Maps.Callbacks {
     /**
      * This is the most generic callback signature and can be used even for internal events
      */
-    export type Generic = { (...ags): unknown };
+    export type Generic = (...ags: unknown[]) => unknown;
 
     /**
      * This is the most generic callback signature for events existing in OutSystems code.
      * @param {string} mapID enables the OutSystems code to understand which map triggered the event
      */
-    export type OSGeneric = { (mapID: string, ...args): void };
+    export type OSGeneric = (mapID: string, ...args: unknown[]) => void;
 }
