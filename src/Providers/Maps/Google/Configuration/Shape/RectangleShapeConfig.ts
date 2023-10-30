@@ -5,9 +5,10 @@ namespace Provider.Maps.Google.Configuration.Shape {
     export class RectangleShapeConfig extends FilledShapeConfig {
         public bounds: string;
 
-        constructor(config: unknown) {
-            super(config);
-        }
+        // No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
+        // constructor(config: unknown) {
+        //     super(config);
+        // }
 
         public getProviderConfig(): IShapeProviderConfig {
             const provider = super.getProviderConfig();

@@ -11,7 +11,7 @@ namespace Provider.Maps.Google.Configuration.SearchPlaces {
         public searchArea: OSFramework.Maps.OSStructures.OSMap.BoundsString;
         public searchType: OSFramework.Maps.Enum.SearchTypes;
 
-        // No need for constructor, as it is not doing anything.
+        // No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
         // constructor(config: JSON) {
         //     super(config);
         // }

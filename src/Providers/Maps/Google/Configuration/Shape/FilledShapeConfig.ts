@@ -6,9 +6,10 @@ namespace Provider.Maps.Google.Configuration.Shape {
         public fillColor: string;
         public fillOpacity: number;
 
-        constructor(config: unknown) {
-            super(config);
-        }
+        // No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
+        // constructor(config: unknown) {
+        //     super(config);
+        // }
 
         public getProviderConfig(): IShapeProviderConfig {
             const provider_configs = super.getProviderConfig();

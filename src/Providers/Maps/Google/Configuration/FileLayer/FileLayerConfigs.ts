@@ -10,7 +10,7 @@ namespace Provider.Maps.Google.Configuration.FileLayer {
         public preserveViewport: boolean;
         public suppressPopups: boolean;
 
-        // No need for constructor, as it is not doing anything.
+        // No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
         // constructor(config: JSON) {
         //     super(config);
         // }

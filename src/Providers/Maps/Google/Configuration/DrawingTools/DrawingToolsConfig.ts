@@ -9,7 +9,7 @@ namespace Provider.Maps.Google.Configuration.DrawingTools {
         public position: string;
         public uniqueId: string;
 
-        // No need for constructor, as it is not doing anything.
+        // No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
         // constructor(config: JSON) {
         //     super(config);
         // }
