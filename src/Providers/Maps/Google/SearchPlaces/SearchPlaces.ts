@@ -10,11 +10,7 @@ namespace Provider.Maps.Google.SearchPlaces {
         private _addedEvents: Array<string>;
         private _scriptCallback: OSFramework.Maps.Callbacks.Generic;
 
-        constructor(
-            searchPlacesId: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
-        ) {
+        constructor(searchPlacesId: string, configs: JSON) {
             super(
                 searchPlacesId,
                 new Configuration.SearchPlaces.SearchPlacesConfig(configs)
@@ -88,26 +84,34 @@ namespace Provider.Maps.Google.SearchPlaces {
                 script.removeEventListener('load', this._scriptCallback);
             }
             if (typeof google === 'object' && typeof google.maps === 'object') {
-                const configs = this.getProviderConfig();
+                const local_configs =
+                    this.getProviderConfig() as Configuration.SearchPlaces.ISearchPlacesProviderConfig;
                 // If all searchArea bounds are empty, then we don't want to create a searchArea
                 // If not, create a searchArea with the bounds that were specified
                 // But if one of the bounds is empty, throw an error
                 if (
                     OSFramework.Maps.Helper.HasAllEmptyBounds(
-                        configs.bounds
+                        local_configs.bounds
                     ) === false
                 ) {
-                    const bounds = this._convertStringToBounds(configs.bounds);
+                    const bounds = this._convertStringToBounds(
+                        local_configs.bounds
+                    );
                     // If countries > 5 than throw an error
                     if (
                         this._validCountriesMaxLength(this.config.countries) &&
                         bounds !== undefined
                     ) {
                         bounds
-                            .then((coords) => {
-                                configs.bounds = coords;
-                                this._createProvider(configs);
-                            })
+                            .then(
+                                (
+                                    coords: OSFramework.Maps.OSStructures.OSMap.Bounds
+                                ) => {
+                                    local_configs.bounds =
+                                        coords as unknown as OSFramework.Maps.OSStructures.OSMap.BoundsString;
+                                    this._createProvider(local_configs);
+                                }
+                            )
                             .catch((error) => {
                                 this.searchPlacesEvents.trigger(
                                     OSFramework.Maps.Event.SearchPlaces
@@ -121,17 +125,16 @@ namespace Provider.Maps.Google.SearchPlaces {
                             });
                     }
                 } else {
-                    delete configs.bounds;
-                    this._createProvider(configs);
+                    delete local_configs.bounds;
+                    this._createProvider(local_configs);
                 }
             } else {
                 throw Error(`The google.maps lib has not been loaded.`);
             }
         }
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         private _createProvider(
-            configs: google.maps.places.AutocompleteOptions
+            configs: Configuration.SearchPlaces.ISearchPlacesProviderConfig
         ): void {
             const input: HTMLInputElement =
                 OSFramework.Maps.Helper.GetElementByUniqueId(
@@ -144,11 +147,11 @@ namespace Provider.Maps.Google.SearchPlaces {
             // SearchPlaces(input, options)
             this._provider = new google.maps.places.Autocomplete(
                 input,
-                configs
+                configs as unknown
             );
             // Check if the provider has been created with a valid APIKey
             window[OSFramework.Maps.Helper.Constants.googleMapsAuthFailure] =
-                () =>
+                () => {
                     this.searchPlacesEvents.trigger(
                         OSFramework.Maps.Event.SearchPlaces
                             .SearchPlacesEventType.OnError,
@@ -156,6 +159,7 @@ namespace Provider.Maps.Google.SearchPlaces {
                         OSFramework.Maps.Enum.ErrorCodes
                             .LIB_InvalidApiKeySearchPlaces
                     );
+                };
 
             this.finishBuild();
             this._setSearchPlacesEvents();
@@ -253,9 +257,11 @@ namespace Provider.Maps.Google.SearchPlaces {
             );
         }
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-        public changeProperty(propertyName: string, value: any): void {
-            super.changeProperty(propertyName, value);
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
+            super.changeProperty(propertyName, propertyValue);
             if (this.isReady) {
                 switch (
                     OSFramework.Maps.Enum.OS_Config_SearchPlaces[propertyName]
@@ -274,7 +280,9 @@ namespace Provider.Maps.Google.SearchPlaces {
                     case OSFramework.Maps.Enum.OS_Config_SearchPlaces
                         .searchArea:
                         // eslint-disable-next-line no-case-declarations
-                        const searchArea = this._buildSearchArea(value);
+                        const searchArea = this._buildSearchArea(
+                            propertyValue as string
+                        );
                         // If searchArea is undefined (should be a promise) -> don't apply the searchArea (bounds)
                         if (searchArea !== undefined) {
                             searchArea
@@ -302,7 +310,7 @@ namespace Provider.Maps.Google.SearchPlaces {
                         return;
                     case OSFramework.Maps.Enum.OS_Config_SearchPlaces.countries:
                         // eslint-disable-next-line no-case-declarations
-                        const countries = JSON.parse(value);
+                        const countries = JSON.parse(propertyValue as string);
                         // If validation returns false -> do nothing
                         // Else set restrictions to component (apply countries)
                         return (
@@ -315,7 +323,9 @@ namespace Provider.Maps.Google.SearchPlaces {
                         .searchType:
                         return this.provider.setTypes([
                             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                            Provider.Maps.Google.SearchPlaces.SearchTypes[value]
+                            Provider.Maps.Google.SearchPlaces.SearchTypes[
+                                propertyValue as string
+                            ]
                         ]);
                 }
             }

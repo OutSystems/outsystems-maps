@@ -14,7 +14,6 @@ namespace OSFramework.Maps.SearchPlaces {
         uniqueId: string;
         widgetId: string;
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        changeProperty(propertyName: string, propertyValue: any): void;
+        changeProperty(propertyName: string, propertyValue: unknown): void;
     }
 }

@@ -21,6 +21,17 @@ namespace Provider.Maps.Google.Feature {
             this._initialCenter = center;
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        public build(): void {}
+
+        public getCenter(): OSFramework.Maps.OSStructures.OSMap.Coordinates {
+            return this._initialCenter;
+        }
+
+        public getCurrentCenter(): OSFramework.Maps.OSStructures.OSMap.Coordinates {
+            return this._currentCenter;
+        }
+
         public getMapCenter(): OSFramework.Maps.OSStructures.ReturnMessage {
             // Set the default return message
             const responseObj = {
@@ -47,17 +58,6 @@ namespace Provider.Maps.Google.Feature {
             }
 
             return responseObj;
-        }
-
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        public build(): void {}
-
-        public getCenter(): OSFramework.Maps.OSStructures.OSMap.Coordinates {
-            return this._initialCenter;
-        }
-
-        public getCurrentCenter(): OSFramework.Maps.OSStructures.OSMap.Coordinates {
-            return this._currentCenter;
         }
 
         public refreshCenter(

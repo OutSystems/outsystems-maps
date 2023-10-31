@@ -14,8 +14,7 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
     export function ChangeProperty(
         shapeId: string,
         propertyName: string,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-        propertyValue: any
+        propertyValue: unknown
     ): void {
         const shape = GetShapeById(shapeId);
         const map = shape.map;
@@ -66,7 +65,6 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
         const shape = GetShapeById(
             shapeId
         ) as OSFramework.Maps.Shape.IShapeCircle;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const properties =
             new OSFramework.Maps.OSStructures.API.CircleProperties();
         if (shape.type === OSFramework.Maps.Enum.ShapeType.Circle) {
@@ -138,10 +136,10 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
             allMaps.find((map: OSFramework.Maps.OSMap.IMap) => {
                 return (shape =
                     map.drawingTools &&
-                    map.drawingTools.createdElements.find(
+                    (map.drawingTools.createdElements.find(
                         (shape: OSFramework.Maps.Shape.IShape) =>
                             shape.equalsToID(shapeId)
-                    ));
+                    ) as OSFramework.Maps.Shape.IShape));
             });
 
             // If still wasn't found, then it does not exist and throw error
@@ -229,8 +227,7 @@ namespace MapAPI.ShapeManager {
     export function ChangeProperty(
         shapeId: string,
         propertyName: string,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-        propertyValue: any
+        propertyValue: unknown
     ): void {
         OSFramework.Maps.Helper.LogWarningMessage(
             `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.ShapeManager.ChangeProperty()'`

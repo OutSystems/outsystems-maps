@@ -31,7 +31,7 @@ namespace OSFramework.Maps.Event.DrawingTools {
                 .slice(0)
                 .forEach((h) =>
                     Helper.CallbackAsyncInvocation(
-                        h,
+                        h.eventHandler,
                         mapId,
                         drawingToolsId,
                         isNewElement,

@@ -5,25 +5,21 @@ namespace OSFramework.Maps.DrawingTools {
             Interface.ISearchById,
             Interface.IDisposable {
         config: Configuration.IConfigurationDrawingTools; //IConfigurationDrawingTools
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        createdElements: Array<any>;
+        createdElements: Array<unknown>;
         /** Events from the DrawingTools */
         drawingToolsEvents: Event.DrawingTools.DrawingToolsEventsManager;
         isReady: boolean;
         map: OSMap.IMap; //IMap
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        provider: any;
+        provider: IDrawingToolsProvider;
         /** Events from the DrawingTools provider */
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        providerEvents: any;
+        providerEvents: unknown;
         tools: Array<ITool>;
         uniqueId: string;
         widgetId: string;
 
         /** Adds a Tool into the DrawingTools element */
         addTool(tool: ITool): ITool;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        changeProperty(propertyName: string, propertyValue: any): void;
+        changeProperty(propertyName: string, propertyValue: unknown): void;
         /**
          * Change property of a Tool from the DrawingTools by specifying the property name and the new value
          * @param toolId id of the Tool
@@ -33,8 +29,7 @@ namespace OSFramework.Maps.DrawingTools {
         changeToolProperty(
             toolId: string,
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            propertyValue: any
+            propertyValue: unknown
         ): void;
         /**
          * Boolean that indicates whether the DrawingTools element has a tool with the same uniqueId or not

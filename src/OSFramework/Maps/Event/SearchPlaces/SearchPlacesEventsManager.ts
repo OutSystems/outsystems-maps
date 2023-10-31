@@ -75,8 +75,7 @@ namespace OSFramework.Maps.Event.SearchPlaces {
          */
         public trigger(
             eventType: SearchPlacesEventType,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            searchPlaces?: OSFramework.Maps.SearchPlaces.ISearchPlaces,
+            searchPlaces?: Maps.SearchPlaces.ISearchPlaces,
             eventInfo?: string,
             searchPlacesEventParams?: Maps.SearchPlaces.ISearchPlacesEventParams,
             ...args: unknown[]
@@ -88,18 +87,16 @@ namespace OSFramework.Maps.Event.SearchPlaces {
                 switch (eventType) {
                     case SearchPlacesEventType.Initialized:
                         handlerEvent.trigger(
-                            this._searchPlaces, // SearchPlaces Object that was initialized
-                            this._searchPlaces.widgetId ||
-                                this._searchPlaces.uniqueId // Id of SearchPlaces block that was initialized
+                            searchPlaces, // SearchPlaces Object that was initialized
+                            searchPlaces.widgetId || searchPlaces.uniqueId // Id of SearchPlaces block that was initialized
                         );
                         break;
                     case SearchPlacesEventType.OnError:
                         handlerEvent.trigger(
-                            this._searchPlaces, // SearchPlaces Object that had the error
-                            this._searchPlaces.widgetId ||
-                                this._searchPlaces.uniqueId, // Id of SearchPlaces block that had the error
+                            searchPlaces, // SearchPlaces Object that had the error
+                            searchPlaces.widgetId || searchPlaces.uniqueId, // Id of SearchPlaces block that had the error
                             eventInfo, // Error Code
-                            args[0] // Extra Error messages that might come from the Provider APIs (geocoding for instance)
+                            ...args // Extra Error messages that might come from the Provider APIs (geocoding for instance)
                         );
                         break;
                     case SearchPlacesEventType.OnPlaceSelect:

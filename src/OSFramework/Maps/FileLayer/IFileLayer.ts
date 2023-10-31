@@ -5,8 +5,7 @@ namespace OSFramework.Maps.FileLayer {
             Interface.ISearchById,
             Interface.IDisposable {
         config: Configuration.IConfigurationFileLayer; //IConfigurationFileLayer
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        createdElements: Array<any>;
+        createdElements: Array<unknown>;
         /** Events from the FileLayer */
         fileLayerEvents: Event.FileLayer.FileLayersEventsManager;
         isReady: boolean;
@@ -16,8 +15,7 @@ namespace OSFramework.Maps.FileLayer {
         uniqueId: string;
         widgetId: string;
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        changeProperty(propertyName: string, propertyValue: any): void;
+        changeProperty(propertyName: string, propertyValue: unknown): void;
         /**
          * Refreshes the Events of the FileLayer Provider after Subscribing/Unsubscribing events
          */

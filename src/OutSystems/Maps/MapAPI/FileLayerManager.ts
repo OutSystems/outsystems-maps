@@ -48,8 +48,7 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
     export function ChangeProperty(
         fileLayerId: string,
         propertyName: string,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-        propertyValue: any
+        propertyValue: unknown
     ): void {
         const fileLayer = GetFileLayerById(fileLayerId);
         const map = fileLayer.map;
@@ -70,7 +69,6 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
      * @param {string} configs configurations for the FileLayer in JSON format
      * @returns {*}  {FileLayer.IFileLayer} instance of the FileLayer
      */
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     export function CreateFileLayer(
         fileLayerId: string,
         configs: string
@@ -150,8 +148,7 @@ namespace MapAPI.FileLayerManager {
     export function ChangeProperty(
         fileLayerId: string,
         propertyName: string,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-        propertyValue: any
+        propertyValue: unknown
     ): void {
         OSFramework.Maps.Helper.LogWarningMessage(
             `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.ChangeProperty()'`

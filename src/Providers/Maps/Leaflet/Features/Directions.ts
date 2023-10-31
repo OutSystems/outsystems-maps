@@ -27,8 +27,7 @@ namespace Provider.Maps.Leaflet.Feature {
         /** TooltipOptions for the Text that will appear over the Waypoint Icon*/
         private _defaultTooltip: L.TooltipOptions;
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        private _directionsRenderer: any;
+        private _directionsRenderer: ILeafletRoutingControl;
 
         private _isEnabled: boolean;
         private _map: OSMap.IMapLeaflet;
@@ -126,8 +125,11 @@ namespace Provider.Maps.Leaflet.Feature {
         private _routesFoundHandler(
             resolve?: OSFramework.Maps.Callbacks.Generic,
             resolveType?: ResolveType,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            e?: any
+            e?: {
+                routes: [
+                    { summary: { totalDistance: number; totalTime: number } }
+                ];
+            }
         ) {
             let bind: OSFramework.Maps.Callbacks.Generic;
             // This method was invoked by the setRoute and because there might exist concurrency between the setRoute and the getDistance or getDirections methods
@@ -170,7 +172,7 @@ namespace Provider.Maps.Leaflet.Feature {
             // If the Map has no directionsRenderer, return false.
             if (this._hasDirectionsRenderer() === false) return false;
 
-            const exclude = [];
+            const exclude: string[] = [];
             dirExclude.avoidTolls && exclude.push('toll');
             dirExclude.avoidHighways && exclude.push('motorway');
             dirExclude.avoidFerries && exclude.push('ferry');
@@ -412,7 +414,9 @@ namespace Provider.Maps.Leaflet.Feature {
                     this._directionsRenderer.addTo(this._map.provider);
             } else {
                 this._directionsRenderer &&
-                    this._map.provider.removeControl(this._directionsRenderer);
+                    this._map.provider.removeControl(
+                        this._directionsRenderer as unknown as L.Control
+                    );
             }
             this._isEnabled = value;
         }

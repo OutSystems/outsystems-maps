@@ -1,19 +1,16 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events {
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     const _pendingEvents: Map<
         string,
         {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            cb: any;
+            cb: OSFramework.Maps.Callbacks.Generic;
             event: OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType;
             uniqueId: string;
         }[]
     > = new Map<
         string,
         {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            cb: any;
+            cb: OSFramework.Maps.Callbacks.Generic;
             event: OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType;
             uniqueId: string;
         }[]
