@@ -232,7 +232,9 @@ namespace Provider.Maps.Google.Marker {
             if (this.isReady) {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_Marker.location:
-                        Helper.Conversions.ConvertToCoordinates(value)
+                        Helper.Conversions.ConvertToCoordinates(
+                            propertyValue as string
+                        )
                             .then((response) => {
                                 this._provider.setPosition({
                                     lat: response.lat,
