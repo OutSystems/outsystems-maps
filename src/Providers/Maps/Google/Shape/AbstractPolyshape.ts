@@ -83,8 +83,7 @@ namespace Provider.Maps.Google.Shape {
             return Constants.Shape.ProviderPolyshapeEvents;
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public get providerObjectListener(): google.maps.MVCArray<any> {
+        public get providerObjectListener(): google.maps.MVCArray<unknown> {
             return this.provider.getPath();
         }
 
@@ -110,16 +109,20 @@ namespace Provider.Maps.Google.Shape {
             this._buildProvider(shapePath);
         }
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        public changeProperty(propertyName: string, value: any): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             const propValue =
                 OSFramework.Maps.Enum.OS_Config_Shape[propertyName];
-            super.changeProperty(propertyName, value);
+            super.changeProperty(propertyName, propertyValue);
             if (this.isReady) {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_Shape.locations:
                         // eslint-disable-next-line no-case-declarations
-                        const shapePath = this._buildPath(value);
+                        const shapePath = this._buildPath(
+                            propertyValue as string
+                        );
                         // If path is undefined (should be a promise) -> don't create the shape
                         if (shapePath !== undefined) {
                             shapePath
@@ -138,7 +141,7 @@ namespace Provider.Maps.Google.Shape {
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Shape.fillColor:
                     case OSFramework.Maps.Enum.OS_Config_Shape.fillOpacity:
-                        return this.provider.set(propertyName, value);
+                        return this.provider.set(propertyName, propertyValue);
                 }
             }
         }

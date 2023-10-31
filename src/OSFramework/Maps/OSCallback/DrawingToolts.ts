@@ -15,8 +15,7 @@ namespace OSFramework.Maps.Callbacks.DrawingTools {
             mapId: string,
             drawingToolsId: string,
             drawingToolsObj: OSFramework.Maps.DrawingTools.IDrawingTools,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            ...args: any
+            ...args: unknown[]
         ): void;
     };
 }

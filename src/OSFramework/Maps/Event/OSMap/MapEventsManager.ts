@@ -11,20 +11,19 @@ namespace OSFramework.Maps.Event.OSMap {
      */
     export class MapEventsManager extends AbstractEventsManager<
         MapEventType,
-        OSFramework.Maps.OSMap.IMap
+        Maps.OSMap.IMap
     > {
-        private _map: OSFramework.Maps.OSMap.IMap;
+        private _map: Maps.OSMap.IMap;
 
-        constructor(map: OSFramework.Maps.OSMap.IMap) {
+        constructor(map: Maps.OSMap.IMap) {
             super();
             this._map = map;
         }
 
         protected getInstanceOfEventType(
             eventType: MapEventType
-        ): OSFramework.Maps.Event.IEvent<OSFramework.Maps.OSMap.IMap> {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            let event: OSFramework.Maps.Event.IEvent<OSFramework.Maps.OSMap.IMap>;
+        ): Maps.Event.IEvent<Maps.OSMap.IMap> {
+            let event: Maps.Event.IEvent<Maps.OSMap.IMap>;
 
             switch (eventType) {
                 case MapEventType.Initialized:
@@ -79,14 +78,11 @@ namespace OSFramework.Maps.Event.OSMap {
          * @param eventInfo Extra event information (can be the event name, error code messages, etc.)
          * @param args Other arguments that might be needed (can be coords, useful for the click events, for instance)
          */
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         public trigger(
             eventType: MapEventType,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            map?: OSFramework.Maps.OSMap.IMap,
+            map?: Maps.OSMap.IMap,
             eventInfo?: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            ...args: any
+            ...args: unknown[]
         ): void {
             // Let's first check if the map has any events associated
             // If the event type is ProviderEvent than we need to get the handlers for the eventInfo -> name of the event
@@ -100,12 +96,12 @@ namespace OSFramework.Maps.Event.OSMap {
 
                 switch (eventType) {
                     case MapEventType.Initialized:
-                        handlerEvent.trigger(this._map, this._map.widgetId);
+                        handlerEvent.trigger(map, map.widgetId);
                         break;
                     case MapEventType.OnError:
                         handlerEvent.trigger(
-                            this._map, // Map Object that was clicked
-                            this._map.widgetId, // Id of Map block that was clicked
+                            map, // Map Object that was clicked
+                            map.widgetId, // Id of Map block that was clicked
                             eventInfo, // Error Code
                             ...args // Extra Error messages that might come from the Provider APIs (geocoding for instance)
                         );
@@ -113,8 +109,8 @@ namespace OSFramework.Maps.Event.OSMap {
                     // The following event is being deprecated. It should get removed soon.
                     case MapEventType.OnEventTriggered:
                         handlerEvent.trigger(
-                            this._map, // Map Object that triggered the event
-                            this._map.widgetId, // Id of Map block that triggered the event
+                            map, // Map Object that triggered the event
+                            map.widgetId, // Id of Map block that triggered the event
                             eventInfo // Name of the event that got raised
                         );
                         break;
@@ -127,8 +123,8 @@ namespace OSFramework.Maps.Event.OSMap {
                                 eventInfo as MapEventType
                             );
                             handler.trigger(
-                                this._map, // Map Object that triggered the event
-                                this._map.widgetId, // Id of Map block that triggered the event
+                                map, // Map Object that triggered the event
+                                map.widgetId, // Id of Map block that triggered the event
                                 eventInfo, // Name of the event that got raised
                                 ...args // Coordinates retrieved from the Map event that got triggered
                             );
@@ -139,7 +135,7 @@ namespace OSFramework.Maps.Event.OSMap {
                     default:
                         this._map.mapEvents.trigger(
                             MapEventType.OnError,
-                            this._map,
+                            map,
                             Enum.ErrorCodes.GEN_UnsupportedEventMap,
                             `${eventType}`
                         );

@@ -13,8 +13,7 @@ namespace Provider.Maps.Leaflet.Shape {
             map: OSFramework.Maps.OSMap.IMap,
             shapeId: string,
             type: OSFramework.Maps.Enum.ShapeType,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
+            configs: OSFramework.Maps.Configuration.IConfigurationShape
         ) {
             super(
                 map,
@@ -126,7 +125,7 @@ namespace Provider.Maps.Leaflet.Shape {
                 [bounds.north, bounds.east]
             ];
             return new L.Rectangle(providerBounds, {
-                ...this.getProviderConfig()
+                ...(this.getProviderConfig() as L.PolylineOptions)
             });
         }
 
@@ -152,22 +151,30 @@ namespace Provider.Maps.Leaflet.Shape {
             super.buildProvider(bounds);
         }
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        public changeProperty(propertyName: string, value: any): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             const propValue =
                 OSFramework.Maps.Enum.OS_Config_Shape[propertyName];
-            super.changeProperty(propertyName, value);
+            super.changeProperty(propertyName, propertyValue);
             if (this.isReady) {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_Shape.fillColor:
-                        this.provider.setStyle({ fillColor: value });
+                        this.provider.setStyle({
+                            fillColor: propertyValue as string
+                        });
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Shape.fillOpacity:
-                        this.provider.setStyle({ fillOpacity: value });
+                        this.provider.setStyle({
+                            fillOpacity: propertyValue as number
+                        });
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Shape.bounds:
                         // eslint-disable-next-line no-case-declarations
-                        const shapeBounds = this._buildBounds(value);
+                        const shapeBounds = this._buildBounds(
+                            propertyValue as string
+                        );
                         // If path is undefined (should be a promise) -> don't create the shape
                         if (shapeBounds !== undefined) {
                             shapeBounds
