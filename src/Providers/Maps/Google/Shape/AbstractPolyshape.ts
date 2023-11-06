@@ -32,10 +32,7 @@ namespace Provider.Maps.Google.Shape {
                             return false;
                         }
 
-                        Helper.Conversions.ConvertToCoordinates(
-                            location,
-                            this.map.config.apiKey
-                        )
+                        Helper.Conversions.ConvertToCoordinates(location)
                             .then((response) => {
                                 shapePath.set(index, {
                                     lat: response.lat,

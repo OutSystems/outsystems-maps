@@ -67,10 +67,7 @@ namespace Provider.Maps.Google.Shape {
                             resolve(newBounds);
                         }
                     } else {
-                        Helper.Conversions.ConvertToCoordinates(
-                            bounds[cd],
-                            this.map.config.apiKey
-                        )
+                        Helper.Conversions.ConvertToCoordinates(bounds[cd])
                             .then((response) => {
                                 boundsLength++;
                                 switch (cd) {

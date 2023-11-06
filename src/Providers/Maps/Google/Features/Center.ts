@@ -75,10 +75,7 @@ namespace Provider.Maps.Google.Feature {
         }
 
         public updateCenter(location: string): void {
-            Helper.Conversions.ConvertToCoordinates(
-                location,
-                this._map.config.apiKey
-            )
+            Helper.Conversions.ConvertToCoordinates(location)
                 .then((response) => {
                     this._map.config.center = response;
                     this._initialCenter = response;

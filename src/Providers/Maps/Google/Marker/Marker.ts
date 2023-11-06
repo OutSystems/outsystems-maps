@@ -85,8 +85,7 @@ namespace Provider.Maps.Google.Marker {
                 // Let's return a promise that will be resolved or rejected according to the result
                 return new Promise((resolve, reject) => {
                     Helper.Conversions.ConvertToCoordinates(
-                        this.config.location,
-                        this.map.config.apiKey
+                        this.config.location
                     )
                         .then((response) => {
                             markerOptions.position = {
@@ -234,8 +233,7 @@ namespace Provider.Maps.Google.Marker {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_Marker.location:
                         Helper.Conversions.ConvertToCoordinates(
-                            propertyValue as string,
-                            this.map.config.apiKey
+                            propertyValue as string
                         )
                             .then((response) => {
                                 this._provider.setPosition({
