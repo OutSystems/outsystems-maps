@@ -34,21 +34,23 @@ namespace Provider.Maps.Google.Marker {
             } else {
                 try {
                     let scaledSize: google.maps.Size;
+                    //Explicit conversion to number - related with ROU-4592 - as google will behave differently depending on the type
+                    //of the input. Before, in runtime, the input was of type string.
+                    const height = Number(this.config.iconHeight);
+                    const width = Number(this.config.iconWidth);
                     // If the size of the icon is defined by a valid width and height, use those values
                     // Else If nothing is passed or the icon size has the width or the height equal to 0, use the full image size
                     if (
-                        this.config.iconWidth > 0 &&
-                        this.config.iconHeight > 0
+                        OSFramework.Maps.Helper.IsValidNumber(height) &&
+                        OSFramework.Maps.Helper.IsValidNumber(width) && 
+                        height > 0 && width > 0
                     ) {
-                        scaledSize = new google.maps.Size(
-                            this.config.iconWidth,
-                            this.config.iconHeight
-                        );
+                        scaledSize = new google.maps.Size(width, height);
                     }
                     // Update the icon using the previous configurations
                     const icon = {
-                        url,
-                        scaledSize
+                        url: url,
+                        size: scaledSize
                     };
                     // Set the icon to the Marker provider
                     this.provider.setIcon(icon);
