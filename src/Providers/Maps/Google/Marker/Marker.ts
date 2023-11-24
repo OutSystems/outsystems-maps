@@ -42,7 +42,8 @@ namespace Provider.Maps.Google.Marker {
                     // Else If nothing is passed or the icon size has the width or the height equal to 0, use the full image size
                     if (
                         OSFramework.Maps.Helper.IsValidNumber(height) &&
-                        OSFramework.Maps.Helper.IsValidNumber(width)
+                        OSFramework.Maps.Helper.IsValidNumber(width) && 
+                        height > 0 && width > 0
                     ) {
                         scaledSize = new google.maps.Size(width, height);
                     }
