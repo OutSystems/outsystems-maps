@@ -30,6 +30,36 @@ namespace Provider.Maps.Google.Feature {
             );
         }
 
+        public setCenterMarkers() {
+            const bounds = new google.maps.LatLngBounds();
+            this._map.markers.forEach(function (item) {
+                if (item.provider === undefined) return;
+                const loc = item.provider.position.toJSON();
+                bounds.extend(loc);
+            });
+            this.setMapCenter(bounds);
+        }
+
+        public setCenterShapes() {
+            const bounds = new google.maps.LatLngBounds();
+            // instead of using the getPath, try to use:
+            // this._map.shapes[0]._buildPath(this._map.shapes[0].config.locations).then((loc) => {bounds.extend(loc)})
+            this._map.shapes.forEach(function (item) {
+                if (item.provider === undefined) return;
+                const loc = item.provider.getPath().toJSON();
+                bounds.extend(loc);
+            });
+            this.setMapCenter(bounds);
+        }
+
+        public setMapCenter(bounds: google.maps.LatLngBounds) {
+            this._map.provider.fitBounds(bounds);
+            this._map.provider.panToBounds(bounds);
+            this._map.features.center.setCurrentCenter(
+                this._map.provider.getCenter()
+            );
+        }
+
         public get isAutofit(): boolean {
             return this._autofitEnabled;
         }
@@ -40,22 +70,17 @@ namespace Provider.Maps.Google.Feature {
 
         public refreshZoom(): void {
             if (this._map.features.zoom.isAutofit) {
-                const bounds = new google.maps.LatLngBounds();
-                if (this._map.markers.length <= 1) {
+                if (
+                    this._map.markers.length <= 1 &&
+                    this._map.shapes.length === 0
+                ) {
                     this._map.provider.setZoom(
                         OSFramework.Maps.Helper.Constants.zoomAutofit
                     );
                 } else if (this._map.markers.length >= 2) {
-                    this._map.markers.forEach(function (marker) {
-                        if (marker.provider === undefined) return;
-                        const loc = marker.provider.position.toJSON();
-                        bounds.extend(loc);
-                    });
-                    this._map.provider.fitBounds(bounds);
-                    this._map.provider.panToBounds(bounds);
-                    this._map.features.center.setCurrentCenter(
-                        this._map.provider.getCenter()
-                    );
+                    this.setCenterMarkers();
+                } else if (this._map.shapes.length > 0) {
+                    this.setCenterShapes();
                 }
             } else {
                 this._map.provider.setZoom(this._map.features.zoom.level);

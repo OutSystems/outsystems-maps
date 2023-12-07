@@ -49,7 +49,7 @@ namespace OSFramework.Maps.OSMap {
         }
         public abstract get mapTag(): string;
 
-        protected get shapes(): Shape.IShape[] {
+        public get shapes(): Shape.IShape[] {
             return Array.from(this._shapesSet);
         }
 
