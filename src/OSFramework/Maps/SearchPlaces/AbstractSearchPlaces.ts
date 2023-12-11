@@ -2,7 +2,6 @@
 namespace OSFramework.Maps.SearchPlaces {
     export abstract class AbstractSearchPlaces<
         W,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         T extends Configuration.IConfigurationSearchPlaces
     > implements ISearchPlaces
     {
@@ -72,8 +71,10 @@ namespace OSFramework.Maps.SearchPlaces {
             this._setWidgetId();
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-        public changeProperty(propertyName: string, propertyValue: any): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             //Update SearchPlaces' config when the property is available
             if (this.config.hasOwnProperty(propertyName)) {
                 this.config[propertyName] = propertyValue;
@@ -82,6 +83,7 @@ namespace OSFramework.Maps.SearchPlaces {
                     Event.SearchPlaces.SearchPlacesEventType.OnError,
                     this,
                     Enum.ErrorCodes.GEN_InvalidChangePropertySearchPlaces,
+                    undefined,
                     `${propertyName}`
                 );
             }
@@ -96,9 +98,8 @@ namespace OSFramework.Maps.SearchPlaces {
             return id === this._uniqueId || id === this.widgetId;
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public getProviderConfig(): any {
-            return this._config.getProviderConfig();
+        public getProviderConfig(): unknown {
+            return this.config.getProviderConfig();
         }
     }
 }

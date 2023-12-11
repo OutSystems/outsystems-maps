@@ -1,19 +1,16 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OutSystems.Maps.MapAPI.MapManager.Events {
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
     const _pendingEvents: Map<
         string,
         {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            cb: any;
+            cb: OSFramework.Maps.Callbacks.Generic;
             event: OSFramework.Maps.Event.OSMap.MapEventType;
             uniqueId: string; //Event unique identifier
         }[]
     > = new Map<
         string,
         {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            cb: any;
+            cb: OSFramework.Maps.Callbacks.Generic;
             event: OSFramework.Maps.Event.OSMap.MapEventType;
             uniqueId: string; //Event unique identifier
         }[]
@@ -76,7 +73,6 @@ namespace OutSystems.Maps.MapAPI.MapManager.Events {
     export function Subscribe(
         mapId: string,
         eventName: OSFramework.Maps.Event.OSMap.MapEventType,
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         callback: OSFramework.Maps.Callbacks.OSMap.Event
     ): void {
         // Let's make sure that if the Map doesn't exist, we don't throw and exception but instead add the handler to the pendingEvents

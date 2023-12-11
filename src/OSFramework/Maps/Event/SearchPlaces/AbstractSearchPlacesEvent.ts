@@ -15,14 +15,13 @@ namespace OSFramework.Maps.Event.SearchPlaces {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             searchPlacesObj: OSFramework.Maps.SearchPlaces.ISearchPlaces,
             searchPlacesId: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            ...args: any
+            ...args: unknown[]
         ): void {
             this.handlers
                 .slice(0)
                 .forEach((h) =>
                     Helper.CallbackAsyncInvocation(
-                        h,
+                        h.eventHandler,
                         searchPlacesObj,
                         searchPlacesId,
                         ...args

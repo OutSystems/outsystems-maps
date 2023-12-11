@@ -14,8 +14,7 @@ namespace OSFramework.Maps.Feature {
          * Sets the marker clusterer configs
          * @param configs Configurations from the structure MarkerClusterer
          */
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        changeProperty(propertyName: string, value: any): void;
+        changeProperty(propertyName: string, value: unknown): void;
         /**
          * Removes a marker from the cluster
          * @param marker Marker Object from OSFramework that is going to be removed from the cluster

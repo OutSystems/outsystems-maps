@@ -4,7 +4,7 @@ namespace OSFramework.Maps.DrawingTools {
         export function MakeDrawingTools(
             map: OSMap.IMap,
             drawingToolsId: string,
-            configs: Configuration.IConfiguration
+            configs: JSON
         ): DrawingTools.IDrawingTools {
             switch (map.providerType) {
                 case Enum.ProviderType.Google:
@@ -31,7 +31,7 @@ namespace OSFramework.Maps.DrawingTools {
             drawingTools: DrawingTools.IDrawingTools,
             toolId: string,
             type: Enum.DrawingToolsTypes,
-            configs: Configuration.IConfiguration
+            configs: JSON
         ): DrawingTools.ITool {
             switch (map.providerType) {
                 case Enum.ProviderType.Google:

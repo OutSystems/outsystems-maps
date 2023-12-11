@@ -5,7 +5,7 @@ namespace OSFramework.Maps.OSMap {
             provider: Enum.ProviderType,
             type: Enum.MapType,
             mapdId: string,
-            configs: Configuration.IConfiguration
+            configs: JSON
         ): OSMap.IMap {
             switch (provider) {
                 case Enum.ProviderType.Google:

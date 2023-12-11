@@ -14,8 +14,7 @@ namespace OutSystems.Maps.MapAPI.MapManager {
     export function ChangeProperty(
         mapId: string,
         propertyName: string,
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        propertyValue: any
+        propertyValue: unknown
     ): void {
         const map = GetMapById(mapId);
 
@@ -251,8 +250,7 @@ namespace MapAPI.MapManager {
     export function ChangeProperty(
         mapId: string,
         propertyName: string,
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        propertyValue: any
+        propertyValue: unknown
     ): void {
         OSFramework.Maps.Helper.LogWarningMessage(
             `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MapManager.ChangeProperty()'`

@@ -8,33 +8,43 @@ namespace Provider.Maps.Google.Helper.Conversions {
      * @returns Promise that will retrieve the coordinates
      */
     const googleMapsApiGeocode = function (
-        location: string,
-        apiKey: string
+        location: string
     ): Promise<OSFramework.Maps.OSStructures.OSMap.Coordinates> {
         // Encodes a location string into a valid format
-        const encoded_location = encodeURIComponent(location);
-        return fetch(
-            `${OSFramework.Maps.Helper.Constants.googleMapsApiGeocode}?address=${encoded_location}&key=${apiKey}`
-        )
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error("Server response wasn't OK");
-                }
-            })
-            .then((json) => {
-                if (json.results.length === 0) {
-                    console.warn(
-                        `No results have been found for address "${location}".`
-                    );
-                    throw new Error(
-                        json.error_message ?? 'No results have been found.'
-                    );
-                }
-                const loc = json.results[0].geometry.location;
-                return { lat: loc.lat, lng: loc.lng };
-            });
+        const geo = new google.maps.Geocoder();
+
+        return new Promise<OSFramework.Maps.OSStructures.OSMap.Coordinates>(
+            (resolve, reject) => {
+                geo.geocode(
+                    { address: location },
+                    (
+                        results: google.maps.GeocoderResult[],
+                        status: google.maps.GeocoderStatus
+                    ) => {
+                        if (status === google.maps.GeocoderStatus.OK) {
+                            const loc = results[0].geometry.location;
+                            resolve({ lat: loc.lat(), lng: loc.lng() });
+                        } else if (
+                            status === google.maps.GeocoderStatus.ZERO_RESULTS
+                        ) {
+                            console.warn(
+                                `No results have been found for address "${location}".`
+                            );
+                            reject('No results have been found.');
+                        } else if (
+                            status ===
+                            google.maps.GeocoderStatus.OVER_QUERY_LIMIT
+                        ) {
+                            reject(
+                                'Google Maps API call limit exceeded. Please wait a few moments and try again'
+                            );
+                        } else {
+                            reject(status);
+                        }
+                    }
+                );
+            }
+        );
     };
     /**
      * Promise that will retrive the coordinates for a specific location via Google Maps API
@@ -44,8 +54,7 @@ namespace Provider.Maps.Google.Helper.Conversions {
      * @returns Promise that will retrieve the coordinates
      */
     export function ConvertToCoordinates(
-        location: string,
-        apiKey: string
+        location: string
     ): Promise<OSFramework.Maps.OSStructures.OSMap.Coordinates> {
         if (location === undefined || location.trim().length === 0) {
             console.warn(
@@ -73,12 +82,12 @@ namespace Provider.Maps.Google.Helper.Conversions {
                 });
             } else {
                 // Try to get the address via the googleMapsAPIGeocode
-                return googleMapsApiGeocode(location, apiKey);
+                return googleMapsApiGeocode(location);
             }
         }
         // If the location is an address try to get the address via the googleMapsAPIGeocode
         else {
-            return googleMapsApiGeocode(location, apiKey);
+            return googleMapsApiGeocode(location);
         }
     }
 }
