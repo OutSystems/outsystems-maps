@@ -113,19 +113,6 @@ namespace Provider.Maps.Leaflet.Shape {
             };
         }
 
-        protected getShapeCoordinates(): OSFramework.Maps.OSStructures.OSMap.CircleCoordinates {
-            return {
-                coordinates: {
-                    Lat: this.providerCenter.lat,
-                    Lng: this.providerCenter.lng
-                },
-                location: {
-                    location: `${this.providerCenter.lat.toString()},${this.providerCenter.lng.toString()}`,
-                    radius: this.providerRadius
-                }
-            };
-        }
-
         public build(): void {
             super.build();
             // First build center coordinates based on the location
