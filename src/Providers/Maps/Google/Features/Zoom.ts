@@ -41,11 +41,15 @@ namespace Provider.Maps.Google.Feature {
         public refreshZoom(): void {
             if (this._map.features.zoom.isAutofit) {
                 const bounds = new google.maps.LatLngBounds();
-                if (this._map.markers.length <= 1) {
+                if (this._map.markers.length === 0) {
                     this._map.provider.setZoom(
                         OSFramework.Maps.Helper.Constants.zoomAutofit
                     );
-                } else if (this._map.markers.length >= 2) {
+                } else if (this._map.markers.length === 1) {
+                    this._map.provider.setZoom(
+                        OSFramework.Maps.Helper.Constants.zoomAutofit
+                    );
+                } else if (this._map.markers.length > 1) {
                     this._map.markers.forEach(function (marker) {
                         if (marker.provider === undefined) return;
                         const loc = marker.provider.position.toJSON();
