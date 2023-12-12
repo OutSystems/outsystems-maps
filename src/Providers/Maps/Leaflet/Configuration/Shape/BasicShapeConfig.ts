@@ -12,6 +12,7 @@ namespace Provider.Maps.Leaflet.Configuration.Shape {
         public strokeColor: string;
         public strokeOpacity: number;
         public strokeWeight: number;
+        public autoZoomOnShape: boolean;
 
         // No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
         // constructor(

@@ -120,8 +120,7 @@ namespace Provider.Maps.Google.Shape {
         }
 
         public get bounds(): OSFramework.Maps.OSStructures.OSMap.Bounds {
-            const providerBounds: google.maps.LatLngBounds =
-                this.provider.getBounds();
+            const providerBounds = this.providerBounds;
             const bounds = new OSFramework.Maps.OSStructures.OSMap.Bounds();
 
             // Map providerBounds into OSFramework bounds structure
@@ -130,6 +129,10 @@ namespace Provider.Maps.Google.Shape {
             bounds.west = providerBounds.getSouthWest().lng();
             bounds.south = providerBounds.getSouthWest().lat();
             return bounds;
+        }
+
+        public get providerBounds(): google.maps.LatLngBounds {
+            return this.provider.getBounds();
         }
 
         public get providerEventsList(): Array<string> {

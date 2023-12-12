@@ -11,5 +11,6 @@ namespace OSFramework.Maps.Configuration {
         strokeColor: string;
         strokeOpacity: number;
         strokeWeight: number;
+        autoZoomOnShape?: boolean;
     }
 }

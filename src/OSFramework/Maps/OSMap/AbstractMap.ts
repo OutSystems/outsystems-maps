@@ -421,7 +421,11 @@ namespace OSFramework.Maps.OSMap {
                 this._shapesSet.delete(shape);
                 // After removing a marker, we need to refresh the Map to reflect the zoom, offset and center position of the Map
                 if (this._isReady) {
-                    this.refresh();
+                    // If the shape does not have autoZoom enabled, we don't want to modified the zoom when removing it
+                    this.refresh(
+                        shape.config.autoZoomOnShape,
+                        shape.config.autoZoomOnShape
+                    );
                 }
             }
         }
@@ -462,7 +466,10 @@ namespace OSFramework.Maps.OSMap {
             propertyValue: unknown
         ): void;
 
-        public abstract refresh(): void;
+        public abstract refresh(
+            refreshZoom?: boolean,
+            refreshCenter?: boolean
+        ): void;
         public abstract refreshProviderEvents(): void;
         public abstract validateProviderEvent(eventName: string): boolean;
     }

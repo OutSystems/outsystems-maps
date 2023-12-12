@@ -6,6 +6,9 @@ namespace Provider.Maps.Google.Shape {
         T extends OSFramework.Maps.Configuration.IConfigurationShape,
         W extends google.maps.Polygon | google.maps.Polyline
     > extends AbstractProviderShape<T, W> {
+        public shapePath: Promise<
+            OSFramework.Maps.OSStructures.OSMap.Coordinates[]
+        >;
         private _buildPath(
             loc: string
         ): Promise<Array<OSFramework.Maps.OSStructures.OSMap.Coordinates>> {
@@ -76,6 +79,14 @@ namespace Provider.Maps.Google.Shape {
             this._provider.setPath(path);
         }
 
+        public get providerBounds(): google.maps.LatLngBounds {
+            const bounds = new google.maps.LatLngBounds();
+            this.providerPath.forEach(function (item, index) {
+                bounds.extend(new google.maps.LatLng(item.lat, item.lng));
+            });
+            return bounds;
+        }
+
         public get providerEventsList(): Array<string> {
             return Constants.Shape.ProviderPolyshapeEvents;
         }
@@ -102,8 +113,8 @@ namespace Provider.Maps.Google.Shape {
         public build(): void {
             super.build();
 
-            const shapePath = this._buildPath(this.config.locations);
-            this._buildProvider(shapePath);
+            this.shapePath = this._buildPath(this.config.locations);
+            this._buildProvider(this.shapePath);
         }
 
         public changeProperty(
@@ -117,12 +128,12 @@ namespace Provider.Maps.Google.Shape {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_Shape.locations:
                         // eslint-disable-next-line no-case-declarations
-                        const shapePath = this._buildPath(
+                        this.shapePath = this._buildPath(
                             propertyValue as string
                         );
                         // If path is undefined (should be a promise) -> don't create the shape
-                        if (shapePath !== undefined) {
-                            shapePath
+                        if (this.shapePath !== undefined) {
+                            this.shapePath
                                 .then((path) => {
                                     this._setProviderPath(path);
                                 })

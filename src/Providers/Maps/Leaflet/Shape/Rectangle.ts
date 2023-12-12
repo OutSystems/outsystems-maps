@@ -40,6 +40,10 @@ namespace Provider.Maps.Leaflet.Shape {
             return bounds;
         }
 
+        public get providerBounds(): any {
+            return null;
+        }
+
         public get providerEventsList(): Array<string> {
             return Constants.Shape.ProviderRectangleEvents;
         }

@@ -32,6 +32,10 @@ namespace Provider.Maps.Leaflet.Shape {
             return this.provider;
         }
 
+        public get providerBounds(): any {
+            return null;
+        }
+
         public get providerCenter(): OSFramework.Maps.OSStructures.OSMap.Coordinates {
             const center = this.provider.getLatLng();
             if (center === undefined) {

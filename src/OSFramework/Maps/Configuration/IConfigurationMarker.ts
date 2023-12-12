@@ -11,5 +11,6 @@ namespace OSFramework.Maps.Configuration {
         iconWidth?: number;
         location?: string;
         title?: string;
+        autoZoomOnShape?: boolean;
     }
 }

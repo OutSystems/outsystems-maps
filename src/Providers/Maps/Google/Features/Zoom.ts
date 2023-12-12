@@ -30,29 +30,22 @@ namespace Provider.Maps.Google.Feature {
             );
         }
 
-        public setCenterMarkers() {
+        private _setBounds() {
             const bounds = new google.maps.LatLngBounds();
             this._map.markers.forEach(function (item) {
                 if (item.provider === undefined) return;
                 const loc = item.provider.position.toJSON();
                 bounds.extend(loc);
             });
-            this.setMapCenter(bounds);
-        }
-
-        public setCenterShapes() {
-            const bounds = new google.maps.LatLngBounds();
             // instead of using the getPath, try to use:
             // this._map.shapes[0]._buildPath(this._map.shapes[0].config.locations).then((loc) => {bounds.extend(loc)})
-            this._map.shapes.forEach(function (item) {
-                if (item.provider === undefined) return;
-                const loc = item.provider.getPath().toJSON();
-                bounds.extend(loc);
-            });
-            this.setMapCenter(bounds);
-        }
-
-        public setMapCenter(bounds: google.maps.LatLngBounds) {
+            this._map.shapes
+                .filter((item) => item.config.autoZoomOnShape)
+                .forEach(function (item) {
+                    if (item.provider === undefined) return;
+                    const loc = item.providerBounds;
+                    bounds.union(loc);
+                });
             this._map.provider.fitBounds(bounds);
             this._map.provider.panToBounds(bounds);
             this._map.features.center.setCurrentCenter(
@@ -69,18 +62,19 @@ namespace Provider.Maps.Google.Feature {
         }
 
         public refreshZoom(): void {
+            const hasZoomOnMarkers =
+                this._map.markers.filter((item) => item.config.autoZoomOnShape)
+                    .length > 1;
+            const hasZoomOnShapes = this._map.shapes.some(
+                (item) => item.config.autoZoomOnShape
+            );
             if (this._map.features.zoom.isAutofit) {
-                if (
-                    this._map.markers.length <= 1 &&
-                    this._map.shapes.length === 0
-                ) {
+                if (hasZoomOnMarkers || hasZoomOnShapes) {
+                    this._setBounds();
+                } else {
                     this._map.provider.setZoom(
                         OSFramework.Maps.Helper.Constants.zoomAutofit
                     );
-                } else if (this._map.markers.length >= 2) {
-                    this.setCenterMarkers();
-                } else if (this._map.shapes.length > 0) {
-                    this.setCenterShapes();
                 }
             } else {
                 this._map.provider.setZoom(this._map.features.zoom.level);
