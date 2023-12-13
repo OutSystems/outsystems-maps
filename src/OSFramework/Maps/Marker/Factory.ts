@@ -5,7 +5,7 @@ namespace OSFramework.Maps.Marker {
             map: OSMap.IMap,
             markerId: string,
             type: Enum.MarkerType,
-            configs: Configuration.IConfiguration
+            configs: JSON
         ): Marker.IMarker {
             switch (map.providerType) {
                 case Enum.ProviderType.Google:
@@ -13,7 +13,7 @@ namespace OSFramework.Maps.Marker {
                         map,
                         markerId,
                         type,
-                        configs as Provider.Maps.Google.Configuration.Marker.GoogleMarkerConfig
+                        configs
                     );
 
                 case Enum.ProviderType.Leaflet:
@@ -21,7 +21,7 @@ namespace OSFramework.Maps.Marker {
                         map,
                         markerId,
                         type,
-                        configs as Provider.Maps.Leaflet.Configuration.Marker.LeafletMarkerConfig
+                        configs
                     );
                 default:
                     throw new Error(

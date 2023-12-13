@@ -14,8 +14,7 @@ namespace Provider.Maps.Leaflet.DrawingTools {
             drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
             drawingToolsId: string,
             type: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
+            configs: T
         ) {
             super(map, drawingTools, drawingToolsId, type, configs);
             this.internalOptions = {};
@@ -72,6 +71,7 @@ namespace Provider.Maps.Leaflet.DrawingTools {
 
         // Adds the completedElement (completemarker, completepolyline, etc.) event listeners to the correspondent element.
         // The new handlers will create the shape/markers elements and remove the overlay created by the drawing tool on the map
+        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         public addCompletedEvent(event: any): void {
             this._addCompletedEventHandler(event);
         }
@@ -88,12 +88,10 @@ namespace Provider.Maps.Leaflet.DrawingTools {
             super.dispose();
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public abstract get options(): any;
+        public abstract get options(): unknown;
         protected abstract get completedToolEventName(): string;
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-        protected abstract set options(options: any);
+        protected abstract set options(options: unknown);
 
         /**
          * Creates a new element based on the new element provider that results from the marker or shape complete events.
@@ -104,10 +102,8 @@ namespace Provider.Maps.Leaflet.DrawingTools {
          */
         protected abstract createElement(
             uniqueId: string,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-            element: any,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-            configs: any
+            element: unknown,
+            configs: OSFramework.Maps.Configuration.IConfiguration
         ): void;
 
         protected abstract getCoordinates(): string;

@@ -52,8 +52,7 @@ namespace OutSystems.Maps.MapAPI.HeatmapLayerManager {
     export function ChangeProperty(
         heatmapLayerId: string,
         propertyName: string,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-        propertyValue: any
+        propertyValue: unknown
     ): void {
         const heatmapLayer = GetHeatmapLayerById(heatmapLayerId);
         const map = heatmapLayer.map;
@@ -154,8 +153,7 @@ namespace MapAPI.HeatmapLayerManager {
     export function ChangeProperty(
         heatmapLayerId: string,
         propertyName: string,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-        propertyValue: any
+        propertyValue: unknown
     ): void {
         OSFramework.Maps.Helper.LogWarningMessage(
             `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.HeatmapLayerManager.ChangeProperty()'`

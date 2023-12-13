@@ -14,8 +14,7 @@ namespace OSFramework.Maps.Callbacks.FileLayer {
             mapId: string,
             fileLayerId: string,
             fileLayerObj: OSFramework.Maps.FileLayer.IFileLayer,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            ...args: any
+            ...args: unknown[]
         ): void;
     };
 }

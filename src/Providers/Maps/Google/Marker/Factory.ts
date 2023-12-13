@@ -5,7 +5,7 @@ namespace Provider.Maps.Google.Marker {
             map: OSFramework.Maps.OSMap.IMap,
             markerId: string,
             type: OSFramework.Maps.Enum.MarkerType,
-            configs: Configuration.Marker.GoogleMarkerConfig
+            configs: unknown
         ): OSFramework.Maps.Marker.IMarker {
             switch (type) {
                 case OSFramework.Maps.Enum.MarkerType.Marker:

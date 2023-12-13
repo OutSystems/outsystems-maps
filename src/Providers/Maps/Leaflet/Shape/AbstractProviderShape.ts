@@ -31,7 +31,7 @@ namespace Provider.Maps.Leaflet.Shape {
         ): void {
             // Using any here because the enableEdit(), disableEdit() methods and dragging property are not available on the default L (leaflet) library and we need to exclusively use the mentioned methods
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const providerShape: any = this.provider;
+            const providerShape = this.provider as any;
             allowEdit
                 ? providerShape.enableEdit()
                 : providerShape.disableEdit();
@@ -156,27 +156,41 @@ namespace Provider.Maps.Leaflet.Shape {
             );
         }
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        public changeProperty(propertyName: string, value: any): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             const propValue =
                 OSFramework.Maps.Enum.OS_Config_Shape[propertyName];
-            super.changeProperty(propertyName, value);
+            super.changeProperty(propertyName, propertyValue);
             if (this.isReady) {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_Shape.allowDrag:
-                        this._setDragEditConfigs(value, this.config.allowEdit);
+                        this._setDragEditConfigs(
+                            propertyValue as boolean,
+                            this.config.allowEdit
+                        );
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Shape.allowEdit:
-                        this._setDragEditConfigs(this.config.allowDrag, value);
+                        this._setDragEditConfigs(
+                            this.config.allowDrag,
+                            propertyValue as boolean
+                        );
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Shape.strokeOpacity:
-                        this.provider.setStyle({ opacity: value });
+                        this.provider.setStyle({
+                            opacity: propertyValue as number
+                        });
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Shape.strokeColor:
-                        this.provider.setStyle({ color: value });
+                        this.provider.setStyle({
+                            color: propertyValue as string
+                        });
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Shape.strokeWeight:
-                        this.provider.setStyle({ weight: value });
+                        this.provider.setStyle({
+                            weight: propertyValue as number
+                        });
                         return;
                 }
             }

@@ -41,7 +41,9 @@ namespace Provider.Maps.Google.Feature {
             );
 
             if (value === true) {
-                this._markerClusterer.addMarkers(this._map.markersReady);
+                this._markerClusterer.addMarkers(
+                    this._map.markersReady as google.maps.Marker[]
+                );
             } else {
                 this._markerClusterer.clearMarkers();
                 this._map.markers.forEach((marker) =>
@@ -77,8 +79,7 @@ namespace Provider.Maps.Google.Feature {
 
         public changeProperty(
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            propertyValue: any
+            propertyValue: unknown
         ): void {
             const propValue =
                 OSFramework.Maps.Enum.OS_Config_MarkerClusterer[propertyName];
@@ -99,21 +100,25 @@ namespace Provider.Maps.Google.Feature {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_MarkerClusterer
                         .markerClustererActive:
-                        this._setState(propertyValue);
+                        this._setState(propertyValue as boolean);
                         break;
                     case OSFramework.Maps.Enum.OS_Config_MarkerClusterer
                         .markerClustererMinClusterSize:
                         this._markerClusterer.setMinimumClusterSize(
-                            propertyValue
+                            propertyValue as number
                         );
                         break;
                     case OSFramework.Maps.Enum.OS_Config_MarkerClusterer
                         .markerClustererMaxZoom:
-                        this._markerClusterer.setMaxZoom(propertyValue);
+                        this._markerClusterer.setMaxZoom(
+                            propertyValue as number
+                        );
                         break;
                     case OSFramework.Maps.Enum.OS_Config_MarkerClusterer
                         .markerClustererZoomOnClick:
-                        this._markerClusterer.setZoomOnClick(propertyValue);
+                        this._markerClusterer.setZoomOnClick(
+                            propertyValue as boolean
+                        );
                         break;
                 }
                 this.repaint();
