@@ -7,6 +7,7 @@ namespace Provider.Maps.Leaflet.Configuration.Marker {
         implements OSFramework.Maps.Configuration.IConfigurationMarker
     {
         public allowDrag?: boolean;
+        public blockAutoZoom?: boolean;
         public iconHeight?: number;
         public iconUrl?: string;
         public iconWidth?: number;

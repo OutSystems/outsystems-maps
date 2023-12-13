@@ -13,6 +13,7 @@ namespace Provider.Maps.Google.Configuration.Marker {
         public label: string;
         public location: string;
         public title: string;
+        public blockAutoZoom: boolean;
 
         // No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
         // constructor(config: unknown) {

@@ -399,7 +399,7 @@ namespace OSFramework.Maps.OSMap {
                 this._markersSet.delete(marker);
                 // After removing a marker, we need to refresh the Map to reflect the zoom, offset and center position of the Map
                 if (this._isReady) {
-                    this.refresh();
+                    this.refresh(false, false);
                 }
             }
         }
@@ -462,7 +462,7 @@ namespace OSFramework.Maps.OSMap {
             propertyValue: unknown
         ): void;
 
-        public abstract refresh(): void;
+        public abstract refresh(some?: boolean, something?: boolean): void;
         public abstract refreshProviderEvents(): void;
         public abstract validateProviderEvent(eventName: string): boolean;
     }

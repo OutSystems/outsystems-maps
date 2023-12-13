@@ -42,8 +42,9 @@ namespace Provider.Maps.Google.Marker {
                     // Else If nothing is passed or the icon size has the width or the height equal to 0, use the full image size
                     if (
                         OSFramework.Maps.Helper.IsValidNumber(height) &&
-                        OSFramework.Maps.Helper.IsValidNumber(width) && 
-                        height > 0 && width > 0
+                        OSFramework.Maps.Helper.IsValidNumber(width) &&
+                        height > 0 &&
+                        width > 0
                     ) {
                         scaledSize = new google.maps.Size(width, height);
                     }
@@ -210,7 +211,10 @@ namespace Provider.Maps.Google.Marker {
                         this.finishBuild();
 
                         // Trigger the new center location after creating the marker
-                        this.map.refresh();
+                        this.map.refresh(
+                            !this.config.blockAutoZoom,
+                            !this.config.blockAutoZoom
+                        );
                     })
                     .catch((error) => {
                         this.map.mapEvents.trigger(
@@ -242,7 +246,10 @@ namespace Provider.Maps.Google.Marker {
                                     lat: response.lat,
                                     lng: response.lng
                                 });
-                                this.map.refresh();
+                                this.map.refresh(
+                                    !this.config.blockAutoZoom,
+                                    !this.config.blockAutoZoom
+                                );
                             })
                             .catch((error) => {
                                 this.map.mapEvents.trigger(

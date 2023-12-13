@@ -181,7 +181,7 @@ namespace OSFramework.Maps.OSMap {
          * Refreshes the Map after changing zoom or center.
          * Can be used to reset to the defined zoom, center and offset configurations.
          */
-        refresh(): void;
+        refresh(sl?: boolean, sl2?: boolean): void;
         /**
          * Refreshes the Events of the Map Provider after Subscribing/Unsubscribing events
          */

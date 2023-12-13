@@ -7,6 +7,7 @@ namespace Provider.Maps.Google.Feature {
     {
         /** Boolean that indicates whether the Map is using Autofit (Zoom = Auto) or not */
         private _autofitEnabled: boolean;
+        private _isInitiated: boolean;
         /** Current Zoom level of the Map that changes whenever a marker is added or by enabling the Autofit on Zoom feature */
         private _level: OSFramework.Maps.Enum.OSMap.Zoom;
         private _map: OSMap.IMapGoogle;
@@ -17,6 +18,7 @@ namespace Provider.Maps.Google.Feature {
         ) {
             this._map = map;
             this._level = level;
+            this._isInitiated = false;
         }
 
         /** Set as autofit if Zoom's level is Auto */
@@ -45,24 +47,46 @@ namespace Provider.Maps.Google.Feature {
                     this._map.provider.setZoom(
                         OSFramework.Maps.Helper.Constants.zoomAutofit
                     );
-                } else if (this._map.markers.length === 1) {
-                    this._map.provider.setZoom(
-                        OSFramework.Maps.Helper.Constants.zoomAutofit
+                } else {
+                    const filteredMarkers = this._map.markers.filter(
+                        (marker) => {
+                            return marker.config.blockAutoZoom === false;
+                        }
                     );
-                } else if (this._map.markers.length > 1) {
-                    this._map.markers.forEach(function (marker) {
-                        if (marker.provider === undefined) return;
-                        const loc = marker.provider.position.toJSON();
-                        bounds.extend(loc);
-                    });
-                    this._map.provider.fitBounds(bounds);
-                    this._map.provider.panToBounds(bounds);
-                    this._map.features.center.setCurrentCenter(
-                        this._map.provider.getCenter()
-                    );
+
+                    if (filteredMarkers.length === 1) {
+                        if (filteredMarkers[0].provider) {
+                            this._map.provider.setCenter(
+                                filteredMarkers[0].provider.getPosition()
+                            );
+                            this._map.features.center.setCurrentCenter(
+                                this._map.provider.getCenter()
+                            );
+                        }
+                        if (!this._isInitiated) {
+                            this._isInitiated = true;
+                            this._map.provider.setZoom(
+                                OSFramework.Maps.Helper.Constants.zoomAutofit
+                            );
+                        }
+                    } else if (filteredMarkers.length > 1) {
+                        filteredMarkers.forEach((marker) => {
+                            if (marker.provider === undefined) return;
+                            const loc = marker.provider.position.toJSON();
+                            bounds.extend(loc);
+                        });
+                        this._map.provider.fitBounds(bounds);
+                        this._map.provider.panToBounds(bounds);
+                        this._map.features.center.setCurrentCenter(
+                            this._map.provider.getCenter()
+                        );
+                    }
                 }
             } else {
-                this._map.provider.setZoom(this._map.features.zoom.level);
+                if (!this._isInitiated) {
+                    this._isInitiated = true;
+                    this._map.provider.setZoom(this._map.features.zoom.level);
+                }
             }
         }
 

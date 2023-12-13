@@ -6,6 +6,7 @@ namespace OSFramework.Maps.Configuration {
      */
     export interface IConfigurationMarker extends IConfiguration {
         allowDrag?: boolean;
+        blockAutoZoom?: boolean;
         iconHeight?: number;
         iconUrl?: string;
         iconWidth?: number;

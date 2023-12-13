@@ -449,7 +449,10 @@ namespace Provider.Maps.Google.OSMap {
             this._provider = undefined;
         }
 
-        public refresh(): void {
+        public refresh(
+            forceZoomRefresh = true,
+            forceCenterRefresh = true
+        ): void {
             let position = this.features.center.getCenter();
             // When the position is empty, we use the default position
             // If the configured center position of the map is equal to the default
@@ -485,11 +488,14 @@ namespace Provider.Maps.Google.OSMap {
                 position = this.markers[0].provider.position.toJSON();
             }
 
-            // Refresh the center position
-            this.features.center.refreshCenter(position);
-
-            // Refresh the zoom
-            this.features.zoom.refreshZoom();
+            if (forceCenterRefresh) {
+                // Refresh the center position
+                this.features.center.refreshCenter(position);
+            }
+            if (forceZoomRefresh) {
+                // Refresh the zoom
+                this.features.zoom.refreshZoom();
+            }
 
             // Refresh the offset
             this.features.offset.setOffset(this.features.offset.getOffset);
