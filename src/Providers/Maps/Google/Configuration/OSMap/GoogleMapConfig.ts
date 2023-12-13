@@ -15,6 +15,7 @@ namespace Provider.Maps.Google.Configuration.OSMap {
         public type: OSFramework.Maps.Enum.OSMap.Type;
         public uniqueId: string;
         public zoom: OSFramework.Maps.Enum.OSMap.Zoom;
+        public autoZoomOnShapes: boolean;
 
         // No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
         // constructor(config: JSON) {

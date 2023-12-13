@@ -11,5 +11,6 @@ namespace OSFramework.Maps.Configuration {
         type?: Enum.OSMap.Type;
         uniqueId: string;
         zoom: Enum.OSMap.Zoom;
+        autoZoomOnShapes?: boolean;
     }
 }
