@@ -42,10 +42,7 @@ namespace Provider.Maps.Google.Shape {
                         // Finish build of Shape
                         this.finishBuild();
 
-                        this.map.refresh(
-                            this.config.autoZoomOnShape,
-                            this.config.autoZoomOnShape
-                        );
+                        this.map.refresh();
                     })
                     .catch((error) => {
                         OSFramework.Maps.Helper.ThrowError(

@@ -37,15 +37,13 @@ namespace Provider.Maps.Google.Feature {
                 const loc = item.provider.position.toJSON();
                 bounds.extend(loc);
             });
-            // instead of using the getPath, try to use:
-            // this._map.shapes[0]._buildPath(this._map.shapes[0].config.locations).then((loc) => {bounds.extend(loc)})
-            this._map.shapes
-                .filter((item) => item.config.autoZoomOnShape)
-                .forEach(function (item) {
-                    if (item.provider === undefined) return;
-                    const loc = item.providerBounds;
-                    bounds.union(loc);
-                });
+
+            this._map.shapes.forEach(function (item) {
+                if (item.provider === undefined) return;
+                const loc = item.providerBounds;
+                bounds.union(loc);
+            });
+
             this._map.provider.fitBounds(bounds);
             this._map.provider.panToBounds(bounds);
             this._map.features.center.setCurrentCenter(
@@ -62,14 +60,11 @@ namespace Provider.Maps.Google.Feature {
         }
 
         public refreshZoom(): void {
-            const hasZoomOnMarkers =
-                this._map.markers.filter((item) => item.config.autoZoomOnShape)
-                    .length > 1;
-            const hasZoomOnShapes = this._map.shapes.some(
-                (item) => item.config.autoZoomOnShape
-            );
             if (this._map.features.zoom.isAutofit) {
-                if (hasZoomOnMarkers || hasZoomOnShapes) {
+                if (
+                    this._map.markers.length > 1 ||
+                    this._map.shapes.length > 0
+                ) {
                     this._setBounds();
                 } else {
                     this._map.provider.setZoom(

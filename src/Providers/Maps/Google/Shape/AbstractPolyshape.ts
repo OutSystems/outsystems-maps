@@ -6,9 +6,6 @@ namespace Provider.Maps.Google.Shape {
         T extends OSFramework.Maps.Configuration.IConfigurationShape,
         W extends google.maps.Polygon | google.maps.Polyline
     > extends AbstractProviderShape<T, W> {
-        public shapePath: Promise<
-            OSFramework.Maps.OSStructures.OSMap.Coordinates[]
-        >;
         private _buildPath(
             loc: string
         ): Promise<Array<OSFramework.Maps.OSStructures.OSMap.Coordinates>> {
@@ -113,8 +110,8 @@ namespace Provider.Maps.Google.Shape {
         public build(): void {
             super.build();
 
-            this.shapePath = this._buildPath(this.config.locations);
-            this._buildProvider(this.shapePath);
+            const shapePath = this._buildPath(this.config.locations);
+            this._buildProvider(shapePath);
         }
 
         public changeProperty(
@@ -128,12 +125,12 @@ namespace Provider.Maps.Google.Shape {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_Shape.locations:
                         // eslint-disable-next-line no-case-declarations
-                        this.shapePath = this._buildPath(
+                        const shapePath = this._buildPath(
                             propertyValue as string
                         );
                         // If path is undefined (should be a promise) -> don't create the shape
-                        if (this.shapePath !== undefined) {
-                            this.shapePath
+                        if (shapePath !== undefined) {
+                            shapePath
                                 .then((path) => {
                                     this._setProviderPath(path);
                                 })
