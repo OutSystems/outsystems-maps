@@ -511,8 +511,10 @@ namespace Provider.Maps.Google.OSMap {
             // Refresh the center position
             this.features.center.refreshCenter(position);
 
-            // Refresh the zoom
-            this.features.zoom.refreshZoom();
+            if (this.allowRefreshZoom) {
+                // Refresh the zoom
+                this.features.zoom.refreshZoom();
+            }
 
             // Refresh the offset
             this.features.offset.setOffset(this.features.offset.getOffset);
