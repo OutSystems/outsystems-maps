@@ -10,7 +10,7 @@ namespace Provider.Maps.Leaflet.DrawingTools {
             drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
             drawingToolsId: string,
             type: string,
-            configs: Configuration.DrawingTools.DrawMarkerConfig
+            configs: JSON
         ) {
             super(
                 map,
@@ -109,15 +109,18 @@ namespace Provider.Maps.Leaflet.DrawingTools {
         protected createElement(
             uniqueId: string,
             marker: L.Marker,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
+            configs: OSFramework.Maps.Configuration.IConfigurationTool
         ): OSFramework.Maps.Marker.IMarker {
             const location = `${marker.getLatLng().lat},${
                 marker.getLatLng().lng
             }`;
 
             // Join both the configs that were provided for the new marker element and the location that was provided by the DrawingTools markercomplete event
-            const finalConfigs = { ...configs, location };
+            const finalConfigs: OSFramework.Maps.Configuration.IConfigurationMarker =
+                {
+                    ...configs,
+                    location
+                };
 
             const _marker = Marker.MarkerFactory.MakeMarker(
                 this.map,
@@ -161,15 +164,19 @@ namespace Provider.Maps.Leaflet.DrawingTools {
             };
         }
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-        public changeProperty(propertyName: string, value: any): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             const propValue =
                 OSFramework.Maps.Enum.OS_Config_Marker[propertyName];
-            super.changeProperty(propertyName, value);
+            super.changeProperty(propertyName, propertyValue);
             if (this.drawingTools.isReady) {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_Marker.iconUrl:
-                        this.options = { icon: this._createIcon(value) };
+                        this.options = {
+                            icon: this._createIcon(propertyValue as string)
+                        };
                         return;
                 }
             }

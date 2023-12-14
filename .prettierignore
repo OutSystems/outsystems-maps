@@ -1,3 +1,5 @@
-/* prettier-ignore */
+*.css
 *.md
 *.d.ts
+# don't lint settings
+.snyk

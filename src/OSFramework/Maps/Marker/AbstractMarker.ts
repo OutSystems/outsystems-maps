@@ -2,12 +2,11 @@
 namespace OSFramework.Maps.Marker {
     export abstract class AbstractMarker<
         W,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         Z extends Configuration.IConfigurationMarker
     > implements IMarkerGeneric<W>
     {
         /** Configuration reference */
-        private _config: Configuration.IConfigurationMarker;
+        private _config: Z;
         private _map: OSMap.IMap;
         private _uniqueId: string;
         private _widgetId: string;
@@ -22,7 +21,7 @@ namespace OSFramework.Maps.Marker {
             map: OSMap.IMap,
             uniqueId: string,
             type: Enum.MarkerType,
-            config: Configuration.IConfigurationMarker
+            config: Z
         ) {
             this._map = map;
             this._uniqueId = uniqueId;
@@ -32,7 +31,7 @@ namespace OSFramework.Maps.Marker {
         }
         public abstract get markerTag(): string;
 
-        public get config(): Configuration.IConfigurationMarker {
+        public get config(): Z {
             return this._config;
         }
         public get hasPopup(): boolean {
@@ -83,8 +82,10 @@ namespace OSFramework.Maps.Marker {
                 : undefined;
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-        public changeProperty(propertyName: string, propertyValue: any): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             //Update Marker's config when the property is available
             if (this.config.hasOwnProperty(propertyName)) {
                 this.config[propertyName] = propertyValue;
@@ -106,9 +107,8 @@ namespace OSFramework.Maps.Marker {
             return id === this._uniqueId || id === this._widgetId;
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public getProviderConfig(): any {
-            return this._config.getProviderConfig();
+        public getProviderConfig(): unknown {
+            return this.config.getProviderConfig();
         }
 
         public abstract refreshProviderEvents(): void;

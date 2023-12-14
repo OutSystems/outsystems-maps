@@ -5,7 +5,7 @@ namespace Provider.Maps.Google.Shape {
             map: OSFramework.Maps.OSMap.IMap,
             shapeId: string,
             type: OSFramework.Maps.Enum.ShapeType,
-            configs: JSON
+            configs: unknown
         ): OSFramework.Maps.Shape.IShape {
             switch (type) {
                 case OSFramework.Maps.Enum.ShapeType.Polygon:

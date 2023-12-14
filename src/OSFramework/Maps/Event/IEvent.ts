@@ -9,10 +9,12 @@ namespace OSFramework.Maps.Event {
      * @template D this will the type of Data to be passed, by default to the handlers.
      */
     export interface IEvent<D> {
-        addHandler(handler: OSFramework.Maps.Callbacks.Generic, ...args): void;
+        addHandler(
+            handler: OSFramework.Maps.Callbacks.Generic,
+            ...args: unknown[]
+        ): void;
         hasHandlers(): boolean;
         removeHandler(handler: OSFramework.Maps.Callbacks.Generic): void;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        trigger(data: D, ...args): any;
+        trigger(data: D, ...args: unknown[]): unknown;
     }
 }

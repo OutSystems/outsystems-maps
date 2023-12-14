@@ -9,8 +9,7 @@ namespace Provider.Maps.Google.FileLayer {
         constructor(
             map: OSFramework.Maps.OSMap.IMap,
             FileLayerId: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
+            configs: JSON
         ) {
             super(
                 map,
@@ -33,10 +32,7 @@ namespace Provider.Maps.Google.FileLayer {
                 this.provider.addListener(
                     'click',
                     (event: google.maps.KmlMouseEvent) => {
-                        this.fileLayerEvents.trigger(
-                            OSFramework.Maps.Event.FileLayer.FileLayersEventType
-                                .OnClick,
-                            // Extra parameters to be passed as arguments on the callback of the OnClick event handler
+                        const flParams: OSFramework.Maps.FileLayer.IFileLayerEventParams =
                             {
                                 // Coordinates from the event that was triggered (by the click)
                                 coordinates: JSON.stringify({
@@ -50,7 +46,13 @@ namespace Provider.Maps.Google.FileLayer {
                                 featureData: JSON.stringify(
                                     event.featureData as google.maps.KmlFeatureData
                                 )
-                            }
+                            };
+                        this.fileLayerEvents.trigger(
+                            OSFramework.Maps.Event.FileLayer.FileLayersEventType
+                                .OnClick,
+                            undefined,
+                            // Extra parameters to be passed as arguments on the callback of the OnClick event handler
+                            flParams
                         );
                     }
                 );

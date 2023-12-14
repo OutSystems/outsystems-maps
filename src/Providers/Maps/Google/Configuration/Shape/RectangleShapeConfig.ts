@@ -5,13 +5,12 @@ namespace Provider.Maps.Google.Configuration.Shape {
     export class RectangleShapeConfig extends FilledShapeConfig {
         public bounds: string;
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        constructor(config: any) {
-            super(config);
-        }
+        // No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
+        // constructor(config: unknown) {
+        //     super(config);
+        // }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public getProviderConfig(): any {
+        public getProviderConfig(): IShapeProviderConfig {
             const provider = super.getProviderConfig();
 
             // Rectangle doesn't have locations on its configurations
