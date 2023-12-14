@@ -419,9 +419,8 @@ namespace OSFramework.Maps.OSMap {
                 shape.dispose();
                 this._shapes.delete(shapeId);
                 this._shapesSet.delete(shape);
-                // After removing a marker, we need to refresh the Map to reflect the zoom, offset and center position of the Map
+                // After removing a shape, we need to refresh the Map to reflect the zoom, offset and center position of the Map
                 if (this._isReady) {
-                    // If the shape does not have autoZoom enabled, we don't want to modified the zoom when removing it
                     this.refresh();
                 }
             }
