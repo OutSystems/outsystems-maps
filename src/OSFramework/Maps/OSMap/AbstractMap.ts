@@ -168,6 +168,12 @@ namespace OSFramework.Maps.OSMap {
             //Update Map's config when the property is available
             if (this.config.hasOwnProperty(propertyName)) {
                 this.config[propertyName] = propertyValue;
+
+                if (
+                    Maps.Enum.OS_Config_Map.respectUserZoom ===
+                    Maps.Enum.OS_Config_Map[propertyName]
+                ) {
+                }
             } else {
                 this.mapEvents.trigger(
                     Event.OSMap.MapEventType.OnError,

@@ -10,6 +10,7 @@ namespace Provider.Maps.Google.Configuration.OSMap {
         public height: string;
         public markerClusterer: OSFramework.Maps.Configuration.IConfigurationMarkerClusterer;
         public offset: OSFramework.Maps.OSStructures.OSMap.Offset;
+        public respectUserZoom: boolean;
         public showTraffic: boolean;
         public style: OSFramework.Maps.Enum.OSMap.Style;
         public type: OSFramework.Maps.Enum.OSMap.Type;

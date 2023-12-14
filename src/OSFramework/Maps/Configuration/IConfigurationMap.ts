@@ -8,6 +8,7 @@ namespace OSFramework.Maps.Configuration {
         apiKey?: string;
         center: string | OSStructures.OSMap.Coordinates;
         height: string;
+        respectUserZoom?: boolean;
         type?: Enum.OSMap.Type;
         uniqueId: string;
         zoom: Enum.OSMap.Zoom;
