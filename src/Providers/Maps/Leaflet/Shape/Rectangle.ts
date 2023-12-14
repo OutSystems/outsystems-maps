@@ -29,19 +29,18 @@ namespace Provider.Maps.Leaflet.Shape {
         }
 
         public get bounds(): OSFramework.Maps.OSStructures.OSMap.Bounds {
-            const providerBounds: L.LatLngBounds = this.provider.getBounds();
             const bounds = new OSFramework.Maps.OSStructures.OSMap.Bounds();
 
             // Map providerBounds into OSFramework bounds structure
-            bounds.east = providerBounds.getNorthEast().lng;
-            bounds.north = providerBounds.getNorthEast().lat;
-            bounds.west = providerBounds.getSouthWest().lng;
-            bounds.south = providerBounds.getSouthWest().lat;
+            bounds.east = this.providerBounds.getNorthEast().lng;
+            bounds.north = this.providerBounds.getNorthEast().lat;
+            bounds.west = this.providerBounds.getSouthWest().lng;
+            bounds.south = this.providerBounds.getSouthWest().lat;
             return bounds;
         }
 
-        public get providerBounds(): any {
-            return null;
+        public get providerBounds(): L.LatLngBounds {
+            return this.provider.getBounds();
         }
 
         public get providerEventsList(): Array<string> {

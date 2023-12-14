@@ -32,8 +32,8 @@ namespace Provider.Maps.Leaflet.Shape {
             return this.provider;
         }
 
-        public get providerBounds(): any {
-            return null;
+        public get providerBounds(): L.LatLngBounds {
+            return this.provider.getBounds();
         }
 
         public get providerCenter(): OSFramework.Maps.OSStructures.OSMap.Coordinates {

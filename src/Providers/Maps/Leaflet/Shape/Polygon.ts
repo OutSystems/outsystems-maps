@@ -34,8 +34,8 @@ namespace Provider.Maps.Leaflet.Shape {
             return this.provider.getLatLngs()[0];
         }
 
-        public get providerBounds(): any {
-            return null;
+        public get providerBounds(): L.LatLngBounds {
+            return this.provider.getBounds();
         }
 
         public get shapeTag(): string {

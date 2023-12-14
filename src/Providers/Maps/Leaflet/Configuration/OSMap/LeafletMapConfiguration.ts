@@ -9,6 +9,7 @@ namespace Provider.Maps.Leaflet.Configuration.OSMap {
         public offset: OSFramework.Maps.OSStructures.OSMap.Offset;
         public uniqueId: string;
         public zoom: OSFramework.Maps.Enum.OSMap.Zoom;
+        public autoZoomOnShapes: boolean;
 
         // No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
         // constructor(config: JSON) {
