@@ -22,6 +22,7 @@ namespace Provider.Maps.Leaflet.Constants.OSMap {
         tilesloaded = 'load',
         load = 'load',
         zoom_changed = 'zoom',
+        zoom_end = 'zoomend',
         zoom = 'zoom'
     }
 }

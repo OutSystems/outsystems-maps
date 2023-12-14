@@ -32,6 +32,13 @@ namespace Provider.Maps.Leaflet.OSMap {
             );
         }
 
+        private _addMapZoomHandler(): void {
+            this._provider.on(
+                Constants.OSMap.ProviderEventNames.zoom_end,
+                this._mapZoomChangeCallback
+            );
+        }
+
         private _buildDrawingTools(): void {
             // Here we aren't using a forEach because there is only one drawingTools per map
             this.drawingTools && this.drawingTools.build();
@@ -51,6 +58,13 @@ namespace Provider.Maps.Leaflet.OSMap {
                 OSFramework.Maps.Helper.Constants.defaultMapCenter;
 
             return this.config.getProviderConfig();
+        }
+
+        private _removeMapZoomHandler(): void {
+            this._provider.off(
+                Constants.OSMap.ProviderEventNames.zoom_end,
+                this._mapZoomChangeCallback
+            );
         }
 
         private _setMapEvents(): void {
@@ -189,6 +203,8 @@ namespace Provider.Maps.Leaflet.OSMap {
             // Make sure to change the center after the conversion of the location to coordinates
             this.features.center.updateCenter(currentCenter as string);
             this._setMapEvents();
+
+            this._addMapZoomHandler();
         }
 
         public buildFeatures(): void {
@@ -317,6 +333,8 @@ namespace Provider.Maps.Leaflet.OSMap {
         }
 
         public refresh(): void {
+            this._removeMapZoomHandler();
+
             let position = this.features.center.getCenter();
             // When the position is empty, we use the default position
             // If the configured center position of the map is equal to the default
@@ -364,6 +382,8 @@ namespace Provider.Maps.Leaflet.OSMap {
             // Repaint the marker Clusterers
             this.hasMarkerClusterer() &&
                 this.features.markerClusterer.repaint();
+
+            this._addMapZoomHandler();
         }
 
         public refreshProviderEvents(): void {

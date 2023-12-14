@@ -13,6 +13,7 @@ namespace Provider.Maps.Google.OSMap {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         private _advancedFormatObj: any;
         private _fBuilder: Feature.FeatureBuilder;
+        private _gZoomChangeListener: google.maps.MapsEventListener;
         private _scriptCallback: OSFramework.Maps.Callbacks.Generic;
 
         constructor(mapId: string, configs: JSON) {
@@ -24,6 +25,18 @@ namespace Provider.Maps.Google.OSMap {
             );
             this._addedEvents = [];
             this._scriptCallback = this._createGoogleMap.bind(this);
+        }
+
+        private _addMapZoomHandler(): void {
+            setTimeout(() => {
+                if (this && this._provider) {
+                    this._gZoomChangeListener = google.maps.event.addListener(
+                        this._provider,
+                        Constants.OSMap.ProviderEventNames.zoom_changed,
+                        this._mapZoomChangeCallback
+                    );
+                }
+            }, 100);
         }
 
         private _buildDrawingTools(): void {
@@ -113,6 +126,7 @@ namespace Provider.Maps.Google.OSMap {
 
                 // We can only set the events on the provider after its creation
                 this._setMapEvents(this._advancedFormatObj.mapEvents);
+                this._addMapZoomHandler();
             } else {
                 throw Error(`The google.maps lib has not been loaded.`);
             }
@@ -128,6 +142,12 @@ namespace Provider.Maps.Google.OSMap {
             );
 
             return this.config.getProviderConfig();
+        }
+
+        private _removeMapZoomHandler(): void {
+            if (this._gZoomChangeListener) {
+                google.maps.event.removeListener(this._gZoomChangeListener);
+            }
         }
 
         private _setMapEvents(events?: Array<string>): void {
@@ -450,6 +470,9 @@ namespace Provider.Maps.Google.OSMap {
         }
 
         public refresh(): void {
+            //Let's stop listening to the zoom event be caused by the refreshZoom
+            this._removeMapZoomHandler();
+
             let position = this.features.center.getCenter();
             // When the position is empty, we use the default position
             // If the configured center position of the map is equal to the default
@@ -497,6 +520,9 @@ namespace Provider.Maps.Google.OSMap {
             // Repaint the marker Clusterers
             this.hasMarkerClusterer() &&
                 this.features.markerClusterer.repaint();
+
+            //Re-adding the map zoom handler
+            this._addMapZoomHandler();
         }
 
         public refreshProviderEvents(): void {
