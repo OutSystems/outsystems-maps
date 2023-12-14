@@ -32,7 +32,7 @@ namespace OSFramework.Maps.Event.OSMap {
                     )
                 ) {
                     Helper.CallbackAsyncInvocation(
-                        h,
+                        h.eventHandler,
                         mapObj,
                         mapId,
                         eventName,

@@ -27,7 +27,7 @@ namespace OSFramework.Maps.Event.SearchPlaces {
                 .slice(0)
                 .forEach((h) =>
                     Helper.CallbackAsyncInvocation(
-                        h,
+                        h.eventHandler,
                         searchPlacesObj,
                         searchPlacesId,
                         eventName,

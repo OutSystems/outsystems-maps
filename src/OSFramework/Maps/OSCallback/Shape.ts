@@ -14,8 +14,7 @@ namespace OSFramework.Maps.Callbacks.Shape {
             mapId: string,
             shapeId: string,
             shapeObj: OSFramework.Maps.Shape.IShape,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            ...args: any
+            ...args: unknown[]
         ): void;
     };
 }

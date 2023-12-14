@@ -68,8 +68,7 @@ namespace OSFramework.Maps.Event.Marker {
         public trigger(
             eventType: MarkerEventType,
             eventInfo?: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            ...args: any
+            ...args: unknown[]
         ): void {
             // Let's first check if the map has any events associated
             // If the event type is ProviderEvent than we need to get the handlers for the eventInfo -> name of the event

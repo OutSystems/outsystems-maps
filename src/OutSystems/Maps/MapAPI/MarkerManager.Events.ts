@@ -1,19 +1,16 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
     const _pendingEvents: Map<
         string,
         {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            cb: any;
+            cb: OSFramework.Maps.Callbacks.Generic;
             event: OSFramework.Maps.Event.Marker.MarkerEventType;
             uniqueId: string; //Event unique identifier
         }[]
     > = new Map<
         string,
         {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            cb: any;
+            cb: OSFramework.Maps.Callbacks.Generic;
             event: OSFramework.Maps.Event.Marker.MarkerEventType;
             uniqueId: string; //Event unique identifier
         }[]
@@ -97,7 +94,6 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
     export function SubscribeByUniqueId(
         eventUniqueId: string,
         eventName: OSFramework.Maps.Event.Marker.MarkerEventType,
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         callback: OSFramework.Maps.Callbacks.Marker.Event
     ): void {
         // Let's make sure that if the Map doesn't exist, we don't throw and exception but instead add the handler to the pendingEvents
@@ -226,7 +222,6 @@ namespace MapAPI.MarkerManager.Events {
     export function SubscribeByUniqueId(
         eventUniqueId: string,
         eventName: OSFramework.Maps.Event.Marker.MarkerEventType,
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         callback: OSFramework.Maps.Callbacks.Marker.Event
     ): void {
         OSFramework.Maps.Helper.LogWarningMessage(

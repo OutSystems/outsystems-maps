@@ -14,13 +14,17 @@ namespace OSFramework.Maps.Event.Marker {
         public trigger(
             mapId: string,
             markerId: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            ...args: any
+            ...args: unknown[]
         ): void {
             this.handlers
                 .slice(0)
                 .forEach((h) =>
-                    Helper.CallbackAsyncInvocation(h, mapId, markerId, ...args)
+                    Helper.CallbackAsyncInvocation(
+                        h.eventHandler,
+                        mapId,
+                        markerId,
+                        ...args
+                    )
                 );
         }
     }

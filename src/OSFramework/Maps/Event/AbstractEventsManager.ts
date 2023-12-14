@@ -57,10 +57,9 @@ namespace OSFramework.Maps.Event {
             }
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types
-        public trigger(eventType: ET, data?: D, ...args): void {
+        public trigger(eventType: ET, data?: D, ...args: unknown[]): void {
             if (this._handlers.has(eventType)) {
-                this._handlers.get(eventType).trigger(data);
+                this._handlers.get(eventType).trigger(data, ...args);
             }
         }
 

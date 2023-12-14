@@ -14,8 +14,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
     export function ChangeProperty(
         markerId: string,
         propertyName: string,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-        propertyValue: any
+        propertyValue: unknown
     ): void {
         const marker = GetMarkerById(markerId);
         const map = marker.map;
@@ -231,10 +230,10 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
             allMaps.find((map: OSFramework.Maps.OSMap.IMap) => {
                 return (marker =
                     map.drawingTools &&
-                    map.drawingTools.createdElements.find(
+                    (map.drawingTools.createdElements.find(
                         (marker: OSFramework.Maps.Marker.IMarker) =>
                             marker.equalsToID(markerId)
-                    ));
+                    ) as OSFramework.Maps.Marker.IMarker));
             });
 
             // If still wasn't found, then it does not exist and throw error
@@ -284,8 +283,7 @@ namespace MapAPI.MarkerManager {
     export function ChangeProperty(
         markerId: string,
         propertyName: string,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-        propertyValue: any
+        propertyValue: unknown
     ): void {
         OSFramework.Maps.Helper.LogWarningMessage(
             `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.MarkerManager.ChangeProperty()'`

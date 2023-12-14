@@ -13,8 +13,7 @@ namespace Provider.Maps.Google.Shape {
             map: OSFramework.Maps.OSMap.IMap,
             shapeId: string,
             type: OSFramework.Maps.Enum.ShapeType,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
+            configs: unknown
         ) {
             super(
                 map,
@@ -68,10 +67,7 @@ namespace Provider.Maps.Google.Shape {
                             resolve(newBounds);
                         }
                     } else {
-                        Helper.Conversions.ConvertToCoordinates(
-                            bounds[cd],
-                            this.map.config.apiKey
-                        )
+                        Helper.Conversions.ConvertToCoordinates(bounds[cd])
                             .then((response) => {
                                 boundsLength++;
                                 switch (cd) {
@@ -100,8 +96,8 @@ namespace Provider.Maps.Google.Shape {
         ): google.maps.Rectangle {
             return new google.maps.Rectangle({
                 map: this.map.provider,
-                bounds,
-                ...this.getProviderConfig()
+                bounds: bounds,
+                ...(this.getProviderConfig() as Configuration.Shape.IShapeProviderConfig)
             });
         }
 
@@ -157,19 +153,23 @@ namespace Provider.Maps.Google.Shape {
             super._buildProvider(bounds);
         }
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        public changeProperty(propertyName: string, value: any): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             const propValue =
                 OSFramework.Maps.Enum.OS_Config_Shape[propertyName];
-            super.changeProperty(propertyName, value);
+            super.changeProperty(propertyName, propertyValue);
             if (this.isReady) {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_Shape.fillColor:
                     case OSFramework.Maps.Enum.OS_Config_Shape.fillOpacity:
-                        return this.provider.set(propertyName, value);
+                        return this.provider.set(propertyName, propertyValue);
                     case OSFramework.Maps.Enum.OS_Config_Shape.bounds:
                         // eslint-disable-next-line no-case-declarations
-                        const shapeBounds = this._buildBounds(value);
+                        const shapeBounds = this._buildBounds(
+                            propertyValue as string
+                        );
                         // If path is undefined (should be a promise) -> don't create the shape
                         if (shapeBounds !== undefined) {
                             shapeBounds

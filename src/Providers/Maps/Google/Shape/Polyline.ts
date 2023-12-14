@@ -13,8 +13,7 @@ namespace Provider.Maps.Google.Shape {
             map: OSFramework.Maps.OSMap.IMap,
             shapeId: string,
             type: OSFramework.Maps.Enum.ShapeType,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
+            configs: unknown
         ) {
             super(
                 map,
@@ -29,8 +28,8 @@ namespace Provider.Maps.Google.Shape {
         ): google.maps.Polyline {
             return new google.maps.Polyline({
                 map: this.map.provider,
-                path,
-                ...this.getProviderConfig()
+                path: path,
+                ...(this.getProviderConfig() as Configuration.Shape.IShapeProviderConfig)
             });
         }
 

@@ -117,8 +117,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
     export function ChangeProperty(
         drawingToolsId: string,
         propertyName: string,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-        propertyValue: any
+        propertyValue: unknown
     ): void {
         const drawingTools = GetDrawingToolsById(drawingToolsId);
         const map = drawingTools.map;
@@ -143,8 +142,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
     export function ChangeToolProperty(
         toolId: string,
         propertyName: string,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-        propertyValue: any
+        propertyValue: unknown
     ): void {
         const drawingToolsId = GetDrawingToolsByToolUniqueId(toolId);
         const drawingTools = GetDrawingToolsById(drawingToolsId, false);
@@ -314,8 +312,7 @@ namespace MapAPI.DrawingToolsManager {
     export function ChangeProperty(
         drawingToolsId: string,
         propertyName: string,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-        propertyValue: any
+        propertyValue: unknown
     ): void {
         OSFramework.Maps.Helper.LogWarningMessage(
             `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.ChangeProperty()'`
@@ -330,8 +327,7 @@ namespace MapAPI.DrawingToolsManager {
     export function ChangeToolProperty(
         toolId: string,
         propertyName: string,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-        propertyValue: any
+        propertyValue: unknown
     ): void {
         OSFramework.Maps.Helper.LogWarningMessage(
             `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.ChangeToolProperty()'`

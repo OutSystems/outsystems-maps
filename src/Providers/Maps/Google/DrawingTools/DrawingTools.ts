@@ -11,8 +11,7 @@ namespace Provider.Maps.Google.DrawingTools {
         constructor(
             map: OSFramework.Maps.OSMap.IMap,
             drawingToolsId: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
+            configs: JSON
         ) {
             super(
                 map,

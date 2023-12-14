@@ -18,8 +18,7 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager {
     export function ChangeProperty(
         searchPlacesId: string,
         propertyName: string,
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        propertyValue: any
+        propertyValue: unknown
     ): void {
         const searchPlaces = GetSearchPlacesById(searchPlacesId);
 
@@ -152,8 +151,7 @@ namespace PlacesAPI.SearchPlacesManager {
     export function ChangeProperty(
         searchPlacesId: string,
         propertyName: string,
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        propertyValue: any
+        propertyValue: unknown
     ): void {
         OSFramework.Maps.Helper.LogWarningMessage(
             `${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.PlacesAPI.SearchPlacesManager.ChangeProperty()'`

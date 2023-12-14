@@ -4,14 +4,9 @@ namespace Provider.Maps.Google.DrawingTools {
         export function MakeDrawingTools(
             map: OSFramework.Maps.OSMap.IMap,
             drawingToolsId: string,
-            configs: OSFramework.Maps.Configuration.IConfiguration
+            configs: JSON
         ): OSFramework.Maps.DrawingTools.IDrawingTools {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            return new DrawingTools(
-                map,
-                drawingToolsId,
-                configs as Configuration.DrawingTools.DrawingToolsConfig
-            );
+            return new DrawingTools(map, drawingToolsId, configs);
         }
 
         export function MakeTool(
@@ -19,9 +14,8 @@ namespace Provider.Maps.Google.DrawingTools {
             drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
             toolId: string,
             type: OSFramework.Maps.Enum.DrawingToolsTypes,
-            configs: OSFramework.Maps.Configuration.IConfiguration
+            configs: JSON
         ): OSFramework.Maps.DrawingTools.ITool {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             switch (type) {
                 case OSFramework.Maps.Enum.DrawingToolsTypes.Marker:
                     return new DrawMarker(
@@ -29,7 +23,7 @@ namespace Provider.Maps.Google.DrawingTools {
                         drawingTools,
                         toolId,
                         type,
-                        configs as Configuration.DrawingTools.DrawMarkerConfig
+                        configs
                     );
                 case OSFramework.Maps.Enum.DrawingToolsTypes.Polyline:
                     return new DrawPolyline(
@@ -37,7 +31,7 @@ namespace Provider.Maps.Google.DrawingTools {
                         drawingTools,
                         toolId,
                         type,
-                        configs as Configuration.DrawingTools.DrawBasicShapeConfig
+                        configs
                     );
                 case OSFramework.Maps.Enum.DrawingToolsTypes.Polygon:
                     return new DrawPolygon(
@@ -45,7 +39,7 @@ namespace Provider.Maps.Google.DrawingTools {
                         drawingTools,
                         toolId,
                         type,
-                        configs as Configuration.DrawingTools.DrawFilledShapeConfig
+                        configs
                     );
                 case OSFramework.Maps.Enum.DrawingToolsTypes.Circle:
                     return new DrawCircle(
@@ -53,7 +47,7 @@ namespace Provider.Maps.Google.DrawingTools {
                         drawingTools,
                         toolId,
                         type,
-                        configs as Configuration.DrawingTools.DrawFilledShapeConfig
+                        configs
                     );
                 case OSFramework.Maps.Enum.DrawingToolsTypes.Rectangle:
                     return new DrawRectangle(
@@ -61,7 +55,7 @@ namespace Provider.Maps.Google.DrawingTools {
                         drawingTools,
                         toolId,
                         type,
-                        configs as Configuration.DrawingTools.DrawFilledShapeConfig
+                        configs
                     );
                 default:
                     throw new Error(

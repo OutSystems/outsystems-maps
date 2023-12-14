@@ -35,6 +35,15 @@
     object-fit: cover;
 }
 
+/*
+* This will be applied to a container that in runtime will only serve 
+* to import a block which brings the map css.
+*/
+.runtime-staticMap-container-hide {
+    display: none;
+    height: 0;
+}
+
 html[data-uieditorversion^='1'] .map-wrapper .staticMap-image {
     -servicestudio-height: auto;
 }

@@ -5,11 +5,11 @@ namespace OSFramework.Maps.Configuration {
      * Defines the basic structure for Map objects
      */
     export interface IConfigurationMarker extends IConfiguration {
-        allowDrag: boolean;
-        iconHeight: number;
-        iconUrl: string;
-        iconWidth: number;
-        location: string;
-        title: string;
+        allowDrag?: boolean;
+        iconHeight?: number;
+        iconUrl?: string;
+        iconWidth?: number;
+        location?: string;
+        title?: string;
     }
 }

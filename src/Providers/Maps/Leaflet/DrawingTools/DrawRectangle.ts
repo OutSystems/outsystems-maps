@@ -8,7 +8,7 @@ namespace Provider.Maps.Leaflet.DrawingTools {
             drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
             drawingToolsId: string,
             type: string,
-            configs: Configuration.DrawingTools.DrawFilledShapeConfig
+            configs: JSON
         ) {
             super(
                 map,
@@ -51,7 +51,7 @@ namespace Provider.Maps.Leaflet.DrawingTools {
         }
 
         //TODO: create structure for rectangle options
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
         protected set options(options: any) {
             const allOptions = { ...this.options, ...options };
             const shapeOptions = {

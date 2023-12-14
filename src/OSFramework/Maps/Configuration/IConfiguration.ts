@@ -8,7 +8,6 @@ namespace OSFramework.Maps.Configuration {
         /**
          * Method responsible for the translation of configuration from OS to Provider
          */
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        getProviderConfig(): any;
+        getProviderConfig(): unknown;
     }
 }

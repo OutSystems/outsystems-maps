@@ -6,13 +6,14 @@ namespace Provider.Maps.Leaflet.Configuration.Shape {
         public center: string;
         public radius: number;
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        constructor(config: any) {
-            super(config);
-        }
+        // No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
+        // constructor(
+        //     config: OSFramework.Maps.Configuration.IConfigurationShape
+        // ) {
+        //     super(config);
+        // }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public getProviderConfig(): any {
+        public getProviderConfig(): L.CircleOptions {
             const provider = super.getProviderConfig();
             provider.radius = this.radius;
 
@@ -20,7 +21,7 @@ namespace Provider.Maps.Leaflet.Configuration.Shape {
             // We can remove it from the provider configs
             delete provider.locations;
 
-            return provider;
+            return provider as L.CircleOptions;
         }
     }
 }

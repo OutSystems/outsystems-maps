@@ -13,7 +13,6 @@ namespace OSFramework.Maps.HeatmapLayer {
         private _widgetId: string;
 
         protected _built: boolean;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         protected _provider: W;
 
         constructor(map: OSMap.IMap, uniqueId: string, config: T) {
@@ -65,8 +64,10 @@ namespace OSFramework.Maps.HeatmapLayer {
             this._setWidgetId();
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-        public changeProperty(propertyName: string, propertyValue: any): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             //Update Shape's config when the property is available
             if (this.config.hasOwnProperty(propertyName)) {
                 this.config[propertyName] = propertyValue;
@@ -89,9 +90,8 @@ namespace OSFramework.Maps.HeatmapLayer {
             return id === this._uniqueId || id === this.widgetId;
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public getProviderConfig(): Configuration.IConfigurationHeatmapLayer {
-            return this._config.getProviderConfig();
+            return this._config.getProviderConfig() as Configuration.IConfigurationHeatmapLayer;
         }
     }
 }

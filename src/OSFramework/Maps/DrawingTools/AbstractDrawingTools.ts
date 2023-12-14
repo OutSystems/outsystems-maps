@@ -1,8 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.Maps.DrawingTools {
     export abstract class AbstractDrawingTools<
-        W,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        W extends IDrawingToolsProvider,
         T extends Configuration.IConfigurationDrawingTools
     > implements IDrawingTools
     {
@@ -15,8 +14,7 @@ namespace OSFramework.Maps.DrawingTools {
         private _widgetId: string;
 
         protected _built: boolean;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        protected _createElements: Array<any>;
+        protected _createElements: Array<unknown>;
         protected _drawingToolsEvents: Event.DrawingTools.DrawingToolsEventsManager;
         protected _provider: W;
 
@@ -35,8 +33,7 @@ namespace OSFramework.Maps.DrawingTools {
         public get config(): T {
             return this._config;
         }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public get createdElements(): Array<any> {
+        public get createdElements(): Array<unknown> {
             return this._createElements;
         }
         public get drawingToolsEvents(): Event.DrawingTools.DrawingToolsEventsManager {
@@ -95,8 +92,10 @@ namespace OSFramework.Maps.DrawingTools {
             this._setWidgetId();
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-        public changeProperty(propertyName: string, propertyValue: any): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             //Update Shape's config when the property is available
             if (this.config.hasOwnProperty(propertyName)) {
                 this.config[propertyName] = propertyValue;
@@ -113,8 +112,7 @@ namespace OSFramework.Maps.DrawingTools {
         public changeToolProperty(
             toolId: string,
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-            propertyValue: any
+            propertyValue: unknown
         ): void {
             const tool = this._tools.get(toolId);
             tool.changeProperty(propertyName, propertyValue);
@@ -131,9 +129,8 @@ namespace OSFramework.Maps.DrawingTools {
             return id === this._uniqueId || id === this.widgetId;
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public getProviderConfig(): Configuration.IConfigurationDrawingTools {
-            return this._config.getProviderConfig();
+            return this._config.getProviderConfig() as Configuration.IConfigurationDrawingTools;
         }
 
         public hasTool(toolId: string): boolean {
@@ -169,8 +166,7 @@ namespace OSFramework.Maps.DrawingTools {
             return this.providerEvents.indexOf(eventName) !== -1;
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public abstract get providerEvents(): any;
+        public abstract get providerEvents(): Array<string>;
 
         public abstract refreshProviderEvents(): void;
     }

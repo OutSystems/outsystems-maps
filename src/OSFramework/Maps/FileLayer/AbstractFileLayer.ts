@@ -13,8 +13,7 @@ namespace OSFramework.Maps.FileLayer {
         private _widgetId: string;
 
         protected _built: boolean;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        protected _createElements: Array<any>;
+        protected _createElements: Array<unknown>;
         protected _fileLayerEvents: Event.FileLayer.FileLayersEventsManager;
         protected _provider: W;
 
@@ -32,8 +31,8 @@ namespace OSFramework.Maps.FileLayer {
         public get config(): T {
             return this._config;
         }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public get createdElements(): Array<any> {
+
+        public get createdElements(): Array<unknown> {
             return this._createElements;
         }
         public get fileLayerEvents(): Event.FileLayer.FileLayersEventsManager {
@@ -82,8 +81,10 @@ namespace OSFramework.Maps.FileLayer {
             this._setWidgetId();
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-        public changeProperty(propertyName: string, propertyValue: any): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             //Update Shape's config when the property is available
             if (this.config.hasOwnProperty(propertyName)) {
                 this.config[propertyName] = propertyValue;
@@ -106,9 +107,8 @@ namespace OSFramework.Maps.FileLayer {
             return id === this._uniqueId || id === this.widgetId;
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public getProviderConfig(): Configuration.IConfigurationFileLayer {
-            return this._config.getProviderConfig();
+            return this._config.getProviderConfig() as Configuration.IConfigurationFileLayer;
         }
 
         public abstract refreshProviderEvents(): void;

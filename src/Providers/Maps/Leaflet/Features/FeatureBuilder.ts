@@ -18,7 +18,7 @@ namespace Provider.Maps.Leaflet.Feature {
             this._features = new OSFramework.Maps.Feature.ExposedFeatures();
         }
 
-        // eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         private _instanceOfIDisposable(
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             object: any
@@ -27,10 +27,9 @@ namespace Provider.Maps.Leaflet.Feature {
         }
 
         protected _makeItem<T extends OSFramework.Maps.Interface.IBuilder>(
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            c: new (...args: any) => T,
+            c: new (...args: unknown[]) => T,
             // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-            ...args
+            ...args: unknown[]
         ): T {
             const o = new c(this._map, ...args);
             this._featureList.push(o);

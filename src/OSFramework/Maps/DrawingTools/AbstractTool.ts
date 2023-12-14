@@ -74,8 +74,10 @@ namespace OSFramework.Maps.DrawingTools {
             this._setWidgetId();
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-        public changeProperty(propertyName: string, propertyValue: any): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             //Update Shape's config when the property is available
             if (this.config.hasOwnProperty(propertyName)) {
                 this.config[propertyName] = propertyValue;
@@ -99,12 +101,10 @@ namespace OSFramework.Maps.DrawingTools {
         }
 
         public getProviderConfig(): T {
-            return this._config.getProviderConfig();
+            return this._config.getProviderConfig() as T;
         }
+        public abstract get options(): unknown;
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public abstract get options(): any;
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        public abstract addCompletedEvent(e?: any): void;
+        public abstract addCompletedEvent(e?: unknown): void;
     }
 }

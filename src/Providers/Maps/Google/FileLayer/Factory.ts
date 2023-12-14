@@ -4,14 +4,9 @@ namespace Provider.Maps.Google.FileLayer {
         export function MakeFileLayer(
             map: OSFramework.Maps.OSMap.IMap,
             fileLayerId: string,
-            configs: OSFramework.Maps.Configuration.IConfiguration
+            configs: JSON
         ): OSFramework.Maps.FileLayer.IFileLayer {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            return new FileLayer(
-                map,
-                fileLayerId,
-                configs as Configuration.FileLayer.FileLayerConfig
-            );
+            return new FileLayer(map, fileLayerId, configs);
         }
     }
 }

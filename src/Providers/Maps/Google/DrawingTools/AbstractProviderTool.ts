@@ -11,8 +11,7 @@ namespace Provider.Maps.Google.DrawingTools {
             drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
             drawingToolsId: string,
             type: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
+            configs: T
         ) {
             super(map, drawingTools, drawingToolsId, type, configs);
         }
@@ -103,12 +102,10 @@ namespace Provider.Maps.Google.DrawingTools {
             super.dispose();
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public abstract get options(): any;
+        public abstract get options(): unknown;
         protected abstract get completedToolEventName(): string;
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-        protected abstract set options(options: any);
+        protected abstract set options(options: unknown);
 
         /**
          * Creates a new element based on the new element provider that results from the marker or shape complete events.

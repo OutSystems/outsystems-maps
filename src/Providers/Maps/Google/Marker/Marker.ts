@@ -15,8 +15,7 @@ namespace Provider.Maps.Google.Marker {
             map: OSFramework.Maps.OSMap.IMap,
             markerId: string,
             type: OSFramework.Maps.Enum.MarkerType,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
+            configs: unknown
         ) {
             super(
                 map,
@@ -35,21 +34,23 @@ namespace Provider.Maps.Google.Marker {
             } else {
                 try {
                     let scaledSize: google.maps.Size;
+                    //Explicit conversion to number - related with ROU-4592 - as google will behave differently depending on the type
+                    //of the input. Before, in runtime, the input was of type string.
+                    const height = Number(this.config.iconHeight);
+                    const width = Number(this.config.iconWidth);
                     // If the size of the icon is defined by a valid width and height, use those values
                     // Else If nothing is passed or the icon size has the width or the height equal to 0, use the full image size
                     if (
-                        this.config.iconWidth > 0 &&
-                        this.config.iconHeight > 0
+                        OSFramework.Maps.Helper.IsValidNumber(height) &&
+                        OSFramework.Maps.Helper.IsValidNumber(width) && 
+                        height > 0 && width > 0
                     ) {
-                        scaledSize = new google.maps.Size(
-                            this.config.iconWidth,
-                            this.config.iconHeight
-                        );
+                        scaledSize = new google.maps.Size(width, height);
                     }
                     // Update the icon using the previous configurations
                     const icon = {
-                        url,
-                        scaledSize
+                        url: url,
+                        size: scaledSize
                     };
                     // Set the icon to the Marker provider
                     this.provider.setIcon(icon);
@@ -86,8 +87,7 @@ namespace Provider.Maps.Google.Marker {
                 // Let's return a promise that will be resolved or rejected according to the result
                 return new Promise((resolve, reject) => {
                     Helper.Conversions.ConvertToCoordinates(
-                        this.config.location,
-                        this.map.config.apiKey
+                        this.config.location
                     )
                         .then((response) => {
                             markerOptions.position = {
@@ -195,7 +195,7 @@ namespace Provider.Maps.Google.Marker {
                 markerPosition
                     .then((markerOptions) => {
                         this._provider = new google.maps.Marker({
-                            ...this.getProviderConfig(),
+                            ...(this.getProviderConfig() as unknown[]),
                             ...markerOptions,
                             map: this.map.provider
                         });
@@ -224,17 +224,18 @@ namespace Provider.Maps.Google.Marker {
             }
         }
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        public changeProperty(propertyName: string, value: any): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             const propValue =
                 OSFramework.Maps.Enum.OS_Config_Marker[propertyName];
-            super.changeProperty(propertyName, value);
+            super.changeProperty(propertyName, propertyValue);
             if (this.isReady) {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_Marker.location:
                         Helper.Conversions.ConvertToCoordinates(
-                            value,
-                            this.map.config.apiKey
+                            propertyValue as string
                         )
                             .then((response) => {
                                 this._provider.setPosition({
@@ -255,18 +256,20 @@ namespace Provider.Maps.Google.Marker {
                             });
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Marker.allowDrag:
-                        return this._provider.setDraggable(value);
+                        return this._provider.setDraggable(
+                            propertyValue as boolean
+                        );
                     case OSFramework.Maps.Enum.OS_Config_Marker.iconHeight:
                     case OSFramework.Maps.Enum.OS_Config_Marker.iconWidth:
                         this._setIconSize();
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Marker.iconUrl:
-                        this._setIcon(value);
+                        this._setIcon(propertyValue as string);
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Marker.label:
-                        return this._provider.setLabel(value);
+                        return this._provider.setLabel(propertyValue as string);
                     case OSFramework.Maps.Enum.OS_Config_Marker.title:
-                        return this._provider.setTitle(value);
+                        return this._provider.setTitle(propertyValue as string);
                 }
             }
         }

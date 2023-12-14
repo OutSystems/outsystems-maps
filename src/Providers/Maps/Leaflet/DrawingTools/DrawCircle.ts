@@ -8,7 +8,7 @@ namespace Provider.Maps.Leaflet.DrawingTools {
             drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
             drawingToolsId: string,
             type: string,
-            configs: Configuration.DrawingTools.DrawFilledShapeConfig
+            configs: JSON
         ) {
             super(
                 map,
@@ -22,7 +22,6 @@ namespace Provider.Maps.Leaflet.DrawingTools {
         private _createConfigsElement(
             shape: L.Circle,
             configs: Configuration.Shape.CircleShapeConfig
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ): Configuration.Shape.CircleShapeConfig {
             const providerCenter = shape.getLatLng();
             const center = `${providerCenter.lat},${providerCenter.lng}`;

@@ -55,10 +55,9 @@ namespace OSFramework.Maps.Event.DrawingTools {
          */
         public trigger(
             eventType: DrawingToolsEventType,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             eventInfo?: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-            ...args: any
+            eventParams?: Maps.DrawingTools.IDrawingToolsEventParams,
+            ...args: unknown[]
         ): void {
             // Let's first check if the DrawingTools has any events associated
             // If the event type is ProviderEvent than we need to get the handlers for the eventInfo -> name of the event
@@ -75,7 +74,8 @@ namespace OSFramework.Maps.Event.DrawingTools {
                         handlerEvent.trigger(
                             this._drawingTools.map.widgetId, // Id of Map block that was initialized
                             this._drawingTools.widgetId ||
-                                this._drawingTools.uniqueId // Id of DrawingTools block that was initialized
+                                this._drawingTools.uniqueId, // Id of DrawingTools block that was initialized
+                            ...args
                         );
                         break;
                     case DrawingToolsEventType.ProviderEvent:
@@ -90,13 +90,14 @@ namespace OSFramework.Maps.Event.DrawingTools {
                             );
                             handler.trigger(
                                 this._drawingTools.map.widgetId, // Id of Map block that triggered the event
-                                args[0].uniqueId ||
+                                eventParams.uniqueId ||
                                     this._drawingTools.widgetId ||
                                     this._drawingTools.uniqueId, // Id of marker/shape block (once created by the DrawingTools) that triggered the event
                                 // eventInfo, // Name of the event that got triggered
-                                args[0].isNewElement, // IsNewShape/IsNewMarker default is true
-                                args[0].coordinates, // coordinates in lat/lng structure
-                                args[0].location // location in string, as the shape block accepts coords and addresses
+                                eventParams.isNewElement, // IsNewShape/IsNewMarker default is true
+                                eventParams.coordinates, // coordinates in lat/lng structure
+                                eventParams.location, // location in string, as the shape block accepts coords and addresses
+                                ...args
                             );
                             break;
                         }

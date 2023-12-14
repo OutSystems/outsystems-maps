@@ -6,18 +6,17 @@ namespace Provider.Maps.Google.Configuration.Shape {
         public fillColor: string;
         public fillOpacity: number;
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        constructor(config: any) {
-            super(config);
-        }
+        // No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
+        // constructor(config: unknown) {
+        //     super(config);
+        // }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public getProviderConfig(): any {
-            const provider = super.getProviderConfig();
-            provider.fillColor = this.fillColor;
-            provider.fillOpacity = this.fillOpacity;
+        public getProviderConfig(): IShapeProviderConfig {
+            const provider_configs = super.getProviderConfig();
+            provider_configs.fillColor = this.fillColor;
+            provider_configs.fillOpacity = this.fillOpacity;
 
-            return provider;
+            return provider_configs;
         }
     }
 }

@@ -19,8 +19,7 @@ namespace OSFramework.Maps.Shape {
         widgetId: string;
 
         build(): void;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        changeProperty(propertyName: string, propertyValue: any): void;
+        changeProperty(propertyName: string, propertyValue: unknown): void;
         dispose(): void;
         /**
          * Refreshes the Events of the Shape Provider after Subscribing/Unsubscribing events

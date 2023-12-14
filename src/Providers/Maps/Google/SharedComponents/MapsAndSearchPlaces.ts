@@ -90,7 +90,7 @@ namespace Provider.Maps.Google.SharedComponents {
                         resolve(finalBounds);
                     }
                 } else {
-                    Helper.Conversions.ConvertToCoordinates(bounds[cd], apiKey)
+                    Helper.Conversions.ConvertToCoordinates(bounds[cd])
                         .then((response) => {
                             // Make sure to increment the boundsLength to validate whether the bounds structure has all the cardinal directions or not.
                             boundsLength++;

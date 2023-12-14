@@ -4,13 +4,11 @@ namespace Provider.Maps.Leaflet.DrawingTools {
         export function MakeDrawingTools(
             map: OSFramework.Maps.OSMap.IMap,
             drawingToolsId: string,
-            configs: OSFramework.Maps.Configuration.IConfiguration
+            configs: JSON
         ): OSFramework.Maps.DrawingTools.IDrawingTools {
-            return new DrawingTools(
-                map,
-                drawingToolsId,
-                configs as Configuration.DrawingTools.DrawingToolsConfig
-            );
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-ignore
+            return new DrawingTools(map, drawingToolsId, configs);
         }
 
         export function MakeTool(
@@ -18,7 +16,7 @@ namespace Provider.Maps.Leaflet.DrawingTools {
             drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
             toolId: string,
             type: OSFramework.Maps.Enum.DrawingToolsTypes,
-            configs: OSFramework.Maps.Configuration.IConfiguration
+            configs: JSON
         ): OSFramework.Maps.DrawingTools.ITool {
             switch (type) {
                 case OSFramework.Maps.Enum.DrawingToolsTypes.Marker:
@@ -27,7 +25,7 @@ namespace Provider.Maps.Leaflet.DrawingTools {
                         drawingTools,
                         toolId,
                         type,
-                        configs as Configuration.DrawingTools.DrawMarkerConfig
+                        configs
                     );
                 case OSFramework.Maps.Enum.DrawingToolsTypes.Polyline:
                     return new DrawPolyline(
@@ -35,7 +33,7 @@ namespace Provider.Maps.Leaflet.DrawingTools {
                         drawingTools,
                         toolId,
                         type,
-                        configs as Configuration.DrawingTools.DrawBasicShapeConfig
+                        configs
                     );
                 case OSFramework.Maps.Enum.DrawingToolsTypes.Polygon:
                     return new DrawPolygon(
@@ -43,7 +41,7 @@ namespace Provider.Maps.Leaflet.DrawingTools {
                         drawingTools,
                         toolId,
                         type,
-                        configs as Configuration.DrawingTools.DrawFilledShapeConfig
+                        configs
                     );
                 case OSFramework.Maps.Enum.DrawingToolsTypes.Circle:
                     return new DrawCircle(
@@ -51,7 +49,7 @@ namespace Provider.Maps.Leaflet.DrawingTools {
                         drawingTools,
                         toolId,
                         type,
-                        configs as Configuration.DrawingTools.DrawFilledShapeConfig
+                        configs
                     );
                 case OSFramework.Maps.Enum.DrawingToolsTypes.Rectangle:
                     return new DrawRectangle(
@@ -59,7 +57,7 @@ namespace Provider.Maps.Leaflet.DrawingTools {
                         drawingTools,
                         toolId,
                         type,
-                        configs as Configuration.DrawingTools.DrawFilledShapeConfig
+                        configs
                     );
                 default:
                     throw new Error(

@@ -6,15 +6,14 @@ namespace Provider.Maps.Google.Configuration.FileLayer {
         extends OSFramework.Maps.Configuration.AbstractConfiguration
         implements OSFramework.Maps.Configuration.IConfigurationFileLayer
     {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public layerUrl: string;
         public preserveViewport: boolean;
         public suppressPopups: boolean;
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        constructor(config: any) {
-            super(config);
-        }
+        // No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
+        // constructor(config: JSON) {
+        //     super(config);
+        // }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public getProviderConfig(): any {

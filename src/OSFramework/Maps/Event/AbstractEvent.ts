@@ -1,10 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.Maps.Event {
-    type Handler = {
-        eventHandler: Callbacks.Generic;
-        uniqueId: string; //Event unique identifier
-    };
-
     /**
      * Abstract class that will be responsible for the basic behaviours of a link, namely storing the callbacks.
      *
@@ -16,9 +11,9 @@ namespace OSFramework.Maps.Event {
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     export abstract class AbstractEvent<T> implements IEvent<T> {
-        private _handlers: Handler[] = [];
+        private _handlers: IHandler[] = [];
 
-        protected get handlers(): Handler[] {
+        protected get handlers(): IHandler[] {
             return this._handlers;
         }
 
@@ -46,12 +41,16 @@ namespace OSFramework.Maps.Event {
             }
         }
 
-        // eslint-disable-next-line  @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types
-        public trigger(data?: T, ...args): void {
+        // eslint-disable-next-line  @typescript-eslint/no-unused-vars
+        public trigger(data?: T, ...args: unknown[]): void {
             this._handlers
                 .slice(0)
                 .forEach((h) =>
-                    Helper.CallbackAsyncInvocation(h.eventHandler, data)
+                    Helper.CallbackAsyncInvocation(
+                        h.eventHandler,
+                        data,
+                        ...args
+                    )
                 );
         }
     }

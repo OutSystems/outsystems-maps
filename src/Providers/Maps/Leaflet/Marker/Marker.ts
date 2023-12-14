@@ -17,7 +17,7 @@ namespace Provider.Maps.Leaflet.Marker {
             map: OSFramework.Maps.OSMap.IMap,
             markerId: string,
             type: OSFramework.Maps.Enum.MarkerType,
-            configs: Configuration.Marker.LeafletMarkerConfig
+            configs: JSON | OSFramework.Maps.Configuration.IConfigurationMarker
         ) {
             super(
                 map,
@@ -39,8 +39,8 @@ namespace Provider.Maps.Leaflet.Marker {
         }
 
         private async _getMeta(
-            url
-        ): Promise<{ width: number; height: number }> {
+            url: string
+        ): Promise<{ height: number; width: number }> {
             return new Promise((resolve, reject) => {
                 const img = new Image();
                 img.onload = () =>
@@ -260,14 +260,15 @@ namespace Provider.Maps.Leaflet.Marker {
             // Then, set Marker events
             // Finally, refresh the Map
             const markerLocation = this._buildMarkerLocation();
-            const configs = this.getProviderConfig();
+            const provider_configs =
+                this.getProviderConfig() as L.MarkerOptions;
             // If markerOptions is undefined (should be a promise) -> don't create the marker
             if (markerLocation !== undefined) {
                 markerLocation
                     .then((location: L.LatLng) => {
-                        this._provider = L.marker(location, configs);
-                        this._setIcon(configs.iconUrl);
-                        this._setLabelContent(configs.label);
+                        this._provider = L.marker(location, provider_configs);
+                        this._setIcon(this.config.iconUrl);
+                        this._setLabelContent(this.config.label);
 
                         this._provider.addTo(this.map.provider);
                         // We can only set the events on the provider after its creation
@@ -290,15 +291,19 @@ namespace Provider.Maps.Leaflet.Marker {
             }
         }
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        public changeProperty(propertyName: string, value: any): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             const property =
                 OSFramework.Maps.Enum.OS_Config_Marker[propertyName];
-            super.changeProperty(propertyName, value);
+            super.changeProperty(propertyName, propertyValue);
             if (this.isReady) {
                 switch (property) {
                     case OSFramework.Maps.Enum.OS_Config_Marker.location:
-                        Helper.Conversions.ValidateCoordinates(value)
+                        Helper.Conversions.ValidateCoordinates(
+                            propertyValue as string
+                        )
                             .then((response) => {
                                 this._provider.setLatLng({
                                     lat: response.lat,
@@ -317,7 +322,7 @@ namespace Provider.Maps.Leaflet.Marker {
                             });
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Marker.allowDrag:
-                        value
+                        propertyValue
                             ? this._provider.dragging.enable()
                             : this._provider.dragging.disable();
                         return;
@@ -325,16 +330,17 @@ namespace Provider.Maps.Leaflet.Marker {
                         this._setIconSize();
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Marker.iconUrl:
-                        this._setIcon(value);
+                        this._setIcon(propertyValue as string);
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Marker.iconWidth:
                         this._setIconSize();
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Marker.label:
-                        this._setLabelContent(value);
+                        this._setLabelContent(propertyValue as string);
                         return;
                     case OSFramework.Maps.Enum.OS_Config_Marker.title:
-                        this._provider.getElement().title = value;
+                        this._provider.getElement().title =
+                            propertyValue as string;
                         return;
                 }
             }

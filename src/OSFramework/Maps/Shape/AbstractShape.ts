@@ -80,6 +80,18 @@ namespace OSFramework.Maps.Shape {
             this.shapeEvents.trigger(Event.Shape.ShapeEventType.Initialized);
         }
 
+        protected triggerShapeChangedEvent(): void {
+            const shapeLocation = this.getShapeCoordinates();
+
+            this.shapeEvents.trigger(
+                // EventType
+                Maps.Event.Shape.ShapeEventType.ProviderEvent,
+                // EventName
+                Maps.Helper.Constants.shapeChangedEvent,
+                shapeLocation
+            );
+        }
+
         public build(): void {
             if (this._built) return;
 
@@ -87,8 +99,10 @@ namespace OSFramework.Maps.Shape {
             this._setWidgetId();
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-        public changeProperty(propertyName: string, propertyValue: any): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             //Update Shape's config when the property is available
             if (this.config.hasOwnProperty(propertyName)) {
                 this.config[propertyName] = propertyValue;
@@ -111,30 +125,17 @@ namespace OSFramework.Maps.Shape {
             return id === this._uniqueId || id === this.widgetId;
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public getProviderConfig(): any {
-            return this._config.getProviderConfig();
+        public getProviderConfig(): unknown {
+            return this.config.getProviderConfig();
         }
 
         public validateProviderEvent(eventName: string): boolean {
             return this.shapeProviderEvents.indexOf(eventName) !== -1;
         }
 
-        protected triggerShapeChangedEvent() {
-            const shapeLocation = this.getShapeCoordinates();
-
-            this.shapeEvents.trigger(
-                // EventType
-                OSFramework.Maps.Event.Shape.ShapeEventType.ProviderEvent,
-                // EventName
-                OSFramework.Maps.Helper.Constants.shapeChangedEvent,
-                shapeLocation
-            );
-        }
-
         protected abstract get invalidShapeLocationErrorCode(): Enum.ErrorCodes;
 
-        protected abstract getShapeCoordinates(): OSFramework.Maps.OSStructures.OSMap.OSShapeCoordinates;
+        protected abstract getShapeCoordinates(): Maps.OSStructures.OSMap.OSShapeCoordinates;
         public abstract refreshProviderEvents(): void;
         public abstract get shapeProviderEvents(): Array<string>;
         public abstract get shapeTag(): string;

@@ -21,8 +21,7 @@ namespace OSFramework.Maps.OSMap {
         /** Get all Markers from the Map */
         markers: Array<OSFramework.Maps.Marker.IMarker>;
         /** Get all Markers that have finished building its provider */
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        markersReady: Array<any>;
+        markersReady: Array<unknown>;
         /** Map provider */
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         provider: any;
@@ -82,8 +81,7 @@ namespace OSFramework.Maps.OSMap {
         changeDrawingToolsProperty(
             drawingToolsId: string,
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            propertyValue: any
+            propertyValue: unknown
         ): void;
         /**
          * Change property of a fileLayer from the FileLayer by specifying the property name and the new value
@@ -94,8 +92,7 @@ namespace OSFramework.Maps.OSMap {
         changeFileLayerProperty(
             fileLayerId: string,
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            propertyValue: any
+            propertyValue: unknown
         ): void;
         /**
          * Change property of a heatmapLayer from the HeatmapLayer by specifying the property name and the new value
@@ -106,8 +103,7 @@ namespace OSFramework.Maps.OSMap {
         changeHeatmapLayerProperty(
             heatmapLayerId: string,
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            propertyValue: any
+            propertyValue: unknown
         ): void;
         /**
          * Change property of a marker from the Map by specifying the property name and the new value
@@ -118,16 +114,14 @@ namespace OSFramework.Maps.OSMap {
         changeMarkerProperty(
             markerId: string,
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            propertyValue: any
+            propertyValue: unknown
         ): void;
         /**
          * Change property of the Map by specifying the property name and the new value
          * @param propertyName name of the property
          * @param propertyValue new value of the property
          */
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        changeProperty(propertyName: string, propertyValue: any): void;
+        changeProperty(propertyName: string, propertyValue: unknown): void;
         /**
          * Change property of a shape from the Map by specifying the property name and the new value
          * @param shapeId id of the Shape
@@ -137,8 +131,7 @@ namespace OSFramework.Maps.OSMap {
         changeShapeProperty(
             shapeId: string,
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            propertyValue: any
+            propertyValue: unknown
         ): void;
         /**
          * Get the FileLayer from the Map by giving a fileLayerId

@@ -17,17 +17,16 @@ namespace OSFramework.Maps.Event.Shape {
          * @param coords Event properties as coordinates and location
          */
         public trigger(
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             mapId: string,
             shapeId: string,
             eventName: string,
-            coords: OSFramework.Maps.OSStructures.OSMap.OSShapeCoordinates
+            coords: OSStructures.OSMap.OSShapeCoordinates
         ): void {
             this.handlers
                 .slice(0)
                 .forEach((h) =>
                     Helper.CallbackAsyncInvocation(
-                        h,
+                        h.eventHandler,
                         mapId,
                         shapeId,
                         eventName,

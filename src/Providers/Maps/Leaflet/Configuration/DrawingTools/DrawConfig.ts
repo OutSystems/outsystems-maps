@@ -9,14 +9,10 @@ namespace Provider.Maps.Leaflet.Configuration.DrawingTools {
         public allowDrag: boolean;
         public uniqueId: string;
 
-        constructor(
-            config:
-                | Configuration.DrawingTools.DrawFilledShapeConfig
-                | Configuration.DrawingTools.DrawBasicShapeConfig
-                | Configuration.DrawingTools.DrawMarkerConfig
-        ) {
-            super(config);
-        }
+        // No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
+        // constructor(config: JSON) {
+        //     super(config);
+        // }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public getProviderConfig(): any {

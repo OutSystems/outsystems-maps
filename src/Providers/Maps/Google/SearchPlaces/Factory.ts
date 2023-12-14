@@ -3,12 +3,9 @@ namespace Provider.Maps.Google.SearchPlaces {
     export namespace SearchPlacesFactory {
         export function MakeSearchPlaces(
             searchPlacesId: string,
-            configs: OSFramework.Maps.Configuration.IConfiguration
+            configs: JSON
         ): OSFramework.Maps.SearchPlaces.ISearchPlaces {
-            return new SearchPlaces(
-                searchPlacesId,
-                configs as Configuration.SearchPlaces.SearchPlacesConfig
-            );
+            return new SearchPlaces(searchPlacesId, configs);
         }
     }
 }

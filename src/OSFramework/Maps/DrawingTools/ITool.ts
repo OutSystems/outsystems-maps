@@ -8,8 +8,7 @@ namespace OSFramework.Maps.DrawingTools {
         drawingTools: IDrawingTools;
         isReady: boolean;
         map: OSMap.IMap; //IMap
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        options: any;
+        options: unknown;
         type: string;
         uniqueId: string;
         widgetId: string;
@@ -19,9 +18,7 @@ namespace OSFramework.Maps.DrawingTools {
          * The new handlers will create the shape/markers elements and remove the overlay created by the drawing tool on the map
          * @param e is only used by the leaflet implementation, is used to access the configs info on the creation of a new shape/marker
          */
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        addCompletedEvent(e?: any): void;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        changeProperty(propertyName: string, propertyValue: any): void;
+        addCompletedEvent(e?: unknown): void;
+        changeProperty(propertyName: string, propertyValue: unknown): void;
     }
 }
