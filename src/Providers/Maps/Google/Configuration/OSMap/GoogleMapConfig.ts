@@ -6,6 +6,7 @@ namespace Provider.Maps.Google.Configuration.OSMap {
     {
         public advancedFormat: string;
         public apiKey: string;
+        public autoZoomOnShapes: boolean;
         public center: string | OSFramework.Maps.OSStructures.OSMap.Coordinates;
         public height: string;
         public markerClusterer: OSFramework.Maps.Configuration.IConfigurationMarkerClusterer;
@@ -15,7 +16,6 @@ namespace Provider.Maps.Google.Configuration.OSMap {
         public type: OSFramework.Maps.Enum.OSMap.Type;
         public uniqueId: string;
         public zoom: OSFramework.Maps.Enum.OSMap.Zoom;
-        public autoZoomOnShapes: boolean;
 
         // No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
         // constructor(config: JSON) {

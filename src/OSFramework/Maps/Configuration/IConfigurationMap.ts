@@ -6,11 +6,11 @@ namespace OSFramework.Maps.Configuration {
      */
     export interface IConfigurationMap extends IConfiguration {
         apiKey?: string;
+        autoZoomOnShapes?: boolean;
         center: string | OSStructures.OSMap.Coordinates;
         height: string;
         type?: Enum.OSMap.Type;
         uniqueId: string;
         zoom: Enum.OSMap.Zoom;
-        autoZoomOnShapes?: boolean;
     }
 }
