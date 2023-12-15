@@ -28,6 +28,14 @@ namespace Provider.Maps.Google.OSMap {
         }
 
         private _addMapZoomHandler(): void {
+            /*
+                This timeout is here due to an anomaly in the behaviour of google maps
+                when more than one maker is added to the map, the zoom event is fired twice:
+                https://stackoverflow.com/questions/20436185/google-maps-api-v3-zoom-changed-event-fired-twice-after-fitbounds-called
+
+                However since the event is triggered asynchronously and there's no way
+                to wait for it, or to know it will occur, this hack was added. I'm sorry, I'm ashamed of myself. 
+            */
             setTimeout(() => {
                 if (this && this._provider) {
                     this._gZoomChangeListener = google.maps.event.addListener(
