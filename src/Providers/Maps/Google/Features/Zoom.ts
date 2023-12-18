@@ -34,15 +34,13 @@ namespace Provider.Maps.Google.Feature {
             const bounds = new google.maps.LatLngBounds();
             this._map.markers.forEach(function (item) {
                 if (item.provider === undefined) return;
-                const loc = item.provider.position.toJSON();
-                bounds.extend(loc);
+                bounds.extend(item.provider.position.toJSON());
             });
 
             if (useShapes) {
                 this._map.shapes.forEach(function (item) {
                     if (item.provider === undefined) return;
-                    const loc = item.providerBounds;
-                    bounds.union(loc);
+                    bounds.union(item.providerBounds);
                 });
             }
 
