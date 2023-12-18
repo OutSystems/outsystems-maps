@@ -4,6 +4,7 @@ namespace Provider.Maps.Leaflet.Configuration.OSMap {
         extends OSFramework.Maps.Configuration.AbstractConfiguration
         implements OSFramework.Maps.Configuration.IConfigurationMap
     {
+        public autoZoomOnShapes: boolean;
         public center: string | OSFramework.Maps.OSStructures.OSMap.Coordinates;
         public height: string;
         public offset: OSFramework.Maps.OSStructures.OSMap.Offset;

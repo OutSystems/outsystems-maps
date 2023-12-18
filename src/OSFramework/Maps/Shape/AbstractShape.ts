@@ -137,6 +137,7 @@ namespace OSFramework.Maps.Shape {
 
         protected abstract getShapeCoordinates(): Maps.OSStructures.OSMap.OSShapeCoordinates;
         public abstract refreshProviderEvents(): void;
+        public abstract get providerBounds(): any;
         public abstract get shapeProviderEvents(): Array<string>;
         public abstract get shapeTag(): string;
     }

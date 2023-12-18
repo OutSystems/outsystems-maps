@@ -49,7 +49,7 @@ namespace OSFramework.Maps.OSMap {
         }
         public abstract get mapTag(): string;
 
-        protected get shapes(): Shape.IShape[] {
+        public get shapes(): Shape.IShape[] {
             return Array.from(this._shapesSet);
         }
 
@@ -419,7 +419,7 @@ namespace OSFramework.Maps.OSMap {
                 shape.dispose();
                 this._shapes.delete(shapeId);
                 this._shapesSet.delete(shape);
-                // After removing a marker, we need to refresh the Map to reflect the zoom, offset and center position of the Map
+                // After removing a shape, we need to refresh the Map to reflect the zoom, offset and center position of the Map
                 if (this._isReady) {
                     this.refresh();
                 }

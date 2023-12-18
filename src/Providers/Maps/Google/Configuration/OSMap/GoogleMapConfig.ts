@@ -6,6 +6,7 @@ namespace Provider.Maps.Google.Configuration.OSMap {
     {
         public advancedFormat: string;
         public apiKey: string;
+        public autoZoomOnShapes: boolean;
         public center: string | OSFramework.Maps.OSStructures.OSMap.Coordinates;
         public height: string;
         public markerClusterer: OSFramework.Maps.Configuration.IConfigurationMarkerClusterer;

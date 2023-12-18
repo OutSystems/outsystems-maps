@@ -71,6 +71,9 @@ namespace Provider.Maps.Leaflet.Shape {
 
                         // Finish build of Shape
                         this.finishBuild();
+
+                        // Trigger the new center location after creating the marker
+                        this.map.refresh();
                     })
                     .catch((error) => {
                         OSFramework.Maps.Helper.ThrowError(
