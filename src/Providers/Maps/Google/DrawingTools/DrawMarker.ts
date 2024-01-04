@@ -65,8 +65,7 @@ namespace Provider.Maps.Google.DrawingTools {
         protected createElement(
             uniqueId: string,
             marker: google.maps.Marker,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
+            configs: unknown[]
         ): OSFramework.Maps.Marker.IMarker {
             const location = `${marker.getPosition().lat()},${marker
                 .getPosition()

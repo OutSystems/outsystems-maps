@@ -5,7 +5,7 @@ namespace OSFramework.Maps.Shape {
             map: OSMap.IMap,
             shapeId: string,
             type: Enum.ShapeType,
-            configs: JSON
+            configs: Configuration.IConfigurationShape
         ): Shape.IShape {
             switch (map.providerType) {
                 case Enum.ProviderType.Google:
@@ -14,14 +14,14 @@ namespace OSFramework.Maps.Shape {
                         map,
                         shapeId,
                         type,
-                        configs as JSON
+                        configs
                     );
                 case Enum.ProviderType.Leaflet:
                     return Provider.Maps.Leaflet.Shape.ShapeFactory.MakeShape(
                         map,
                         shapeId,
                         type,
-                        configs as JSON
+                        configs
                     );
                 default:
                     throw new Error(

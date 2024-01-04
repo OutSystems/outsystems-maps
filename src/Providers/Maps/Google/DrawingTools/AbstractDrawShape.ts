@@ -10,8 +10,7 @@ namespace Provider.Maps.Google.DrawingTools {
             drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
             drawingToolsId: string,
             type: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
+            configs: T
         ) {
             super(map, drawingTools, drawingToolsId, type, configs);
         }
@@ -28,13 +27,7 @@ namespace Provider.Maps.Google.DrawingTools {
                     eventName: string,
                     shapeCoordinates: OSFramework.Maps.OSStructures.OSMap.OSShapeCoordinates
                 ) => {
-                    this.drawingTools.drawingToolsEvents.trigger(
-                        // EventType
-                        OSFramework.Maps.Event.DrawingTools
-                            .DrawingToolsEventType.ProviderEvent,
-                        // EventName
-                        this.completedToolEventName,
-                        // The extra parameters, uniqueId and isNewElement set to false indicating that the element is not new
+                    const dtParams: OSFramework.Maps.DrawingTools.IDrawingToolsEventParams =
                         {
                             uniqueId: _shape.uniqueId,
                             isNewElement: false,
@@ -42,7 +35,16 @@ namespace Provider.Maps.Google.DrawingTools {
                             coordinates: JSON.stringify(
                                 shapeCoordinates.coordinates
                             )
-                        }
+                        };
+
+                    this.drawingTools.drawingToolsEvents.trigger(
+                        // EventType
+                        OSFramework.Maps.Event.DrawingTools
+                            .DrawingToolsEventType.ProviderEvent,
+                        // EventName
+                        this.completedToolEventName,
+                        // The extra parameters, uniqueId and isNewElement set to false indicating that the element is not new
+                        dtParams
                     );
                 }
             );
@@ -52,8 +54,7 @@ namespace Provider.Maps.Google.DrawingTools {
         protected createShapeElement(
             uniqueId: string,
             type: OSFramework.Maps.Enum.ShapeType,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
+            configs: unknown
         ): OSFramework.Maps.Shape.IShape {
             const _shape = Shape.ShapeFactory.MakeShape(
                 this.map,

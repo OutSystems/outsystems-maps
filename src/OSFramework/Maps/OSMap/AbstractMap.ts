@@ -161,8 +161,10 @@ namespace OSFramework.Maps.OSMap {
             ).id;
         }
 
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-        public changeProperty(propertyName: string, propertyValue: any): void {
+        public changeProperty(
+            propertyName: string,
+            propertyValue: unknown
+        ): void {
             //Update Map's config when the property is available
             if (this.config.hasOwnProperty(propertyName)) {
                 this.config[propertyName] = propertyValue;
@@ -433,36 +435,31 @@ namespace OSFramework.Maps.OSMap {
         public abstract changeDrawingToolsProperty(
             drawingToolsId: string,
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            propertyValue: any
+            propertyValue: unknown
         ): void;
 
         public abstract changeFileLayerProperty(
             fileLayerId: string,
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            propertyValue: any
+            propertyValue: unknown
         ): void;
 
         public abstract changeHeatmapLayerProperty(
             heatmapLayerId: string,
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            propertyValue: any
+            propertyValue: unknown
         ): void;
 
         public abstract changeMarkerProperty(
             markerId: string,
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            propertyValue: any
+            propertyValue: unknown
         ): void;
 
         public abstract changeShapeProperty(
             shapeId: string,
             propertyName: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            propertyValue: any
+            propertyValue: unknown
         ): void;
 
         public abstract refresh(): void;

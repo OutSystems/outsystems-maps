@@ -9,14 +9,11 @@ namespace Provider.Maps.Google.Shape {
         >
         implements OSFramework.Maps.Shape.IShapePolyshape
     {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-
         constructor(
             map: OSFramework.Maps.OSMap.IMap,
             shapeId: string,
             type: OSFramework.Maps.Enum.ShapeType,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
+            configs: unknown
         ) {
             super(
                 map,
@@ -31,8 +28,8 @@ namespace Provider.Maps.Google.Shape {
         ): google.maps.Polygon {
             return new google.maps.Polygon({
                 map: this.map.provider,
-                path,
-                ...this.getProviderConfig()
+                paths: path,
+                ...(this.getProviderConfig() as Configuration.Shape.IShapeProviderConfig)
             });
         }
 

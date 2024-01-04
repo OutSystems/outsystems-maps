@@ -14,8 +14,7 @@ namespace OSFramework.Maps.Callbacks.Marker {
             mapId: string,
             markerId: string,
             markerObj: OSFramework.Maps.Marker.IMarker,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            ...args: any
+            ...args: unknown[]
         ): void;
     };
 }

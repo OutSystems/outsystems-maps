@@ -8,8 +8,7 @@ namespace Provider.Maps.Google.DrawingTools {
             drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
             drawingToolsId: string,
             type: string,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-            configs: any
+            configs: JSON
         ) {
             super(
                 map,
@@ -22,7 +21,6 @@ namespace Provider.Maps.Google.DrawingTools {
 
         private _createConfigsElement(
             shape: google.maps.Circle,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             configs: Configuration.Shape.CircleShapeConfig
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ): any {
@@ -58,7 +56,6 @@ namespace Provider.Maps.Google.DrawingTools {
         protected createElement(
             uniqueId: string,
             shape: google.maps.Circle,
-            // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
             configs: Configuration.Shape.CircleShapeConfig
         ): OSFramework.Maps.Shape.IShape {
             // we need to clean the provided configs and add the locations in order to create the new element

@@ -1,19 +1,16 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OutSystems.Maps.MapAPI.FileLayerManager.Events {
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
     const _pendingEvents: Map<
         string,
         {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            cb: any;
+            cb: OSFramework.Maps.Callbacks.Generic;
             event: OSFramework.Maps.Event.FileLayer.FileLayersEventType;
             uniqueId: string; //Event unique identifier
         }[]
     > = new Map<
         string,
         {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            cb: any;
+            cb: OSFramework.Maps.Callbacks.Generic;
             event: OSFramework.Maps.Event.FileLayer.FileLayersEventType;
             uniqueId: string; //Event unique identifier
         }[]

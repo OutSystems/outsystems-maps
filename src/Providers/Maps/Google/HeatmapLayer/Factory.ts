@@ -4,14 +4,9 @@ namespace Provider.Maps.Google.HeatmapLayer {
         export function MakeHeatmapLayer(
             map: OSFramework.Maps.OSMap.IMap,
             heatmapLayerId: string,
-            configs: OSFramework.Maps.Configuration.IConfiguration
+            configs: JSON
         ): OSFramework.Maps.HeatmapLayer.IHeatmapLayer {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            return new HeatmapLayer(
-                map,
-                heatmapLayerId,
-                configs as Configuration.HeatmapLayer.HeatmapLayerConfig
-            );
+            return new HeatmapLayer(map, heatmapLayerId, configs);
         }
     }
 }
