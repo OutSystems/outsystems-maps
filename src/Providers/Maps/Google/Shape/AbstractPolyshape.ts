@@ -76,6 +76,14 @@ namespace Provider.Maps.Google.Shape {
             this._provider.setPath(path);
         }
 
+        public get providerBounds(): google.maps.LatLngBounds {
+            const bounds = new google.maps.LatLngBounds();
+            this.providerPath.forEach(function (item, index) {
+                bounds.extend(new google.maps.LatLng(item.lat, item.lng));
+            });
+            return bounds;
+        }
+
         public get providerEventsList(): Array<string> {
             return Constants.Shape.ProviderPolyshapeEvents;
         }

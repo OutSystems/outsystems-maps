@@ -76,6 +76,10 @@ namespace Provider.Maps.Google.Shape {
             };
         }
 
+        public get providerBounds(): google.maps.LatLngBounds {
+            return this.provider.getBounds();
+        }
+
         public get providerCenter(): OSFramework.Maps.OSStructures.OSMap.Coordinates {
             const center = this.provider.get('center');
             if (center === undefined) {

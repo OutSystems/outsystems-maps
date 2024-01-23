@@ -8,6 +8,7 @@ namespace Provider.Maps.Leaflet.Configuration.Shape {
     {
         public allowDrag: boolean;
         public allowEdit: boolean;
+        public autoZoomOnShapes: boolean;
         public locations: string;
         public strokeColor: string;
         public strokeOpacity: number;

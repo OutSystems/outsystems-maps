@@ -6,6 +6,7 @@ namespace OSFramework.Maps.Configuration {
      */
     export interface IConfigurationMap extends IConfiguration {
         apiKey?: string;
+        autoZoomOnShapes?: boolean;
         center: string | OSStructures.OSMap.Coordinates;
         height: string;
         respectUserZoom?: boolean;

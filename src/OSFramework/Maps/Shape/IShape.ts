@@ -9,6 +9,7 @@ namespace OSFramework.Maps.Shape {
         map: OSMap.IMap; //IMap
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         provider: any;
+        providerBounds: any;
         /** Events from the Shape */
         shapeEvents: Event.Shape.ShapeEventsManager;
         /** Events from the Shape provider */

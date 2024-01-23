@@ -27,6 +27,8 @@ namespace OSFramework.Maps.OSMap {
         provider: any;
         /** Map provider Type (google, leaflet) */
         providerType: OSFramework.Maps.Enum.ProviderType;
+        /** Get all shapes from the Map */
+        shapes: Array<OSFramework.Maps.Shape.IShape>;
         /** Id of the Map */
         uniqueId: string;
         /** Id of the Map widget */

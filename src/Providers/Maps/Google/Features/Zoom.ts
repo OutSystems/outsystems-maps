@@ -30,6 +30,27 @@ namespace Provider.Maps.Google.Feature {
             );
         }
 
+        private _setBounds(useShapes: boolean) {
+            const bounds = new google.maps.LatLngBounds();
+            this._map.markers.forEach(function (item) {
+                if (item.provider === undefined) return;
+                bounds.extend(item.provider.position.toJSON());
+            });
+
+            if (useShapes) {
+                this._map.shapes.forEach(function (item) {
+                    if (item.provider === undefined) return;
+                    bounds.union(item.providerBounds);
+                });
+            }
+
+            this._map.provider.fitBounds(bounds);
+            this._map.provider.panToBounds(bounds);
+            this._map.features.center.setCurrentCenter(
+                this._map.provider.getCenter()
+            );
+        }
+
         public get isAutofit(): boolean {
             return this._autofitEnabled;
         }
@@ -40,21 +61,15 @@ namespace Provider.Maps.Google.Feature {
 
         public refreshZoom(): void {
             if (this._map.features.zoom.isAutofit) {
-                const bounds = new google.maps.LatLngBounds();
-                if (this._map.markers.length <= 1) {
+                if (
+                    this._map.markers.length > 1 ||
+                    (this._map.shapes.length > 0 &&
+                        this._map.config.autoZoomOnShapes === true)
+                ) {
+                    this._setBounds(this._map.config.autoZoomOnShapes);
+                } else {
                     this._map.provider.setZoom(
                         OSFramework.Maps.Helper.Constants.zoomAutofit
-                    );
-                } else if (this._map.markers.length >= 2) {
-                    this._map.markers.forEach(function (marker) {
-                        if (marker.provider === undefined) return;
-                        const loc = marker.provider.position.toJSON();
-                        bounds.extend(loc);
-                    });
-                    this._map.provider.fitBounds(bounds);
-                    this._map.provider.panToBounds(bounds);
-                    this._map.features.center.setCurrentCenter(
-                        this._map.provider.getCenter()
                     );
                 }
             } else {

@@ -32,6 +32,10 @@ namespace Provider.Maps.Leaflet.Shape {
             return this.provider.getLatLngs();
         }
 
+        public get providerBounds(): L.LatLngBounds {
+            return this.provider.getBounds();
+        }
+
         public get shapeTag(): string {
             return OSFramework.Maps.Helper.Constants.shapePolylineTag;
         }

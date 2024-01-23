@@ -41,6 +41,8 @@ namespace Provider.Maps.Google.Shape {
 
                         // Finish build of Shape
                         this.finishBuild();
+
+                        this.map.refresh();
                     })
                     .catch((error) => {
                         OSFramework.Maps.Helper.ThrowError(
@@ -154,6 +156,8 @@ namespace Provider.Maps.Google.Shape {
         public get provider(): W {
             return this._provider;
         }
+
+        public abstract get providerBounds(): google.maps.LatLngBounds;
 
         public get shapeProviderEvents(): Array<string> {
             return Constants.Shape.Events;
