@@ -333,6 +333,7 @@ namespace Provider.Maps.Leaflet.OSMap {
         }
 
         public refresh(): void {
+            //Let's stop listening to the zoom event be caused by the refreshZoom
             this._removeMapZoomHandler();
 
             let position = this.features.center.getCenter();
@@ -375,6 +376,7 @@ namespace Provider.Maps.Leaflet.OSMap {
             this.hasMarkerClusterer() &&
                 this.features.markerClusterer.repaint();
 
+            //Re-adding the map zoom handler
             this._addMapZoomHandler();
         }
 
