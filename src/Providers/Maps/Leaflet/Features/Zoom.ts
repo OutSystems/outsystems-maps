@@ -30,6 +30,29 @@ namespace Provider.Maps.Leaflet.Feature {
             );
         }
 
+        private _setBounds(useShapes: boolean) {
+            let bounds: L.LatLngBounds;
+            this._map.markers.forEach(function (marker) {
+                if (marker.provider === undefined) return;
+                const loc: L.LatLng = marker.provider.getLatLng();
+                bounds = bounds
+                    ? bounds.extend(loc)
+                    : new L.LatLngBounds(loc, loc);
+            });
+            if (useShapes) {
+                this._map.shapes.forEach(function (shape) {
+                    if (shape.provider === undefined) return;
+                    const loc: L.LatLngBounds = shape.providerBounds;
+                    bounds = bounds ? bounds.extend(loc) : loc;
+                });
+            }
+            this._map.provider.fitBounds(bounds);
+            this._map.provider.panInsideBounds(bounds);
+            this._map.features.center.setCurrentCenter(
+                this._map.provider.getCenter()
+            );
+        }
+
         public get isAutofit(): boolean {
             return this._autofitEnabled;
         }
@@ -40,23 +63,15 @@ namespace Provider.Maps.Leaflet.Feature {
 
         public refreshZoom(): void {
             if (this._map.features.zoom.isAutofit) {
-                let bounds: L.LatLngBounds;
-                if (this._map.markers.length <= 1) {
+                if (
+                    this._map.markers.length > 1 ||
+                    (this._map.shapes.length > 0 &&
+                        this._map.config.autoZoomOnShapes === true)
+                ) {
+                    this._setBounds(this._map.config.autoZoomOnShapes);
+                } else {
                     this._map.provider.setZoom(
                         OSFramework.Maps.Helper.Constants.zoomAutofit
-                    );
-                } else if (this._map.markers.length >= 2) {
-                    this._map.markers.forEach(function (marker) {
-                        if (marker.provider === undefined) return;
-                        const loc: L.LatLng = marker.provider.getLatLng();
-                        bounds = bounds
-                            ? bounds.extend(loc)
-                            : new L.LatLngBounds(loc, loc);
-                    });
-                    this._map.provider.fitBounds(bounds);
-                    this._map.provider.panInsideBounds(bounds);
-                    this._map.features.center.setCurrentCenter(
-                        this._map.provider.getCenter()
                     );
                 }
             } else {
