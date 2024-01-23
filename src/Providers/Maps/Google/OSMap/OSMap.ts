@@ -25,6 +25,7 @@ namespace Provider.Maps.Google.OSMap {
             );
             this._addedEvents = [];
             this._scriptCallback = this._createGoogleMap.bind(this);
+            this._gZoomChangeListener = undefined;
         }
 
         private _addMapZoomHandler(): void {
@@ -37,7 +38,11 @@ namespace Provider.Maps.Google.OSMap {
                 to wait for it, or to know it will occur, this hack was added. I'm sorry, I'm ashamed of myself. 
             */
             setTimeout(() => {
-                if (this && this._provider) {
+                if (
+                    this &&
+                    this._provider &&
+                    this._gZoomChangeListener === undefined
+                ) {
                     this._gZoomChangeListener = google.maps.event.addListener(
                         this._provider,
                         Constants.OSMap.ProviderEventNames.zoom_changed,
@@ -155,6 +160,7 @@ namespace Provider.Maps.Google.OSMap {
         private _removeMapZoomHandler(): void {
             if (this._gZoomChangeListener) {
                 google.maps.event.removeListener(this._gZoomChangeListener);
+                this._gZoomChangeListener = undefined;
             }
         }
 
@@ -482,38 +488,28 @@ namespace Provider.Maps.Google.OSMap {
             this._removeMapZoomHandler();
 
             let position = this.features.center.getCenter();
-            // When the position is empty, we use the default position
-            // If the configured center position of the map is equal to the default
-            const isDefault =
-                position.lat ===
-                    OSFramework.Maps.Helper.Constants.defaultMapCenter.lat &&
-                position.lng ===
-                    OSFramework.Maps.Helper.Constants.defaultMapCenter.lng;
-            // If the Map has the default center position and at least 1 Marker, we want to use the first Marker position as the new center of the Map
-            if (
-                isDefault === true &&
-                this.markers.length >= 1 &&
-                this.markers[0].provider !== undefined
-            ) {
-                position = this.markers[0].provider.position.toJSON();
-            }
-            // If the Map has NOT the default center position and EXACTLY 1 Marker, we want to use the first Marker position as the new center of the Map
-            else if (
-                isDefault === false &&
-                this.markers.length === 1 &&
-                this.markers[0].provider !== undefined
-            ) {
-                position = this.markers[0].provider.position.toJSON();
-            }
-            // If the Map has NOT the default center position, 2 or more Markers and the zoom is set to be AutoFit
-            // we want to use the first Marker position as the new center of the Map
-            else if (
-                isDefault === false &&
-                this.markers.length >= 2 &&
-                this.markers[0].provider !== undefined &&
-                this.features.zoom.isAutofit
-            ) {
-                position = this.markers[0].provider.position.toJSON();
+
+            //If there are markers, let's choose the map center accordingly.
+            //Otherwise, the map center will be the one defined in the configs.
+            if (this.markers.length > 0) {
+                if (this.markers.length > 1) {
+                    //As the map has more than one marker, let's see if the map
+                    //center should be changed.
+                    if (this.allowRefreshZoom) {
+                        //If the user hasn't change zoom, or the developer is ignoring
+                        //it (current behavior), then the map will be centered tentatively
+                        //in the first marker.
+                        position = this.markers[0].provider.position.toJSON();
+                    } else {
+                        //If the user has zoomed and the developer intends to respect user zoom
+                        //then the current map center will be used.
+                        position = this.provider.getCenter().toJSON();
+                    }
+                } else if (this.markers[0].provider !== undefined) {
+                    //If there's only one marker, and is already created, its location will be
+                    //used as the map center.
+                    position = this.markers[0].provider.position.toJSON();
+                }
             }
 
             // Refresh the center position
