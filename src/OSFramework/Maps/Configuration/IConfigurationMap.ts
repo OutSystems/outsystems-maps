@@ -9,6 +9,7 @@ namespace OSFramework.Maps.Configuration {
         autoZoomOnShapes?: boolean;
         center: string | OSStructures.OSMap.Coordinates;
         height: string;
+        respectUserZoom?: boolean;
         type?: Enum.OSMap.Type;
         uniqueId: string;
         zoom: Enum.OSMap.Zoom;

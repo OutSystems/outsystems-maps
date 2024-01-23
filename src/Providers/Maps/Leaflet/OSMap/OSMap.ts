@@ -32,6 +32,13 @@ namespace Provider.Maps.Leaflet.OSMap {
             );
         }
 
+        private _addMapZoomHandler(): void {
+            this._provider.on(
+                Constants.OSMap.ProviderEventNames.zoom_end,
+                this._mapZoomChangeCallback
+            );
+        }
+
         private _buildDrawingTools(): void {
             // Here we aren't using a forEach because there is only one drawingTools per map
             this.drawingTools && this.drawingTools.build();
@@ -51,6 +58,13 @@ namespace Provider.Maps.Leaflet.OSMap {
                 OSFramework.Maps.Helper.Constants.defaultMapCenter;
 
             return this.config.getProviderConfig();
+        }
+
+        private _removeMapZoomHandler(): void {
+            this._provider.off(
+                Constants.OSMap.ProviderEventNames.zoom_end,
+                this._mapZoomChangeCallback
+            );
         }
 
         private _setMapEvents(): void {
@@ -189,6 +203,8 @@ namespace Provider.Maps.Leaflet.OSMap {
             // Make sure to change the center after the conversion of the location to coordinates
             this.features.center.updateCenter(currentCenter as string);
             this._setMapEvents();
+
+            this._addMapZoomHandler();
         }
 
         public buildFeatures(): void {
@@ -317,46 +333,41 @@ namespace Provider.Maps.Leaflet.OSMap {
         }
 
         public refresh(): void {
+            //Let's stop listening to the zoom event be caused by the refreshZoom
+            this._removeMapZoomHandler();
+
             let position = this.features.center.getCenter();
-            // When the position is empty, we use the default position
-            // If the configured center position of the map is equal to the default
-            const isDefault =
-                position.lat ===
-                    OSFramework.Maps.Helper.Constants.defaultMapCenter.lat &&
-                position.lng ===
-                    OSFramework.Maps.Helper.Constants.defaultMapCenter.lng;
-            // If the Map has the default center position and at least 1 Marker, we want to use the first Marker position as the new center of the Map
-            if (
-                isDefault === true &&
-                this.markers.length >= 1 &&
-                this.markers[0].provider !== undefined
-            ) {
-                position = this.markers[0].provider.getLatLng();
-            }
-            // If the Map has NOT the default center position and EXACTLY 1 Marker, we want to use the first Marker position as the new center of the Map
-            else if (
-                isDefault === false &&
-                this.markers.length === 1 &&
-                this.markers[0].provider !== undefined
-            ) {
-                position = this.markers[0].provider.getLatLng();
-            }
-            // If the Map has NOT the default center position, 2 or more Markers and the zoom is set to be AutoFit
-            // we want to use the first Marker position as the new center of the Map
-            else if (
-                isDefault === false &&
-                this.markers.length >= 2 &&
-                this.markers[0].provider !== undefined &&
-                this.features.zoom.isAutofit
-            ) {
-                position = this.markers[0].provider.getLatLng();
+
+            //If there are markers, let's choose the map center accordingly.
+            //Otherwise, the map center will be the one defined in the configs.
+            if (this.markers.length > 0) {
+                if (this.markers.length > 1) {
+                    //As the map has more than one marker, let's see if the map
+                    //center should be changed.
+                    if (this.allowRefreshZoom) {
+                        //If the user hasn't change zoom, or the developer is ignoring
+                        //it (current behavior), then the map will be centered tentatively
+                        //in the first marker.
+                        position = this.markers[0].provider.getLatLng();
+                    } else {
+                        //If the user has zoomed and the developer intends to respect user zoom
+                        //then the current map center will be used.
+                        position = this.provider.getCenter();
+                    }
+                } else if (this.markers[0].provider !== undefined) {
+                    //If there's only one marker, and is already created, its location will be
+                    //used as the map center.
+                    position = this.markers[0].provider.getLatLng();
+                }
             }
 
             // Refresh the center position
             this.features.center.refreshCenter(position);
 
-            // Refresh the zoom
-            this.features.zoom.refreshZoom();
+            if (this.allowRefreshZoom) {
+                // Refresh the zoom
+                this.features.zoom.refreshZoom();
+            }
 
             // Refresh the offset
             this.features.offset.setOffset(this.features.offset.getOffset);
@@ -364,6 +375,9 @@ namespace Provider.Maps.Leaflet.OSMap {
             // Repaint the marker Clusterers
             this.hasMarkerClusterer() &&
                 this.features.markerClusterer.repaint();
+
+            //Re-adding the map zoom handler
+            this._addMapZoomHandler();
         }
 
         public refreshProviderEvents(): void {

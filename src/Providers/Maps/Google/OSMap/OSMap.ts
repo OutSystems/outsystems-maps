@@ -13,6 +13,7 @@ namespace Provider.Maps.Google.OSMap {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         private _advancedFormatObj: any;
         private _fBuilder: Feature.FeatureBuilder;
+        private _gZoomChangeListener: google.maps.MapsEventListener;
         private _scriptCallback: OSFramework.Maps.Callbacks.Generic;
 
         constructor(mapId: string, configs: JSON) {
@@ -24,6 +25,31 @@ namespace Provider.Maps.Google.OSMap {
             );
             this._addedEvents = [];
             this._scriptCallback = this._createGoogleMap.bind(this);
+            this._gZoomChangeListener = undefined;
+        }
+
+        private _addMapZoomHandler(): void {
+            /*
+                This timeout is here due to an anomaly in the behaviour of google maps
+                when more than one maker is added to the map, the zoom event is fired twice:
+                https://stackoverflow.com/questions/20436185/google-maps-api-v3-zoom-changed-event-fired-twice-after-fitbounds-called
+
+                However since the event is triggered asynchronously and there's no way
+                to wait for it, or to know it will occur, this hack was added. I'm sorry, I'm ashamed of myself. 
+            */
+            setTimeout(() => {
+                if (
+                    this &&
+                    this._provider &&
+                    this._gZoomChangeListener === undefined
+                ) {
+                    this._gZoomChangeListener = google.maps.event.addListener(
+                        this._provider,
+                        Constants.OSMap.ProviderEventNames.zoom_changed,
+                        this._mapZoomChangeCallback
+                    );
+                }
+            }, 100);
         }
 
         private _buildDrawingTools(): void {
@@ -113,6 +139,7 @@ namespace Provider.Maps.Google.OSMap {
 
                 // We can only set the events on the provider after its creation
                 this._setMapEvents(this._advancedFormatObj.mapEvents);
+                this._addMapZoomHandler();
             } else {
                 throw Error(`The google.maps lib has not been loaded.`);
             }
@@ -128,6 +155,13 @@ namespace Provider.Maps.Google.OSMap {
             );
 
             return this.config.getProviderConfig();
+        }
+
+        private _removeMapZoomHandler(): void {
+            if (this._gZoomChangeListener) {
+                google.maps.event.removeListener(this._gZoomChangeListener);
+                this._gZoomChangeListener = undefined;
+            }
         }
 
         private _setMapEvents(events?: Array<string>): void {
@@ -450,46 +484,41 @@ namespace Provider.Maps.Google.OSMap {
         }
 
         public refresh(): void {
+            //Let's stop listening to the zoom event be caused by the refreshZoom
+            this._removeMapZoomHandler();
+
             let position = this.features.center.getCenter();
-            // When the position is empty, we use the default position
-            // If the configured center position of the map is equal to the default
-            const isDefault =
-                position.lat ===
-                    OSFramework.Maps.Helper.Constants.defaultMapCenter.lat &&
-                position.lng ===
-                    OSFramework.Maps.Helper.Constants.defaultMapCenter.lng;
-            // If the Map has the default center position and at least 1 Marker, we want to use the first Marker position as the new center of the Map
-            if (
-                isDefault === true &&
-                this.markers.length >= 1 &&
-                this.markers[0].provider !== undefined
-            ) {
-                position = this.markers[0].provider.position.toJSON();
-            }
-            // If the Map has NOT the default center position and EXACTLY 1 Marker, we want to use the first Marker position as the new center of the Map
-            else if (
-                isDefault === false &&
-                this.markers.length === 1 &&
-                this.markers[0].provider !== undefined
-            ) {
-                position = this.markers[0].provider.position.toJSON();
-            }
-            // If the Map has NOT the default center position, 2 or more Markers and the zoom is set to be AutoFit
-            // we want to use the first Marker position as the new center of the Map
-            else if (
-                isDefault === false &&
-                this.markers.length >= 2 &&
-                this.markers[0].provider !== undefined &&
-                this.features.zoom.isAutofit
-            ) {
-                position = this.markers[0].provider.position.toJSON();
+
+            //If there are markers, let's choose the map center accordingly.
+            //Otherwise, the map center will be the one defined in the configs.
+            if (this.markers.length > 0) {
+                if (this.markers.length > 1) {
+                    //As the map has more than one marker, let's see if the map
+                    //center should be changed.
+                    if (this.allowRefreshZoom) {
+                        //If the user hasn't change zoom, or the developer is ignoring
+                        //it (current behavior), then the map will be centered tentatively
+                        //in the first marker.
+                        position = this.markers[0].provider.position.toJSON();
+                    } else {
+                        //If the user has zoomed and the developer intends to respect user zoom
+                        //then the current map center will be used.
+                        position = this.provider.getCenter().toJSON();
+                    }
+                } else if (this.markers[0].provider !== undefined) {
+                    //If there's only one marker, and is already created, its location will be
+                    //used as the map center.
+                    position = this.markers[0].provider.position.toJSON();
+                }
             }
 
             // Refresh the center position
             this.features.center.refreshCenter(position);
 
-            // Refresh the zoom
-            this.features.zoom.refreshZoom();
+            if (this.allowRefreshZoom) {
+                // Refresh the zoom
+                this.features.zoom.refreshZoom();
+            }
 
             // Refresh the offset
             this.features.offset.setOffset(this.features.offset.getOffset);
@@ -497,6 +526,9 @@ namespace Provider.Maps.Google.OSMap {
             // Repaint the marker Clusterers
             this.hasMarkerClusterer() &&
                 this.features.markerClusterer.repaint();
+
+            //Re-adding the map zoom handler
+            this._addMapZoomHandler();
         }
 
         public refreshProviderEvents(): void {

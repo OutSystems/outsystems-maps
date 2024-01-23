@@ -22,8 +22,10 @@ namespace OSFramework.Maps.OSMap {
         private _shapesSet: Set<Shape.IShape>;
         private _uniqueId: string;
         private _widgetId: string;
+        private _zoomChanged: boolean;
 
         protected _features: Feature.ExposedFeatures;
+        protected _mapZoomChangeCallback: Maps.Callbacks.Generic;
         protected _provider: W;
 
         constructor(
@@ -46,8 +48,14 @@ namespace OSFramework.Maps.OSMap {
             this._mapEvents = new Event.OSMap.MapEventsManager(this);
             this._mapType = mapType;
             this._providerType = providerType;
+            this._zoomChanged = false;
+            this._mapZoomChangeCallback = this._mapZoomChangeHandler.bind(this);
         }
         public abstract get mapTag(): string;
+
+        protected get allowRefreshZoom(): boolean {
+            return !(this.config.respectUserZoom && this._zoomChanged);
+        }
 
         public get shapes(): Shape.IShape[] {
             return Array.from(this._shapesSet);
@@ -109,6 +117,12 @@ namespace OSFramework.Maps.OSMap {
             return this._widgetId;
         }
 
+        private _mapZoomChangeHandler(): void {
+            if (this.config.respectUserZoom) {
+                this._zoomChanged = true;
+            }
+        }
+
         protected finishBuild(): void {
             this._isReady = true;
 
@@ -168,6 +182,13 @@ namespace OSFramework.Maps.OSMap {
             //Update Map's config when the property is available
             if (this.config.hasOwnProperty(propertyName)) {
                 this.config[propertyName] = propertyValue;
+
+                if (
+                    Maps.Enum.OS_Config_Map.respectUserZoom ===
+                    Maps.Enum.OS_Config_Map[propertyName]
+                ) {
+                    this._zoomChanged = false;
+                }
             } else {
                 this.mapEvents.trigger(
                     Event.OSMap.MapEventType.OnError,
