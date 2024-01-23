@@ -1,7 +1,8 @@
 {
   "name": "outsystems-maps",
   "version": "1.6.8",
-  "description": "Outsystems Maps",
+  "description": "OutSystems Maps",
+  "author": "UI Components Team",
   "license": "BSD-3-Clause",
   "scripts": {
     "build": "tsc",
@@ -12,24 +13,31 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "docs": "npx typedoc"
   },
-  "author": "UI Components Team",
-  "dependencies": {
-    "typescript": "^4.4.4"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OutSystems/outsystems-maps"
   },
+  "engines": {
+    "node": ">=12"
+  },
+  "homepage": "https://outsystemsui.outsystems.com/OutSystemsMapsSample/",
   "devDependencies": {
     "@googlemaps/markerclustererplus": "^1.2.5",
     "@types/google.maps": "^3.46.0",
     "@types/leaflet": "^1.7.5",
     "@types/leaflet-routing-machine": "^3.2.3",
-    "@typescript-eslint/eslint-plugin": "^4.33.0",
-    "@typescript-eslint/parser": "^4.33.0",
-    "eslint": "^7.32.0",
-    "eslint-config-prettier": "^7.0.0",
-    "eslint-plugin-prettier": "^3.4.1",
-    "prettier": "^2.4.1",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "eslint": "^8.47.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
     "prettier-eslint": "^12.0.0",
-    "typedoc": "^0.23.10",
+    "stylelint": "^13.12.0",
+    "stylelint-config-prettier": "^8.0.2",
+    "stylelint-order": "^4.1.0",
+    "typedoc": "^0.23.9",
     "typedoc-plugin-merge-modules": "^4.0.1",
-    "typedoc-umlclass": "^0.7.0"
+    "typedoc-umlclass": "^0.7.0",
+    "typescript": "^4.5.0"
   }
 }
