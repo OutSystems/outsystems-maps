@@ -19,5 +19,6 @@
         "boxBackgroundColor": "#fff",
         "boxBorderColor": "#272b30",
         "arrowColor": "#272b30"
-    }
+    },
+    "customCss": "typedoc-custom.css",
 }
