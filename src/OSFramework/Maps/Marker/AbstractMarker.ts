@@ -15,7 +15,7 @@ namespace OSFramework.Maps.Marker {
         protected _markerEvents: Event.Marker.MarkerEventsManager;
         protected _provider: W;
 
-        abstract hasEvents: boolean;
+        protected abstract hasEvents: boolean;
 
         constructor(
             map: OSMap.IMap,

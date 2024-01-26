@@ -1,5 +1,11 @@
-*.css
+dist
 *.md
 *.d.ts
+
+dependencies
+node_modules
+
+*.css
+
 # don't lint settings
 .snyk
