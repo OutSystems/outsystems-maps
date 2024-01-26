@@ -1,8 +1,8 @@
 {
     "entryPoints": [
-        "./src/OSFramework/Maps//*.ts",
-        "./src/OutSystems/Maps//*.ts",
-        "./src/scripts/Providers/Maps//*.ts"
+        "./src/OSFramework/Maps/**/*.ts",
+        "./src/OutSystems/Maps/**/*.ts",
+        "./src/Providers/Maps/**/*.ts"
     ],
     "entryPointStrategy": "expand",
     "includeVersion": true,
