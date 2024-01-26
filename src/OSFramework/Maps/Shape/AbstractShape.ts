@@ -17,7 +17,7 @@ namespace OSFramework.Maps.Shape {
         protected _provider: W;
         protected _shapeEvents: Event.Shape.ShapeEventsManager;
 
-        abstract hasEvents: boolean;
+        protected abstract hasEvents: boolean;
 
         constructor(
             map: OSMap.IMap,
@@ -137,7 +137,7 @@ namespace OSFramework.Maps.Shape {
 
         protected abstract getShapeCoordinates(): Maps.OSStructures.OSMap.OSShapeCoordinates;
         public abstract refreshProviderEvents(): void;
-        public abstract get providerBounds(): any;
+        public abstract get providerBounds(): unknown;
         public abstract get shapeProviderEvents(): Array<string>;
         public abstract get shapeTag(): string;
     }

@@ -24,12 +24,6 @@ namespace Provider.Maps.Leaflet.Feature {
             this._autofitEnabled = value;
         }
 
-        public build(): void {
-            this._setAutofit(
-                this._level === OSFramework.Maps.Enum.OSMap.Zoom.Auto
-            );
-        }
-
         private _setBounds(useShapes: boolean) {
             let bounds: L.LatLngBounds;
             this._map.markers.forEach(function (marker) {
@@ -42,7 +36,7 @@ namespace Provider.Maps.Leaflet.Feature {
             if (useShapes) {
                 this._map.shapes.forEach(function (shape) {
                     if (shape.provider === undefined) return;
-                    const loc: L.LatLngBounds = shape.providerBounds;
+                    const loc: L.LatLngBounds = shape.providerBounds as L.LatLngBounds;
                     bounds = bounds ? bounds.extend(loc) : loc;
                 });
             }
@@ -50,6 +44,12 @@ namespace Provider.Maps.Leaflet.Feature {
             this._map.provider.panInsideBounds(bounds);
             this._map.features.center.setCurrentCenter(
                 this._map.provider.getCenter()
+            );
+        }
+
+        public build(): void {
+            this._setAutofit(
+                this._level === OSFramework.Maps.Enum.OSMap.Zoom.Auto
             );
         }
 

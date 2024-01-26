@@ -24,12 +24,6 @@ namespace Provider.Maps.Google.Feature {
             this._autofitEnabled = value;
         }
 
-        public build(): void {
-            this._setAutofit(
-                this._level === OSFramework.Maps.Enum.OSMap.Zoom.Auto
-            );
-        }
-
         private _setBounds(useShapes: boolean) {
             const bounds = new google.maps.LatLngBounds();
             this._map.markers.forEach(function (item) {
@@ -40,7 +34,7 @@ namespace Provider.Maps.Google.Feature {
             if (useShapes) {
                 this._map.shapes.forEach(function (item) {
                     if (item.provider === undefined) return;
-                    bounds.union(item.providerBounds);
+                    bounds.union(item.providerBounds as google.maps.LatLngBounds);
                 });
             }
 
@@ -48,6 +42,12 @@ namespace Provider.Maps.Google.Feature {
             this._map.provider.panToBounds(bounds);
             this._map.features.center.setCurrentCenter(
                 this._map.provider.getCenter()
+            );
+        }
+
+        public build(): void {
+            this._setAutofit(
+                this._level === OSFramework.Maps.Enum.OSMap.Zoom.Auto
             );
         }
 
