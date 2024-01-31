@@ -20,7 +20,8 @@ namespace Provider.Maps.Google.Feature {
             // Set the clusterer configs
             this._config =
                 new Configuration.MarkerClusterer.MarkerClustererConfig(
-                    markerClustererConfigs
+                    markerClustererConfigs,
+                    this._map
                 );
         }
 
@@ -33,6 +34,12 @@ namespace Provider.Maps.Google.Feature {
                 this._config.markerClustererActive &&
                 this._markerClusterer !== undefined
             );
+        }
+
+        private _rebuildClusters(): void {
+            this._markerClusterer.clearMarkers();
+            this._markerClusterer = undefined;
+            this._markerClusterer = new window.markerClusterer.MarkerClusterer(this._config.getProviderConfig());
         }
 
         private _setState(value: boolean): void {
@@ -51,7 +58,6 @@ namespace Provider.Maps.Google.Feature {
                 );
                 this.repaint();
             }
-            this._config.markerClustererActive = value;
         }
 
         public addMarker(marker: OSFramework.Maps.Marker.IMarker): void {
@@ -62,13 +68,8 @@ namespace Provider.Maps.Google.Feature {
         }
 
         public build(): void {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            //@ts-ignore
-            this._markerClusterer = new MarkerClusterer(
-                this._map.provider,
-                this._map.markersReady,
-                this._config.getProviderConfig()
-            );
+            this._markerClusterer = new window.markerClusterer.MarkerClusterer(this._config.getProviderConfig());
+
             // Make sure to repaint the whole clusters as soon as map tiles get loaded
             this._repaintOnTilesLoaded = google.maps.event.addListenerOnce(
                 this._map.provider,
@@ -77,12 +78,8 @@ namespace Provider.Maps.Google.Feature {
             );
         }
 
-        public changeProperty(
-            propertyName: string,
-            propertyValue: unknown
-        ): void {
-            const propValue =
-                OSFramework.Maps.Enum.OS_Config_MarkerClusterer[propertyName];
+        public changeProperty(propertyName: string, propertyValue: unknown): void {
+            const propValue = OSFramework.Maps.Enum.OS_Config_MarkerClusterer[propertyName];
             if (this._config.hasOwnProperty(propertyName)) {
                 this._config[propertyName] = propertyValue;
             } else {
@@ -98,27 +95,14 @@ namespace Provider.Maps.Google.Feature {
             // If the clusterer already exists, change its provider configs
             if (this.markerClusterer !== undefined) {
                 switch (propValue) {
-                    case OSFramework.Maps.Enum.OS_Config_MarkerClusterer
-                        .markerClustererActive:
+                    case OSFramework.Maps.Enum.OS_Config_MarkerClusterer.markerClustererActive:
                         this._setState(propertyValue as boolean);
                         break;
-                    case OSFramework.Maps.Enum.OS_Config_MarkerClusterer
-                        .markerClustererMinClusterSize:
-                        this._markerClusterer.setMinimumClusterSize(
-                            propertyValue as number
-                        );
+                    case OSFramework.Maps.Enum.OS_Config_MarkerClusterer.markerClustererMinClusterSize:
+                        this._rebuildClusters();
                         break;
-                    case OSFramework.Maps.Enum.OS_Config_MarkerClusterer
-                        .markerClustererMaxZoom:
-                        this._markerClusterer.setMaxZoom(
-                            propertyValue as number
-                        );
-                        break;
-                    case OSFramework.Maps.Enum.OS_Config_MarkerClusterer
-                        .markerClustererZoomOnClick:
-                        this._markerClusterer.setZoomOnClick(
-                            propertyValue as boolean
-                        );
+                    case OSFramework.Maps.Enum.OS_Config_MarkerClusterer.markerClustererMaxZoom:
+                        this._rebuildClusters();
                         break;
                 }
                 this.repaint();
@@ -139,7 +123,7 @@ namespace Provider.Maps.Google.Feature {
         }
 
         public repaint(): void {
-            this._markerClusterer.repaint();
+            this._markerClusterer.render();
         }
     }
 }
