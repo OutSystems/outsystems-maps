@@ -36,7 +36,7 @@ namespace Provider.Maps.Google.Configuration.MarkerClusterer {
 						map.fitBounds(cluster.bounds);
 					}
 				},
-				renderer: undefined,
+				renderer: new window.markerClusterer.DefaultRenderer(),
             };
             //✅ active: this.markerClustererActive,
             //✅ maxZoom: this.markerClustererMaxZoom || 2,

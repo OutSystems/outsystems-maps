@@ -1,4 +1,5 @@
 import {
+    DefaultRenderer as OriginalDefaultRenderer,
     MarkerClusterer as OriginalMarkerClusterer,
     MarkerClustererOptions as OriginalMarkerClustererOptions,
     SuperClusterAlgorithm as OriginalSuperClusterAlgorithm, Cluster as OriginalCluster
@@ -9,6 +10,7 @@ declare global {
     interface Window {
         GMCB: () => void;
         markerClusterer: {
+            DefaultRenderer: typeof OriginalDefaultRenderer,
             MarkerClusterer: typeof OriginalMarkerClusterer,
             SuperClusterAlgorithm: typeof OriginalSuperClusterAlgorithm,
         }; 
