@@ -169,7 +169,7 @@ namespace Provider.Maps.Google.OSMap {
 
             // OnEventTriggered Event (other events that can be set on the advancedFormat of the Map)
             // We are deprecating the advancedFormat
-            // TO BE REMOVED SOON
+            // TODO: TO BE REMOVED SOON
             if (
                 this.mapEvents.hasHandlers(
                     OSFramework.Maps.Event.OSMap.MapEventType.OnEventTriggered
