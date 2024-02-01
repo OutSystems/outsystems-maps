@@ -10,14 +10,15 @@ namespace Provider.Maps.Google.Configuration.MarkerClusterer {
         public markerClustererMaxZoom: number;
         public markerClustererMinClusterSize: number;
         public markerClustererZoomOnClick: boolean;
-        public styles: Array<OSFramework.Maps.OSStructures.Clusterer.Style>;
+        public renderer: GoogleClusterRenderer;
 		
         constructor(
-            config: OSFramework.Maps.Configuration.IConfigurationMarkerClusterer,
+            config: JSON,
             map: Provider.Maps.Google.OSMap.IMapGoogle
         ) {
             super(config);
 			this._map = map;
+            this.renderer = new window.markerClusterer.DefaultRenderer();
         }
 
         public getProviderConfig(): MarkerClustererOptions {
@@ -36,16 +37,10 @@ namespace Provider.Maps.Google.Configuration.MarkerClusterer {
 						map.fitBounds(cluster.bounds);
 					}
 				},
-				renderer: new window.markerClusterer.DefaultRenderer(),
+				renderer: this.renderer,
             };
-            //✅ active: this.markerClustererActive,
-            //✅ maxZoom: this.markerClustererMaxZoom || 2,
-            //✅ minClusterSize: this.markerClustererMinClusterSize,
-            //✅ zoomOnClick: this.markerClustererZoomOnClick,
-            // clusterClass: OSFramework.Maps.Helper.Constants.clusterIconCSSClass,
-            // styles: ClustererStyle,
 
-            //Cleanning undefined properties
+            //Cleaning undefined properties
             Object.keys(provider).forEach((key) => {
                 if (provider[key] === undefined) {
                     delete provider[key];

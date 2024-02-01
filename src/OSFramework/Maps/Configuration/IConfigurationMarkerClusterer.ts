@@ -10,6 +10,6 @@ namespace OSFramework.Maps.Configuration {
         markerClustererMaxZoom: number;
         markerClustererMinClusterSize: number;
         markerClustererZoomOnClick: boolean;
-        styles: Array<OSStructures.Clusterer.Style>;
+        renderer?: unknown;
     }
 }
