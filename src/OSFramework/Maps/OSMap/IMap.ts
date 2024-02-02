@@ -226,6 +226,12 @@ namespace OSFramework.Maps.OSMap {
          */
         removeShape(shapeId: string): void;
         /**
+         * Adds a custom render to the Clusters. Applicable to some providers only.
+         * @param {OSFramework.Maps.Feature.IMarkerClusterer} renderer
+         * @memberof IMap
+         */
+        setClusterRenderer?(renderer: OSFramework.Maps.Feature.IMarkerClustererRender);
+        /**
          * Updates the Height of the Map by refreshing/updating the provider
          */
         updateHeight(): void;

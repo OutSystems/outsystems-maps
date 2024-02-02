@@ -22,5 +22,13 @@ namespace OSFramework.Maps.Feature {
         removeMarker(marker: OSFramework.Maps.Marker.IMarker): void;
         /** Repaints the whole cluster, invoking all the operations from the provider related to the repainting */
         repaint(): void;
+
+        /**
+         * Sets the custom renderer of the marker clusters.
+         *
+         * @param {IMarkerClusterer} renderer - Renderer object to create the clusters. If undefined if passed the default render will be used.
+         * @memberof IMarkerClusterer
+         */
+        setClusterRenderer(renderer: IMarkerClustererRender);
     }
 }

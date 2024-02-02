@@ -241,6 +241,26 @@ namespace OutSystems.Maps.MapAPI.MapManager {
             throw new Error(`Map id:${mapId} not found`);
         }
     }
+
+    /**
+     * Sets the Renderer object to create the clusters. If undefined if passed the default render will be used.
+     * Available for google maps only. See examples in https://googlemaps.github.io/js-markerclusterer/public/renderers/.
+     *
+     * @export
+     * @param {string} mapId
+     * @param {OSFramework.Maps.Feature.IMarkerClusterer} renderer
+     */
+    export function SetClusterRenderer(mapId: string, renderer: OSFramework.Maps.Feature.IMarkerClustererRender) {
+        const map = GetMapById(mapId);
+
+        if (map.providerType === OSFramework.Maps.Enum.ProviderType.Google) {
+            map.setClusterRenderer(renderer);
+        } else {
+            throw new Error(
+                `Map id:${mapId} is not an instance of Google Map. This API is only available to for Google Maps.`
+            );
+        }
+    }
 }
 
 /// Overrides for the old namespace - calls the new one, lets users know this is no longer in use

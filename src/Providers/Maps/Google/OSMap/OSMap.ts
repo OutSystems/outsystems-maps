@@ -535,6 +535,12 @@ namespace Provider.Maps.Google.OSMap {
             if (this.isReady) this._setMapEvents();
         }
 
+        public setClusterRenderer(renderer: OSFramework.Maps.Feature.IMarkerClustererRender) {
+            if(this.isReady){
+                this.features.markerClusterer.setClusterRenderer(renderer);
+            }
+        }
+
         public validateProviderEvent(eventName: string): boolean {
             return Constants.OSMap.ProviderEventNames[eventName] !== undefined;
         }

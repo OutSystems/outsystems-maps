@@ -125,5 +125,12 @@ namespace Provider.Maps.Google.Feature {
         public repaint(): void {
             this._markerClusterer.render();
         }
+
+        public setClusterRenderer(renderer: OSFramework.Maps.Feature.IMarkerClustererRender) {
+            this._config.renderer = renderer;
+            if(this.isEnabled) {
+                this._rebuildClusters();
+            }
+        }
     }
 }
