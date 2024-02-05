@@ -4,34 +4,51 @@ namespace Provider.Maps.Google.Configuration.MarkerClusterer {
         extends OSFramework.Maps.Configuration.AbstractConfiguration
         implements OSFramework.Maps.Configuration.IConfigurationMarkerClusterer
     {
+        private _map: Provider.Maps.Google.OSMap.IMapGoogle;
+        private _renderer: GoogleClusterRenderer;
         public clusterClass: string;
         public markerClustererActive: boolean;
         public markerClustererMaxZoom: number;
         public markerClustererMinClusterSize: number;
         public markerClustererZoomOnClick: boolean;
-        public styles: Array<OSFramework.Maps.OSStructures.Clusterer.Style>;
 
-        // No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
-        // constructor(
-        //     config: OSFramework.Maps.Configuration.IConfigurationMarkerClusterer
-        // ) {
-        //     super(config);
-        // }
+        constructor(
+            config: Configuration.MarkerClusterer.MarkerClustererConfig,
+            map: Provider.Maps.Google.OSMap.IMapGoogle
+        ) {
+            super(config);
+            this._map = map;
+            this._renderer = new window.markerClusterer.DefaultRenderer();
+        }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        public getProviderConfig(): any {
+        public set renderer(renderer: OSFramework.Maps.Feature.IMarkerClustererRender) {
+            if (renderer !== undefined) {
+                this._renderer = renderer as GoogleClusterRenderer;
+            } else {
+                this._renderer = new window.markerClusterer.DefaultRenderer();
+            }
+        }
+
+        public getProviderConfig(): MarkerClustererOptions {
+            const minPoints = this.markerClustererActive ? this.markerClustererMinClusterSize : Number.MAX_SAFE_INTEGER;
             // eslint-disable-next-line prefer-const
             let provider = {
-                active: this.markerClustererActive,
-                maxZoom: this.markerClustererMaxZoom || 2,
-                minClusterSize: this.markerClustererMinClusterSize,
-                zoomOnClick: this.markerClustererZoomOnClick,
-                clusterClass:
-                    OSFramework.Maps.Helper.Constants.clusterIconCSSClass,
-                styles: ClustererStyle
+                algorithm: new window.markerClusterer.SuperClusterAlgorithm({
+                    maxZoom: this.markerClustererMaxZoom || 2,
+                    minPoints: minPoints,
+                }),
+                algorithmOptions: undefined,
+                map: this._map.provider,
+                markers: this._map.markersReady as google.maps.Marker[],
+                onClusterClick: (event: google.maps.MapMouseEvent, cluster: Cluster, map: google.maps.Map) => {
+                    if (this.markerClustererZoomOnClick) {
+                        map.fitBounds(cluster.bounds);
+                    }
+                },
+                renderer: this._renderer,
             };
 
-            //Cleanning undefined properties
+            //Cleaning undefined properties
             Object.keys(provider).forEach((key) => {
                 if (provider[key] === undefined) {
                     delete provider[key];
