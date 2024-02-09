@@ -20,8 +20,7 @@ namespace Provider.Maps.Google.Feature {
             // Set the clusterer configs
             this._config =
                 new Configuration.MarkerClusterer.MarkerClustererConfig(
-                    markerClustererConfigs,
-                    this._map
+                    markerClustererConfigs
                 );
         }
 
