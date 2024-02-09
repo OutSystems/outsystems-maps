@@ -126,14 +126,15 @@ namespace Provider.Maps.Google.Feature {
             if (this.markerClusterer !== undefined) {
                 switch (propValue) {
                     case OSFramework.Maps.Enum.OS_Config_MarkerClusterer.markerClustererActive:
-                        this._setState(propertyValue as boolean);
+                        this._setState();
                         break;
                     case OSFramework.Maps.Enum.OS_Config_MarkerClusterer.markerClustererMinClusterSize:
-                        this._rebuildClusters();
-                        break;
                     case OSFramework.Maps.Enum.OS_Config_MarkerClusterer.markerClustererMaxZoom:
+                        this._makeAlgorithm();
                         this._rebuildClusters();
                         break;
+                    case OSFramework.Maps.Enum.OS_Config_MarkerClusterer.markerClustererZoomOnClick:
+                        return;
                 }
                 this.repaint();
             }
