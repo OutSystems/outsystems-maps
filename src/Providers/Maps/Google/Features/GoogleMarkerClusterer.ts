@@ -25,7 +25,7 @@ namespace Provider.Maps.Google.Feature {
                 );
         }
 
-        public get markerClusterer(): MarkerClusterer {
+        public get markerClusterer(): GoogleMapsMarkerClusterer {
             return this._markerClusterer;
         }
 
