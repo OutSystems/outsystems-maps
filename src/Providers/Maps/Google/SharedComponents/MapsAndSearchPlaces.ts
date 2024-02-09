@@ -20,7 +20,7 @@ namespace Provider.Maps.Google.SharedComponents {
                     window.GMCB = () => {
                         //this method is just to avoid unnecessary warning on the console;
                         window.GMCB = undefined;
-                        resolve(undefined);
+                        resolve(0);
                         googleMapsLoadPromise = undefined;
                     };
                     const script = document.createElement('script');
@@ -38,13 +38,14 @@ namespace Provider.Maps.Google.SharedComponents {
                 });
             } 
 
-            // We have to use this listener instead of the callback of the library because the callback will only work of 1st map on the page
+            // We have to use this promise instead of the callback of the library because 
+            // the callback will only work of 1st map on the page
             googleMapsLoadPromise.then(cb);
         }
     }
 
     /**
-     * Remove... balbal
+     * Remove...
      * @param object
      */
     export function RemoveEventsFromProvider(
@@ -58,10 +59,17 @@ namespace Provider.Maps.Google.SharedComponents {
         });
     }
 
-    /** This method will help converting the bounds (string) into the respective coordinates that will be used on the bounds
+    /**
+     * This method will help converting the bounds (string) into the respective coordinates that will be used on the bounds
      * It returns a promise because bounds will get converted into coordinates
      * The method resposible for this conversion (Helper.Conversions.ConvertToCoordinates) also returns a Promise
      * This Promise will only get resolved after the provider gets built (asynchronously)
+     *
+     * @export
+     * @param {OSFramework.Maps.OSStructures.OSMap.BoundsString} bounds
+     * @param {string} apiKey
+     * @param {() => void} errorCb
+     * @return {*}  {Promise<OSFramework.Maps.OSStructures.OSMap.Bounds>}
      */
     export function ConvertStringToBounds(
         bounds: OSFramework.Maps.OSStructures.OSMap.BoundsString,
