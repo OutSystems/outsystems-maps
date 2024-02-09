@@ -266,6 +266,9 @@ namespace Provider.Maps.Leaflet.Marker {
             if (markerLocation !== undefined) {
                 markerLocation
                     .then((location: L.LatLng) => {
+                        //The marker was destroyed while waiting for the promise.
+                        if(this._destroyed) return;
+                        
                         this._provider = L.marker(location, provider_configs);
                         this._setIcon(this.config.iconUrl);
                         this._setLabelContent(this.config.label);

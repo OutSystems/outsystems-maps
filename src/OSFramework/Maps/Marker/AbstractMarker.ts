@@ -12,6 +12,7 @@ namespace OSFramework.Maps.Marker {
         private _widgetId: string;
 
         protected _built: boolean;
+        protected _destroyed: boolean;
         protected _markerEvents: Event.Marker.MarkerEventsManager;
         protected _provider: W;
 
@@ -27,6 +28,7 @@ namespace OSFramework.Maps.Marker {
             this._uniqueId = uniqueId;
             this._config = config;
             this._built = false;
+            this._destroyed = false;
             this._markerEvents = new Event.Marker.MarkerEventsManager(this);
         }
         public abstract get markerTag(): string;
@@ -101,6 +103,7 @@ namespace OSFramework.Maps.Marker {
 
         public dispose(): void {
             this._built = false;
+            this._destroyed = true;
         }
 
         public equalsToID(id: string): boolean {
