@@ -80,9 +80,6 @@ namespace Provider.Maps.Google.SearchPlaces {
                 );
             }
 
-            if (this._scriptCallback !== undefined) {
-                script.removeEventListener('load', this._scriptCallback);
-            }
             if (typeof google === 'object' && typeof google.maps === 'object') {
                 const local_configs =
                     this.getProviderConfig() as Configuration.SearchPlaces.ISearchPlacesProviderConfig;

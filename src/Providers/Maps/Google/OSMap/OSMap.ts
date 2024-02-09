@@ -91,9 +91,6 @@ namespace Provider.Maps.Google.OSMap {
                 );
             }
 
-            if (this._scriptCallback !== undefined) {
-                script.removeEventListener('load', this._scriptCallback);
-            }
             if (typeof google === 'object' && typeof google.maps === 'object') {
                 // Make sure the center is saved before setting a default value which is going to be used
                 // before the conversion of the location to coordinates gets resolved

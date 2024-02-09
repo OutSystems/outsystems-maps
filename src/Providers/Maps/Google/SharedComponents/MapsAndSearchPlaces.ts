@@ -4,35 +4,42 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.SharedComponents {
+    let googleMapsLoadPromise = undefined;
     export function InitializeScripts(apiKey: string, cb: () => void): void {
-        let script = document.getElementById(
-            OSFramework.Maps.Helper.Constants.googleMapsScript
-        ) as HTMLScriptElement;
         if (typeof google === 'object' && typeof google.maps === 'object') {
             cb();
         } else {
-            if (script === null) {
-                window.GMCB = () => {
-                    //this method is just to avoid unnecessary warning on the console;
-                    window.GMCB = undefined;
-                };
-                script = document.createElement('script');
-                /* eslint-disable-next-line prettier/prettier */
-                script.src =
-                    OSFramework.Maps.Helper.Constants.googleMapsApiMap +
-                    '?key=' +
-                    apiKey +
-                    // In order to use the drawingTools we need to add it into the libraries via the URL = drawing
-                    // In order to use the heatmap we need to add it into the libraries via the URL = visualization
-                    // In order to use the searchplaces we need to add it into the libraries via the URL = places (in case the Map is the first to import the scripts)
-                    '&libraries=drawing,visualization,places&callback=GMCB';
-                script.async = true;
-                script.defer = true;
-                script.id = OSFramework.Maps.Helper.Constants.googleMapsScript;
-                document.head.appendChild(script);
-            }
-            script.addEventListener('load', cb);
+            /** 
+             * The first map to load in the application will create the promise,
+             * so that itself and every subsequent map added to the page (before
+             * the script is loaded), will wait for the promise to be resolved
+             * (Google Maps loaded). 
+            */
+            if (googleMapsLoadPromise === undefined) {
+                googleMapsLoadPromise = new Promise((resolve) => {
+                    window.GMCB = () => {
+                        //this method is just to avoid unnecessary warning on the console;
+                        window.GMCB = undefined;
+                        resolve(undefined);
+                        googleMapsLoadPromise = undefined;
+                    };
+                    const script = document.createElement('script');
+                    script.src = 
+                        `${OSFramework.Maps.Helper.Constants.googleMapsApiMap}?` +
+                        `key=${apiKey}` +
+                        `&v=${OSFramework.Maps.Helper.Constants.gmversion}` +
+                        `&libraries=${OSFramework.Maps.Helper.Constants.gmlibraries}` +
+                        `&loading=async` +
+                        `&callback=GMCB`;
+                    script.async = true;
+                    script.defer = true;
+                    script.id = OSFramework.Maps.Helper.Constants.googleMapsScript;
+                    document.head.appendChild(script);
+                });
+            } 
+
             // We have to use this listener instead of the callback of the library because the callback will only work of 1st map on the page
+            googleMapsLoadPromise.then(cb);
         }
     }
 
