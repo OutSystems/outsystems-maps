@@ -7,9 +7,11 @@ namespace Provider.Maps.Google.Feature {
             OSFramework.Maps.Interface.IBuilder,
             OSFramework.Maps.Interface.IDisposable
     {
+        private _algorithm: GoogleMapsAlgorithm;
         private _config: Configuration.MarkerClusterer.MarkerClustererConfig;
         private _map: OSMap.IMapGoogle;
-        private _markerClusterer: MarkerClusterer;
+        private _markerClusterer: GoogleMapsMarkerClusterer;
+        private _renderer: GoogleMapsClusterRenderer;
         private _repaintOnTilesLoaded: google.maps.MapsEventListener;
 
         constructor(
@@ -35,27 +37,54 @@ namespace Provider.Maps.Google.Feature {
             );
         }
 
+        private _makeAlgorithm(): void {
+            this._algorithm = new window.markerClusterer.SuperClusterAlgorithm({
+                maxZoom: this._config.markerClustererMaxZoom,
+                minPoints: this._config.markerClustererMinClusterSize
+            });
+        }
+
+        private _makeConfigs():GoogleMapsMarkerClustererOptions {
+            const pConfigs= this._config.getProviderConfig();
+            if(this._config.markerClustererActive) {
+                pConfigs.algorithm = this._algorithm;
+                pConfigs.algorithmOptions = undefined;
+                pConfigs.map = this._map.provider;
+                pConfigs.markers = this._map.markersReady as google.maps.Marker[];
+                pConfigs.onClusterClick = this._zoomClickHandler.bind(this);
+                pConfigs.renderer = this._makeRenderer();
+            }
+
+            return pConfigs;
+        }
+        
+        private _makeRenderer(): GoogleMapsClusterRenderer {
+            if (this._renderer === undefined) {
+                this._renderer = new window.markerClusterer.DefaultRenderer();
+            }
+            return this._renderer;
+        }
+
         private _rebuildClusters(): void {
             this._markerClusterer.clearMarkers();
             this._markerClusterer = undefined;
-            this._markerClusterer = new window.markerClusterer.MarkerClusterer(this._config.getProviderConfig());
+            this._markerClusterer = new window.markerClusterer.MarkerClusterer(this._makeConfigs());
         }
 
-        private _setState(value: boolean): void {
-            this._markerClusterer.setMap(
-                value === true ? this._map.provider : null
-            );
-
-            if (value === true) {
-                this._markerClusterer.addMarkers(
-                    this._map.markersReady as google.maps.Marker[]
-                );
+        private _setState(): void {
+            if (this._config.markerClustererActive) {
+                this._rebuildClusters();
             } else {
                 this._markerClusterer.clearMarkers();
                 this._map.markers.forEach((marker) =>
                     marker.provider.setMap(this._map.provider)
                 );
-                this.repaint();
+            }
+        }
+
+        private _zoomClickHandler(event: google.maps.MapMouseEvent, cluster: GoogleMapsCluster, map: google.maps.Map): void {
+            if (this._config.markerClustererZoomOnClick) {
+                map.fitBounds(cluster.bounds);
             }
         }
 
@@ -67,7 +96,9 @@ namespace Provider.Maps.Google.Feature {
         }
 
         public build(): void {
-            this._markerClusterer = new window.markerClusterer.MarkerClusterer(this._config.getProviderConfig());
+            this._makeRenderer();
+            this._makeAlgorithm();
+            this._markerClusterer = new window.markerClusterer.MarkerClusterer(this._makeConfigs());
 
             // Make sure to repaint the whole clusters as soon as map tiles get loaded
             this._repaintOnTilesLoaded = google.maps.event.addListenerOnce(
@@ -126,7 +157,7 @@ namespace Provider.Maps.Google.Feature {
         }
 
         public setClusterRenderer(renderer: OSFramework.Maps.Feature.IMarkerClustererRender) {
-            this._config.renderer = renderer;
+            this._renderer = renderer;
             if(this.isEnabled) {
                 this._rebuildClusters();
             }
