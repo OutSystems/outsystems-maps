@@ -1,4 +1,5 @@
 /// <reference path="../../../../OSFramework/Maps/Marker/AbstractMarker.ts" />
+/// <reference path="Marker.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.Marker {
