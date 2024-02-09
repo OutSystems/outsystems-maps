@@ -27,8 +27,8 @@ namespace Provider.Maps.Google.SharedComponents {
                     script.src = 
                         `${OSFramework.Maps.Helper.Constants.googleMapsApiMap}?` +
                         `key=${apiKey}` +
-                        `&v=${OSFramework.Maps.Helper.Constants.gmversion}` +
                         `&libraries=${OSFramework.Maps.Helper.Constants.gmlibraries}` +
+                        `&v=${OSFramework.Maps.Helper.Constants.gmversion}` +
                         `&loading=async` +
                         `&callback=GMCB`;
                     script.async = true;
