@@ -486,17 +486,30 @@ namespace Provider.Maps.Google.OSMap {
 
             let position = this.features.center.getCenter();
 
+            const isDefault =
+                position.lat ===
+                    OSFramework.Maps.Helper.Constants.defaultMapCenter.lat &&
+                position.lng ===
+                    OSFramework.Maps.Helper.Constants.defaultMapCenter.lng;
+
             //If there are markers, let's choose the map center accordingly.
             //Otherwise, the map center will be the one defined in the configs.
             if (this.markers.length > 0) {
                 if (this.markers.length > 1) {
                     //As the map has more than one marker, let's see if the map
                     //center should be changed.
+                    //If the user hasn't change zoom, or the developer is ignoring it (current behavior).
                     if (this.allowRefreshZoom) {
-                        //If the user hasn't change zoom, or the developer is ignoring
-                        //it (current behavior), then the map will be centered tentatively
-                        //in the first marker.
-                        position = this.markers[0].provider.position.toJSON();
+                        //Let's check if the marker provider is ready to be used.
+                        if(this.markers[0].provider !== undefined){
+                            //If the map center, is the same as the default, then the map will ignore it.
+                            //Otherwise, the isAutofit config will be checked, and if false, then the current
+                            //center will not be changed.
+                            if(isDefault || this.features.zoom.isAutofit) {
+                                //Let's use the first marker as the center of the map.
+                                position = this.markers[0].provider.position.toJSON();
+                            }
+                        }
                     } else {
                         //If the user has zoomed and the developer intends to respect user zoom
                         //then the current map center will be used.
