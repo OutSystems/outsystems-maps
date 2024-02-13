@@ -22,7 +22,7 @@ If you're using OutSystems, this is how you can use this component in your appli
 
 
 ## About this repository
-This repository contains the code that enable the usage of an external provider **google maps** to which you're required to [obtain a license](https://developers.google.com/maps/documentation/javascript/get-api-key).
+This repository contains the code that enable the usage of an external provider **Google Maps** to which you're required to [obtain a license](https://developers.google.com/maps/documentation/javascript/get-api-key).
 The code is written in TypeScript🖤, and you are welcome to branch it and PR your changes/proposals!
 
 ### What tools should you use?
