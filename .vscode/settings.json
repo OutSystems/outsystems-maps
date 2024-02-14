@@ -3,7 +3,7 @@
 	"files.autoSave": "off",
 	"editor.minimap.maxColumn": 170,
 	"editor.wordWrapColumn": 170,
-	"editor.formatOnSave": false,
+	"editor.formatOnSave": true,
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": "explicit"
 	},
