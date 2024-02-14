@@ -10,11 +10,11 @@ namespace Provider.Maps.Google.Configuration.MarkerClusterer {
         public markerClustererMinClusterSize: number;
         public markerClustererZoomOnClick: boolean;
 
-        constructor(
-            config: Configuration.MarkerClusterer.MarkerClustererConfig
-        ) {
-            super(config);
-        }
+        // constructor(
+        //     config: Configuration.MarkerClusterer.MarkerClustererConfig
+        // ) {
+        //     super(config);
+        // }
 
         public getProviderConfig(): GoogleMapsMarkerClustererOptions {
             return {};
