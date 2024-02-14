@@ -30,7 +30,7 @@ namespace Provider.Maps.Google.OSMap {
 
         private _addMapZoomHandler(): void {
             /*
-                This timeout is here due to an anomaly in the behaviour of google maps
+                This timeout is here due to an anomaly in the behaviour of Google Maps
                 when more than one maker is added to the map, the zoom event is fired twice:
                 https://stackoverflow.com/questions/20436185/google-maps-api-v3-zoom-changed-event-fired-twice-after-fitbounds-called
 
@@ -188,7 +188,7 @@ namespace Provider.Maps.Google.OSMap {
 
             // Other Provider Events (OS Map Event Block)
             // Any events that got added to the mapEvents via the API Subscribe method will have to be taken care here
-            // If the Event type of each handler is MapProviderEvent, we want to make sure to add that event to the listeners of the google maps provider (e.g. click, dblclick, contextmenu, etc)
+            // If the Event type of each handler is MapProviderEvent, we want to make sure to add that event to the listeners of the Google Maps provider (e.g. click, dblclick, contextmenu, etc)
             this.mapEvents.handlers.forEach(
                 (
                     handler: OSFramework.Maps.Event.IEvent<OSFramework.Maps.OSMap.IMap>,

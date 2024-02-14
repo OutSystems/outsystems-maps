@@ -204,7 +204,7 @@ namespace Provider.Maps.Google.SearchPlaces {
             }
         }
 
-        /** If countries > 5 (as required by google maps api), throw an error an return false */
+        /** If countries > 5 (as required by Google Maps api), throw an error an return false */
         private _validCountriesMaxLength(countries: Array<string>): boolean {
             if (countries.length > 5) {
                 this.searchPlacesEvents.trigger(

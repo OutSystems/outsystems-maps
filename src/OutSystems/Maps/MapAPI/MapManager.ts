@@ -244,7 +244,7 @@ namespace OutSystems.Maps.MapAPI.MapManager {
 
     /**
      * Sets the Renderer object to create the clusters. If undefined if passed the default render will be used.
-     * Available for google maps only. See examples in https://googlemaps.github.io/js-markerclusterer/public/renderers/.
+     * Available for Google Maps only. See examples in https://googlemaps.github.io/js-markerclusterer/public/renderers/.
      *
      * @export
      * @param {string} mapId

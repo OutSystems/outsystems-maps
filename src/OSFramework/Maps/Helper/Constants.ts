@@ -110,7 +110,7 @@ namespace OSFramework.Maps.Helper.Constants {
     export const googleMapsApiMap = `${googleMapsApiURL}/js`;
     /** URL for GoogleMaps API to make use of the Google StaticMap */
     export const googleMapsApiStaticMap = `${googleMapsApiURL}/staticmap`;
-    /** Version of the google maps to be loaded. */
+    /** Version of the Google Maps to be loaded. */
     export const gmversion = "3.55"; //Stable version Mid-February 2024.
     // In order to use the drawingTools we need to add it into the libraries via the URL = drawing
     // In order to use the heatmap we need to add it into the libraries via the URL = visualization
