@@ -194,6 +194,9 @@ namespace Provider.Maps.Google.Marker {
             if (markerPosition !== undefined) {
                 markerPosition
                     .then((markerOptions) => {
+                        //The marker was destroyed while waiting for the promise.
+                        if(this._destroyed) return;
+
                         this._provider = new google.maps.Marker({
                             ...(this.getProviderConfig() as unknown[]),
                             ...markerOptions,

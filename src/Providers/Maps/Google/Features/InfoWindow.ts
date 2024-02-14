@@ -15,7 +15,7 @@ namespace Provider.Maps.Google.Feature {
 
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         public build(): void {
-            // Creates an instance of the infoWindow object from google maps api
+            // Creates an instance of the infoWindow object from Google Maps api
             // We need to specify the content, so let's make it an empty string
             // This content will be updated whenever a marker with popup is clicked
             this._infoWindow = new google.maps.InfoWindow({

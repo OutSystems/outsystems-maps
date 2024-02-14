@@ -80,9 +80,6 @@ namespace Provider.Maps.Google.SearchPlaces {
                 );
             }
 
-            if (this._scriptCallback !== undefined) {
-                script.removeEventListener('load', this._scriptCallback);
-            }
             if (typeof google === 'object' && typeof google.maps === 'object') {
                 const local_configs =
                     this.getProviderConfig() as Configuration.SearchPlaces.ISearchPlacesProviderConfig;
@@ -207,7 +204,7 @@ namespace Provider.Maps.Google.SearchPlaces {
             }
         }
 
-        /** If countries > 5 (as required by google maps api), throw an error an return false */
+        /** If countries > 5 (as required by Google Maps api), throw an error an return false */
         private _validCountriesMaxLength(countries: Array<string>): boolean {
             if (countries.length > 5) {
                 this.searchPlacesEvents.trigger(

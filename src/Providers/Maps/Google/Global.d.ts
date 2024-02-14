@@ -3,7 +3,8 @@ import {
     MarkerClusterer as OriginalMarkerClusterer,
     MarkerClustererOptions as OriginalMarkerClustererOptions,
     SuperClusterAlgorithm as OriginalSuperClusterAlgorithm, Cluster as OriginalCluster,
-    Renderer as OriginalRenderer
+    Renderer as OriginalRenderer,
+    Algorithm as OriginalAlgorithm
 } from '@googlemaps/markerclusterer';
 
 declare global {
@@ -17,10 +18,11 @@ declare global {
         }; 
     }
     //The types below, are useful for TypeScript intellisense.
-    type Cluster = OriginalCluster;
-    type MarkerClusterer = OriginalMarkerClusterer;
-    type MarkerClustererOptions = OriginalMarkerClustererOptions;
-    type GoogleClusterRenderer = OriginalRenderer;
-    type SuperClusterAlgorithm = OriginalSuperClusterAlgorithm;
+    type GoogleMapsAlgorithm = OriginalAlgorithm;
+    type GoogleMapsCluster = OriginalCluster;
+    type GoogleMapsMarkerClusterer = OriginalMarkerClusterer;
+    type GoogleMapsMarkerClustererOptions = OriginalMarkerClustererOptions;
+    type GoogleMapsClusterRenderer = OriginalRenderer;
+    type GoogleMapsSuperClusterAlgorithm = OriginalSuperClusterAlgorithm;
 }
 window.GMCB = window.GMCB || {};

@@ -4,7 +4,7 @@ namespace OSFramework.Maps.Feature {
         /** Checks if the marker clusterer feature is activated */
         isEnabled: boolean;
         /** Gets the marker  */
-        markerClusterer: MarkerClusterer;
+        markerClusterer: GoogleMapsMarkerClusterer;
         /**
          * Adds a marker into the cluster
          * @param marker Marker Object from OSFramework that is going to be added into the cluster

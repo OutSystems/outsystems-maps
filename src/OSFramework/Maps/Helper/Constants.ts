@@ -106,12 +106,16 @@ namespace OSFramework.Maps.Helper.Constants {
     /** URL for GoogleMapsApis  */
     /************************** */
     export const googleMapsApiURL = 'https://maps.googleapis.com/maps/api';
-    /** URL for GoogleMaps API to get coordinates by Address/Location */
-    export const googleMapsApiGeocode = `${googleMapsApiURL}/geocode/json`;
     /** URL for GoogleMaps API to make use of the Google Map */
     export const googleMapsApiMap = `${googleMapsApiURL}/js`;
     /** URL for GoogleMaps API to make use of the Google StaticMap */
     export const googleMapsApiStaticMap = `${googleMapsApiURL}/staticmap`;
+    /** Version of the Google Maps to be loaded. */
+    export const gmversion = "3.55"; //Stable version Mid-February 2024.
+    // In order to use the drawingTools we need to add it into the libraries via the URL = drawing
+    // In order to use the heatmap we need to add it into the libraries via the URL = visualization
+    // In order to use the searchplaces we need to add it into the libraries via the URL = places (in case the Map is the first to import the scripts)                
+    export const gmlibraries = "drawing,visualization,places";
 
     /******************** */
     /** URLs for Leaflet  */

@@ -30,7 +30,7 @@ namespace Provider.Maps.Google.OSMap {
 
         private _addMapZoomHandler(): void {
             /*
-                This timeout is here due to an anomaly in the behaviour of google maps
+                This timeout is here due to an anomaly in the behaviour of Google Maps
                 when more than one maker is added to the map, the zoom event is fired twice:
                 https://stackoverflow.com/questions/20436185/google-maps-api-v3-zoom-changed-event-fired-twice-after-fitbounds-called
 
@@ -91,9 +91,6 @@ namespace Provider.Maps.Google.OSMap {
                 );
             }
 
-            if (this._scriptCallback !== undefined) {
-                script.removeEventListener('load', this._scriptCallback);
-            }
             if (typeof google === 'object' && typeof google.maps === 'object') {
                 // Make sure the center is saved before setting a default value which is going to be used
                 // before the conversion of the location to coordinates gets resolved
@@ -191,7 +188,7 @@ namespace Provider.Maps.Google.OSMap {
 
             // Other Provider Events (OS Map Event Block)
             // Any events that got added to the mapEvents via the API Subscribe method will have to be taken care here
-            // If the Event type of each handler is MapProviderEvent, we want to make sure to add that event to the listeners of the google maps provider (e.g. click, dblclick, contextmenu, etc)
+            // If the Event type of each handler is MapProviderEvent, we want to make sure to add that event to the listeners of the Google Maps provider (e.g. click, dblclick, contextmenu, etc)
             this.mapEvents.handlers.forEach(
                 (
                     handler: OSFramework.Maps.Event.IEvent<OSFramework.Maps.OSMap.IMap>,
@@ -489,17 +486,30 @@ namespace Provider.Maps.Google.OSMap {
 
             let position = this.features.center.getCenter();
 
+            const isDefault =
+                position.lat ===
+                    OSFramework.Maps.Helper.Constants.defaultMapCenter.lat &&
+                position.lng ===
+                    OSFramework.Maps.Helper.Constants.defaultMapCenter.lng;
+
             //If there are markers, let's choose the map center accordingly.
             //Otherwise, the map center will be the one defined in the configs.
             if (this.markers.length > 0) {
                 if (this.markers.length > 1) {
                     //As the map has more than one marker, let's see if the map
                     //center should be changed.
+                    //If the user hasn't change zoom, or the developer is ignoring it (current behavior).
                     if (this.allowRefreshZoom) {
-                        //If the user hasn't change zoom, or the developer is ignoring
-                        //it (current behavior), then the map will be centered tentatively
-                        //in the first marker.
-                        position = this.markers[0].provider.position.toJSON();
+                        //Let's check if the marker provider is ready to be used.
+                        if(this.markers[0].provider !== undefined){
+                            //If the map center, is the same as the default, then the map will ignore it.
+                            //Otherwise, the isAutofit config will be checked, and if false, then the current
+                            //center will not be changed.
+                            if(isDefault || this.features.zoom.isAutofit) {
+                                //Let's use the first marker as the center of the map.
+                                position = this.markers[0].provider.position.toJSON();
+                            }
+                        }
                     } else {
                         //If the user has zoomed and the developer intends to respect user zoom
                         //then the current map center will be used.
