@@ -24,5 +24,6 @@ declare global {
     type GoogleMapsMarkerClustererOptions = OriginalMarkerClustererOptions;
     type GoogleMapsClusterRenderer = OriginalRenderer;
     type GoogleMapsSuperClusterAlgorithm = OriginalSuperClusterAlgorithm;
+    type GoogleAdvancedFormatObj = {JSON, mapEvents: string[]};
 }
 window.GMCB = window.GMCB || {};
