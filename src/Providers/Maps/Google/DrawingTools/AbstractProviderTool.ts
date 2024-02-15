@@ -82,10 +82,8 @@ namespace Provider.Maps.Google.DrawingTools {
 			const propValue = OSFramework.Maps.Enum.OS_Config_Shape[propertyName];
 			super.changeProperty(propertyName, value);
 			if (this.drawingTools.isReady) {
-				switch (propValue) {
-					case OSFramework.Maps.Enum.OS_Config_Shape.allowDrag:
-						this.options = { draggable: value };
-						return;
+				if (propValue === OSFramework.Maps.Enum.OS_Config_Shape.allowDrag) {
+					this.options = { draggable: value };
 				}
 			}
 		}

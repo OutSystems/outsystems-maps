@@ -35,10 +35,28 @@ namespace Provider.Maps.Google.Shape {
 			});
 		}
 
+		private _changeCenter(location: string): void {
+			const shapeCenter = this._buildCenter(location);
+			// If path is undefined (should be a promise) -> don't create the shape
+			if (shapeCenter !== undefined) {
+				shapeCenter
+					.then((center) => {
+						this.provider.setCenter(center as google.maps.LatLng);
+					})
+					.catch((error) => {
+						OSFramework.Maps.Helper.ThrowError(
+							this.map,
+							OSFramework.Maps.Enum.ErrorCodes.LIB_FailedGeocodingShapeLocations,
+							error
+						);
+					});
+			}
+		}
+
 		protected _createProvider(center: OSFramework.Maps.OSStructures.OSMap.Coordinates): google.maps.Circle {
 			return new google.maps.Circle({
 				map: this.map.provider,
-				center,
+				center: center as google.maps.LatLngAltitudeLiteral,
 				...(this.getProviderConfig() as Configuration.Shape.IShapeProviderConfig),
 			});
 		}
@@ -50,8 +68,8 @@ namespace Provider.Maps.Google.Shape {
 		protected getShapeCoordinates(): OSFramework.Maps.OSStructures.OSMap.CircleCoordinates {
 			return {
 				coordinates: {
-					Lat: this.providerCenter.lat,
-					Lng: this.providerCenter.lng,
+					Lat: this.providerCenter.lat as number,
+					Lng: this.providerCenter.lng as number,
 				},
 				location: {
 					location: `${this.providerCenter.lat.toString()},${this.providerCenter.lng.toString()}`,
@@ -114,22 +132,7 @@ namespace Provider.Maps.Google.Shape {
 			if (this.isReady) {
 				switch (propValue) {
 					case OSFramework.Maps.Enum.OS_Config_Shape.center:
-						// eslint-disable-next-line no-case-declarations
-						const shapeCenter = this._buildCenter(propertyValue as string);
-						// If path is undefined (should be a promise) -> don't create the shape
-						if (shapeCenter !== undefined) {
-							shapeCenter
-								.then((center) => {
-									this.provider.setCenter(center);
-								})
-								.catch((error) => {
-									OSFramework.Maps.Helper.ThrowError(
-										this.map,
-										OSFramework.Maps.Enum.ErrorCodes.LIB_FailedGeocodingShapeLocations,
-										error
-									);
-								});
-						}
+						this._changeCenter(propertyValue as string);
 						return;
 					case OSFramework.Maps.Enum.OS_Config_Shape.radius:
 						return this.provider.setRadius(propertyValue as number);

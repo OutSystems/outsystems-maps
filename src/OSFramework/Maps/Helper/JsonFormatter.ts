@@ -1,10 +1,10 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.Maps.Helper {
 	export function JsonFormatter(text: string): JSON {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		let json: any = {};
-		if (text === undefined || text === '') return json;
+		let json = {};
+		if (text === undefined || text === '') return json as JSON;
 
+		/* NO SONAR */
 		// text.substring(1, text.length - 1)
 		//     .replace(/ /g, '')
 		//     .split(',')
@@ -21,6 +21,6 @@ namespace OSFramework.Maps.Helper {
 		// eslint-disable-next-line no-eval
 		json = eval('(' + text + ')');
 
-		return json;
+		return json as JSON;
 	}
 }

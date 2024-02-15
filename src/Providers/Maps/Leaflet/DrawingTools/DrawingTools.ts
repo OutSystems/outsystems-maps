@@ -55,16 +55,14 @@ namespace Provider.Maps.Leaflet.DrawingTools {
 		}
 
 		private _getDrawingToolsPosition(position: string): Constants.DrawingTools.Positions {
-			if (Constants.DrawingTools.Positions[position] !== undefined) {
-				return Constants.DrawingTools.Positions[position];
-			} else {
+			if (Constants.DrawingTools.Positions[position] === undefined) {
 				OSFramework.Maps.Helper.ThrowError(
 					this.map,
 					OSFramework.Maps.Enum.ErrorCodes.CFG_InvalidDrawingToolsPosition,
 					`${position}`
 				);
-				return;
 			}
+			return Constants.DrawingTools.Positions[position];
 		}
 
 		private _getTools(): ToolsList {
@@ -185,12 +183,9 @@ namespace Provider.Maps.Leaflet.DrawingTools {
 			const propValue = OSFramework.Maps.Enum.OS_Config_DrawingTools[propertyName];
 			super.changeProperty(propertyName, propertyValue);
 			if (this.isReady) {
-				switch (propValue) {
-					case OSFramework.Maps.Enum.OS_Config_DrawingTools.position:
-						// eslint-disable-next-line no-case-declarations
-						const positionValue = this._getDrawingToolsPosition(propertyValue as string);
-						positionValue && this.provider.setPosition(positionValue);
-						return;
+				if (propValue === OSFramework.Maps.Enum.OS_Config_DrawingTools.position) {
+					const positionValue = this._getDrawingToolsPosition(propertyValue as string);
+					positionValue && this.provider.setPosition(positionValue);
 				}
 			}
 		}
