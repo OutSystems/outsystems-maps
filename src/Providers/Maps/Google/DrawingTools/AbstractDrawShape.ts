@@ -65,8 +65,7 @@ namespace Provider.Maps.Google.DrawingTools {
 			super.build();
 		}
 
-		// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-		public changeProperty(propertyName: string, value: any): void {
+		public changeProperty(propertyName: string, value: unknown): void {
 			const propValue = OSFramework.Maps.Enum.OS_Config_Shape[propertyName];
 			super.changeProperty(propertyName, value);
 			if (this.drawingTools.isReady) {

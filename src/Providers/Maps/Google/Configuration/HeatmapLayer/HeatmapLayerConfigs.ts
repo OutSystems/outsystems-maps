@@ -18,8 +18,7 @@ namespace Provider.Maps.Google.Configuration.HeatmapLayer {
 		//     super(config);
 		// }
 
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		public getProviderConfig(): any {
+		public getProviderConfig(): unknown {
 			// eslint-disable-next-line prefer-const
 			let provider = {
 				points: this.points,

@@ -14,8 +14,7 @@ namespace Provider.Maps.Leaflet.Configuration.DrawingTools {
 		//     super(config);
 		// }
 
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		public getProviderConfig(): any {
+		public getProviderConfig(): unknown[] {
 			// eslint-disable-next-line prefer-const
 			let provider = {
 				repeatMode: false, // allows to create drawing shapes without unselect the tool
@@ -31,7 +30,7 @@ namespace Provider.Maps.Leaflet.Configuration.DrawingTools {
 				if (provider[key] === undefined) delete provider[key];
 			});
 
-			return provider;
+			return provider as unknown as unknown[];
 		}
 	}
 }

@@ -12,8 +12,7 @@ namespace Provider.Maps.Leaflet.Configuration.Shape {
 		//     super(config);
 		// }
 
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		public getProviderConfig(): any {
+		public getProviderConfig(): unknown {
 			const provider = super.getProviderConfig();
 
 			// Rectangle doesn't have locations on its configurations

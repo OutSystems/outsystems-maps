@@ -22,8 +22,7 @@ namespace Provider.Maps.Google.DrawingTools {
 		private _createConfigsElement(
 			shape: google.maps.Circle,
 			configs: Configuration.Shape.CircleShapeConfig
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		): any {
+		): unknown {
 			const providerCenter = shape.getCenter();
 			const center = `${providerCenter.lat()},${providerCenter.lng()}`;
 			const radius = shape.getRadius();

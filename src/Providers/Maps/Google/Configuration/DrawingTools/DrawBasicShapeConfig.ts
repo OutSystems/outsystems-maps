@@ -13,8 +13,7 @@ namespace Provider.Maps.Google.Configuration.DrawingTools {
 		//     super(config);
 		// }
 
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		public getProviderConfig(): any {
+		public getProviderConfig(): unknown[] {
 			const configs = super.getProviderConfig();
 			// eslint-disable-next-line prefer-const
 			let provider = {

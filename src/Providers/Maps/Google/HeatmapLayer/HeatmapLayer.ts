@@ -54,33 +54,32 @@ namespace Provider.Maps.Google.HeatmapLayer {
 			this.finishBuild();
 		}
 
-		// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-		public changeProperty(propertyName: string, value: any): void {
+		public changeProperty(propertyName: string, value: unknown): void {
 			const propValue = OSFramework.Maps.Enum.OS_Config_HeatmapLayer[propertyName];
 			super.changeProperty(propertyName, value);
 			if (this.isReady) {
 				switch (propValue) {
 					case OSFramework.Maps.Enum.OS_Config_HeatmapLayer.points:
-						return this.provider.setData(this._pointsToData(JSON.parse(value)));
+						return this.provider.setData(this._pointsToData(JSON.parse(value as string)));
 					case OSFramework.Maps.Enum.OS_Config_HeatmapLayer.dissipateOnZoom:
 						return this.provider.setOptions({
-							dissipating: value,
+							dissipating: value as boolean,
 						});
 					case OSFramework.Maps.Enum.OS_Config_HeatmapLayer.gradient:
 						return this.provider.setOptions({
-							gradient: this._gradientColors(JSON.parse(value)),
+							gradient: this._gradientColors(JSON.parse(value as string)),
 						});
 					case OSFramework.Maps.Enum.OS_Config_HeatmapLayer.maxIntensity:
 						return this.provider.setOptions({
-							maxIntensity: value,
+							maxIntensity: value as number,
 						});
 					case OSFramework.Maps.Enum.OS_Config_HeatmapLayer.opacity:
 						return this.provider.setOptions({
-							opacity: value,
+							opacity: value as number,
 						});
 					case OSFramework.Maps.Enum.OS_Config_HeatmapLayer.radius:
 						return this.provider.setOptions({
-							radius: value,
+							radius: value as number,
 						});
 				}
 			}

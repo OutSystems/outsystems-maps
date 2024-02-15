@@ -57,23 +57,22 @@ namespace Provider.Maps.Google.FileLayer {
 			this.finishBuild();
 		}
 
-		// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-		public changeProperty(propertyName: string, value: any): void {
+		public changeProperty(propertyName: string, value: unknown): void {
 			const propValue = OSFramework.Maps.Enum.OS_Config_FileLayer[propertyName];
 			super.changeProperty(propertyName, value);
 			if (this.isReady) {
 				switch (propValue) {
 					case OSFramework.Maps.Enum.OS_Config_FileLayer.layerUrl:
 						return this.provider.setOptions({
-							url: value,
+							url: value as string,
 						});
 					case OSFramework.Maps.Enum.OS_Config_FileLayer.preserveViewport:
 						return this.provider.setOptions({
-							preserveViewport: value,
+							preserveViewport: value as boolean,
 						});
 					case OSFramework.Maps.Enum.OS_Config_FileLayer.suppressPopups:
 						return this.provider.setOptions({
-							suppressInfoWindows: value,
+							suppressInfoWindows: value as boolean,
 						});
 				}
 			}

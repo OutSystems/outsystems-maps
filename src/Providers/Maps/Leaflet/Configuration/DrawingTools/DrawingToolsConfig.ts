@@ -9,8 +9,7 @@ namespace Provider.Maps.Leaflet.Configuration.DrawingTools {
 		public position: string;
 		public uniqueId: string;
 
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		public getProviderConfig(): any {
+		public getProviderConfig(): unknown {
 			return {
 				position: this.position,
 			};

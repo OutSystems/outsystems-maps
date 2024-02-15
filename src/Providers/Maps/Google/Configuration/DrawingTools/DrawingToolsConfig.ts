@@ -14,8 +14,7 @@ namespace Provider.Maps.Google.Configuration.DrawingTools {
 		//     super(config);
 		// }
 
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		public getProviderConfig(): any {
+		public getProviderConfig(): unknown {
 			return {
 				position: this.position,
 			};

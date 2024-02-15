@@ -88,16 +88,14 @@ namespace Provider.Maps.Google.DrawingTools {
 		}
 
 		// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-		public changeProperty(propertyName: string, value: any): void {
+		public changeProperty(propertyName: string, value: unknown): void {
 			const propValue = OSFramework.Maps.Enum.OS_Config_DrawingTools[propertyName];
 			super.changeProperty(propertyName, value);
 			if (this.isReady) {
-				switch (propValue) {
-					case OSFramework.Maps.Enum.OS_Config_DrawingTools.position:
-						this.controlOptions = {
-							position: parseInt(google.maps.ControlPosition[value]),
-						};
-						return;
+				if (propValue === OSFramework.Maps.Enum.OS_Config_DrawingTools.position) {
+					this.controlOptions = {
+						position: parseInt(google.maps.ControlPosition[value as number]),
+					};
 				}
 			}
 		}

@@ -126,8 +126,7 @@ namespace Provider.Maps.Leaflet.DrawingTools {
 		}
 
 		// We don't have the types for the drawingTools features
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		protected get controlOptions(): any {
+		protected get controlOptions(): unknown[] {
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			//@ts-ignore
 			return this._provider.get('drawingControlOptions');

@@ -23,8 +23,7 @@ namespace Provider.Maps.Google.Configuration.OSMap {
 		//     super(config);
 		// }
 
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		public getProviderConfig(): any {
+		public getProviderConfig(): unknown {
 			const provider = {
 				center: this.center,
 				zoom: this.zoom,

@@ -12,8 +12,7 @@ namespace Provider.Maps.Google.DrawingTools {
 			drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
 			drawingToolsId: string,
 			type: string,
-			// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-			configs: any
+			configs: unknown
 		) {
 			super(map, drawingTools, drawingToolsId, type, new Configuration.DrawingTools.DrawMarkerConfig(configs));
 		}
@@ -103,15 +102,12 @@ namespace Provider.Maps.Google.DrawingTools {
 			super.build();
 		}
 
-		// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-		public changeProperty(propertyName: string, value: any): void {
+		public changeProperty(propertyName: string, value: unknown): void {
 			const propValue = OSFramework.Maps.Enum.OS_Config_Marker[propertyName];
 			super.changeProperty(propertyName, value);
 			if (this.drawingTools.isReady) {
-				switch (propValue) {
-					case OSFramework.Maps.Enum.OS_Config_Marker.iconUrl:
-						this.options = { icon: value };
-						return;
+				if (propValue === OSFramework.Maps.Enum.OS_Config_Marker.iconUrl) {
+					this.options = { icon: value as string };
 				}
 			}
 		}

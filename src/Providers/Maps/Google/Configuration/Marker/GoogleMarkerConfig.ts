@@ -19,8 +19,7 @@ namespace Provider.Maps.Google.Configuration.Marker {
 		//     super(config);
 		// }
 
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		public getProviderConfig(): any {
+		public getProviderConfig(): unknown {
 			const provider = {
 				draggable: this.allowDrag,
 				icon: this.iconUrl,
