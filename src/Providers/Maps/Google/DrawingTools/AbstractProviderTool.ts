@@ -16,8 +16,7 @@ namespace Provider.Maps.Google.DrawingTools {
 			super(map, drawingTools, drawingToolsId, type, configs);
 		}
 
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		private _addCompletedEventHandler(element: any): void {
+		private _addCompletedEventHandler(element: google.maps.drawing.DrawingManager): void {
 			const uniqueId = OSFramework.Maps.Helper.GenerateUniqueId();
 			// create the shape/marker element
 			this.newElm = this.createElement(

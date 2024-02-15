@@ -45,8 +45,7 @@ namespace Provider.Maps.Leaflet.DrawingTools {
 			this._toolsGroup = new L.FeatureGroup();
 		}
 
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		private _addCompletedEventHandler(event: any): void {
+		private _addCompletedEventHandler(event: { layerType: unknown }): void {
 			const toolType = event.layerType;
 
 			this.tools
