@@ -6,6 +6,7 @@ namespace Provider.Maps.Leaflet.Constants.Marker {
 	export enum ProviderEventNames {
 		click = 'click',
 		contextmenu = 'contextmenu',
+		// eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
 		rightclick = 'contextmenu',
 		dblclick = 'dblclick',
 		drag = 'drag',
