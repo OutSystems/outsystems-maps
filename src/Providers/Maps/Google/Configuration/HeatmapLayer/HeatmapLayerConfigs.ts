@@ -13,11 +13,6 @@ namespace Provider.Maps.Google.Configuration.HeatmapLayer {
 		public points: Array<OSFramework.Maps.OSStructures.HeatmapLayer.Points>;
 		public radius: number;
 
-		// No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
-		// constructor(config: JSON) {
-		//     super(config);
-		// }
-
 		public getProviderConfig(): unknown {
 			// eslint-disable-next-line prefer-const
 			let provider = {

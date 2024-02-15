@@ -14,11 +14,6 @@ namespace Provider.Maps.Google.Configuration.Shape {
 		public strokeWeight: number;
 		public uniqueId: string;
 
-		// No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
-		// constructor(config: unknown) {
-		//     super(config);
-		// }
-
 		public getProviderConfig(): IShapeProviderConfig {
 			// eslint-disable-next-line prefer-const
 			let provider: IShapeProviderConfig = {

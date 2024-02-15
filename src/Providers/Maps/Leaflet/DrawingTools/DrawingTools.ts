@@ -67,7 +67,6 @@ namespace Provider.Maps.Leaflet.DrawingTools {
 			}
 		}
 
-		//TODO: create the return structure
 		private _getTools(): ToolsList {
 			const _tools = new ToolsList();
 			this.tools.forEach((tool) => {

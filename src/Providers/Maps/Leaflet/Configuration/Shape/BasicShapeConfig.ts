@@ -14,13 +14,6 @@ namespace Provider.Maps.Leaflet.Configuration.Shape {
 		public strokeOpacity: number;
 		public strokeWeight: number;
 
-		// No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
-		// constructor(
-		//     config: OSFramework.Maps.Configuration.IConfigurationShape
-		// ) {
-		//     super(config);
-		// }
-
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		public getProviderConfig(): any {
 			const provider = {

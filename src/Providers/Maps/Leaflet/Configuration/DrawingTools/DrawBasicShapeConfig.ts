@@ -8,11 +8,6 @@ namespace Provider.Maps.Leaflet.Configuration.DrawingTools {
 		public strokeOpacity: number;
 		public strokeWeight: number;
 
-		// No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
-		// constructor(config: JSON) {
-		//     super(config);
-		// }
-
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		public getProviderConfig(): any {
 			const configs = super.getProviderConfig();

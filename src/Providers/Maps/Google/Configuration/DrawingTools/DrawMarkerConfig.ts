@@ -5,11 +5,6 @@ namespace Provider.Maps.Google.Configuration.DrawingTools {
 	export class DrawMarkerConfig extends DrawConfig {
 		public iconUrl: string;
 
-		// No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
-		// constructor(config: JSON) {
-		//     super(config);
-		// }
-
 		public getProviderConfig(): unknown[] {
 			const provider = super.getProviderConfig();
 			provider.icon = this.iconUrl;

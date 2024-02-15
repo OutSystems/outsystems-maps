@@ -58,7 +58,6 @@ namespace Provider.Maps.Google.DrawingTools {
 		protected createElement(
 			uniqueId: string,
 			shape: google.maps.Rectangle,
-			// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
 			configs: Configuration.Shape.RectangleShapeConfig
 		): OSFramework.Maps.Shape.IShape {
 			const finalConfigs = this._createConfigsElement(shape, configs);
