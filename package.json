@@ -5,9 +5,9 @@
   "author": "UI Components Team",
   "license": "BSD-3-Clause",
   "scripts": {
-    "build": "tsc",
-    "lint": "eslint ./src/**/*.ts",
-    "lintfix": "eslint --fix ./src/**/*.ts",
+    "build": "tsc && npm run lint",
+    "lint": "eslint . --ext .ts",
+    "lintfix": "eslint . --fix --ext .ts",
     "prettier": "prettier --config ./.prettierrc.json --write \"**/*.+(js|ts|css)\"",
     "setup": "npm i && tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
