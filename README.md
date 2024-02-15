@@ -83,3 +83,11 @@ To be accepted, a Pull Request needs to:
 
 ## 📫&nbsp; Have a question? Want to chat? Ran into a problem?
 Write us in [the component support page](https://www.outsystems.com/forge/component-discussions/9909/OutSystems+Maps)!
+
+## How to sign up for the announcement list
+
+Available internally on Slack channel _#rd-uicomponents-contributors_.
+
+## Keywords
+
+GitHub - OutSystems - Maps
