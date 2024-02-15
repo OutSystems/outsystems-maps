@@ -6,15 +6,6 @@ namespace Provider.Maps.Google.DrawingTools {
 		T extends OSFramework.Maps.Configuration.IConfigurationTool,
 	> extends OSFramework.Maps.DrawingTools.AbstractTool<T> {
 		protected newElm;
-		constructor(
-			map: OSFramework.Maps.OSMap.IMap,
-			drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
-			drawingToolsId: string,
-			type: string,
-			configs: T
-		) {
-			super(map, drawingTools, drawingToolsId, type, configs);
-		}
 
 		private _addCompletedEventHandler(element: google.maps.drawing.DrawingManager): void {
 			const uniqueId = OSFramework.Maps.Helper.GenerateUniqueId();
