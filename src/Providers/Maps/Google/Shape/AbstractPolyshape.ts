@@ -57,13 +57,13 @@ namespace Provider.Maps.Google.Shape {
 		}
 
 		protected _setProviderPath(path: Array<OSFramework.Maps.OSStructures.OSMap.Coordinates>): void {
-			this._provider.setPath(path);
+			this._provider.setPath(path as google.maps.LatLngLiteral[]);
 		}
 
 		public get providerBounds(): google.maps.LatLngBounds {
 			const bounds = new google.maps.LatLngBounds();
 			this.providerPath.forEach(function (item) {
-				bounds.extend(new google.maps.LatLng(item.lat, item.lng));
+				bounds.extend(new google.maps.LatLng(item.lat as number, item.lng as number));
 			});
 			return bounds;
 		}

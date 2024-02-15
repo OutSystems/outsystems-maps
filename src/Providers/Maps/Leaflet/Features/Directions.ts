@@ -202,7 +202,7 @@ namespace Provider.Maps.Leaflet.Feature {
 				waypoints.forEach((wpt) =>
 					Helper.Conversions.ValidateCoordinates(wpt)
 						.then((response) => {
-							wayptsFinal.push(new L.LatLng(response.lat, response.lng));
+							wayptsFinal.push(new L.LatLng(response.lat as number, response.lng as number));
 							if (waypoints.length === wayptsFinal.length) {
 								resolve(wayptsFinal);
 							}

@@ -24,7 +24,9 @@ namespace Provider.Maps.Leaflet.Feature {
 			};
 
 			// get center coordinates into point
-			const point = this._map.provider.latLngToLayerPoint(this._map.features.center.getCurrentCenter());
+			const point = this._map.provider.latLngToLayerPoint(
+				this._map.features.center.getCurrentCenter() as L.LatLngExpression
+			);
 
 			// calculate the new center point + offset
 			const newPoint = new L.Point(point.x + this._offset.offsetX, point.y + this._offset.offsetY);

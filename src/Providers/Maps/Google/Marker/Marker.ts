@@ -82,8 +82,8 @@ namespace Provider.Maps.Google.Marker {
 					Helper.Conversions.ConvertToCoordinates(this.config.location)
 						.then((response) => {
 							markerOptions.position = {
-								lat: response.lat,
-								lng: response.lng,
+								lat: response.lat as number,
+								lng: response.lng as number,
 							};
 							resolve(markerOptions);
 						})
@@ -210,8 +210,8 @@ namespace Provider.Maps.Google.Marker {
 						Helper.Conversions.ConvertToCoordinates(propertyValue as string)
 							.then((response) => {
 								this._provider.setPosition({
-									lat: response.lat,
-									lng: response.lng,
+									lat: response.lat as number,
+									lng: response.lng as number,
 								});
 								this.map.refresh();
 							})
