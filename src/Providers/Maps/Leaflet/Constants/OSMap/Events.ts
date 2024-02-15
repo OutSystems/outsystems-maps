@@ -10,6 +10,7 @@ namespace Provider.Maps.Leaflet.Constants.OSMap {
 	export enum ProviderEventNames {
 		click = 'click',
 		contextmenu = 'contextmenu',
+		// eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
 		rightclick = 'contextmenu',
 		dblclick = 'dblclick',
 		drag = 'drag',
@@ -20,9 +21,11 @@ namespace Provider.Maps.Leaflet.Constants.OSMap {
 		mouseover = 'mouseover',
 		resize = 'resize',
 		tilesloaded = 'load',
+		// eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
 		load = 'load',
 		zoom_changed = 'zoom',
 		zoom_end = 'zoomend',
+		// eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
 		zoom = 'zoom',
 	}
 }
