@@ -411,7 +411,9 @@ namespace Provider.Maps.Google.OSMap {
 							//center will not be changed.
 							if (isDefault || this.features.zoom.isAutofit) {
 								//Let's use the first marker as the center of the map.
-								position = this.markers[0].provider.position.toJSON();
+								// The TS definitions appear to be outdated.
+								// eslint-disable-next-line @typescript-eslint/no-explicit-any
+								position = (this.markers[0].provider as google.maps.Marker as any).position.toJSON();
 							}
 						}
 					} else {
@@ -422,7 +424,9 @@ namespace Provider.Maps.Google.OSMap {
 				} else if (this.markers[0].provider !== undefined) {
 					//If there's only one marker, and is already created, its location will be
 					//used as the map center.
-					position = this.markers[0].provider.position.toJSON();
+					// The TS definitions appear to be outdated.
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					position = (this.markers[0].provider as google.maps.Marker as any).position.toJSON();
 				}
 			}
 

@@ -21,7 +21,9 @@ namespace Provider.Maps.Google.Feature {
 			const bounds = new google.maps.LatLngBounds();
 			this._map.markers.forEach(function (item) {
 				if (item.provider === undefined) return;
-				bounds.extend(item.provider.position.toJSON());
+				// The TS definitions appear to be outdated.
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				bounds.extend((item.provider as google.maps.Marker as any).position.toJSON());
 			});
 
 			if (useShapes) {

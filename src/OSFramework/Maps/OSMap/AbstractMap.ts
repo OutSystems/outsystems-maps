@@ -236,7 +236,7 @@ namespace OSFramework.Maps.OSMap {
 		}
 
 		public hasMarkerClusterer(): boolean {
-			return this._features && this._features.markerClusterer && this._features.markerClusterer.isEnabled;
+			return this._features?.markerClusterer?.isEnabled;
 		}
 
 		public hasShape(shapeId: string): boolean {
