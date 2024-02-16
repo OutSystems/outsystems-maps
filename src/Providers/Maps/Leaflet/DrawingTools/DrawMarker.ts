@@ -61,20 +61,22 @@ namespace Provider.Maps.Leaflet.DrawingTools {
 		}
 
 		private _setOnChangeEvent(_marker: OSFramework.Maps.Marker.IMarker): void {
+			const markerProvider = _marker.provider as L.Marker;
 			_marker.markerEvents.addHandler(
 				// changing the marker location is only available via the drag-and-drop, so the solution passes by adding the dragend event listener as the marker's OnChanged event
 				'dragend' as OSFramework.Maps.Event.Marker.MarkerEventType,
 				// Trigger the onDrawingChangeEvent with the extra information (marker uniqueId and flag indicating that the element is not new)
-				() =>
+				() => {
 					this.triggerOnDrawingChangeEvent(
 						_marker.uniqueId,
 						false,
 						JSON.stringify({
-							Lat: _marker.provider.getLatLng().lat,
-							Lng: _marker.provider.getLatLng().lng,
+							Lat: markerProvider.getLatLng().lat,
+							Lng: markerProvider.getLatLng().lng,
 						}),
-						`${_marker.provider.getLatLng().lat},${_marker.provider.getLatLng().lng}`
-					)
+						`${markerProvider.getLatLng().lat}, ${markerProvider.getLatLng().lng}`
+					);
+				}
 			);
 		}
 

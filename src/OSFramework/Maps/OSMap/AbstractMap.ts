@@ -80,7 +80,7 @@ namespace OSFramework.Maps.OSMap {
 			return Array.from(this._markersSet);
 		}
 
-		public get markersReady(): W[] {
+		public get markersReady(): unknown[] {
 			// We need to go through all the markers and only get the ones that are ready (or have the provider defined)
 			// Then we need to return the providers inside a list
 			return this.markers.filter((marker) => marker.isReady).map((marker) => marker.provider);

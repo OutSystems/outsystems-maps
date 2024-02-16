@@ -1,11 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.Maps.FileLayer {
-	export abstract class AbstractFileLayer<
-		W,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		T extends Configuration.IConfigurationFileLayer,
-	> implements IFileLayer
-	{
+	export abstract class AbstractFileLayer<W, T extends Configuration.IConfigurationFileLayer> implements IFileLayer {
 		/** Configuration reference */
 		private _config: T;
 		private _map: OSMap.IMap;

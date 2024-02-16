@@ -21,7 +21,7 @@ namespace Provider.Maps.Leaflet.Feature {
 			let bounds: L.LatLngBounds;
 			this._map.markers.forEach(function (marker) {
 				if (marker.provider === undefined) return;
-				const loc: L.LatLng = marker.provider.getLatLng();
+				const loc: L.LatLng = (marker.provider as L.Marker).getLatLng();
 				bounds = bounds ? bounds.extend(loc) : new L.LatLngBounds(loc, loc);
 			});
 			if (useShapes) {

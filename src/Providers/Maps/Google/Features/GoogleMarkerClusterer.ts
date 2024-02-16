@@ -70,7 +70,9 @@ namespace Provider.Maps.Google.Feature {
 				this._rebuildClusters();
 			} else {
 				this._markerClusterer.clearMarkers();
-				this._map.markers.forEach((marker) => marker.provider.setMap(this._map.provider));
+				this._map.markers.forEach((marker) => {
+					(marker.provider as google.maps.Marker).setMap(this._map.provider);
+				});
 			}
 		}
 

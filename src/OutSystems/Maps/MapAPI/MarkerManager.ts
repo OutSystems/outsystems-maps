@@ -58,12 +58,16 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 			if (map.providerType === OSFramework.Maps.Enum.ProviderType.Google) {
 				// Check if the feature is enabled!
 				if (map.hasMarkerClusterer()) {
-					const marker = map.markers.find((marker) => marker.provider.location === markerPosition);
+					const marker = map.markers.find((marker) => {
+						// eslint-disable-next-line @typescript-eslint/no-explicit-any
+						return (marker.provider as any).location === markerPosition;
+					});
 
 					// Check if there is a marker with the given Position/Location
 					if (marker !== undefined) {
 						map.features.markerClusterer.removeMarker(marker);
-						marker.provider.setMap(map.provider);
+						// eslint-disable-next-line @typescript-eslint/no-explicit-any
+						(marker.provider as any).setMap(map.provider);
 					} else {
 						responseObj.isSuccess = false;
 						responseObj.message = `There are not a marker with position:'${markerPosition}' to be removed.`;

@@ -7,8 +7,7 @@ namespace OSFramework.Maps.FileLayer {
 		fileLayerEvents: Event.FileLayer.FileLayersEventsManager;
 		isReady: boolean;
 		map: OSMap.IMap; //IMap
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		provider: any;
+		provider: unknown;
 		uniqueId: string;
 		widgetId: string;
 

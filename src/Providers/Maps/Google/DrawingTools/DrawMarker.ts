@@ -18,20 +18,22 @@ namespace Provider.Maps.Google.DrawingTools {
 		}
 
 		private _setOnChangeEvent(_marker: OSFramework.Maps.Marker.IMarker): void {
+			const markerProvider = _marker.provider as google.maps.Marker;
 			_marker.markerEvents.addHandler(
 				// changing the marker location is only available via the drag-and-drop, so the solution passes by adding the dragend event listener as the marker's OnChanged event
 				'dragend' as OSFramework.Maps.Event.Marker.MarkerEventType,
 				// Trigger the onDrawingChangeEvent with the extra information (marker uniqueId and flag indicating that the element is not new)
-				() =>
+				() => {
 					this.triggerOnDrawingChangeEvent(
 						_marker.uniqueId,
 						false,
 						JSON.stringify({
-							Lat: _marker.provider.getPosition().lat(),
-							Lng: _marker.provider.getPosition().lng(),
+							Lat: markerProvider.getPosition().lat(),
+							Lng: markerProvider.getPosition().lng(),
 						}),
-						`${_marker.provider.getPosition().lat()},${_marker.provider.getPosition().lng()}`
-					)
+						`${markerProvider.getPosition().lat()}, ${markerProvider.getPosition().lng()}`
+					);
+				}
 			);
 		}
 
