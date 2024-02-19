@@ -31,9 +31,6 @@ namespace Provider.Maps.Leaflet.DrawingTools {
 	> {
 		// FeatureGroup <any>: as required by Leaflet
 		private _toolsGroup: L.FeatureGroup<unknown>;
-		//TODO - At the moment the type is not well defined and it doesn't included setDrawingOptions for example,
-		//     - When this is done the overwrite of the _provider is not needed anymore.
-		//protected _provider: any;
 
 		constructor(
 			map: OSFramework.Maps.OSMap.IMap,
