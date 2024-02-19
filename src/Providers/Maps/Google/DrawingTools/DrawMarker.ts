@@ -12,27 +12,28 @@ namespace Provider.Maps.Google.DrawingTools {
 			drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
 			drawingToolsId: string,
 			type: string,
-			// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-			configs: any
+			configs: unknown
 		) {
 			super(map, drawingTools, drawingToolsId, type, new Configuration.DrawingTools.DrawMarkerConfig(configs));
 		}
 
 		private _setOnChangeEvent(_marker: OSFramework.Maps.Marker.IMarker): void {
+			const markerProvider = _marker.provider as google.maps.Marker;
 			_marker.markerEvents.addHandler(
 				// changing the marker location is only available via the drag-and-drop, so the solution passes by adding the dragend event listener as the marker's OnChanged event
 				'dragend' as OSFramework.Maps.Event.Marker.MarkerEventType,
 				// Trigger the onDrawingChangeEvent with the extra information (marker uniqueId and flag indicating that the element is not new)
-				() =>
+				() => {
 					this.triggerOnDrawingChangeEvent(
 						_marker.uniqueId,
 						false,
 						JSON.stringify({
-							Lat: _marker.provider.getPosition().lat(),
-							Lng: _marker.provider.getPosition().lng(),
+							Lat: markerProvider.getPosition().lat(),
+							Lng: markerProvider.getPosition().lng(),
 						}),
-						`${_marker.provider.getPosition().lat()},${_marker.provider.getPosition().lng()}`
-					)
+						`${markerProvider.getPosition().lat()}, ${markerProvider.getPosition().lng()}`
+					);
+				}
 			);
 		}
 
@@ -103,15 +104,12 @@ namespace Provider.Maps.Google.DrawingTools {
 			super.build();
 		}
 
-		// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-		public changeProperty(propertyName: string, value: any): void {
+		public changeProperty(propertyName: string, value: unknown): void {
 			const propValue = OSFramework.Maps.Enum.OS_Config_Marker[propertyName];
 			super.changeProperty(propertyName, value);
 			if (this.drawingTools.isReady) {
-				switch (propValue) {
-					case OSFramework.Maps.Enum.OS_Config_Marker.iconUrl:
-						this.options = { icon: value };
-						return;
+				if (propValue === OSFramework.Maps.Enum.OS_Config_Marker.iconUrl) {
+					this.options = { icon: value as string };
 				}
 			}
 		}

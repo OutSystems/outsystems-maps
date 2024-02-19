@@ -53,7 +53,7 @@ namespace Provider.Maps.Google.Feature {
 		}
 
 		public refreshCenter(value: OSFramework.Maps.OSStructures.OSMap.Coordinates): void {
-			const coordinates = new google.maps.LatLng(value.lat, value.lng);
+			const coordinates = new google.maps.LatLng(value.lat as number, value.lng as number);
 			this._map.provider.setCenter(coordinates);
 			this._currentCenter = coordinates.toJSON();
 		}

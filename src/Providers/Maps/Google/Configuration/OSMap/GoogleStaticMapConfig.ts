@@ -11,13 +11,7 @@ namespace Provider.Maps.Google.Configuration.OSMap {
 		public uniqueId: string;
 		public zoom: OSFramework.Maps.Enum.OSMap.Zoom;
 
-		// No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
-		// constructor(config: JSON) {
-		//     super(config);
-		// }
-
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		public getProviderConfig(): any {
+		public getProviderConfig(): unknown {
 			const provider = {
 				center: this.center,
 				zoom: this.zoom,

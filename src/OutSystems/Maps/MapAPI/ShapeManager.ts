@@ -55,8 +55,8 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
 		const properties = new OSFramework.Maps.OSStructures.API.CircleProperties();
 		if (shape.type === OSFramework.Maps.Enum.ShapeType.Circle) {
 			properties.Center = {
-				Lat: shape.providerCenter.lat,
-				Lng: shape.providerCenter.lng,
+				Lat: shape.providerCenter.lat as number,
+				Lng: shape.providerCenter.lng as number,
 			};
 			properties.Radius = shape.providerRadius;
 		} else {

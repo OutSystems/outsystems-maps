@@ -86,12 +86,12 @@ namespace Provider.Maps.Leaflet.Shape {
 								switch (cd) {
 									case 'north':
 									case 'south':
-										newBounds[cd] = response.lat;
+										newBounds[cd] = response.lat as number;
 										break;
 									case 'east':
 									case 'west':
 									default:
-										newBounds[cd] = response.lng;
+										newBounds[cd] = response.lng as number;
 										break;
 								}
 								if (boundsLength === 4) {

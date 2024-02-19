@@ -53,7 +53,7 @@ namespace Provider.Maps.Leaflet.Feature {
 		}
 
 		public refreshCenter(value: OSFramework.Maps.OSStructures.OSMap.Coordinates): void {
-			const coordinates = new L.LatLng(value.lat, value.lng);
+			const coordinates = new L.LatLng(value.lat as number, value.lng as number);
 			this._map.provider.setView(coordinates);
 			this._currentCenter = coordinates;
 		}

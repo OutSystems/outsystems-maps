@@ -70,7 +70,7 @@ namespace Provider.Maps.Leaflet.Shape {
 
 		/** Set the provider path from an array of coordinates */
 		private _setProviderPath(path: Array<OSFramework.Maps.OSStructures.OSMap.Coordinates>): void {
-			this._provider.setLatLngs(path);
+			this._provider.setLatLngs(path as L.LatLngExpression[]);
 		}
 
 		/** Validates if the locations are accepted for the Shape's path considering the minimum valid address/coordinates */

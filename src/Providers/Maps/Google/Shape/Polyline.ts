@@ -18,7 +18,7 @@ namespace Provider.Maps.Google.Shape {
 		protected _createProvider(path: Array<OSFramework.Maps.OSStructures.OSMap.Coordinates>): google.maps.Polyline {
 			return new google.maps.Polyline({
 				map: this.map.provider,
-				path: path,
+				path: path as google.maps.LatLngAltitudeLiteral[],
 				...(this.getProviderConfig() as Configuration.Shape.IShapeProviderConfig),
 			});
 		}

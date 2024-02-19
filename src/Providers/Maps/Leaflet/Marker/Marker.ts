@@ -139,7 +139,7 @@ namespace Provider.Maps.Leaflet.Marker {
 				return new Promise((resolve, reject) => {
 					Helper.Conversions.ValidateCoordinates(this.config.location)
 						.then((response) => {
-							markerLocation = new L.LatLng(response.lat, response.lng);
+							markerLocation = new L.LatLng(response.lat as number, response.lng as number);
 							resolve(markerLocation);
 						})
 						.catch((e) => reject(e));
@@ -261,8 +261,8 @@ namespace Provider.Maps.Leaflet.Marker {
 						Helper.Conversions.ValidateCoordinates(propertyValue as string)
 							.then((response) => {
 								this._provider.setLatLng({
-									lat: response.lat,
-									lng: response.lng,
+									lat: response.lat as number,
+									lng: response.lng as number,
 								});
 								this.map.refresh();
 							})

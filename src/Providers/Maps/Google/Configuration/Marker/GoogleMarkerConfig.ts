@@ -14,13 +14,7 @@ namespace Provider.Maps.Google.Configuration.Marker {
 		public location: string;
 		public title: string;
 
-		// No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
-		// constructor(config: unknown) {
-		//     super(config);
-		// }
-
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		public getProviderConfig(): any {
+		public getProviderConfig(): unknown {
 			const provider = {
 				draggable: this.allowDrag,
 				icon: this.iconUrl,

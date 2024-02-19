@@ -22,7 +22,7 @@ namespace Provider.Maps.Google.Feature {
 				offsetX: value.offsetX || 0,
 				offsetY: value.offsetY || 0,
 			};
-			this._map.provider.panTo(this._map.features.center.getCurrentCenter());
+			this._map.provider.panTo(this._map.features.center.getCurrentCenter() as google.maps.LatLngAltitudeLiteral);
 			this._map.provider.panBy(this._offset.offsetX, this._offset.offsetY);
 		}
 	}

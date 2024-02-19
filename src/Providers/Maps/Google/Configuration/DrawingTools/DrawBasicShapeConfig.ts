@@ -8,13 +8,7 @@ namespace Provider.Maps.Google.Configuration.DrawingTools {
 		public strokeOpacity: number;
 		public strokeWeight: number;
 
-		// No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
-		// constructor(config: JSON) {
-		//     super(config);
-		// }
-
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		public getProviderConfig(): any {
+		public getProviderConfig(): unknown[] {
 			const configs = super.getProviderConfig();
 			// eslint-disable-next-line prefer-const
 			let provider = {

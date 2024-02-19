@@ -5,15 +5,7 @@ namespace Provider.Maps.Leaflet.Configuration.Shape {
 	export class RectangleShapeConfig extends FilledShapeConfig {
 		public bounds: string;
 
-		// No need for constructor, as it is not doing anything. Left the constructor, to facilitade future usage.
-		// constructor(
-		//     config: OSFramework.Maps.Configuration.IConfigurationShape
-		// ) {
-		//     super(config);
-		// }
-
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		public getProviderConfig(): any {
+		public getProviderConfig(): unknown {
 			const provider = super.getProviderConfig();
 
 			// Rectangle doesn't have locations on its configurations

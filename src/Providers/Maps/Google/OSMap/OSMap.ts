@@ -7,8 +7,7 @@ namespace Provider.Maps.Google.OSMap {
 		implements IMapGoogle
 	{
 		private _addedEvents: Array<string>;
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		private _advancedFormatObj: any;
+		private _advancedFormatObj: GoogleAdvancedFormatObj;
 		private _fBuilder: Feature.FeatureBuilder;
 		private _gZoomChangeListener: google.maps.MapsEventListener;
 		private _scriptCallback: OSFramework.Maps.Callbacks.Generic;
@@ -134,7 +133,9 @@ namespace Provider.Maps.Google.OSMap {
 			// Make sure the center has a default value before the conversion of the location to coordinates
 			this.config.center = OSFramework.Maps.Helper.Constants.defaultMapCenter;
 			// Take care of the advancedFormat options which can override the previous configuration
-			this._advancedFormatObj = OSFramework.Maps.Helper.JsonFormatter(this.config.advancedFormat);
+			this._advancedFormatObj = OSFramework.Maps.Helper.JsonFormatter(
+				this.config.advancedFormat
+			) as unknown as GoogleAdvancedFormatObj;
 
 			return this.config.getProviderConfig();
 		}
@@ -350,13 +351,9 @@ namespace Provider.Maps.Google.OSMap {
 							styles: GetStyleByStyleId(propertyValue as number),
 						});
 					case OSFramework.Maps.Enum.OS_Config_Map.advancedFormat:
-						// eslint-disable-next-line @typescript-eslint/no-explicit-any
-						propertyValue = OSFramework.Maps.Helper.JsonFormatter(propertyValue as string);
+						propertyValue = OSFramework.Maps.Helper.JsonFormatter(propertyValue as string) as unknown;
 						// Make sure the MapEvents that are associated in the advancedFormat get updated
-						this._setMapEvents(
-							// eslint-disable-next-line @typescript-eslint/no-explicit-any
-							(propertyValue as any).mapEvents as string[]
-						);
+						this._setMapEvents((propertyValue as GoogleAdvancedFormatObj).mapEvents);
 						return this._provider.setOptions(propertyValue);
 					case OSFramework.Maps.Enum.OS_Config_Map.showTraffic:
 						return this.features.trafficLayer.setState(propertyValue as boolean);
@@ -414,7 +411,9 @@ namespace Provider.Maps.Google.OSMap {
 							//center will not be changed.
 							if (isDefault || this.features.zoom.isAutofit) {
 								//Let's use the first marker as the center of the map.
-								position = this.markers[0].provider.position.toJSON();
+								// The TS definitions appear to be outdated.
+								// eslint-disable-next-line @typescript-eslint/no-explicit-any
+								position = (this.markers[0].provider as google.maps.Marker as any).position.toJSON();
 							}
 						}
 					} else {
@@ -425,7 +424,9 @@ namespace Provider.Maps.Google.OSMap {
 				} else if (this.markers[0].provider !== undefined) {
 					//If there's only one marker, and is already created, its location will be
 					//used as the map center.
-					position = this.markers[0].provider.position.toJSON();
+					// The TS definitions appear to be outdated.
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					position = (this.markers[0].provider as google.maps.Marker as any).position.toJSON();
 				}
 			}
 

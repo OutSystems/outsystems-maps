@@ -112,13 +112,13 @@ namespace Provider.Maps.Google.SharedComponents {
 								case 'north':
 								case 'south':
 									// If the currenct cardinalDirection is north or south, just use the latitude from the response
-									finalBounds[cd] = response.lat;
+									finalBounds[cd] = response.lat as number;
 									break;
 								case 'east':
 								case 'west':
 								default:
 									// If the currenct cardinalDirection is east or west use the longitude from the response
-									finalBounds[cd] = response.lng;
+									finalBounds[cd] = response.lng as number;
 									break;
 							}
 							// Because this is a cycle we need to ensure if we already have all the cardinal directions to resolve the promise

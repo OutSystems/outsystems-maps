@@ -269,6 +269,7 @@ namespace Provider.Maps.Leaflet.OSMap {
 			//If there are markers, let's choose the map center accordingly.
 			//Otherwise, the map center will be the one defined in the configs.
 			if (this.markers.length > 0) {
+				const markerProvider = this.markers[0].provider as L.Marker;
 				if (this.markers.length > 1) {
 					//As the map has more than one marker, let's see if the map
 					//center should be changed.
@@ -276,16 +277,16 @@ namespace Provider.Maps.Leaflet.OSMap {
 						//If the user hasn't change zoom, or the developer is ignoring
 						//it (current behavior), then the map will be centered tentatively
 						//in the first marker.
-						position = this.markers[0].provider.getLatLng();
+						position = markerProvider.getLatLng();
 					} else {
 						//If the user has zoomed and the developer intends to respect user zoom
 						//then the current map center will be used.
 						position = this.provider.getCenter();
 					}
-				} else if (this.markers[0].provider !== undefined) {
+				} else if (markerProvider !== undefined) {
 					//If there's only one marker, and is already created, its location will be
 					//used as the map center.
-					position = this.markers[0].provider.getLatLng();
+					position = markerProvider.getLatLng();
 				}
 			}
 

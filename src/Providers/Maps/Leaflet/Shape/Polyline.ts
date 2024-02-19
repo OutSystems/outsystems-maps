@@ -29,7 +29,7 @@ namespace Provider.Maps.Leaflet.Shape {
 		}
 
 		protected createProvider(path: Array<OSFramework.Maps.OSStructures.OSMap.Coordinates>): L.Polyline {
-			return new L.Polyline(path, this.getProviderConfig());
+			return new L.Polyline(path as L.LatLngExpression[], this.getProviderConfig());
 		}
 
 		protected getShapeCoordinates(): OSFramework.Maps.OSStructures.OSMap.PolylineCoordinates {

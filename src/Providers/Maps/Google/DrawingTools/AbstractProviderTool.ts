@@ -6,18 +6,8 @@ namespace Provider.Maps.Google.DrawingTools {
 		T extends OSFramework.Maps.Configuration.IConfigurationTool,
 	> extends OSFramework.Maps.DrawingTools.AbstractTool<T> {
 		protected newElm;
-		constructor(
-			map: OSFramework.Maps.OSMap.IMap,
-			drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
-			drawingToolsId: string,
-			type: string,
-			configs: T
-		) {
-			super(map, drawingTools, drawingToolsId, type, configs);
-		}
 
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		private _addCompletedEventHandler(element: any): void {
+		private _addCompletedEventHandler(element: google.maps.drawing.DrawingManager): void {
 			const uniqueId = OSFramework.Maps.Helper.GenerateUniqueId();
 			// create the shape/marker element
 			this.newElm = this.createElement(
@@ -78,15 +68,12 @@ namespace Provider.Maps.Google.DrawingTools {
 			this.finishBuild();
 		}
 
-		// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-		public changeProperty(propertyName: string, value: any): void {
+		public changeProperty(propertyName: string, value: unknown): void {
 			const propValue = OSFramework.Maps.Enum.OS_Config_Shape[propertyName];
 			super.changeProperty(propertyName, value);
 			if (this.drawingTools.isReady) {
-				switch (propValue) {
-					case OSFramework.Maps.Enum.OS_Config_Shape.allowDrag:
-						this.options = { draggable: value };
-						return;
+				if (propValue === OSFramework.Maps.Enum.OS_Config_Shape.allowDrag) {
+					this.options = { draggable: value };
 				}
 			}
 		}
@@ -107,13 +94,7 @@ namespace Provider.Maps.Google.DrawingTools {
 		 * @param element new element provider (shape or marker). The new element results from the marker or shape complete events
 		 * @param configs configs to create the new element (on the osframework)
 		 */
-		protected abstract createElement(
-			uniqueId: string,
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-			element: any,
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-			configs: any
-		): void;
+		protected abstract createElement(uniqueId: string, element: unknown, configs: unknown): void;
 
 		protected abstract getCoordinates(): string;
 		protected abstract getLocation(): string | string[];

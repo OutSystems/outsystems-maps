@@ -8,8 +8,7 @@ namespace OSFramework.Maps.Marker {
 		isReady: boolean;
 		map: OSMap.IMap; //IMap
 		markerEvents: Event.Marker.MarkerEventsManager;
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		provider: any;
+		provider: unknown;
 		uniqueId: string;
 		widgetId: string;
 

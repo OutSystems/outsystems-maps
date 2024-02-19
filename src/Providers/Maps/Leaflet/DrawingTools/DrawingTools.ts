@@ -31,9 +31,6 @@ namespace Provider.Maps.Leaflet.DrawingTools {
 	> {
 		// FeatureGroup <any>: as required by Leaflet
 		private _toolsGroup: L.FeatureGroup<unknown>;
-		//TODO - At the moment the type is not well defined and it doesn't included setDrawingOptions for example,
-		//     - When this is done the overwrite of the _provider is not needed anymore.
-		//protected _provider: any;
 
 		constructor(
 			map: OSFramework.Maps.OSMap.IMap,
@@ -45,8 +42,7 @@ namespace Provider.Maps.Leaflet.DrawingTools {
 			this._toolsGroup = new L.FeatureGroup();
 		}
 
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		private _addCompletedEventHandler(event: any): void {
+		private _addCompletedEventHandler(event: { layerType: unknown }): void {
 			const toolType = event.layerType;
 
 			this.tools
@@ -55,19 +51,16 @@ namespace Provider.Maps.Leaflet.DrawingTools {
 		}
 
 		private _getDrawingToolsPosition(position: string): Constants.DrawingTools.Positions {
-			if (Constants.DrawingTools.Positions[position] !== undefined) {
-				return Constants.DrawingTools.Positions[position];
-			} else {
+			if (Constants.DrawingTools.Positions[position] === undefined) {
 				OSFramework.Maps.Helper.ThrowError(
 					this.map,
 					OSFramework.Maps.Enum.ErrorCodes.CFG_InvalidDrawingToolsPosition,
 					`${position}`
 				);
-				return;
 			}
+			return Constants.DrawingTools.Positions[position];
 		}
 
-		//TODO: create the return structure
 		private _getTools(): ToolsList {
 			const _tools = new ToolsList();
 			this.tools.forEach((tool) => {
@@ -126,8 +119,7 @@ namespace Provider.Maps.Leaflet.DrawingTools {
 		}
 
 		// We don't have the types for the drawingTools features
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		protected get controlOptions(): any {
+		protected get controlOptions(): unknown[] {
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			//@ts-ignore
 			return this._provider.get('drawingControlOptions');
@@ -187,12 +179,9 @@ namespace Provider.Maps.Leaflet.DrawingTools {
 			const propValue = OSFramework.Maps.Enum.OS_Config_DrawingTools[propertyName];
 			super.changeProperty(propertyName, propertyValue);
 			if (this.isReady) {
-				switch (propValue) {
-					case OSFramework.Maps.Enum.OS_Config_DrawingTools.position:
-						// eslint-disable-next-line no-case-declarations
-						const positionValue = this._getDrawingToolsPosition(propertyValue as string);
-						positionValue && this.provider.setPosition(positionValue);
-						return;
+				if (propValue === OSFramework.Maps.Enum.OS_Config_DrawingTools.position) {
+					const positionValue = this._getDrawingToolsPosition(propertyValue as string);
+					positionValue && this.provider.setPosition(positionValue);
 				}
 			}
 		}

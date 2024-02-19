@@ -30,7 +30,7 @@ namespace Provider.Maps.Leaflet.Shape {
 		}
 
 		protected createProvider(path: Array<OSFramework.Maps.OSStructures.OSMap.Coordinates>): L.Polygon {
-			return new L.Polygon(path, this.getProviderConfig());
+			return new L.Polygon(path as L.LatLngExpression[], this.getProviderConfig());
 		}
 
 		protected getShapeCoordinates(): OSFramework.Maps.OSStructures.OSMap.PolylineCoordinates {
