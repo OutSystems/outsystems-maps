@@ -75,6 +75,7 @@ namespace OSFramework.Maps.Event.Marker {
 						handlerEvent.trigger(
 							this._marker.map.widgetId, // Id of Map block that was initialized
 							this._marker.widgetId || this._marker.uniqueId, // Id of Marker block that was initialized
+							eventType,
 							this._marker.index // Index of Marker block that was initialized
 						);
 						break;
@@ -82,6 +83,7 @@ namespace OSFramework.Maps.Event.Marker {
 						handlerEvent.trigger(
 							this._marker.map.widgetId, // Id of Map block that was clicked
 							this._marker.widgetId || this._marker.uniqueId, // Id of Marker block that was clicked
+							eventType,
 							...args // Coordinates retrieved from the marker event that got triggered
 						);
 						break;
