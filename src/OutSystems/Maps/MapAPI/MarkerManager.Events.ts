@@ -175,6 +175,32 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
 			}
 		}
 	}
+
+	export function UnsubscribeByMarkerId(
+		markerId: string,
+		eventName: OSFramework.Maps.Event.Marker.MarkerEventType,
+		callback: OSFramework.Maps.Callbacks.Marker.Event
+	): string {
+		const responseObj = {
+			isSuccess: true,
+			message: 'Success',
+			code: '200',
+		};
+		try {
+			const marker = GetMarkerById(markerId);
+			if (marker !== undefined) {
+				marker.markerEvents.removeHandler(eventName, callback);
+				// Let's make sure the events get refreshed on the Marker provider
+				marker.refreshProviderEvents();
+			}
+		} catch (error) {
+			responseObj.isSuccess = false;
+			responseObj.message = error.message;
+			responseObj.code = OSFramework.Maps.Enum.ErrorCodes.API_FailedUnsubscribeMarkerEvent;
+		}
+
+		return JSON.stringify(responseObj);
+	}
 }
 
 /// Overrides for the old namespace - calls the new one, lets users know this is no longer in use
