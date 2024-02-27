@@ -156,6 +156,7 @@ namespace Provider.Maps.Leaflet.Marker {
 
 			// OnClick Event
 			if (this.markerEvents.hasHandlers(OSFramework.Maps.Event.Marker.MarkerEventType.OnClick)) {
+				this._addedEvents.push('click');
 				this._provider.addEventListener('click', (e?: L.LeafletMouseEvent) => {
 					const coordinates = new OSFramework.Maps.OSStructures.OSMap.OSCoordinates(
 						e.latlng.lat,

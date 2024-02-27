@@ -101,6 +101,7 @@ namespace Provider.Maps.Google.Marker {
 
 			// OnClick Event (OS accelerator)
 			if (this.markerEvents.hasHandlers(OSFramework.Maps.Event.Marker.MarkerEventType.OnClick)) {
+				this._addedEvents.push('click');
 				this._provider.addListener('click', (e: google.maps.MapMouseEvent) => {
 					const coordinates = new OSFramework.Maps.OSStructures.OSMap.OSCoordinates(
 						e.latLng.lat(),
