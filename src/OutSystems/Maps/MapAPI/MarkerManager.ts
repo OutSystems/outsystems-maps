@@ -4,6 +4,44 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 	const markerArr = new Array<OSFramework.Maps.Marker.IMarker>();
 
 	/**
+	 * Creates and adds a marker to a map.
+	 *
+	 * @export
+	 * @param {string} mapId Id of the map to which the marker should be added
+	 * @param {string} configs Configurations for the marker
+	 * @return {*}  {string}
+	 */
+	export function AddMarker(mapId: string, configs: string): string {
+		const responseObj = {
+			isSuccess: true,
+			message: 'Success',
+			code: '200',
+		};
+
+		try {
+			const map = MapManager.GetMapById(mapId, true);
+			const markerId = OSFramework.Maps.Helper.GenerateUniqueId();
+			const marker = OSFramework.Maps.Marker.MarkerFactory.MakeMarker(
+				map,
+				markerId,
+				OSFramework.Maps.Enum.MarkerType.Marker,
+				JSON.parse(configs)
+			);
+			markerArr.push(marker);
+			markerMap.set(markerId, map.uniqueId);
+			map.addMarker(marker);
+
+			responseObj.message = markerId;
+		} catch (error) {
+			responseObj.isSuccess = false;
+			responseObj.message = error.message;
+			responseObj.code = OSFramework.Maps.Enum.ErrorCodes.API_FailedCreateMarker;
+		}
+
+		return JSON.stringify(responseObj);
+	}
+
+	/**
 	 * Changes the property value of a given Marker.
 	 *
 	 * @export
@@ -238,6 +276,44 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 			}),
 			1
 		);
+	}
+
+	/**
+	 * Removes all the markers of a given map.
+	 *
+	 * @export
+	 * @param {string} mapId
+	 * @return {*}  {string}
+	 */
+	export function RemoveAllMarkers(mapId: string): string {
+		const responseObj = {
+			isSuccess: true,
+			message: 'Success',
+			code: '200',
+		};
+		try {
+			// First we try to remove the markers from the map.
+			MapManager.RemoveMarkers(mapId);
+
+			// Second remove the markers to destroy from local variables.
+			markerMap.forEach((storedMapId, storedMarkerId) => {
+				if (mapId === storedMapId) {
+					markerMap.delete(storedMarkerId);
+					markerArr.splice(
+						markerArr.findIndex((p) => {
+							return p && p.equalsToID(storedMarkerId);
+						}),
+						1
+					);
+				}
+			});
+		} catch (error) {
+			responseObj.isSuccess = false;
+			responseObj.message = error.message;
+			responseObj.code = OSFramework.Maps.Enum.ErrorCodes.API_FailedRemoveMarkers;
+		}
+
+		return JSON.stringify(responseObj);
 	}
 }
 
