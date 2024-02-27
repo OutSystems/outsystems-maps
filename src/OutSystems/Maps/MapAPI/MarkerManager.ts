@@ -264,18 +264,31 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 	 * @export
 	 * @param {string} markerID id of the Marker that is about to be removed
 	 */
-	export function RemoveMarker(markerId: string): void {
-		const marker = GetMarkerById(markerId);
-		const map = marker.map;
+	export function RemoveMarker(markerId: string): string {
+		const responseObj = {
+			isSuccess: true,
+			message: 'Success',
+			code: '200',
+		};
+		try {
+			const marker = GetMarkerById(markerId);
+			const map = marker.map;
+			map && map.removeMarker(markerId);
 
-		map && map.removeMarker(markerId);
-		markerMap.delete(markerId);
-		markerArr.splice(
-			markerArr.findIndex((p) => {
-				return p && p.equalsToID(markerId);
-			}),
-			1
-		);
+			markerMap.delete(markerId);
+			markerArr.splice(
+				markerArr.findIndex((p) => {
+					return p && p.equalsToID(markerId);
+				}),
+				1
+			);
+		} catch (error) {
+			responseObj.isSuccess = false;
+			responseObj.message = error.message;
+			responseObj.code = OSFramework.Maps.Enum.ErrorCodes.API_FailedRemoveMarker;
+		}
+
+		return JSON.stringify(responseObj);
 	}
 
 	/**
