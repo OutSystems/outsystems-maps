@@ -67,9 +67,24 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
 		eventName: OSFramework.Maps.Event.Marker.MarkerEventType,
 		// eslint-disable-next-line
 		callback: OSFramework.Maps.Callbacks.Marker.Event
-	): void {
-		const marker = GetMarkerById(markerId);
-		marker.markerEvents.addHandler(eventName, callback, markerId);
+	): string {
+		const responseObj = {
+			isSuccess: true,
+			message: 'Success',
+			code: '200',
+		};
+		try {
+			const marker = GetMarkerById(markerId);
+			marker.markerEvents.addHandler(eventName, callback, markerId);
+			// Let's make sure the events get refreshed on the Marker provider
+			marker.refreshProviderEvents();
+		} catch (error) {
+			responseObj.isSuccess = false;
+			responseObj.message = error.message;
+			responseObj.code = OSFramework.Maps.Enum.ErrorCodes.API_FailedSubscribeMarkerEvent;
+		}
+
+		return JSON.stringify(responseObj);
 	}
 
 	/**
