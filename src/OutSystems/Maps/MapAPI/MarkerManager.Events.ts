@@ -60,12 +60,11 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
 	 * @export
 	 * @param {string} markerId Marker where the events will get attached
 	 * @param {OSFramework.Maps.Event.Marker.MarkerEventType} eventName name of the event to get attached
-	 * @param {OSFramework.Maps.Callbacks.Marker.ClickEvent} callback to be invoked when the event occurs
+	 * @param {OSFramework.Maps.Callbacks.Marker.Event} callback to be invoked when the event occurs
 	 */
 	export function Subscribe(
 		markerId: string,
 		eventName: OSFramework.Maps.Event.Marker.MarkerEventType,
-		// eslint-disable-next-line
 		callback: OSFramework.Maps.Callbacks.Marker.Event
 	): string {
 		const responseObj = {
@@ -93,7 +92,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
 	 * @export
 	 * @param {string} eventUniqueId Id of the Event to be attached
 	 * @param {OSFramework.Maps.Event.Map.MapEventType} eventName name fo the event to be attached
-	 * @param {MapAPI.Callbacks.OSMap.Event} callback callback to be invoked when the event occurs
+	 * @param {OSFramework.Maps.Callbacks.Marker.Event} callback callback to be invoked when the event occurs
 	 */
 	export function SubscribeByUniqueId(
 		eventUniqueId: string,
@@ -150,12 +149,11 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
 	 * @export
 	 * @param {string} eventUniqueId Map where the event will be removed
 	 * @param {OSFramework.Maps.Event.Map.MapEventType} eventName name of the event to be removed
-	 * @param {MapAPI.Callbacks.OSMap.Event} callback callback that will be removed
+	 * @param {OSFramework.Maps.Callbacks.Marker.Event} callback callback that will be removed
 	 */
 	export function Unsubscribe(
 		eventUniqueId: string,
 		eventName: OSFramework.Maps.Event.Marker.MarkerEventType,
-		// eslint-disable-next-line
 		callback: OSFramework.Maps.Callbacks.Marker.Event
 	): void {
 		const markerId = GetMarkerIdByEventUniqueId(eventUniqueId);
