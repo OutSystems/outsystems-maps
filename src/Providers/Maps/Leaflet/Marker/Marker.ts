@@ -224,6 +224,7 @@ namespace Provider.Maps.Leaflet.Marker {
 			const provider_configs = this.getProviderConfig() as L.MarkerOptions;
 			// If markerOptions is undefined (should be a promise) -> don't create the marker
 			if (markerLocation !== undefined) {
+				this.map.cancelScheduledResfresh();
 				markerLocation
 					.then((location: L.LatLng) => {
 						//The marker was destroyed while waiting for the promise.
@@ -241,7 +242,7 @@ namespace Provider.Maps.Leaflet.Marker {
 						this.finishBuild();
 
 						// Trigger the new center location after creating the marker
-						this.map.refresh();
+						this.map.scheduleRefresh();
 					})
 					.catch(() => {
 						this.map.mapEvents.trigger(

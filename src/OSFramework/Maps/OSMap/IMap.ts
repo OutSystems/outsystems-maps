@@ -66,6 +66,12 @@ namespace OSFramework.Maps.OSMap {
 		 */
 		addShape(shape: OSFramework.Maps.Shape.IShape): OSFramework.Maps.Shape.IShape;
 		/**
+		 * Stops the current refresh from being refreshed.
+		 *
+		 * @memberof IMap
+		 */
+		cancelScheduledResfresh(): void;
+		/**
 		 * Change property of a drawingTools from the DrawingTools by specifying the property name and the new value
 		 * @param drawingToolsId id of the DrawingTools
 		 * @param propertyName name of the property
@@ -194,6 +200,11 @@ namespace OSFramework.Maps.OSMap {
 		 * @param shapeId id of the shape
 		 */
 		removeShape(shapeId: string): void;
+		/**
+		 * Schedules the map to be refreshed so, that the bulk operations are made fast.
+		 * @memberof IMap
+		 */
+		scheduleRefresh(): void;
 		/**
 		 * Adds a custom render to the Clusters. Applicable to some providers only.
 		 * @param {OSFramework.Maps.Feature.IMarkerClusterer} renderer
