@@ -83,12 +83,21 @@ namespace OutSystems.Maps.MapAPI.MapManager {
 		if (maps.has(mapId)) {
 			map = maps.get(mapId);
 		} else {
-			//Search for WidgetId
-			for (const p of maps.values()) {
-				if (p.equalsToID(mapId)) {
-					map = p;
-					break;
-				}
+			//Search for (all) the map(s) that have this WidgetId
+			const mapFiltered = Array.from(maps.values()).filter((p) => p.equalsToID(mapId));
+
+			// There can be situations, for example when changing from a page
+			// to another page that also has a "Map", in which, we'll end up
+			// having 2 maps, with different uniqueIds, but same Widget id.
+			if (mapFiltered.length > 1) {
+				// If that is the case, we'll pick the last map of that was found
+				// that will correspond to the last map that was created by the
+				// application (in these cases, the new map). The other map, is
+				// the one that will be destroyed afterwards.
+				map = mapFiltered[mapFiltered.length - 1];
+			} else if (mapFiltered.length === 1) {
+				// In case only one map was found, we'll return that one
+				map = mapFiltered[0];
 			}
 		}
 
