@@ -148,6 +148,9 @@ namespace OutSystems.Maps.MapAPI.MapManager {
 		}
 
 		map.dispose();
+
+		//Let's remove the empty markers references from the Markers API.
+		MarkerManager.RemoveAllMarkers(mapId, false);
 	}
 
 	/**

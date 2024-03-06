@@ -298,15 +298,17 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 	 * @param {string} mapId
 	 * @return {*}  {string}
 	 */
-	export function RemoveAllMarkers(mapId: string): string {
+	export function RemoveAllMarkers(mapId: string, removeFromMap = true): string {
 		const responseObj = {
 			isSuccess: true,
 			message: 'Success',
 			code: '200',
 		};
 		try {
-			// First we try to remove the markers from the map.
-			MapManager.RemoveMarkers(mapId);
+			if (removeFromMap) {
+				// First we try to remove the markers from the map.
+				MapManager.RemoveMarkers(mapId);
+			}
 
 			// Second remove the markers to destroy from local variables.
 			markerMap.forEach((storedMapId, storedMarkerId) => {
