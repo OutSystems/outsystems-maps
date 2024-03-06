@@ -210,7 +210,7 @@ namespace OSFramework.Maps.OSMap {
 		 * @param {OSFramework.Maps.Feature.IMarkerClusterer} renderer
 		 * @memberof IMap
 		 */
-		setClusterRenderer?(renderer: OSFramework.Maps.Feature.IMarkerClustererRender);
+		setClusterRenderer?(renderer: OSFramework.Maps.Feature.IMarkerClustererRender): void;
 		/**
 		 * Updates the Height of the Map by refreshing/updating the provider
 		 */
