@@ -79,25 +79,23 @@ namespace OutSystems.Maps.MapAPI.MapManager {
 	export function GetMapById(mapId: string, raiseError = true): OSFramework.Maps.OSMap.IMap {
 		let map: OSFramework.Maps.OSMap.IMap;
 
-		//mapId is the UniqueId
 		if (maps.has(mapId)) {
+			// mapId = uniqueId
 			map = maps.get(mapId);
 		} else {
-			//Search for (all) the map(s) that have this WidgetId
+			// map = widgetId
+			// Search for (all) the map(s) that have this WidgetId
 			const mapFiltered = Array.from(maps.values()).filter((p) => p.equalsToID(mapId));
 
 			// There can be situations, for example when changing from a page
 			// to another page that also has a "Map", in which, we'll end up
 			// having 2 maps, with different uniqueIds, but same Widget id.
-			if (mapFiltered.length > 1) {
-				// If that is the case, we'll pick the last map of that was found
-				// that will correspond to the last map that was created by the
-				// application (in these cases, the new map). The other map, is
-				// the one that will be destroyed afterwards.
+			if (mapFiltered.length > 0) {
+				// So we'll always pick the last map of that was found and it
+				// will correspond to the last map that was created in the app
+				// (in these cases, the new map). The other map, is the one
+				// that will be destroyed afterwards.
 				map = mapFiltered[mapFiltered.length - 1];
-			} else if (mapFiltered.length === 1) {
-				// In case only one map was found, we'll return that one
-				map = mapFiltered[0];
 			}
 		}
 
