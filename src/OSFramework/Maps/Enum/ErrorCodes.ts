@@ -56,6 +56,11 @@ namespace OSFramework.Maps.Enum {
 		API_FailedRemoveMarkerFromCluster = 'MAPS-API-09001',
 		API_FailedContainsLocation = 'MAPS-API-05005',
 		API_FailedGettingCenterCoordinates = 'MAPS-API-01001',
+		API_FailedCreateMarker = 'MAPS-API-09002',
+		API_FailedRemoveMarker = 'MAPS-API-09003',
+		API_FailedRemoveMarkers = 'MAPS-API-09004',
+		API_FailedSubscribeMarkerEvent = 'MAPS-API-09005',
+		API_FailedUnsubscribeMarkerEvent = 'MAPS-API-09006',
 
 		// Error Codes - GENeral error - General or internal Errors of the component. In the situation of simple components without different features/sections inside it, the GEN acronym should be used.
 		GEN_InvalidChangePropertyMap = 'MAPS-GEN-01001',

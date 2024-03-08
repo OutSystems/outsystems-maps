@@ -101,6 +101,7 @@ namespace Provider.Maps.Google.Marker {
 
 			// OnClick Event (OS accelerator)
 			if (this.markerEvents.hasHandlers(OSFramework.Maps.Event.Marker.MarkerEventType.OnClick)) {
+				this._addedEvents.push('click');
 				this._provider.addListener('click', (e: google.maps.MapMouseEvent) => {
 					const coordinates = new OSFramework.Maps.OSStructures.OSMap.OSCoordinates(
 						e.latLng.lat(),
@@ -167,6 +168,7 @@ namespace Provider.Maps.Google.Marker {
 			const markerPosition = this._buildMarkerPosition();
 			// If markerPosition is undefined (should be a promise) -> don't create the marker
 			if (markerPosition !== undefined) {
+				this.map.cancelScheduledResfresh();
 				markerPosition
 					.then((markerOptions) => {
 						//The marker was destroyed while waiting for the promise.
@@ -188,7 +190,7 @@ namespace Provider.Maps.Google.Marker {
 						this.finishBuild();
 
 						// Trigger the new center location after creating the marker
-						this.map.refresh();
+						this.map.scheduleRefresh();
 					})
 					.catch((error) => {
 						this.map.mapEvents.trigger(

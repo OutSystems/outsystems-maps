@@ -10,6 +10,7 @@ namespace OSFramework.Maps.OSMap {
 		private _heatmapLayersSet: Set<HeatmapLayer.IHeatmapLayer>;
 		private _isReady: boolean;
 		private _mapEvents: Event.OSMap.MapEventsManager;
+		private _mapRefreshRequest: number;
 		private _mapType: Enum.MapType;
 		private _markers: Map<string, Marker.IMarker>;
 		private _markersSet: Set<Marker.IMarker>;
@@ -38,6 +39,7 @@ namespace OSFramework.Maps.OSMap {
 			this._isReady = false;
 			this._mapEvents = new Event.OSMap.MapEventsManager(this);
 			this._mapType = mapType;
+			this._mapRefreshRequest = 0;
 			this._providerType = providerType;
 			this._zoomChanged = false;
 			this._mapZoomChangeCallback = this._mapZoomChangeHandler.bind(this);
@@ -154,6 +156,13 @@ namespace OSFramework.Maps.OSMap {
 
 		public build(): void {
 			this._widgetId = Helper.GetElementByUniqueId(this.uniqueId).closest(this.mapTag).id;
+		}
+
+		public cancelScheduledResfresh(): void {
+			if (this._mapRefreshRequest !== 0) {
+				clearTimeout(this._mapRefreshRequest);
+				this._mapRefreshRequest = 0;
+			}
 		}
 
 		public changeProperty(propertyName: string, propertyValue: unknown): void {
@@ -402,6 +411,14 @@ namespace OSFramework.Maps.OSMap {
 					this.refresh();
 				}
 			}
+		}
+
+		public scheduleRefresh(): void {
+			this.cancelScheduledResfresh();
+
+			this._mapRefreshRequest = setTimeout(() => {
+				this.refresh();
+			}, 0);
 		}
 
 		public updateHeight(): void {
