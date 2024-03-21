@@ -2,10 +2,12 @@ name: Add Inner Sourcing Label
 
 on:
     pull_request:
-        types: [opened]
-
+        types:
+            - opened
+            - synchronize
 jobs:
     inner_sourcing:
-        name: Add Inner Sourcing label
-        uses: OutSystems/rd.github-reusable-workflows/.github/workflows/add-inner-sourcing-label.yaml@v2.0.1
+        uses: OutSystems/rd.github-reusable-workflows/.github/workflows/add-inner-sourcing-label.yaml@v1.4.0
+        with:
+            codeowners-path: .github\CODEOWNERS
         secrets: inherit
