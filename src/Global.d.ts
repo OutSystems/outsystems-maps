@@ -20,6 +20,7 @@ declare global {
     //The types below, are useful for TypeScript intellisense.
     type GoogleMapsAlgorithm = OriginalAlgorithm;
     type GoogleMapsCluster = OriginalCluster;
+    type GoogleMapsMarker = google.maps.Marker | google.maps.marker.AdvancedMarkerElement;
     type GoogleMapsMarkerClusterer = OriginalMarkerClusterer;
     type GoogleMapsMarkerClustererOptions = OriginalMarkerClustererOptions;
     type GoogleMapsClusterRenderer = OriginalRenderer;
