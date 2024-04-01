@@ -2,105 +2,101 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Leaflet.DrawingTools {
-    export class DrawCircle extends AbstractDrawShape<Configuration.DrawingTools.DrawFilledShapeConfig> {
-        constructor(
-            map: OSFramework.Maps.OSMap.IMap,
-            drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
-            drawingToolsId: string,
-            type: string,
-            configs: JSON
-        ) {
-            super(
-                map,
-                drawingTools,
-                drawingToolsId,
-                type,
-                new Configuration.DrawingTools.DrawFilledShapeConfig(configs)
-            );
-        }
+	export class DrawCircle extends AbstractDrawShape<Configuration.DrawingTools.DrawFilledShapeConfig> {
+		constructor(
+			map: OSFramework.Maps.OSMap.IMap,
+			drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
+			drawingToolsId: string,
+			type: string,
+			configs: JSON
+		) {
+			super(
+				map,
+				drawingTools,
+				drawingToolsId,
+				type,
+				new Configuration.DrawingTools.DrawFilledShapeConfig(configs)
+			);
+		}
 
-        private _createConfigsElement(
-            shape: L.Circle,
-            configs: Configuration.Shape.CircleShapeConfig
-        ): Configuration.Shape.CircleShapeConfig {
-            const providerCenter = shape.getLatLng();
-            const center = `${providerCenter.lat},${providerCenter.lng}`;
-            const radius = shape.getRadius();
+		private _createConfigsElement(
+			shape: L.Circle,
+			configs: Configuration.Shape.CircleShapeConfig
+		): Configuration.Shape.CircleShapeConfig {
+			const providerCenter = shape.getLatLng();
+			const center = `${providerCenter.lat},${providerCenter.lng}`;
+			const radius = shape.getRadius();
 
-            // Join both the configs that were provided for the new shape element and the location that was provided by the DrawingTools shapecomplete event
-            const finalConfigs = {
-                ...configs,
-                center,
-                radius
-            };
-            return finalConfigs as Configuration.Shape.CircleShapeConfig;
-        }
+			// Join both the configs that were provided for the new shape element and the location that was provided by the DrawingTools shapecomplete event
+			const finalConfigs = {
+				...configs,
+				center,
+				radius,
+			};
+			return finalConfigs as Configuration.Shape.CircleShapeConfig;
+		}
 
-        /** Get the constant for the event polygoncomplete */
-        protected get completedToolEventName(): string {
-            return OSFramework.Maps.Helper.Constants.drawingCircleCompleted;
-        }
+		/** Get the constant for the event polygoncomplete */
+		protected get completedToolEventName(): string {
+			return OSFramework.Maps.Helper.Constants.drawingCircleCompleted;
+		}
 
-        //TODO: create structure for circle options
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-        public get options(): any {
-            return this.internalOptions;
-        }
+		//TODO: create structure for circle options
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+		public get options(): any {
+			return this.internalOptions;
+		}
 
-        //TODO: create structure for circle options
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-        protected set options(options: any) {
-            const allOptions = { ...this.options, ...options };
-            const shapeOptions = {
-                ...this.options?.shapeOptions,
-                ...options.shapeOptions
-            };
-            allOptions.shapeOptions = shapeOptions;
+		//TODO: create structure for circle options
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+		protected set options(options: any) {
+			const allOptions = { ...this.options, ...options };
+			const shapeOptions = {
+				...this.options?.shapeOptions,
+				...options.shapeOptions,
+			};
+			allOptions.shapeOptions = shapeOptions;
 
-            this.drawingTools.provider.setDrawingOptions({
-                circle: allOptions
-            });
+			this.drawingTools.provider.setDrawingOptions({
+				circle: allOptions,
+			});
 
-            this.internalOptions = allOptions;
-        }
+			this.internalOptions = allOptions;
+		}
 
-        protected createElement(
-            uniqueId: string,
-            shape: L.Circle,
-            configs: Configuration.Shape.CircleShapeConfig
-        ): OSFramework.Maps.Shape.IShape {
-            // we need to clean the provided configs and add the locations in order to create the new element
-            // DrawPolyline and DrawPolygon use the following method to add the locations into the initial configs
-            const finalConfigs = this._createConfigsElement(shape, configs);
-            return super.createShapeElement(
-                uniqueId,
-                OSFramework.Maps.Enum.ShapeType.Circle,
-                finalConfigs
-            );
-        }
+		protected createElement(
+			uniqueId: string,
+			shape: L.Circle,
+			configs: Configuration.Shape.CircleShapeConfig
+		): OSFramework.Maps.Shape.IShape {
+			// we need to clean the provided configs and add the locations in order to create the new element
+			// DrawPolyline and DrawPolygon use the following method to add the locations into the initial configs
+			const finalConfigs = this._createConfigsElement(shape, configs);
+			return super.createShapeElement(uniqueId, OSFramework.Maps.Enum.ShapeType.Circle, finalConfigs);
+		}
 
-        protected getCoordinates(): string {
-            const locations = this.newElm.config.center;
-            let coordinatesArray = [];
+		protected getCoordinates(): string {
+			const locations = this.newElm.config.center;
+			let coordinatesArray = [];
 
-            coordinatesArray = locations.split(',');
+			coordinatesArray = locations.split(',');
 
-            const coordinates = {
-                Lat: coordinatesArray[0],
-                Lng: coordinatesArray[1]
-            };
+			const coordinates = {
+				Lat: coordinatesArray[0],
+				Lng: coordinatesArray[1],
+			};
 
-            return JSON.stringify(coordinates);
-        }
+			return JSON.stringify(coordinates);
+		}
 
-        /** Gets the location of the new shape (circle), as a string */
-        protected getLocation(): string {
-            const location = this.newElm.config.center;
-            const radius = this.newElm.config.radius;
+		/** Gets the location of the new shape (circle), as a string */
+		protected getLocation(): string {
+			const location = this.newElm.config.center;
+			const radius = this.newElm.config.radius;
 
-            // Get the location and radius and return as object stringified to pass to platform event
-            const locationConfig = { location: location, radius: radius };
-            return JSON.stringify(locationConfig);
-        }
-    }
+			// Get the location and radius and return as object stringified to pass to platform event
+			const locationConfig = { location: location, radius: radius };
+			return JSON.stringify(locationConfig);
+		}
+	}
 }

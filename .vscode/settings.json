@@ -1,11 +1,11 @@
 {
 	"diffEditor.ignoreTrimWhitespace": true,
-	"files.autoSave": "off",
+	"files.autoSave": "afterDelay",
 	"editor.minimap.maxColumn": 170,
 	"editor.wordWrapColumn": 170,
 	"editor.formatOnSave": true,
 	"editor.codeActionsOnSave": {
-		"source.fixAll.eslint": true
+		"source.fixAll.eslint": "explicit"
 	},
 	"css.lint.fontFaceProperties": "ignore",
 	"scss.lint.fontFaceProperties": "ignore",

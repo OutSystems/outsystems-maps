@@ -22,7 +22,7 @@ If you're using OutSystems, this is how you can use this component in your appli
 
 
 ## About this repository
-This repository contains the code that enable the usage of an external provider **google maps** to which you're required to [obtain a license](https://developers.google.com/maps/documentation/javascript/get-api-key).
+This repository contains the code that enable the usage of an external provider **Google Maps** to which you're required to [obtain a license](https://developers.google.com/maps/documentation/javascript/get-api-key).
 The code is written in TypeScript🖤, and you are welcome to branch it and PR your changes/proposals!
 
 ### What tools should you use?
@@ -83,3 +83,11 @@ To be accepted, a Pull Request needs to:
 
 ## 📫&nbsp; Have a question? Want to chat? Ran into a problem?
 Write us in [the component support page](https://www.outsystems.com/forge/component-discussions/9909/OutSystems+Maps)!
+
+## How to sign up for the announcement list
+
+Available internally on Slack channel _#rd-uicomponents-contributors_.
+
+## Keywords
+
+GitHub - OutSystems - Maps

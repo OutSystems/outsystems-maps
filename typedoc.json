@@ -1,0 +1,24 @@
+{
+    "entryPoints": [
+        "./src/OSFramework/Maps/**/*.ts",
+        "./src/OutSystems/OutSystems.ts",
+        "./src/Providers/Maps/**/*.ts"
+    ],
+    "entryPointStrategy": "expand",
+    "includeVersion": true,
+    "hideGenerator": true,
+    "out": "./docs/files",
+    "sort": [
+        "source-order"
+    ],
+    "umlClassDiagram": {
+        "type": "detailed",
+        "location": "local",
+        "format": "svg",
+        "backgroundColor": "#ced4da",
+        "boxBackgroundColor": "#fff",
+        "boxBorderColor": "#272b30",
+        "arrowColor": "#272b30"
+    },
+    "customCss": "typedoc-custom.css",
+}

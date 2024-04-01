@@ -1,52 +1,45 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.Feature {
-    export class InfoWindow
-        implements
-            OSFramework.Maps.Feature.IInfoWindow,
-            OSFramework.Maps.Interface.IBuilder
-    {
-        private _infoWindow: google.maps.InfoWindow;
-        private _map: OSMap.IMapGoogle;
-        private _popupIsOpened: boolean;
+	export class InfoWindow implements OSFramework.Maps.Feature.IInfoWindow, OSFramework.Maps.Interface.IBuilder {
+		private _infoWindow: google.maps.InfoWindow;
+		private _map: OSMap.IMapGoogle;
+		private _popupIsOpened: boolean;
 
-        constructor(map: OSMap.IMapGoogle) {
-            this._map = map;
-        }
+		constructor(map: OSMap.IMapGoogle) {
+			this._map = map;
+		}
 
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        public build(): void {
-            // Creates an instance of the infoWindow object from google maps api
-            // We need to specify the content, so let's make it an empty string
-            // This content will be updated whenever a marker with popup is clicked
-            this._infoWindow = new google.maps.InfoWindow({
-                content: ''
-            });
-            this._popupIsOpened = false;
+		// eslint-disable-next-line @typescript-eslint/no-empty-function
+		public build(): void {
+			// Creates an instance of the infoWindow object from Google Maps api
+			// We need to specify the content, so let's make it an empty string
+			// This content will be updated whenever a marker with popup is clicked
+			this._infoWindow = new google.maps.InfoWindow({
+				content: '',
+			});
+			this._popupIsOpened = false;
 
-            // Close the popup on closeClick or ESC key.
-            this._infoWindow.addListener(
-                'closeclick',
-                this.closePopup.bind(this)
-            );
-        }
+			// Close the popup on closeClick or ESC key.
+			this._infoWindow.addListener('closeclick', this.closePopup.bind(this));
+		}
 
-        public closePopup(): void {
-            if (this._popupIsOpened) {
-                this._infoWindow.close();
-                this._popupIsOpened = false;
-            }
-        }
+		public closePopup(): void {
+			if (this._popupIsOpened) {
+				this._infoWindow.close();
+				this._popupIsOpened = false;
+			}
+		}
 
-        public openPopup(marker: OSFramework.Maps.Marker.IMarkerPopup): void {
-            if (this._popupIsOpened === true) {
-                this.closePopup();
-            }
-            this._infoWindow.open(this._map.provider, marker.provider);
-            this._popupIsOpened = true;
-        }
+		public openPopup(marker: OSFramework.Maps.Marker.IMarkerPopup): void {
+			if (this._popupIsOpened === true) {
+				this.closePopup();
+			}
+			this._infoWindow.open(this._map.provider, marker.provider as google.maps.Marker);
+			this._popupIsOpened = true;
+		}
 
-        public setPopupContent(content: string): void {
-            this._infoWindow.setContent(content);
-        }
-    }
+		public setPopupContent(content: string): void {
+			this._infoWindow.setContent(content);
+		}
+	}
 }

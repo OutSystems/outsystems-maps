@@ -2,37 +2,29 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.Maps.Event.Shape {
-    /**
-     * Class that represents the ShapeProviderEvent event.
-     *
-     * @class ShapeProviderEvent
-     * @extends {AbstractEvent<string>}
-     */
-    export class ShapeProviderEvent extends AbstractShapeEvent {
-        /**
-         * Method that will trigger the event with the correct parameters.
-         * @param mapId Id of the Map that is raising the event
-         * @param shapeId Id of the Shape that is raising the event
-         * @param eventName Name of the event that got raised
-         * @param coords Event properties as coordinates and location
-         */
-        public trigger(
-            mapId: string,
-            shapeId: string,
-            eventName: string,
-            coords: OSStructures.OSMap.OSShapeCoordinates
-        ): void {
-            this.handlers
-                .slice(0)
-                .forEach((h) =>
-                    Helper.CallbackAsyncInvocation(
-                        h.eventHandler,
-                        mapId,
-                        shapeId,
-                        eventName,
-                        coords
-                    )
-                );
-        }
-    }
+	/**
+	 * Class that represents the ShapeProviderEvent event.
+	 *
+	 * @class ShapeProviderEvent
+	 * @extends {AbstractEvent<string>}
+	 */
+	export class ShapeProviderEvent extends AbstractShapeEvent {
+		/**
+		 * Method that will trigger the event with the correct parameters.
+		 * @param mapId Id of the Map that is raising the event
+		 * @param shapeId Id of the Shape that is raising the event
+		 * @param eventName Name of the event that got raised
+		 * @param coords Event properties as coordinates and location
+		 */
+		public trigger(
+			mapId: string,
+			shapeId: string,
+			eventName: string,
+			coords: OSStructures.OSMap.OSShapeCoordinates
+		): void {
+			this.handlers
+				.slice(0)
+				.forEach((h) => Helper.CallbackAsyncInvocation(h.eventHandler, mapId, shapeId, eventName, coords));
+		}
+	}
 }
