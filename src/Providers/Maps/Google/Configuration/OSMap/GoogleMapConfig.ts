@@ -9,6 +9,7 @@ namespace Provider.Maps.Google.Configuration.OSMap {
 		public autoZoomOnShapes: boolean;
 		public center: string | OSFramework.Maps.OSStructures.OSMap.Coordinates;
 		public height: string;
+		public localization: OSFramework.Maps.OSStructures.OSMap.Localization;
 		public markerClusterer: OSFramework.Maps.Configuration.IConfigurationMarkerClusterer;
 		public offset: OSFramework.Maps.OSStructures.OSMap.Offset;
 		public respectUserZoom: boolean;

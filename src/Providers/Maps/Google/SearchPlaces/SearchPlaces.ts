@@ -196,7 +196,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 			 * 1) Add the script from GoogleAPIS to the header of the page
 			 * 2) Creates the SearchPlaces via GoogleMap API
 			 */
-			SharedComponents.InitializeScripts(this.config.apiKey, this._scriptCallback);
+			SharedComponents.InitializeScripts(this.config.apiKey, this.config.localization, this._scriptCallback);
 		}
 
 		public changeProperty(propertyName: string, propertyValue: unknown): void {
@@ -211,6 +211,14 @@ namespace Provider.Maps.Google.SearchPlaces {
 								OSFramework.Maps.Enum.ErrorCodes.CFG_APIKeyAlreadySetSearchPlaces
 							);
 						}
+						return;
+					case OSFramework.Maps.Enum.OS_Config_SearchPlaces.localization:
+						// Trigger an error to alert the user that the localization can only be set one time
+						this.searchPlacesEvents.trigger(
+							OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType.OnError,
+							this,
+							OSFramework.Maps.Enum.ErrorCodes.CFG_LocalizationAlreadySetMap
+						);
 						return;
 					case OSFramework.Maps.Enum.OS_Config_SearchPlaces.searchArea:
 						// eslint-disable-next-line no-case-declarations

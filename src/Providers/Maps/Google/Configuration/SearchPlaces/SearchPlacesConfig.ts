@@ -8,6 +8,7 @@ namespace Provider.Maps.Google.Configuration.SearchPlaces {
 	{
 		public apiKey: string;
 		public countries: Array<string>;
+		public localization: OSFramework.Maps.OSStructures.OSMap.Localization;
 		public searchArea: OSFramework.Maps.OSStructures.OSMap.BoundsString;
 		public searchType: OSFramework.Maps.Enum.SearchTypes;
 

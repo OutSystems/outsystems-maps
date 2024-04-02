@@ -273,7 +273,7 @@ namespace Provider.Maps.Google.OSMap {
 			 * 1) Add the script from GoogleAPIS to the header of the page
 			 * 2) Creates the Map via GoogleMap API
 			 */
-			SharedComponents.InitializeScripts(this.config.apiKey, this._scriptCallback);
+			SharedComponents.InitializeScripts(this.config.apiKey, this.config.localization, this._scriptCallback);
 		}
 
 		public buildFeatures(): void {
@@ -326,7 +326,9 @@ namespace Provider.Maps.Google.OSMap {
 
 		public changeProperty(propertyName: string, propertyValue: unknown): void {
 			const propValue = OSFramework.Maps.Enum.OS_Config_Map[propertyName];
+
 			super.changeProperty(propertyName, propertyValue);
+
 			if (this.isReady) {
 				switch (propValue) {
 					case OSFramework.Maps.Enum.OS_Config_Map.apiKey:
@@ -342,6 +344,14 @@ namespace Provider.Maps.Google.OSMap {
 						return this.features.center.updateCenter(propertyValue as string);
 					case OSFramework.Maps.Enum.OS_Config_Map.offset:
 						return this.features.offset.setOffset(JSON.parse(propertyValue as string));
+					case OSFramework.Maps.Enum.OS_Config_Map.localization:
+						// Trigger an error to alert the user that the localization can only be set one time
+						this.mapEvents.trigger(
+							OSFramework.Maps.Event.OSMap.MapEventType.OnError,
+							this,
+							OSFramework.Maps.Enum.ErrorCodes.CFG_LocalizationAlreadySetMap
+						);
+						return;
 					case OSFramework.Maps.Enum.OS_Config_Map.zoom:
 						return this.features.zoom.setLevel(propertyValue as OSFramework.Maps.Enum.OSMap.Zoom);
 					case OSFramework.Maps.Enum.OS_Config_Map.type:
