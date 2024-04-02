@@ -50,8 +50,6 @@ namespace Provider.Maps.Google.SharedComponents {
 			// the callback will only work of 1st map on the page
 			googleMapsLoadPromise.then(cb);
 		}
-
-		console.log(this.config);
 	}
 
 	/**
