@@ -89,7 +89,7 @@ namespace Provider.Maps.Google.Feature {
 		public addMarker(marker: OSFramework.Maps.Marker.IMarker): void {
 			if (this.isEnabled && marker.isReady) {
 				// We need to make sure that a redraw is triggered whenever a new marker is added to the clusters
-				this._markerClusterer.addMarker(marker.provider as google.maps.Marker, false);
+				this._markerClusterer.addMarker(marker.provider as GoogleMapsMarker, false);
 			}
 		}
 
@@ -146,7 +146,7 @@ namespace Provider.Maps.Google.Feature {
 		public removeMarker(marker: OSFramework.Maps.Marker.IMarker): void {
 			if (this.isEnabled && marker.isReady) {
 				// We need to make sure that a redraw is triggered whenever a new marker is removed from the clusters
-				this._markerClusterer?.removeMarker(marker.provider as google.maps.Marker, false);
+				this._markerClusterer?.removeMarker(marker.provider as GoogleMapsMarker, false);
 			}
 		}
 
