@@ -102,7 +102,9 @@ namespace Provider.Maps.Google.OSMap {
 				'&size=' +
 				this._size.width +
 				'x' +
-				this._size.height;
+				this._size.height +
+				(this.config.localization.language !== '' ? `&language=${this.config.localization.language}` : '') +
+				(this.config.localization.region !== '' ? `&region=${this.config.localization.region}` : '');
 			image.onerror = () => {
 				// Check if needed
 				this.mapEvents.trigger(

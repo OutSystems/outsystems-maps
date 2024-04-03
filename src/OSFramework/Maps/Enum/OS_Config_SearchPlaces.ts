@@ -5,6 +5,7 @@ namespace OSFramework.Maps.Enum {
 	 */
 	export enum OS_Config_SearchPlaces {
 		apiKey,
+		localization,
 		countries,
 		searchArea,
 		searchType,
