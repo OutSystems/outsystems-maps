@@ -18,7 +18,7 @@ namespace Provider.Maps.Google.DrawingTools {
 		}
 
 		private _setOnChangeEvent(_marker: OSFramework.Maps.Marker.IMarker): void {
-			const markerProvider = _marker.provider as google.maps.Marker;
+			const markerProvider = _marker.provider as google.maps.marker.AdvancedMarkerElement;
 			_marker.markerEvents.addHandler(
 				// changing the marker location is only available via the drag-and-drop, so the solution passes by adding the dragend event listener as the marker's OnChanged event
 				'dragend' as OSFramework.Maps.Event.Marker.MarkerEventType,
@@ -28,10 +28,10 @@ namespace Provider.Maps.Google.DrawingTools {
 						_marker.uniqueId,
 						false,
 						JSON.stringify({
-							Lat: markerProvider.getPosition().lat(),
-							Lng: markerProvider.getPosition().lng(),
+							Lat: markerProvider.position.lat,
+							Lng: markerProvider.position.lng,
 						}),
-						`${markerProvider.getPosition().lat()}, ${markerProvider.getPosition().lng()}`
+						`${markerProvider.position.lat}, ${markerProvider.position.lng}`
 					);
 				}
 			);
@@ -42,11 +42,11 @@ namespace Provider.Maps.Google.DrawingTools {
 			return OSFramework.Maps.Helper.Constants.drawingMarkerCompleted;
 		}
 
-		public get options(): google.maps.MarkerOptions {
+		public get options(): google.maps.marker.AdvancedMarkerElementOptions {
 			return this.drawingTools.provider.get('markerOptions');
 		}
 
-		protected set options(options: google.maps.MarkerOptions) {
+		protected set options(options: google.maps.marker.AdvancedMarkerElementOptions) {
 			const allOptions = { ...this.options, ...options };
 			this.drawingTools.provider.setOptions({
 				markerOptions: allOptions,
@@ -55,13 +55,13 @@ namespace Provider.Maps.Google.DrawingTools {
 
 		protected createElement(
 			uniqueId: string,
-			marker: google.maps.Marker,
+			marker: google.maps.marker.AdvancedMarkerElement,
 			configs: unknown[]
 		): OSFramework.Maps.Marker.IMarker {
-			const location = `${marker.getPosition().lat()},${marker.getPosition().lng()}`;
+			const location = `${marker.position.lat},${marker.position.lng}`;
 
-			this._latLng.lat = marker.getPosition().lat();
-			this._latLng.lng = marker.getPosition().lng();
+			this._latLng.lat = marker.position.lat;
+			this._latLng.lng = marker.position.lng;
 
 			// Join both the configs that were provided for the new marker element and the location that was provided by the DrawingTools markercomplete event
 			const finalConfigs = { ...configs, location };
@@ -109,7 +109,9 @@ namespace Provider.Maps.Google.DrawingTools {
 			super.changeProperty(propertyName, value);
 			if (this.drawingTools.isReady) {
 				if (propValue === OSFramework.Maps.Enum.OS_Config_Marker.iconUrl) {
-					this.options = { icon: value as string };
+					// TODO BMO
+					// this.options.content = { icon: value as string };
+					console.log(this.options);
 				}
 			}
 		}

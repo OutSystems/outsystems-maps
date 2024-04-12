@@ -34,7 +34,7 @@ namespace Provider.Maps.Google.Feature {
 			if (this._popupIsOpened === true) {
 				this.closePopup();
 			}
-			this._infoWindow.open(this._map.provider, marker.provider as google.maps.Marker);
+			this._infoWindow.open(this._map.provider, marker.provider as google.maps.marker.AdvancedMarkerElement);
 			this._popupIsOpened = true;
 		}
 

@@ -132,6 +132,7 @@ namespace Provider.Maps.Google.OSMap {
 		private _getProviderConfig(): google.maps.MapOptions {
 			// Make sure the center has a default value before the conversion of the location to coordinates
 			this.config.center = OSFramework.Maps.Helper.Constants.defaultMapCenter;
+			this.config.mapId = this.uniqueId;
 			// Take care of the advancedFormat options which can override the previous configuration
 			this._advancedFormatObj = OSFramework.Maps.Helper.JsonFormatter(
 				this.config.advancedFormat
@@ -423,7 +424,7 @@ namespace Provider.Maps.Google.OSMap {
 								//Let's use the first marker as the center of the map.
 								// The TS definitions appear to be outdated.
 								// eslint-disable-next-line @typescript-eslint/no-explicit-any
-								position = (this.markers[0].provider as google.maps.Marker as any).position.toJSON();
+								position = (this.markers[0].provider as any).position.toJSON();
 							}
 						}
 					} else {
@@ -436,7 +437,7 @@ namespace Provider.Maps.Google.OSMap {
 					//used as the map center.
 					// The TS definitions appear to be outdated.
 					// eslint-disable-next-line @typescript-eslint/no-explicit-any
-					position = (this.markers[0].provider as google.maps.Marker as any).position.toJSON();
+					position = (this.markers[0].provider as any).position.toJSON();
 				}
 			}
 

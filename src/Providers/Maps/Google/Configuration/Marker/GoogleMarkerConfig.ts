@@ -17,9 +17,6 @@ namespace Provider.Maps.Google.Configuration.Marker {
 		public getProviderConfig(): unknown {
 			const provider = {
 				draggable: this.allowDrag,
-				icon: this.iconUrl,
-				label: this.label,
-				location: this.location,
 				title: this.title,
 			};
 

@@ -3,7 +3,10 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.Marker {
 	export class Marker
-		extends OSFramework.Maps.Marker.AbstractMarker<google.maps.Marker, Configuration.Marker.GoogleMarkerConfig>
+		extends OSFramework.Maps.Marker.AbstractMarker<
+			google.maps.marker.AdvancedMarkerElement,
+			Configuration.Marker.GoogleMarkerConfig
+		>
 		implements IMarkerGoogle
 	{
 		private _addedEvents: Array<string>;
@@ -18,55 +21,40 @@ namespace Provider.Maps.Google.Marker {
 			this._addedEvents = [];
 		}
 
-		private _setIcon(url: string): void {
-			// If the iconUrl is not set or is empty, we should use the defaultIcon
-			if (url === '') {
-				// Set the icon to the default Marker provider
-				this.provider.setIcon(null);
+		private _setIcon(): void {
+			if (this.config.label === '' && this.config.iconUrl === '') {
+				this._provider.content = undefined;
 			} else {
 				try {
-					let scaledSize: google.maps.Size;
-					//Explicit conversion to number - related with ROU-4592 - as google will behave differently depending on the type
-					//of the input. Before, in runtime, the input was of type string.
-					const height = Number(this.config.iconHeight);
-					const width = Number(this.config.iconWidth);
-					// If the size of the icon is defined by a valid width and height, use those values
-					// Else If nothing is passed or the icon size has the width or the height equal to 0, use the full image size
-					if (
-						OSFramework.Maps.Helper.IsValidNumber(height) &&
-						OSFramework.Maps.Helper.IsValidNumber(width) &&
-						height > 0 &&
-						width > 0
-					) {
-						scaledSize = new google.maps.Size(width, height);
+					const markerIconWrapper = document.createElement('div');
+					markerIconWrapper.className = 'marker-icon';
+					const pinElementProps = {};
+					if (this.config.label !== '') {
+						markerIconWrapper.textContent = this.config.label;
 					}
-					// Update the icon using the previous configurations
-					const icon = {
-						url: url,
-						size: scaledSize,
-					};
-					// Set the icon to the Marker provider
-					this.provider.setIcon(icon);
+					if (this.config.iconUrl !== '') {
+						const markerIconImage = document.createElement('img');
+						markerIconImage.src = this.config.iconUrl;
+						markerIconImage.height = this.config.iconHeight;
+						markerIconImage.width = this.config.iconWidth;
+						markerIconWrapper.append(markerIconImage);
+						pinElementProps['background'] = 'transparent';
+						pinElementProps['borderColor'] = 'transparent';
+					}
+					// Create the MarkerIcon
+					const markerIcon = new google.maps.marker.PinElement({
+						glyph: markerIconWrapper,
+						...pinElementProps,
+					});
+					this._provider.content = markerIcon.element;
 				} catch (e) {
-					// Could not load image from specified URL
 					console.error(e);
 				}
 			}
 		}
 
-		/**
-		 * This method is usefull to be used by the changeProperty method only
-		 * As it requires a config update before being able to use it
-		 */
-		private _setIconSize(): void {
-			// The width and the height of the icon will be acquired using the config.iconWidth and config.iconHeight
-			// Therefore, just by calling the _setIcon private method we are going to set the same iconUrl that is already being used
-			// But the icon will be updated and will be using the new size
-			this._setIcon(this.config.iconUrl);
-		}
-
-		protected _buildMarkerPosition(): Promise<google.maps.MarkerOptions> {
-			const markerOptions: google.maps.MarkerOptions = {};
+		protected _buildMarkerPosition(): Promise<google.maps.marker.AdvancedMarkerElementOptions> {
+			const markerOptions: google.maps.marker.AdvancedMarkerElementOptions = {};
 			// If the marker has no location at the moment of its provider creation, then throw an error
 			// If the marker has its location = "" at the moment of its provider creation, then the location value will be the default -> OutSystems, Boston US
 			if (typeof this.config.location === 'undefined') {
@@ -174,14 +162,14 @@ namespace Provider.Maps.Google.Marker {
 						//The marker was destroyed while waiting for the promise.
 						if (this._destroyed) return;
 
-						this._provider = new google.maps.Marker({
+						this._provider = new google.maps.marker.AdvancedMarkerElement({
 							...(this.getProviderConfig() as unknown[]),
-							...markerOptions,
+							position: markerOptions.position,
 							map: this.map.provider,
 						});
 
-						// Call this method so icon respects the sizes that are on config
-						this._setIconSize();
+						// Call this method to set marker icon
+						this._setIcon();
 
 						// We can only set the events on the provider after its creation
 						this._setMarkerEvents();
@@ -211,10 +199,10 @@ namespace Provider.Maps.Google.Marker {
 					case OSFramework.Maps.Enum.OS_Config_Marker.location:
 						Helper.Conversions.ConvertToCoordinates(propertyValue as string)
 							.then((response) => {
-								this._provider.setPosition({
+								this._provider.position = {
 									lat: response.lat as number,
 									lng: response.lng as number,
-								});
+								};
 								this.map.refresh();
 							})
 							.catch((error) => {
@@ -227,25 +215,24 @@ namespace Provider.Maps.Google.Marker {
 							});
 						return;
 					case OSFramework.Maps.Enum.OS_Config_Marker.allowDrag:
-						return this._provider.setDraggable(propertyValue as boolean);
+						this._provider.draggable = propertyValue as boolean;
+						break;
 					case OSFramework.Maps.Enum.OS_Config_Marker.iconHeight:
 					case OSFramework.Maps.Enum.OS_Config_Marker.iconWidth:
-						this._setIconSize();
-						return;
 					case OSFramework.Maps.Enum.OS_Config_Marker.iconUrl:
-						this._setIcon(propertyValue as string);
-						return;
 					case OSFramework.Maps.Enum.OS_Config_Marker.label:
-						return this._provider.setLabel(propertyValue as string);
+						this._setIcon();
+						break;
 					case OSFramework.Maps.Enum.OS_Config_Marker.title:
-						return this._provider.setTitle(propertyValue as string);
+						this._provider.title = propertyValue as string;
+						break;
 				}
 			}
 		}
 
 		public dispose(): void {
 			if (this.isReady) {
-				this._provider.setMap(null);
+				this._provider.map = undefined;
 			}
 			this._provider = undefined;
 			super.dispose();

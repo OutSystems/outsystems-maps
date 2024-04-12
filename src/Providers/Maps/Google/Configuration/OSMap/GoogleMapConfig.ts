@@ -10,6 +10,7 @@ namespace Provider.Maps.Google.Configuration.OSMap {
 		public center: string | OSFramework.Maps.OSStructures.OSMap.Coordinates;
 		public height: string;
 		public localization: OSFramework.Maps.OSStructures.OSMap.Localization;
+		public mapId: string;
 		public markerClusterer: OSFramework.Maps.Configuration.IConfigurationMarkerClusterer;
 		public offset: OSFramework.Maps.OSStructures.OSMap.Offset;
 		public respectUserZoom: boolean;
@@ -21,6 +22,7 @@ namespace Provider.Maps.Google.Configuration.OSMap {
 
 		public getProviderConfig(): unknown {
 			const provider = {
+				mapId: this.mapId,
 				center: this.center,
 				zoom: this.zoom,
 				styles: this.style,

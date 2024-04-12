@@ -115,7 +115,7 @@ namespace OSFramework.Maps.Helper.Constants {
 	// In order to use the drawingTools we need to add it into the libraries via the URL = drawing
 	// In order to use the heatmap we need to add it into the libraries via the URL = visualization
 	// In order to use the searchplaces we need to add it into the libraries via the URL = places (in case the Map is the first to import the scripts)
-	export const gmlibraries = 'drawing,visualization,places';
+	export const gmlibraries = 'drawing,visualization,places,marker';
 
 	/******************** */
 	/** URLs for Leaflet  */

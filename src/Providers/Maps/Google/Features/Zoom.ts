@@ -23,7 +23,7 @@ namespace Provider.Maps.Google.Feature {
 				if (item.provider === undefined) return;
 				// The TS definitions appear to be outdated.
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				bounds.extend((item.provider as google.maps.Marker as any).position.toJSON());
+				bounds.extend((item.provider as any).position.toJSON());
 			});
 
 			if (useShapes) {
