@@ -168,6 +168,13 @@ namespace OSFramework.Maps.OSMap {
 		public changeProperty(propertyName: string, propertyValue: unknown): void {
 			//Update Map's config when the property is available
 			if (this.config.hasOwnProperty(propertyName)) {
+				const propName = Maps.Enum.OS_Config_Map[propertyName];
+
+				// Check if the property value is offset or localization to parse the value
+				if (propName === Maps.Enum.OS_Config_Map.offset || propName === Maps.Enum.OS_Config_Map.localization) {
+					propertyValue = JSON.parse(propertyValue as string);
+				}
+
 				this.config[propertyName] = propertyValue;
 
 				if (Maps.Enum.OS_Config_Map.respectUserZoom === Maps.Enum.OS_Config_Map[propertyName]) {
