@@ -290,13 +290,8 @@ namespace Provider.Maps.Leaflet.OSMap {
 				}
 			}
 
-			// Refresh the center position
-			this.features.center.refreshCenter(position);
-
-			if (this.allowRefreshZoom) {
-				// Refresh the zoom
-				this.features.zoom.refreshZoom();
-			}
+			// Refresh the center position and zoom if needed
+			this.features.center.refreshCenter(position, this.allowRefreshZoom);
 
 			// Refresh the offset
 			this.features.offset.setOffset(this.features.offset.getOffset);
