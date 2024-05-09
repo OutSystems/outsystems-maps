@@ -11,6 +11,7 @@ let newVersionToBeSet = '';
 let filesList = {
 	constants: './src/OSFramework/Maps/Constants.ts',
 	package: './package.json',
+	readme: './README.md',
 	specs: './gulp/DefaultSpecs.js',
 };
 
@@ -54,8 +55,8 @@ function getFilesList(cb) {
 
 		switch (filesList[path]) {
 			case filesList.constants:
-				findFor = `OSChartsVersion = '${defaultSpecs.info.version}';`;
-				replaceTo = `OSChartsVersion = '${newVersionToBeSet}';`;
+				findFor = `OSMapsVersion = '${defaultSpecs.info.version}';`;
+				replaceTo = `OSMapsVersion = '${newVersionToBeSet}';`;
 				break;
 
 			case filesList.package:
@@ -69,8 +70,8 @@ function getFilesList(cb) {
 				break;
 
 			case filesList.readme:
-				findFor = `# OutSystems Charts · v${defaultSpecs.info.version}`;
-				replaceTo = `# OutSystems Charts · v${newVersionToBeSet}`;
+				findFor = `# OutSystems Maps · v${defaultSpecs.info.version}`;
+				replaceTo = `# OutSystems Maps · v${newVersionToBeSet}`;
 				break;
 		}
 
