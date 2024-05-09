@@ -9,9 +9,8 @@ let newVersionToBeSet = '';
 
 // List of files path to be updated
 let filesList = {
-	constants: './src/OSFramework/Charts/Constants.ts',
+	constants: './src/OSFramework/Maps/Constants.ts',
 	package: './package.json',
-	readme: './README.md',
 	specs: './gulp/Tasks/DefaultSpecs.js',
 };
 
