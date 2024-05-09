@@ -6,7 +6,7 @@ namespace Provider.Maps.Leaflet.Shape {
 		T extends OSFramework.Maps.Configuration.IConfigurationShape,
 		W extends L.Path,
 	> extends OSFramework.Maps.Shape.AbstractShape<W, T> {
-		private _shapeChangedEventTimeout: number;
+		private _shapeChangedEventTimeout: number | NodeJS.Timeout;
 
 		/** Checks if the Shape has associated events */
 		public get hasEvents(): boolean {
