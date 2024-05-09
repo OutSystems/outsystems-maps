@@ -11,7 +11,7 @@ let newVersionToBeSet = '';
 let filesList = {
 	constants: './src/OSFramework/Maps/Constants.ts',
 	package: './package.json',
-	specs: './gulp/Tasks/DefaultSpecs.js',
+	specs: './gulp/DefaultSpecs.js',
 };
 
 // Prompt question about the new version to be set
