@@ -10,7 +10,7 @@ namespace OSFramework.Maps.OSMap {
 		private _heatmapLayersSet: Set<HeatmapLayer.IHeatmapLayer>;
 		private _isReady: boolean;
 		private _mapEvents: Event.OSMap.MapEventsManager;
-		private _mapRefreshRequest: number;
+		private _mapRefreshRequest: number | NodeJS.Timeout;
 		private _mapType: Enum.MapType;
 		private _markers: Map<string, Marker.IMarker>;
 		private _markersSet: Set<Marker.IMarker>;
