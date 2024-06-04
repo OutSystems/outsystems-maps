@@ -25,8 +25,9 @@ namespace Provider.Maps.Google.Marker {
 				this.provider.setIcon(null);
 			} else {
 				try {
+					let anchorCalc: google.maps.Point;
 					let scaledSize: google.maps.Size;
-					//Explicit conversion to number - related with ROU-4592 - as google will behave differently depending on the type
+					//Explicit conversion to number - related with ROU-4592 - as Google will behave differently depending on the type
 					//of the input. Before, in runtime, the input was of type string.
 					const height = Number(this.config.iconHeight);
 					const width = Number(this.config.iconWidth);
@@ -38,12 +39,16 @@ namespace Provider.Maps.Google.Marker {
 						height > 0 &&
 						width > 0
 					) {
+						// Anchor at bottom center (half width, full height)
+						anchorCalc = new google.maps.Point(width / 2, height);
 						scaledSize = new google.maps.Size(width, height);
 					}
 					// Update the icon using the previous configurations
 					const icon = {
 						url: url,
-						size: scaledSize,
+						scaledSize: scaledSize,
+						anchor: anchorCalc,
+						origin: new google.maps.Point(0, 0),
 					};
 					// Set the icon to the Marker provider
 					this.provider.setIcon(icon);
