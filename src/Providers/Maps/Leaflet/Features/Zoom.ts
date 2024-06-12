@@ -33,7 +33,7 @@ namespace Provider.Maps.Leaflet.Feature {
 			}
 			this._map.provider.fitBounds(bounds);
 			this._map.provider.panInsideBounds(bounds);
-			this._map.features.center.setCurrentCenter(this._map.provider.getCenter());
+			this._map.features.center.setCurrentCenter(bounds.getCenter());
 		}
 
 		public build(): void {
@@ -56,7 +56,10 @@ namespace Provider.Maps.Leaflet.Feature {
 				) {
 					this._setBounds(this._map.config.autoZoomOnShapes);
 				} else {
-					this._map.provider.setZoom(OSFramework.Maps.Helper.Constants.zoomAutofit);
+					this._map.provider.setView(
+						this._map.features.center.getCurrentCenter() as L.LatLngExpression,
+						OSFramework.Maps.Helper.Constants.zoomAutofit
+					);
 				}
 			} else {
 				this._map.provider.setZoom(this._map.features.zoom.level);
