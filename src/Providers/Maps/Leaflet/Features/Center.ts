@@ -53,7 +53,7 @@ namespace Provider.Maps.Leaflet.Feature {
 		}
 
 		public refreshCenter(value: OSFramework.Maps.OSStructures.OSMap.Coordinates, allowRefreshZoom: boolean): void {
-			const coordinates = new L.LatLng(value.lat as number, value.lng as number);
+			let coordinates = new L.LatLng(value.lat as number, value.lng as number);
 			this._map.provider.setView(coordinates);
 			if (allowRefreshZoom) {
 				if (this._map.features.zoom.isAutofit) {
@@ -63,6 +63,8 @@ namespace Provider.Maps.Leaflet.Feature {
 					) {
 						this._map.provider.setView(coordinates);
 						this._map.features.zoom.refreshZoom();
+						const tempCenter = this._map.features.center.getCurrentCenter();
+						coordinates = new L.LatLng(tempCenter.lat as number, tempCenter.lng as number);
 					} else {
 						this._map.provider.setView(coordinates, OSFramework.Maps.Helper.Constants.zoomAutofit);
 					}
