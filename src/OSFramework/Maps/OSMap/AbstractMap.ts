@@ -10,7 +10,7 @@ namespace OSFramework.Maps.OSMap {
 		private _heatmapLayersSet: Set<HeatmapLayer.IHeatmapLayer>;
 		private _isReady: boolean;
 		private _mapEvents: Event.OSMap.MapEventsManager;
-		private _mapRefreshRequest: number;
+		private _mapRefreshRequest: number | NodeJS.Timeout;
 		private _mapType: Enum.MapType;
 		private _markers: Map<string, Marker.IMarker>;
 		private _markersSet: Set<Marker.IMarker>;
@@ -168,6 +168,13 @@ namespace OSFramework.Maps.OSMap {
 		public changeProperty(propertyName: string, propertyValue: unknown): void {
 			//Update Map's config when the property is available
 			if (this.config.hasOwnProperty(propertyName)) {
+				const propName = Maps.Enum.OS_Config_Map[propertyName];
+
+				// Check if the property value is offset or localization to parse the value
+				if (propName === Maps.Enum.OS_Config_Map.offset || propName === Maps.Enum.OS_Config_Map.localization) {
+					propertyValue = JSON.parse(propertyValue as string);
+				}
+
 				this.config[propertyName] = propertyValue;
 
 				if (Maps.Enum.OS_Config_Map.respectUserZoom === Maps.Enum.OS_Config_Map[propertyName]) {
