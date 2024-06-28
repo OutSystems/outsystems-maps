@@ -61,6 +61,38 @@ namespace Provider.Maps.Google.Marker {
 			}
 		}
 
+		/**
+		 * Method that will trigger the event of the Marker. This method helps obtaining the
+		 * coordinates in the correct way and then trigger the event.
+		 *
+		 * @private
+		 * @param {OSFramework.Maps.Event.Marker.MarkerEventType} eventType
+		 * @param {string} eventName
+		 * @param {(number | (() => number))} lat
+		 * @param {(number | (() => number))} lng
+		 * @memberof Marker
+		 */
+		private _triggerEvent(
+			eventType: OSFramework.Maps.Event.Marker.MarkerEventType,
+			eventName: string,
+			lat: number | (() => number),
+			lng: number | (() => number)
+		): void {
+			const coordinates = new OSFramework.Maps.OSStructures.OSMap.OSCoordinates(
+				Helper.Conversions.GetCoordinateValue(lat),
+				Helper.Conversions.GetCoordinateValue(lng)
+			);
+
+			this.markerEvents.trigger(
+				// EventType
+				eventType,
+				// EventName
+				eventName,
+				// Coords
+				JSON.stringify(coordinates)
+			);
+		}
+
 		protected _buildMarkerPosition(): Promise<google.maps.marker.AdvancedMarkerElementOptions> {
 			const markerOptions: google.maps.marker.AdvancedMarkerElementOptions = {};
 			// If the marker has no location at the moment of its provider creation, then throw an error
