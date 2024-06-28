@@ -302,7 +302,10 @@ namespace Provider.Maps.Google.Marker {
 		}
 
 		public validateProviderEvent(eventName: string): boolean {
-			return Constants.Marker.ProviderEventNames[eventName] !== undefined;
+			return (
+				Constants.Marker.ProviderEventNames[eventName] !== undefined ||
+				Constants.Marker.ProviderEventNamesHtml[eventName] !== undefined
+			);
 		}
 	}
 }
