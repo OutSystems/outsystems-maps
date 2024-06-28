@@ -131,17 +131,11 @@ namespace Provider.Maps.Google.Marker {
 			if (this.markerEvents.hasHandlers(OSFramework.Maps.Event.Marker.MarkerEventType.OnClick)) {
 				this._addedEvents.push('click');
 				this._provider.addListener('click', (e: google.maps.MapMouseEvent) => {
-					const coordinates = new OSFramework.Maps.OSStructures.OSMap.OSCoordinates(
-						e.latLng.lat(),
-						e.latLng.lng()
-					);
-					this.markerEvents.trigger(
-						// EventType
+					this._triggerEvent(
 						OSFramework.Maps.Event.Marker.MarkerEventType.OnClick,
-						// EventName
 						OSFramework.Maps.Event.Marker.MarkerEventType.OnClick,
-						// Coords
-						JSON.stringify(coordinates)
+						e.latLng.lat,
+						e.latLng.lng
 					);
 				});
 			}
