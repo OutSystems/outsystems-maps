@@ -151,28 +151,47 @@ namespace Provider.Maps.Google.Marker {
 			// If the Event type of each handler is MarkerProviderEvent, we want to make sure to add that event to the listeners of the google marker provider (e.g. click, dblclick, contextmenu, etc)
 			this.markerEvents.handlers.forEach((handler: OSFramework.Maps.Event.IEvent<string>, eventName) => {
 				if (handler instanceof OSFramework.Maps.Event.Marker.MarkerProviderEvent) {
-					this._addedEvents.push(eventName);
-					this._provider.addListener(
-						// Name of the event (e.g. click, dblclick, contextmenu, etc)
-						Constants.Marker.ProviderEventNames[eventName],
-						// Callback CAN have an attribute (e) which is of the type MapMouseEvent
-						// Trigger the event by specifying the ProviderEvent MarkerType and the coords (lat, lng) if the callback has the attribute MapMouseEvent
-						(e?: google.maps.MapMouseEvent) => {
-							this.markerEvents.trigger(
-								// EventType
-								OSFramework.Maps.Event.Marker.MarkerEventType.ProviderEvent,
-								// EventName
-								eventName,
-								// Coords
-								e !== undefined
-									? JSON.stringify({
-											Lat: e.latLng.lat(),
-											Lng: e.latLng.lng(),
-										})
-									: undefined
+					const ProviderEventName = Constants.Marker.ProviderEventNames[eventName];
+
+					if (ProviderEventName !== undefined) {
+						this._addedEvents.push(eventName);
+						this._provider.addListener(
+							// Name of the event (e.g. click, dblclick, contextmenu, etc)
+							ProviderEventName,
+							// Callback CAN have an attribute (e) which is of the type MapMouseEvent
+							// Trigger the event by specifying the ProviderEvent MarkerType and the coords (lat, lng) if the callback has the attribute MapMouseEvent
+							(e: google.maps.MapMouseEvent) => {
+								this._triggerEvent(
+									OSFramework.Maps.Event.Marker.MarkerEventType.ProviderEvent,
+									eventName,
+									e.latLng.lat,
+									e.latLng.lng
+								);
+							}
+						);
+					} else {
+						const HtmlEventName = Constants.Marker.ProviderEventNamesHtml[eventName];
+
+						if (HtmlEventName !== undefined) {
+							this._addedEvents.push(eventName);
+							this._provider.element.addEventListener(
+								// Name of the event (e.g. click, dblclick, contextmenu, etc)
+								HtmlEventName,
+								// Callback CAN have an attribute (e) which is of the type MapMouseEvent
+								// Trigger the event by specifying the ProviderEvent MarkerType and the coords (lat, lng) if the callback has the attribute MapMouseEvent
+								() => {
+									this._triggerEvent(
+										OSFramework.Maps.Event.Marker.MarkerEventType.ProviderEvent,
+										eventName,
+										this._provider.position.lat,
+										this.provider.position.lng
+									);
+								}
 							);
+						} else {
+							console.error(`Event ${eventName} is not a valid event for the Marker.`);
 						}
-					);
+					}
 				}
 			});
 		}
