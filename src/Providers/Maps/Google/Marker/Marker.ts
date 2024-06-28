@@ -274,7 +274,7 @@ namespace Provider.Maps.Google.Marker {
 							});
 						return;
 					case OSFramework.Maps.Enum.OS_Config_Marker.allowDrag:
-						this._provider.draggable = propertyValue as boolean;
+						this._provider.gmpDraggable = propertyValue as boolean;
 						break;
 					case OSFramework.Maps.Enum.OS_Config_Marker.iconHeight:
 					case OSFramework.Maps.Enum.OS_Config_Marker.iconWidth:
