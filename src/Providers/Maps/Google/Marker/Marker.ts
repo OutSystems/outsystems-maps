@@ -22,34 +22,42 @@ namespace Provider.Maps.Google.Marker {
 		}
 
 		private _setIcon(): void {
-			if (this.config.label === '' && this.config.iconUrl === '') {
-				this._provider.content = undefined;
-			} else {
+			if (this.config.label !== '' || this.config.iconUrl !== '') {
 				try {
+					const height = this.config.iconHeight;
+					const width = this.config.iconWidth;
+
 					const markerIconWrapper = document.createElement('div');
 					markerIconWrapper.className = 'marker-icon';
-					const pinElementProps = {};
-					if (this.config.label !== '') {
-						markerIconWrapper.textContent = this.config.label;
-					}
+
 					if (this.config.iconUrl !== '') {
 						const markerIconImage = document.createElement('img');
 						markerIconImage.src = this.config.iconUrl;
-						markerIconImage.height = this.config.iconHeight;
-						markerIconImage.width = this.config.iconWidth;
+						if (height > 0 && width > 0) {
+							markerIconImage.height = height;
+							markerIconImage.width = width;
+						}
 						markerIconWrapper.append(markerIconImage);
-						pinElementProps['background'] = 'transparent';
-						pinElementProps['borderColor'] = 'transparent';
+
+						if (this.config.label !== '') {
+							const labelWrapper = document.createElement('div');
+							const margintop = -(height / 2 + 6);
+							labelWrapper.textContent = this.config.label;
+							labelWrapper.setAttribute('style', `margin-top: ${margintop}px; text-align: center;`);
+							markerIconWrapper.appendChild(labelWrapper);
+						}
+						this._provider.content = markerIconWrapper;
+					} else {
+						markerIconWrapper.textContent = this.config.label;
+
+						const markerIcon = new google.maps.marker.PinElement({ glyph: markerIconWrapper });
+						this._provider.content = markerIcon.element;
 					}
-					// Create the MarkerIcon
-					const markerIcon = new google.maps.marker.PinElement({
-						glyph: markerIconWrapper,
-						...pinElementProps,
-					});
-					this._provider.content = markerIcon.element;
 				} catch (e) {
 					console.error(e);
 				}
+			} else {
+				this._provider.content = undefined;
 			}
 		}
 
