@@ -58,7 +58,9 @@ namespace Provider.Maps.Google.DrawingTools {
 			marker: google.maps.marker.AdvancedMarkerElement,
 			configs: unknown[]
 		): OSFramework.Maps.Marker.IMarker {
-			const location = `${marker.position.lat},${marker.position.lng}`;
+			const lat = Helper.Conversions.GetCoordinateValue(marker.position.lat);
+			const lng = Helper.Conversions.GetCoordinateValue(marker.position.lng);
+			const location = `${lat}, ${lng}`;
 
 			this._latLng.lat = marker.position.lat;
 			this._latLng.lng = marker.position.lng;
