@@ -350,6 +350,19 @@ html[data-uieditorversion^='1'] .map-wrapper .staticMap-image {
 /**/
 /***********************************************************************/
 
+.os-marker-icon {
+    position: relative;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.os-marker-icon-label {
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: calc(50% - 6px);
+}
+
 .marker-popup-layout {
     display: flex;
     flex-direction: column;
