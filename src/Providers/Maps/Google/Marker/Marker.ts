@@ -28,7 +28,7 @@ namespace Provider.Maps.Google.Marker {
 					const width = this.config.iconWidth;
 
 					const markerIconWrapper = document.createElement('div');
-					markerIconWrapper.className = 'marker-icon';
+					markerIconWrapper.className = 'os-marker-icon';
 
 					if (this.config.iconUrl !== '') {
 						const markerIconImage = document.createElement('img');
@@ -41,9 +41,8 @@ namespace Provider.Maps.Google.Marker {
 
 						if (this.config.label !== '') {
 							const labelWrapper = document.createElement('div');
-							const margintop = -(height / 2 + 6);
+							labelWrapper.className = 'os-marker-icon-label';
 							labelWrapper.textContent = this.config.label;
-							labelWrapper.setAttribute('style', `margin-top: ${margintop}px; text-align: center;`);
 							markerIconWrapper.appendChild(labelWrapper);
 						}
 						this._provider.content = markerIconWrapper;
