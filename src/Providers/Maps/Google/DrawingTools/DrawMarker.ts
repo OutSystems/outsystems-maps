@@ -60,7 +60,7 @@ namespace Provider.Maps.Google.DrawingTools {
 		): OSFramework.Maps.Marker.IMarker {
 			const lat = Helper.Conversions.GetCoordinateValue(marker.position.lat);
 			const lng = Helper.Conversions.GetCoordinateValue(marker.position.lng);
-			const location = `${lat}, ${lng}`;
+			const location = `${lat},${lng}`;
 
 			this._latLng.lat = marker.position.lat;
 			this._latLng.lng = marker.position.lng;
