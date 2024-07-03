@@ -7,7 +7,7 @@ namespace Provider.Maps.Google.Configuration.DrawingTools {
 
 		public getProviderConfig(): unknown[] {
 			const provider = super.getProviderConfig();
-			provider.icon = this.iconUrl;
+			provider.iconUrl = this.iconUrl;
 
 			Object.keys(provider).forEach((key) => {
 				if (provider[key] === undefined) delete provider[key];
