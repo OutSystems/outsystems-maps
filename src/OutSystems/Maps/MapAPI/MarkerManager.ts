@@ -97,7 +97,6 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 				// Check if the feature is enabled!
 				if (map.hasMarkerClusterer()) {
 					const marker = map.markers.find((marker) => {
-						// eslint-disable-next-line @typescript-eslint/no-explicit-any
 						return marker.config.location === markerPosition;
 					});
 
