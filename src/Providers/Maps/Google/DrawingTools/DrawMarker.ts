@@ -105,17 +105,5 @@ namespace Provider.Maps.Google.DrawingTools {
 		public build(): void {
 			super.build();
 		}
-
-		public changeProperty(propertyName: string, value: unknown): void {
-			const propValue = OSFramework.Maps.Enum.OS_Config_Marker[propertyName];
-			super.changeProperty(propertyName, value);
-			if (this.drawingTools.isReady) {
-				if (propValue === OSFramework.Maps.Enum.OS_Config_Marker.iconUrl) {
-					// TODO BMO
-					// this.options.content = { icon: value as string };
-					console.log(this.options);
-				}
-			}
-		}
 	}
 }
