@@ -98,7 +98,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 				if (map.hasMarkerClusterer()) {
 					const marker = map.markers.find((marker) => {
 						// eslint-disable-next-line @typescript-eslint/no-explicit-any
-						return (marker.provider as any).location === markerPosition;
+						return marker.config.location === markerPosition;
 					});
 
 					// Check if there is a marker with the given Position/Location
