@@ -2,7 +2,7 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.Configuration.Marker {
-	export class GoogleMarkerConfig
+	export class DeprecatedGoogleMarkerConfig
 		extends OSFramework.Maps.Configuration.AbstractConfiguration
 		implements OSFramework.Maps.Configuration.IConfigurationMarker
 	{

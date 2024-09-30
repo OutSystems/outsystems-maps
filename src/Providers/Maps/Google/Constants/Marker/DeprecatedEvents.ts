@@ -3,8 +3,8 @@ namespace Provider.Maps.Google.Constants.Marker {
 	/**
 	 * Enum that defines the available Provider Events
 	 */
-	export enum ProviderEventNames {
-		animation_changed = 'animation_changed',
+	export enum DeprecatedProviderEventNames {
+		changed = 'animation_changed',
 		click = 'click',
 		clickable_changed = 'clickable_changed',
 		contextmenu = 'contextmenu',

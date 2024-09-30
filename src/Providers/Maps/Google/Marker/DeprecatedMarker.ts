@@ -3,8 +3,11 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.Marker {
 	export class DeprecatedMarker
-		extends OSFramework.Maps.Marker.AbstractMarker<google.maps.Marker, Configuration.Marker.GoogleMarkerConfig>
-		implements IMarkerGoogle
+		extends OSFramework.Maps.Marker.AbstractMarker<
+			google.maps.Marker,
+			Configuration.Marker.DeprecatedGoogleMarkerConfig
+		>
+		implements IDeprecatedMarkerGoogle
 	{
 		private _addedEvents: Array<string>;
 
@@ -14,7 +17,7 @@ namespace Provider.Maps.Google.Marker {
 			type: OSFramework.Maps.Enum.MarkerType,
 			configs: unknown
 		) {
-			super(map, markerId, type, new Configuration.Marker.GoogleMarkerConfig(configs));
+			super(map, markerId, type, new Configuration.Marker.DeprecatedGoogleMarkerConfig(configs));
 			this._addedEvents = [];
 		}
 
@@ -131,7 +134,7 @@ namespace Provider.Maps.Google.Marker {
 					this._addedEvents.push(eventName);
 					this._provider.addListener(
 						// Name of the event (e.g. click, dblclick, contextmenu, etc)
-						Constants.Marker.ProviderEventNames[eventName],
+						Constants.Marker.DeprecatedProviderEventNames[eventName],
 						// Callback CAN have an attribute (e) which is of the type MapMouseEvent
 						// Trigger the event by specifying the ProviderEvent MarkerType and the coords (lat, lng) if the callback has the attribute MapMouseEvent
 						(e?: google.maps.MapMouseEvent) => {
@@ -261,7 +264,7 @@ namespace Provider.Maps.Google.Marker {
 		}
 
 		public validateProviderEvent(eventName: string): boolean {
-			return Constants.Marker.ProviderEventNames[eventName] !== undefined;
+			return Constants.Marker.DeprecatedProviderEventNames[eventName] !== undefined;
 		}
 	}
 }
