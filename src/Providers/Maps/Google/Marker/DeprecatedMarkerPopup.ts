@@ -1,11 +1,11 @@
 /// <reference path="../../../../OSFramework/Maps/Marker/AbstractMarker.ts" />
-/// <reference path="Marker.ts" />
+/// <reference path="DeprecatedMarker.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.Marker {
-	export class MarkerPopup
+	export class DeprecatedMarkerPopup
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		extends Marker
+		extends DeprecatedMarker
 		implements OSFramework.Maps.Marker.IMarkerPopup
 	{
 		private _contentString: string;
