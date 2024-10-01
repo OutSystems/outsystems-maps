@@ -7,7 +7,7 @@ namespace Provider.Maps.Google.Marker {
 			google.maps.Marker,
 			Configuration.Marker.DeprecatedGoogleMarkerConfig
 		>
-		implements IDeprecatedMarkerGoogle
+		implements IMarkerGoogle
 	{
 		private _addedEvents: Array<string>;
 
