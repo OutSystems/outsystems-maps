@@ -72,6 +72,7 @@ namespace OSFramework.Maps.Enum {
 		GEN_InvalidChangePropertyShape = 'MAPS-GEN-05001',
 		GEN_InvalidChangePropertyDrawingTools = 'MAPS-GEN-06001',
 		GEN_InvalidChangePropertyTools = 'MAPS-GEN-06002',
+		GEN_InvalidChangePropertyUseAdvancedMarkers = 'MAPS-GEN-06005',
 		GEN_UnsupportedEventShape = 'MAPS-GEN-05002',
 		GEN_UnsupportedEventDrawingTools = 'MAPS-GEN-06003',
 		GEN_ToolTypeAlreadyExists = 'MAPS-GEN-06004',
