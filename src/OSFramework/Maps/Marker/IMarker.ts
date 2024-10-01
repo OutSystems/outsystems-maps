@@ -15,6 +15,8 @@ namespace OSFramework.Maps.Marker {
 		build(): void;
 		changeProperty(propertyName: string, propertyValue: unknown): void;
 		dispose(): void;
+
+		getPosition(): OSFramework.Maps.OSStructures.OSMap.ICoordenates;
 		/**
 		 * Refreshes the Events of the Marker Provider after Subscribing/Unsubscribing events
 		 */

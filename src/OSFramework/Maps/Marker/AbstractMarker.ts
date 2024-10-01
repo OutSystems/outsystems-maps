@@ -93,6 +93,16 @@ namespace OSFramework.Maps.Marker {
 			return id === this._uniqueId || id === this._widgetId;
 		}
 
+		public getPosition(): OSFramework.Maps.OSStructures.OSMap.ICoordenates {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			const provider = this._provider as any;
+			let position = provider.getPosition ? provider._getPosition() : undefined;
+			if (position === undefined) {
+				position = provider.position;
+			}
+			return position as OSFramework.Maps.OSStructures.OSMap.ICoordenates;
+		}
+
 		public getProviderConfig(): unknown {
 			return this.config.getProviderConfig();
 		}
