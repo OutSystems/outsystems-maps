@@ -132,6 +132,11 @@ namespace Provider.Maps.Google.OSMap {
 		private _getProviderConfig(): google.maps.MapOptions {
 			// Make sure the center has a default value before the conversion of the location to coordinates
 			this.config.center = OSFramework.Maps.Helper.Constants.defaultMapCenter;
+
+			// If the advancedMarkers is set to true, we need to set the mapId in the config
+			if (this.config.useAdvancedMarkers) {
+			}
+
 			// Take care of the advancedFormat options which can override the previous configuration
 			this._advancedFormatObj = OSFramework.Maps.Helper.JsonFormatter(
 				this.config.advancedFormat
@@ -209,6 +214,10 @@ namespace Provider.Maps.Google.OSMap {
 
 		public get mapTag(): string {
 			return OSFramework.Maps.Helper.Constants.mapTag;
+		}
+
+		public get useAdvancedMarkers(): boolean {
+			return this.config.useAdvancedMarkers;
 		}
 
 		public addDrawingTools(

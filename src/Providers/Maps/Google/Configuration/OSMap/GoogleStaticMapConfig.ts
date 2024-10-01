@@ -10,6 +10,7 @@ namespace Provider.Maps.Google.Configuration.OSMap {
 		public localization: OSFramework.Maps.OSStructures.OSMap.Localization;
 		public type: OSFramework.Maps.Enum.OSMap.Type;
 		public uniqueId: string;
+		public useAdvancedMarkers: boolean;
 		public zoom: OSFramework.Maps.Enum.OSMap.Zoom;
 
 		public getProviderConfig(): unknown {

@@ -7,6 +7,8 @@ namespace Provider.Maps.Google.Marker {
 			type: OSFramework.Maps.Enum.MarkerType,
 			configs: unknown
 		): OSFramework.Maps.Marker.IMarker {
+			const useAdvancedMarkers = (map as Provider.Maps.Google.OSMap.IMapGoogle).useAdvancedMarkers;
+
 			switch (type) {
 				case OSFramework.Maps.Enum.MarkerType.Marker:
 					return new DeprecatedMarker(map, markerId, type, configs);

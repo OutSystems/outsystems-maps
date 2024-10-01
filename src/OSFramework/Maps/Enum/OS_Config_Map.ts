@@ -20,6 +20,7 @@ namespace OSFramework.Maps.Enum {
 		style,
 		type,
 		uniqueId,
+		useAdvancedMarkers,
 		zoom,
 	}
 }
