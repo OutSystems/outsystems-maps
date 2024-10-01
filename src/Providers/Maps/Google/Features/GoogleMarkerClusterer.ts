@@ -44,7 +44,7 @@ namespace Provider.Maps.Google.Feature {
 				pConfigs.algorithm = this._algorithm;
 				pConfigs.algorithmOptions = undefined;
 				pConfigs.map = this._map.provider;
-				pConfigs.markers = this._map.markersReady as google.maps.Marker[];
+				pConfigs.markers = this._map.markersReady as GoogleMapsMarker[];
 				pConfigs.onClusterClick = this._zoomClickHandler.bind(this);
 				pConfigs.renderer = this._makeRenderer();
 			}

@@ -339,11 +339,13 @@ namespace Provider.Maps.Google.OSMap {
 								OSFramework.Maps.Enum.ErrorCodes.CFG_APIKeyAlreadySetMap
 							);
 						}
-						return;
+						break;
 					case OSFramework.Maps.Enum.OS_Config_Map.center:
-						return this.features.center.updateCenter(propertyValue as string);
+						this.features.center.updateCenter(propertyValue as string);
+						break;
 					case OSFramework.Maps.Enum.OS_Config_Map.offset:
-						return this.features.offset.setOffset(JSON.parse(propertyValue as string));
+						this.features.offset.setOffset(JSON.parse(propertyValue as string));
+						break;
 					case OSFramework.Maps.Enum.OS_Config_Map.localization:
 						// Trigger an error to alert the user that the localization can only be set one time
 						this.mapEvents.trigger(
@@ -351,22 +353,27 @@ namespace Provider.Maps.Google.OSMap {
 							this,
 							OSFramework.Maps.Enum.ErrorCodes.CFG_LocalizationAlreadySetMap
 						);
-						return;
+						break;
 					case OSFramework.Maps.Enum.OS_Config_Map.zoom:
-						return this.features.zoom.setLevel(propertyValue as OSFramework.Maps.Enum.OSMap.Zoom);
+						this.features.zoom.setLevel(propertyValue as OSFramework.Maps.Enum.OSMap.Zoom);
+						break;
 					case OSFramework.Maps.Enum.OS_Config_Map.type:
-						return this._provider.setMapTypeId(propertyValue as string);
+						this._provider.setMapTypeId(propertyValue as string);
+						break;
 					case OSFramework.Maps.Enum.OS_Config_Map.style:
-						return this._provider.setOptions({
+						this._provider.setOptions({
 							styles: GetStyleByStyleId(propertyValue as number),
 						});
+						break;
 					case OSFramework.Maps.Enum.OS_Config_Map.advancedFormat:
 						propertyValue = OSFramework.Maps.Helper.JsonFormatter(propertyValue as string) as unknown;
 						// Make sure the MapEvents that are associated in the advancedFormat get updated
 						this._setMapEvents((propertyValue as GoogleAdvancedFormatObj).mapEvents);
-						return this._provider.setOptions(propertyValue);
+						this._provider.setOptions(propertyValue);
+						break;
 					case OSFramework.Maps.Enum.OS_Config_Map.showTraffic:
-						return this.features.trafficLayer.setState(propertyValue as boolean);
+						this.features.trafficLayer.setState(propertyValue as boolean);
+						break;
 					case OSFramework.Maps.Enum.OS_Config_Map.markerClustererActive:
 					case OSFramework.Maps.Enum.OS_Config_Map.markerClustererMaxZoom:
 					case OSFramework.Maps.Enum.OS_Config_Map.markerClustererMinClusterSize:
@@ -414,8 +421,9 @@ namespace Provider.Maps.Google.OSMap {
 					//center should be changed.
 					//If the user hasn't change zoom, or the developer is ignoring it (current behavior).
 					if (this.allowRefreshZoom) {
+						const markerProvider = this.markers[0].provider;
 						//Let's check if the marker provider is ready to be used.
-						if (this.markers[0].provider !== undefined) {
+						if (markerProvider !== undefined) {
 							//If the map center, is the same as the default, then the map will ignore it.
 							//Otherwise, the isAutofit config will be checked, and if false, then the current
 							//center will not be changed.
@@ -423,7 +431,7 @@ namespace Provider.Maps.Google.OSMap {
 								//Let's use the first marker as the center of the map.
 								// The TS definitions appear to be outdated.
 								// eslint-disable-next-line @typescript-eslint/no-explicit-any
-								position = (this.markers[0].provider as google.maps.Marker as any).position.toJSON();
+								position = (markerProvider as any).position.toJSON();
 							}
 						}
 					} else {
@@ -436,7 +444,7 @@ namespace Provider.Maps.Google.OSMap {
 					//used as the map center.
 					// The TS definitions appear to be outdated.
 					// eslint-disable-next-line @typescript-eslint/no-explicit-any
-					position = (this.markers[0].provider as google.maps.Marker as any).position.toJSON();
+					position = (this.markers[0].provider as any).position.toJSON();
 				}
 			}
 

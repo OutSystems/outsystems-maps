@@ -117,12 +117,14 @@ namespace Provider.Maps.Google.OSMap {
 			};
 		}
 
+		public get addedEvents(): Array<string> {
+			throw new Error('StaticMap provider has no events');
+		}
+
 		public get mapTag(): string {
 			return OSFramework.Maps.Helper.Constants.staticMapTag;
 		}
 
-		public get addedEvents(): Array<string> {
-			throw new Error('StaticMap provider has no events');
 		}
 
 		public addMarker(marker: OSFramework.Maps.Marker.IMarker): OSFramework.Maps.Marker.IMarker {
