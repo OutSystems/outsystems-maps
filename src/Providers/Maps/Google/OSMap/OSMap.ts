@@ -398,12 +398,12 @@ namespace Provider.Maps.Google.OSMap {
 						this.features.markerClusterer.changeProperty(propertyName, propertyValue);
 						break;
 					case OSFramework.Maps.Enum.OS_Config_Map.useAdvancedMarkers:
-						return this.mapEvents.trigger(
+						this.mapEvents.trigger(
 							OSFramework.Maps.Event.OSMap.MapEventType.OnError,
 							this,
 							OSFramework.Maps.Enum.ErrorCodes.GEN_InvalidChangePropertyUseAdvancedMarkers
 						);
-						return;
+						break;
 				}
 			}
 		}
