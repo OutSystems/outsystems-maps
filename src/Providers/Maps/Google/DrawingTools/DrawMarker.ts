@@ -61,6 +61,13 @@ namespace Provider.Maps.Google.DrawingTools {
 			configs: unknown[]
 		): OSFramework.Maps.Marker.IMarker {
 			let position = undefined;
+
+			if (Helper.TypeChecker.IsAdvancedMarker(marker)) {
+				position = (marker as google.maps.marker.AdvancedMarkerElement).position;
+			} else {
+				position = (marker as google.maps.Marker).getPosition();
+			}
+
 			const _latitude = Helper.Conversions.GetCoordinateValue(position.lat);
 			const _longitude = Helper.Conversions.GetCoordinateValue(position.lng);
 

@@ -71,7 +71,13 @@ namespace Provider.Maps.Google.Feature {
 			} else {
 				this._markerClusterer.clearMarkers();
 				this._map.markers.forEach((marker) => {
-					(marker.provider as google.maps.Marker).setMap(this._map.provider);
+					const provider = marker.provider as GoogleMapsMarker;
+
+					if (Helper.TypeChecker.IsAdvancedMarker(provider)) {
+						(provider as google.maps.marker.AdvancedMarkerElement).map = this._map.provider;
+					} else {
+						(provider as google.maps.Marker).setMap(this._map.provider);
+					}
 				});
 			}
 		}
