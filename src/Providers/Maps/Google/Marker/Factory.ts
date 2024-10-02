@@ -9,14 +9,23 @@ namespace Provider.Maps.Google.Marker {
 		): OSFramework.Maps.Marker.IMarker {
 			const useAdvancedMarkers = (map as Provider.Maps.Google.OSMap.IMapGoogle).useAdvancedMarkers;
 
+			let markerClass:
+				| typeof Marker
+				| typeof DeprecatedMarker
+				| typeof MarkerPopup
+				| typeof DeprecatedMarkerPopup;
+
 			switch (type) {
 				case OSFramework.Maps.Enum.MarkerType.Marker:
-					return new DeprecatedMarker(map, markerId, type, configs);
+					markerClass = useAdvancedMarkers ? Marker : DeprecatedMarker;
+					break;
 				case OSFramework.Maps.Enum.MarkerType.MarkerPopup:
-					return new DeprecatedMarkerPopup(map, markerId, type, configs);
+					markerClass = useAdvancedMarkers ? MarkerPopup : DeprecatedMarkerPopup;
+					break;
 				default:
 					throw new Error(`There is no factory for this type of Marker (${type})`);
 			}
+			return new markerClass(map, markerId, type, configs);
 		}
 	}
 }
