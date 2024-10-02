@@ -29,10 +29,10 @@ namespace Provider.Maps.Google.Configuration.OSMap {
 
 			const provider = {
 				center: this.center,
-				zoom: this.zoom,
-				styles: this.style,
 				mapId: this.mapId,
 				mapTypeId: this.type,
+				styles: this.style,
+				zoom: this.zoom,
 			};
 
 			//Cleanning undefined properties
