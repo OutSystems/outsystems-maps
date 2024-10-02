@@ -336,7 +336,11 @@ namespace Provider.Maps.Google.OSMap {
 		public changeProperty(propertyName: string, propertyValue: unknown): void {
 			const propValue = OSFramework.Maps.Enum.OS_Config_Map[propertyName];
 
-			super.changeProperty(propertyName, propertyValue);
+			// Changing the useAdvancedMarkers property is not allowed after the map is created.
+			// An error is triggered if the property is changed after the map is created.
+			if (OSFramework.Maps.Enum.OS_Config_Map.useAdvancedMarkers !== propValue) {
+				super.changeProperty(propertyName, propertyValue);
+			}
 
 			if (this.isReady) {
 				switch (propValue) {
@@ -387,7 +391,15 @@ namespace Provider.Maps.Google.OSMap {
 					case OSFramework.Maps.Enum.OS_Config_Map.markerClustererMaxZoom:
 					case OSFramework.Maps.Enum.OS_Config_Map.markerClustererMinClusterSize:
 					case OSFramework.Maps.Enum.OS_Config_Map.markerClustererZoomOnClick:
-						return this.features.markerClusterer.changeProperty(propertyName, propertyValue);
+						this.features.markerClusterer.changeProperty(propertyName, propertyValue);
+						break;
+					case OSFramework.Maps.Enum.OS_Config_Map.useAdvancedMarkers:
+						return this.mapEvents.trigger(
+							OSFramework.Maps.Event.OSMap.MapEventType.OnError,
+							this,
+							OSFramework.Maps.Enum.ErrorCodes.GEN_InvalidChangePropertyUseAdvancedMarkers
+						);
+						return;
 				}
 			}
 		}
