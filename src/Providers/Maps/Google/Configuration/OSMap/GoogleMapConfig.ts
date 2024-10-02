@@ -23,17 +23,27 @@ namespace Provider.Maps.Google.Configuration.OSMap {
 
 		public getProviderConfig(): unknown {
 			let mapStyleId = this.mapStyleId;
+			let style = this.style;
+
 			//Safe guard to assure that the mapId is not set when advancedMarkers is false
 			if (this.useAdvancedMarkers === false) {
 				mapStyleId = undefined;
 			} else {
+				// In Low-Code the style is 1-based, so we need to subtract 1 to match the enum
+				// which is 0-based.
+				const styleId = this.style - 1;
+				if (styleId === OSFramework.Maps.Enum.OSMap.Style.Standard) {
+					// If the developer is using the advanced markers and the style is standard, the style will be set
+					// to undefined (and subsequently removed) to avoid conflicts with the mapId.
+					style = undefined;
+				}
 			}
 
 			const provider = {
 				center: this.center,
 				mapId: mapStyleId,
 				mapTypeId: this.type,
-				styles: this.style,
+				styles: style,
 				zoom: this.zoom,
 			};
 
