@@ -10,7 +10,7 @@ namespace Provider.Maps.Google.Configuration.OSMap {
 		public center: string | OSFramework.Maps.OSStructures.OSMap.Coordinates;
 		public height: string;
 		public localization: OSFramework.Maps.OSStructures.OSMap.Localization;
-		public mapId: string;
+		public mapStyleId: string;
 		public markerClusterer: OSFramework.Maps.Configuration.IConfigurationMarkerClusterer;
 		public offset: OSFramework.Maps.OSStructures.OSMap.Offset;
 		public respectUserZoom: boolean;
@@ -22,14 +22,16 @@ namespace Provider.Maps.Google.Configuration.OSMap {
 		public zoom: OSFramework.Maps.Enum.OSMap.Zoom;
 
 		public getProviderConfig(): unknown {
+			let mapStyleId = this.mapStyleId;
 			//Safe guard to assure that the mapId is not set when advancedMarkers is false
 			if (this.useAdvancedMarkers === false) {
-				this.mapId = undefined;
+				mapStyleId = undefined;
+			} else {
 			}
 
 			const provider = {
 				center: this.center,
-				mapId: this.mapId,
+				mapId: mapStyleId,
 				mapTypeId: this.type,
 				styles: this.style,
 				zoom: this.zoom,

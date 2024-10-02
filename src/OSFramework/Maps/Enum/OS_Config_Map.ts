@@ -9,6 +9,7 @@ namespace OSFramework.Maps.Enum {
 		height,
 		center,
 		localization,
+		mapStyleId,
 		markerClustererActive,
 		markerClustererMaxZoom,
 		markerClustererMinClusterSize,

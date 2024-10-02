@@ -135,7 +135,10 @@ namespace Provider.Maps.Google.OSMap {
 
 			// If the advancedMarkers is set to true, we need to set the mapId in the config
 			if (this.config.useAdvancedMarkers) {
-				this.config.mapId = this.uniqueId;
+				// If the mapStyleId is not set, we will use the uniqueId as the mapStyleId
+				if (!this.config.mapStyleId) {
+					this.config.mapStyleId = this.uniqueId;
+				}
 			}
 
 			// Take care of the advancedFormat options which can override the previous configuration
