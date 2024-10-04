@@ -94,12 +94,15 @@ namespace OSFramework.Maps.Marker {
 		}
 
 		public getPosition(): OSFramework.Maps.OSStructures.OSMap.ICoordenates {
+			// As we don't have the provider defined in the interface, we need to cast it
+			// to any to access the position property that is different between providers
+			// and even versions of Markers being used (google maps).
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			const provider = this._provider as any;
-			let position = provider.getPosition ? provider._getPosition() : undefined;
-			if (position === undefined) {
-				position = provider.position;
-			}
+			// Until version 3.55 of google maps the position of the marker is a function
+			// same as in Leaflet maps. From version 3.56 the position is an object, when
+			// using the AdvancedMarkerElement.
+			const position = provider.getPosition ? provider.getPosition() : provider.position;
 			return position as OSFramework.Maps.OSStructures.OSMap.ICoordenates;
 		}
 
