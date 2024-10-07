@@ -1,6 +1,6 @@
 {
   "name": "outsystems-maps",
-  "version": "1.8.0",
+  "version": "2.0.0",
   "description": "OutSystems Maps",
   "author": "UI Components Team",
   "license": "BSD-3-Clause",
@@ -25,7 +25,7 @@
   "homepage": "https://outsystemsui.outsystems.com/OutSystemsMapsSample/",
   "devDependencies": {
     "@googlemaps/markerclusterer": "^2.5.3",
-    "@types/google.maps": "^3.46.0",
+    "@types/google.maps": "^3.55.10",
     "@types/leaflet-routing-machine": "^3.2.3",
     "@types/leaflet": "^1.7.5",
     "@typescript-eslint/eslint-plugin": "^6.21.0",

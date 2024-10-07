@@ -72,4 +72,15 @@ namespace Provider.Maps.Google.Helper.Conversions {
 			return googleMapsApiGeocode(location);
 		}
 	}
+
+	/**
+	 * Get the value of a coordinate, if it is a function, call it and get the value
+	 *
+	 * @export
+	 * @param {((()=>number) | number)} coordinate Coordinate to get the value from
+	 * @return {*}  {number} Value of the coordinate
+	 */
+	export function GetCoordinateValue(coordinate: (() => number) | number): number {
+		return typeof coordinate === 'function' ? coordinate() : coordinate;
+	}
 }

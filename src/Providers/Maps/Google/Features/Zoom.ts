@@ -22,8 +22,14 @@ namespace Provider.Maps.Google.Feature {
 			this._map.markers.forEach(function (item) {
 				if (item.provider === undefined) return;
 				// The TS definitions appear to be outdated.
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				bounds.extend((item.provider as google.maps.Marker as any).position.toJSON());
+				if (Helper.TypeChecker.IsAdvancedMarker(item.provider)) {
+					bounds.extend(
+						// eslint-disable-next-line @typescript-eslint/no-explicit-any
+						((item.provider as google.maps.marker.AdvancedMarkerElement).position as any).toJSON()
+					);
+				} else {
+					bounds.extend((item.provider as google.maps.Marker).getPosition().toJSON());
+				}
 			});
 
 			if (useShapes) {

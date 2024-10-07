@@ -2,10 +2,10 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.Marker {
-	export class Marker
+	export class DeprecatedMarker
 		extends OSFramework.Maps.Marker.AbstractMarker<
-			google.maps.marker.AdvancedMarkerElement,
-			Configuration.Marker.GoogleMarkerConfig
+			google.maps.Marker,
+			Configuration.Marker.DeprecatedGoogleMarkerConfig
 		>
 		implements IMarkerGoogle
 	{
@@ -17,83 +17,64 @@ namespace Provider.Maps.Google.Marker {
 			type: OSFramework.Maps.Enum.MarkerType,
 			configs: unknown
 		) {
-			super(map, markerId, type, new Configuration.Marker.GoogleMarkerConfig(configs));
+			super(map, markerId, type, new Configuration.Marker.DeprecatedGoogleMarkerConfig(configs));
 			this._addedEvents = [];
 		}
 
-		private _setIcon(): void {
-			if (this.config.label !== '' || this.config.iconUrl !== '') {
+		private _setIcon(url: string): void {
+			// If the iconUrl is not set or is empty, we should use the defaultIcon
+			if (url === '') {
+				// Set the icon to the default Marker provider
+				this.provider.setIcon(null);
+			} else {
 				try {
-					const height = this.config.iconHeight;
-					const width = this.config.iconWidth;
-
-					const markerIconWrapper = document.createElement('div');
-					markerIconWrapper.className = 'os-marker-icon';
-
-					if (this.config.iconUrl !== '') {
-						const markerIconImage = document.createElement('img');
-						markerIconImage.src = this.config.iconUrl;
-						if (height > 0 && width > 0) {
-							markerIconImage.height = height;
-							markerIconImage.width = width;
-						}
-						markerIconWrapper.append(markerIconImage);
-
-						if (this.config.label !== '') {
-							const labelWrapper = document.createElement('div');
-							labelWrapper.className = 'os-marker-icon-label';
-							labelWrapper.textContent = this.config.label;
-							markerIconWrapper.appendChild(labelWrapper);
-						}
-						this._provider.content = markerIconWrapper;
-					} else {
-						markerIconWrapper.textContent = this.config.label;
-
-						const markerIcon = new google.maps.marker.PinElement({ glyph: markerIconWrapper });
-						this._provider.content = markerIcon.element;
+					let anchorCalc: google.maps.Point;
+					let scaledSize: google.maps.Size;
+					//Explicit conversion to number - related with ROU-4592 - as Google will behave differently depending on the type
+					//of the input. Before, in runtime, the input was of type string.
+					const height = Number(this.config.iconHeight);
+					const width = Number(this.config.iconWidth);
+					// If the size of the icon is defined by a valid width and height, use those values
+					// Else If nothing is passed or the icon size has the width or the height equal to 0, use the full image size
+					if (
+						OSFramework.Maps.Helper.IsValidNumber(height) &&
+						OSFramework.Maps.Helper.IsValidNumber(width) &&
+						height > 0 &&
+						width > 0
+					) {
+						// Anchor at bottom center (half width, full height)
+						anchorCalc = new google.maps.Point(width / 2, height);
+						scaledSize = new google.maps.Size(width, height);
 					}
+					// Update the icon using the previous configurations
+					const icon = {
+						url: url,
+						scaledSize: scaledSize,
+						anchor: anchorCalc,
+						origin: new google.maps.Point(0, 0),
+					};
+					// Set the icon to the Marker provider
+					this.provider.setIcon(icon);
 				} catch (e) {
+					// Could not load image from specified URL
 					console.error(e);
 				}
-			} else {
-				this._provider.content = undefined;
 			}
 		}
 
 		/**
-		 * Method that will trigger the event of the Marker. This method helps obtaining the
-		 * coordinates in the correct way and then trigger the event.
-		 *
-		 * @private
-		 * @param {OSFramework.Maps.Event.Marker.MarkerEventType} eventType
-		 * @param {string} eventName
-		 * @param {(number | (() => number))} lat
-		 * @param {(number | (() => number))} lng
-		 * @memberof Marker
+		 * This method is usefull to be used by the changeProperty method only
+		 * As it requires a config update before being able to use it
 		 */
-		private _triggerEvent(
-			eventType: OSFramework.Maps.Event.Marker.MarkerEventType,
-			eventName: string,
-			lat: number | (() => number),
-			lng: number | (() => number)
-		): void {
-			const coordinates = new OSFramework.Maps.OSStructures.OSMap.OSCoordinates(
-				Helper.Conversions.GetCoordinateValue(lat),
-				Helper.Conversions.GetCoordinateValue(lng)
-			);
-
-			this.markerEvents.trigger(
-				// EventType
-				eventType,
-				// EventName
-				eventName,
-				// Coords
-				JSON.stringify(coordinates)
-			);
+		private _setIconSize(): void {
+			// The width and the height of the icon will be acquired using the config.iconWidth and config.iconHeight
+			// Therefore, just by calling the _setIcon private method we are going to set the same iconUrl that is already being used
+			// But the icon will be updated and will be using the new size
+			this._setIcon(this.config.iconUrl);
 		}
 
-		protected _buildMarkerPosition(): Promise<google.maps.marker.AdvancedMarkerElementOptions> {
-			const markerOptions: google.maps.marker.AdvancedMarkerElementOptions = {};
+		protected _buildMarkerPosition(): Promise<google.maps.MarkerOptions> {
+			const markerOptions: google.maps.MarkerOptions = {};
 			// If the marker has no location at the moment of its provider creation, then throw an error
 			// If the marker has its location = "" at the moment of its provider creation, then the location value will be the default -> OutSystems, Boston US
 			if (typeof this.config.location === 'undefined') {
@@ -130,11 +111,17 @@ namespace Provider.Maps.Google.Marker {
 			if (this.markerEvents.hasHandlers(OSFramework.Maps.Event.Marker.MarkerEventType.OnClick)) {
 				this._addedEvents.push('click');
 				this._provider.addListener('click', (e: google.maps.MapMouseEvent) => {
-					this._triggerEvent(
+					const coordinates = new OSFramework.Maps.OSStructures.OSMap.OSCoordinates(
+						e.latLng.lat(),
+						e.latLng.lng()
+					);
+					this.markerEvents.trigger(
+						// EventType
 						OSFramework.Maps.Event.Marker.MarkerEventType.OnClick,
+						// EventName
 						OSFramework.Maps.Event.Marker.MarkerEventType.OnClick,
-						e.latLng.lat,
-						e.latLng.lng
+						// Coords
+						JSON.stringify(coordinates)
 					);
 				});
 			}
@@ -144,47 +131,28 @@ namespace Provider.Maps.Google.Marker {
 			// If the Event type of each handler is MarkerProviderEvent, we want to make sure to add that event to the listeners of the google marker provider (e.g. click, dblclick, contextmenu, etc)
 			this.markerEvents.handlers.forEach((handler: OSFramework.Maps.Event.IEvent<string>, eventName) => {
 				if (handler instanceof OSFramework.Maps.Event.Marker.MarkerProviderEvent) {
-					const ProviderEventName = Constants.Marker.ProviderEventNames[eventName];
-
-					if (ProviderEventName !== undefined) {
-						this._addedEvents.push(eventName);
-						this._provider.addListener(
-							// Name of the event (e.g. click, dblclick, contextmenu, etc)
-							ProviderEventName,
-							// Callback CAN have an attribute (e) which is of the type MapMouseEvent
-							// Trigger the event by specifying the ProviderEvent MarkerType and the coords (lat, lng) if the callback has the attribute MapMouseEvent
-							(e: google.maps.MapMouseEvent) => {
-								this._triggerEvent(
-									OSFramework.Maps.Event.Marker.MarkerEventType.ProviderEvent,
-									eventName,
-									e.latLng.lat,
-									e.latLng.lng
-								);
-							}
-						);
-					} else {
-						const HtmlEventName = Constants.Marker.ProviderEventNamesHtml[eventName];
-
-						if (HtmlEventName !== undefined) {
-							this._addedEvents.push(eventName);
-							this._provider.element.addEventListener(
-								// Name of the event (e.g. click, dblclick, contextmenu, etc)
-								HtmlEventName,
-								// Callback CAN have an attribute (e) which is of the type MapMouseEvent
-								// Trigger the event by specifying the ProviderEvent MarkerType and the coords (lat, lng) if the callback has the attribute MapMouseEvent
-								() => {
-									this._triggerEvent(
-										OSFramework.Maps.Event.Marker.MarkerEventType.ProviderEvent,
-										eventName,
-										this._provider.position.lat,
-										this.provider.position.lng
-									);
-								}
+					this._addedEvents.push(eventName);
+					this._provider.addListener(
+						// Name of the event (e.g. click, dblclick, contextmenu, etc)
+						Constants.Marker.DeprecatedProviderEventNames[eventName],
+						// Callback CAN have an attribute (e) which is of the type MapMouseEvent
+						// Trigger the event by specifying the ProviderEvent MarkerType and the coords (lat, lng) if the callback has the attribute MapMouseEvent
+						(e?: google.maps.MapMouseEvent) => {
+							this.markerEvents.trigger(
+								// EventType
+								OSFramework.Maps.Event.Marker.MarkerEventType.ProviderEvent,
+								// EventName
+								eventName,
+								// Coords
+								e !== undefined
+									? JSON.stringify({
+											Lat: e.latLng.lat(),
+											Lng: e.latLng.lng(),
+										})
+									: undefined
 							);
-						} else {
-							console.error(`Event ${eventName} is not a valid event for the Marker.`);
 						}
-					}
+					);
 				}
 			});
 		}
@@ -214,14 +182,14 @@ namespace Provider.Maps.Google.Marker {
 						//The marker was destroyed while waiting for the promise.
 						if (this._destroyed) return;
 
-						this._provider = new google.maps.marker.AdvancedMarkerElement({
+						this._provider = new google.maps.Marker({
 							...(this.getProviderConfig() as unknown[]),
-							position: markerOptions.position,
+							...markerOptions,
 							map: this.map.provider,
 						});
 
-						// Call this method to set marker icon
-						this._setIcon();
+						// Call this method so icon respects the sizes that are on config
+						this._setIconSize();
 
 						// We can only set the events on the provider after its creation
 						this._setMarkerEvents();
@@ -251,10 +219,10 @@ namespace Provider.Maps.Google.Marker {
 					case OSFramework.Maps.Enum.OS_Config_Marker.location:
 						Helper.Conversions.ConvertToCoordinates(propertyValue as string)
 							.then((response) => {
-								this._provider.position = {
+								this._provider.setPosition({
 									lat: response.lat as number,
 									lng: response.lng as number,
-								};
+								});
 								this.map.refresh();
 							})
 							.catch((error) => {
@@ -267,24 +235,25 @@ namespace Provider.Maps.Google.Marker {
 							});
 						return;
 					case OSFramework.Maps.Enum.OS_Config_Marker.allowDrag:
-						this._provider.gmpDraggable = propertyValue as boolean;
-						break;
+						return this._provider.setDraggable(propertyValue as boolean);
 					case OSFramework.Maps.Enum.OS_Config_Marker.iconHeight:
 					case OSFramework.Maps.Enum.OS_Config_Marker.iconWidth:
+						this._setIconSize();
+						return;
 					case OSFramework.Maps.Enum.OS_Config_Marker.iconUrl:
+						this._setIcon(propertyValue as string);
+						return;
 					case OSFramework.Maps.Enum.OS_Config_Marker.label:
-						this._setIcon();
-						break;
+						return this._provider.setLabel(propertyValue as string);
 					case OSFramework.Maps.Enum.OS_Config_Marker.title:
-						this._provider.title = propertyValue as string;
-						break;
+						return this._provider.setTitle(propertyValue as string);
 				}
 			}
 		}
 
 		public dispose(): void {
 			if (this.isReady) {
-				this._provider.map = undefined;
+				this._provider.setMap(null);
 			}
 			this._provider = undefined;
 			super.dispose();
@@ -295,10 +264,7 @@ namespace Provider.Maps.Google.Marker {
 		}
 
 		public validateProviderEvent(eventName: string): boolean {
-			return (
-				Constants.Marker.ProviderEventNames[eventName] !== undefined ||
-				Constants.Marker.ProviderEventNamesHtml[eventName] !== undefined
-			);
+			return Constants.Marker.DeprecatedProviderEventNames[eventName] !== undefined;
 		}
 	}
 }
