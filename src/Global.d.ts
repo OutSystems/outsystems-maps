@@ -21,6 +21,7 @@ declare global {
     type GoogleMapsAlgorithm = OriginalAlgorithm;
     type GoogleMapsCluster = OriginalCluster;
     type GoogleMapsMarker = google.maps.Marker | google.maps.marker.AdvancedMarkerElement;
+    type GoogleMapsMarkerOptions = google.maps.MarkerOptions | google.maps.marker.AdvancedMarkerElementOptions;
     type GoogleMapsMarkerClusterer = OriginalMarkerClusterer;
     type GoogleMapsMarkerClustererOptions = OriginalMarkerClustererOptions;
     type GoogleMapsClusterRenderer = OriginalRenderer;

@@ -2,7 +2,7 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.Configuration.Marker {
-	export class GoogleMarkerConfig
+	export class DeprecatedGoogleMarkerConfig
 		extends OSFramework.Maps.Configuration.AbstractConfiguration
 		implements OSFramework.Maps.Configuration.IConfigurationMarker
 	{
@@ -16,7 +16,10 @@ namespace Provider.Maps.Google.Configuration.Marker {
 
 		public getProviderConfig(): unknown {
 			const provider = {
-				gmpDraggable: this.allowDrag,
+				draggable: this.allowDrag,
+				icon: this.iconUrl,
+				label: this.label,
+				location: this.location,
 				title: this.title,
 			};
 

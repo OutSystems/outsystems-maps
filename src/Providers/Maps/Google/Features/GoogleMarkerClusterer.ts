@@ -44,7 +44,7 @@ namespace Provider.Maps.Google.Feature {
 				pConfigs.algorithm = this._algorithm;
 				pConfigs.algorithmOptions = undefined;
 				pConfigs.map = this._map.provider;
-				pConfigs.markers = this._map.markersReady as google.maps.Marker[];
+				pConfigs.markers = this._map.markersReady as GoogleMapsMarker[];
 				pConfigs.onClusterClick = this._zoomClickHandler.bind(this);
 				pConfigs.renderer = this._makeRenderer();
 			}
@@ -71,7 +71,13 @@ namespace Provider.Maps.Google.Feature {
 			} else {
 				this._markerClusterer.clearMarkers();
 				this._map.markers.forEach((marker) => {
-					(marker.provider as google.maps.Marker).setMap(this._map.provider);
+					const provider = marker.provider as GoogleMapsMarker;
+
+					if (Helper.TypeChecker.IsAdvancedMarker(provider)) {
+						(provider as google.maps.marker.AdvancedMarkerElement).map = this._map.provider;
+					} else {
+						(provider as google.maps.Marker).setMap(this._map.provider);
+					}
 				});
 			}
 		}

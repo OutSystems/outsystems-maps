@@ -1,6 +1,11 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.Maps.OSStructures.OSMap {
-	export class Coordinates {
+	export interface ICoordenates {
+		lat: number | (() => number);
+		lng: number | (() => number);
+	}
+
+	export class Coordinates implements ICoordenates {
 		public lat: number | (() => number);
 		public lng: number | (() => number);
 	}
