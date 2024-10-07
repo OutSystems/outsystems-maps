@@ -4,7 +4,7 @@ namespace OSFramework.Maps.Constants {
 	export const OSMapsVersion = '1.8.0';
 
 	/**
-	 * DataGrid Set platform in use.
+	 * Maps Set OutSystems platform in use (O11/ODC).
 	 * - This value will be set dynamically at the compilation momment!
 	 * - Do not change default string value!
 	 */
