@@ -244,7 +244,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 				return marker;
 			});
 
-			// If still wasn't found, then it does not exist and throw error
+			// If still wasn't found, then it does not exist - throw error
 			if (marker === undefined && raiseError) {
 				throw new Error(`Marker id:${markerId} not found`);
 			}
