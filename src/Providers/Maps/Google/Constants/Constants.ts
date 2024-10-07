@@ -36,5 +36,5 @@ namespace Provider.Maps.Google.Constants {
 	// In order to use the searchplaces we need to add it into the libraries via the URL = places (in case the Map is the first to import the scripts)
 	export const GoogleMapsLibraries = 'drawing,visualization,places';
 	// Version of the Google Maps to be loaded.
-	export const googleMapsVersion = '3.55'; //Stable version Mid-February 2024.
+	export const googleMapsVersion = '3.57'; //Stable version Mid-August 2024.
 }
