@@ -19,8 +19,8 @@ namespace Provider.Maps.Leaflet.OSMap {
 			);
 			this._addedEvents = [];
 			// Set the openStreetMapLayer with the URL and the attribution needed
-			this._openStreetMapLayer = new L.TileLayer(OSFramework.Maps.Helper.Constants.openStreetMapTileLayer.url, {
-				attribution: OSFramework.Maps.Helper.Constants.openStreetMapTileLayer.attribution,
+			this._openStreetMapLayer = new L.TileLayer(Constants.openStreetMapTileLayer.url, {
+				attribution: Constants.openStreetMapTileLayer.attribution,
 			});
 		}
 

@@ -31,17 +31,16 @@ namespace Provider.Maps.Google.SharedComponents {
 					const script = document.createElement('script');
 
 					script.src =
-						`${OSFramework.Maps.Helper.Constants.googleMapsApiMap}?` +
+						`${Constants.googleMapsApiMap}?` +
 						`key=${apiKey}` +
-						`&libraries=${OSFramework.Maps.Helper.Constants.gmlibraries}` +
-						`&v=${OSFramework.Maps.Helper.Constants.gmversion}` +
+						`&libraries=${Constants.GoogleMapsLibraries}` +
 						`&loading=async` +
 						`&callback=GMCB` +
 						(localization.language !== '' ? `&language=${localization.language}` : '') +
 						(localization.region !== '' ? `&region=${localization.region}` : '');
 					script.async = true;
 					script.defer = true;
-					script.id = OSFramework.Maps.Helper.Constants.googleMapsScript;
+					script.id = Constants.googleMapsScript;
 					document.head.appendChild(script);
 				});
 			}

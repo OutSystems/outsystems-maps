@@ -86,7 +86,7 @@ namespace Provider.Maps.Google.OSMap {
 
 			image.src =
 				/* eslint-disable prettier/prettier */
-				`${OSFramework.Maps.Helper.Constants.googleMapsApiStaticMap}?` +
+				`${Constants.googleMapsApiStaticMap}?` +
 				'key=' +
 				this.config.apiKey +
 				'&center=' +

@@ -62,8 +62,6 @@ namespace OSFramework.Maps.Helper.Constants {
 	export const uniqueIdAttribute = 'name';
 	/** Tag used to find the container where the SearchPlaces is going to be rendered in run time*/
 	export const runtimeSearchPlacesUniqueIdCss = '.ss-searchPlaces';
-	/** Tag used to find the google-maps-script */
-	export const googleMapsScript = 'google-maps-script';
 
 	/************************** */
 	/**       DEF VALUES        */
@@ -80,48 +78,7 @@ namespace OSFramework.Maps.Helper.Constants {
 	export const drawingPolygonCompleted = 'polygoncomplete';
 	export const drawingCircleCompleted = 'circlecomplete';
 	export const drawingRectangleCompleted = 'rectanglecomplete';
-	/* Default name for drawing completed event - Leaflet*/
-	export const drawingLeafletCompleted = 'draw:created';
-	/** Default gradient heatmap colors from google provider */
-	export const gradientHeatmapColors = [
-		'rgba(102, 255, 0, 0)',
-		'rgba(102, 255, 0, 1)',
-		'rgba(147, 255, 0, 1)',
-		'rgba(193, 255, 0, 1)',
-		'rgba(238, 255, 0, 1)',
-		'rgba(244, 227, 0, 1)',
-		'rgba(249, 198, 0, 1)',
-		'rgba(255, 170, 0, 1)',
-		'rgba(255, 113, 0, 1)',
-		'rgba(255, 57, 0, 1)',
-		'rgba(255, 0, 0, 1)',
-	];
 
 	/** Default/Custom cluster icon CSS class */
 	export const clusterIconCSSClass = 'custom-clustericon';
-	/** Default Failure auth code */
-	export const googleMapsAuthFailure = 'gm_authFailure';
-
-	/************************** */
-	/** URL for GoogleMapsApis  */
-	/************************** */
-	export const googleMapsApiURL = 'https://maps.googleapis.com/maps/api';
-	/** URL for GoogleMaps API to make use of the Google Map */
-	export const googleMapsApiMap = `${googleMapsApiURL}/js`;
-	/** URL for GoogleMaps API to make use of the Google StaticMap */
-	export const googleMapsApiStaticMap = `${googleMapsApiURL}/staticmap`;
-	/** Version of the Google Maps to be loaded. */
-	export const gmversion = '3.55'; //Stable version Mid-February 2024.
-	// In order to use the drawingTools we need to add it into the libraries via the URL = drawing
-	// In order to use the heatmap we need to add it into the libraries via the URL = visualization
-	// In order to use the searchplaces we need to add it into the libraries via the URL = places (in case the Map is the first to import the scripts)
-	export const gmlibraries = 'drawing,visualization,places';
-
-	/******************** */
-	/** URLs for Leaflet  */
-	/******************** */
-	export const openStreetMapTileLayer = {
-		url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-	};
 }
