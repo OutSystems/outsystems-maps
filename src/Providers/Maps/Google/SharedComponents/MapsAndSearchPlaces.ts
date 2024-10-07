@@ -34,6 +34,7 @@ namespace Provider.Maps.Google.SharedComponents {
 						`${Constants.googleMapsApiMap}?` +
 						`key=${apiKey}` +
 						`&libraries=${Constants.GoogleMapsLibraries}` +
+						`&v=${Version.Get()}` +
 						`&loading=async` +
 						`&callback=GMCB` +
 						(localization.language !== '' ? `&language=${localization.language}` : '') +
