@@ -9,7 +9,7 @@ namespace Provider.Maps.Google.Marker {
 		>
 		implements IMarkerGoogle
 	{
-		private _addedEvents: Array<string>;
+		private readonly _addedEvents: Array<string>;
 
 		constructor(
 			map: OSFramework.Maps.OSMap.IMap,

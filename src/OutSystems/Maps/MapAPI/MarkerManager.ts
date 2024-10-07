@@ -233,13 +233,15 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 			// Get all maps
 			const allMaps = [...MapManager.GetMapsFromPage().values()];
 
-			// On each map, look for all drawingTools and on each one look, on the createdElements array, for the markerId passed
+			// On each map, look for all drawingTools and on each one look,
+			// on the createdElements array, for the markerId passed.
 			allMaps.find((map: OSFramework.Maps.OSMap.IMap) => {
-				return (marker =
-					map.drawingTools &&
-					(map.drawingTools.createdElements.find((marker: OSFramework.Maps.Marker.IMarker) =>
-						marker.equalsToID(markerId)
-					) as OSFramework.Maps.Marker.IMarker));
+				if (map.drawingTools) {
+					marker = map.drawingTools.createdElements.find(
+						(marker: OSFramework.Maps.Marker.IMarker) => marker && marker.equalsToID(markerId)
+					) as OSFramework.Maps.Marker.IMarker;
+				}
+				return marker;
 			});
 
 			// If still wasn't found, then it does not exist and throw error
