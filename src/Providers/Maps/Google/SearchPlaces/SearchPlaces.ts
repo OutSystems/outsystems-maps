@@ -51,9 +51,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 		 * Creates the SearchPlaces via GoogleMap API
 		 */
 		private _createGooglePlaces(): void {
-			const script = document.getElementById(
-				OSFramework.Maps.Helper.Constants.googleMapsScript
-			) as HTMLScriptElement;
+			const script = document.getElementById(Constants.googleMapsScript) as HTMLScriptElement;
 
 			// Make sure the GoogleMaps script in the <head> of the html page contains the same apiKey as the one in the configs.
 			const apiKey = /key=(.*)&libraries/.exec(script.src)[1];
@@ -109,7 +107,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 			// SearchPlaces(input, options)
 			this._provider = new google.maps.places.Autocomplete(input, configs as unknown);
 			// Check if the provider has been created with a valid APIKey
-			window[OSFramework.Maps.Helper.Constants.googleMapsAuthFailure] = () => {
+			window[Constants.googleMapsAuthFailure] = () => {
 				this.searchPlacesEvents.trigger(
 					OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType.OnError,
 					this,

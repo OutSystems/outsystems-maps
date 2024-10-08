@@ -17,7 +17,7 @@ namespace Provider.Maps.Google.HeatmapLayer {
 		/** In case the gradient is not defined, use the default from GoogleProvider */
 		private _gradientColors(gradient: string[]) {
 			if (gradient.length === 0) {
-				return OSFramework.Maps.Helper.Constants.gradientHeatmapColors;
+				return Constants.gradientHeatmapColors;
 			}
 			return gradient;
 		}

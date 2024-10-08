@@ -69,9 +69,7 @@ namespace Provider.Maps.Google.OSMap {
 		 * Creates the Map via GoogleMap API
 		 */
 		private _createGoogleMap(): void {
-			const script = document.getElementById(
-				OSFramework.Maps.Helper.Constants.googleMapsScript
-			) as HTMLScriptElement;
+			const script = document.getElementById(Constants.googleMapsScript) as HTMLScriptElement;
 
 			// Make sure the GoogleMaps script in the <head> of the html page contains the same apiKey as the one in the configs.
 			const apiKey = /key=(.*)&libraries/.exec(script.src)[1];
@@ -97,7 +95,7 @@ namespace Provider.Maps.Google.OSMap {
 					this._getProviderConfig()
 				);
 				// Check if the provider has been created with a valid APIKey
-				window[OSFramework.Maps.Helper.Constants.googleMapsAuthFailure] = () =>
+				window[Constants.googleMapsAuthFailure] = () =>
 					this.mapEvents.trigger(
 						OSFramework.Maps.Event.OSMap.MapEventType.OnError,
 						this,
