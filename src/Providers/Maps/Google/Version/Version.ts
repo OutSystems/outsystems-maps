@@ -16,6 +16,28 @@ namespace Provider.Maps.Google.Version {
 	}
 
 	/**
+	 * Set the version of Google Maps to be used on the page.
+	 *
+	 * @export
+	 * @param {string} newVersion
+	 * @return {*}  {boolean}
+	 */
+	export function Change(newVersion: string): boolean {
+		const currentVersion =
+			OSFramework.Maps.Helper.LocalStorage.GetItem(Constants.googleMapsLocalStorageVersionKey) ||
+			Constants.googleMapsVersion;
+
+		const googleVersion = GetGoogleMapsVersion();
+
+		// If the version that the developer set is different from the current version, and is different from the version loaded, set the return value to true.
+		const versionChanged = currentVersion !== newVersion && newVersion !== googleVersion;
+
+		OSFramework.Maps.Helper.LocalStorage.SetItem(Constants.googleMapsLocalStorageVersionKey, newVersion);
+
+		return versionChanged;
+	}
+
+	/**
 	 * Get the current version of Google Maps loaded on the page.
 	 *
 	 * @export
@@ -30,33 +52,11 @@ namespace Provider.Maps.Google.Version {
 		// If the version that the developer set is still not being used, log a warning message and return the current loaded version.
 		if (googleVersion !== undefined && currentVersion !== googleVersion) {
 			OSFramework.Maps.Helper.LogWarningMessage(
-				`Current version of Google Maps loaded is '${googleVersion}', but on the next page refresh the version will be '${currentVersion}'.`
+				`Current version of Google Maps loaded is '${googleVersion}', but on the next page refresh the version will tentatively be '${currentVersion}'.`
 			);
 			currentVersion = googleVersion;
 		}
 
 		return currentVersion;
-	}
-
-	/**
-	 * Set the version of Google Maps to be used on the page.
-	 *
-	 * @export
-	 * @param {string} newVersion
-	 * @return {*}  {boolean}
-	 */
-	export function Set(newVersion: string): boolean {
-		const currentVersion =
-			OSFramework.Maps.Helper.LocalStorage.GetItem(Constants.googleMapsLocalStorageVersionKey) ||
-			Constants.googleMapsVersion;
-
-		const googleVersion = GetGoogleMapsVersion();
-
-		// If the version that the developer set is different from the current version, and is different from the version loaded, set the return value to true.
-		const versionChanged = currentVersion !== newVersion && newVersion !== googleVersion;
-
-		OSFramework.Maps.Helper.LocalStorage.SetItem(Constants.googleMapsLocalStorageVersionKey, newVersion);
-
-		return versionChanged;
 	}
 }

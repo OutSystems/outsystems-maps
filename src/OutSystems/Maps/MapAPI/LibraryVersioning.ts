@@ -24,6 +24,6 @@ namespace OutSystems.Maps.MapAPI.ProviderLibrary {
 		version: string,
 		forceRefresh = false
 	): void {
-		OSFramework.Maps.ProviderVersion.Set(provider, version, forceRefresh);
+		OSFramework.Maps.ProviderVersion.Change(provider, version, forceRefresh);
 	}
 }

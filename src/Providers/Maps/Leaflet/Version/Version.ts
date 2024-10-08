@@ -1,16 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Leaflet.Version {
 	/**
-	 * Get the current version of Google Maps loaded on the page.
-	 *
-	 * @export
-	 * @return {*}  {string}
-	 */
-	export function Get(): string {
-		return Constants.leafletVersion;
-	}
-
-	/**
 	 * Set the version of Google Maps to be used on the page.
 	 * Currently, changing the version of Leaflet is not supported.
 	 *
@@ -19,8 +9,20 @@ namespace Provider.Maps.Leaflet.Version {
 	 * @return {*}  {boolean}
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	export function Set(newVersion: string): boolean {
-		OSFramework.Maps.Helper.LogWarningMessage('Changing Leaflet version is not supported');
+	export function Change(newVersion: string): boolean {
+		OSFramework.Maps.Helper.LogWarningMessage(
+			`Changing Leaflet version is not supported. Using version '${Constants.leafletVersion}'.`
+		);
 		return false;
+	}
+
+	/**
+	 * Get the current version of Google Maps loaded on the page.
+	 *
+	 * @export
+	 * @return {*}  {string}
+	 */
+	export function Get(): string {
+		return Constants.leafletVersion;
 	}
 }
