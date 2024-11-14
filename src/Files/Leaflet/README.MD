@@ -23,6 +23,12 @@ Store the files/addons to be used in runtime by Leaflet maps.
     - Github: https://github.com/Leaflet/Leaflet.Editable
     - NPM: https://www.npmjs.com/package/leaflet-editable
 
+- **Leaflet.Path.Drag.min.js**: Drag handler for Leaflet vector features. It adds dragging API and events of L.Marker to L.Polygon and L.Polyline.
+    - Version: 1.9.5
+    - Date: 17.02.2024
+    - Github: https://github.com/w8r/Leaflet.Path.Drag
+    - NPM: https://www.npmjs.com/package/leaflet-path-drag
+
 - **Leaflet.Routing.Machine.js + LeafletRouting.css**: Find the way from A to B on a Leaflet map.
     - Version: 3.2.12 
     - Date: 21.11.2018
