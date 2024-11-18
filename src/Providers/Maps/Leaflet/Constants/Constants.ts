@@ -1,6 +1,6 @@
 namespace Provider.Maps.Leaflet.Constants {
 	// Version of Leaflet
-	export const leafletVersion = '1.0.2';
+	export const leafletVersion = '1.9.4';
 
 	/* Default name for drawing completed event - Leaflet*/
 	export const drawingLeafletCompleted = 'draw:created';
