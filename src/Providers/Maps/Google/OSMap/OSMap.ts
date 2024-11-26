@@ -426,7 +426,7 @@ namespace Provider.Maps.Google.OSMap {
 			this._provider = undefined;
 		}
 
-		public refresh(): void {
+		public refresh(centerChanged?: boolean): void {
 			//Let's stop listening to the zoom event be caused by the refreshZoom
 			this._removeMapZoomHandler();
 
@@ -439,12 +439,14 @@ namespace Provider.Maps.Google.OSMap {
 			//If there are markers, let's choose the map center accordingly.
 			//Otherwise, the map center will be the one defined in the configs.
 			if (this.markers.length > 0) {
+				// The TS definitions appear to be outdated.
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				const markerProvider: any = this.markers[0].provider;
 				if (this.markers.length > 1) {
 					//As the map has more than one marker, let's see if the map
 					//center should be changed.
 					//If the user hasn't change zoom, or the developer is ignoring it (current behavior).
 					if (this.allowRefreshZoom) {
-						const markerProvider = this.markers[0].provider;
 						//Let's check if the marker provider is ready to be used.
 						if (markerProvider !== undefined) {
 							//If the map center, is the same as the default, then the map will ignore it.
@@ -452,22 +454,20 @@ namespace Provider.Maps.Google.OSMap {
 							//center will not be changed.
 							if (isDefault || this.features.zoom.isAutofit) {
 								//Let's use the first marker as the center of the map.
-								// The TS definitions appear to be outdated.
-								// eslint-disable-next-line @typescript-eslint/no-explicit-any
-								position = (markerProvider as any).position.toJSON();
+								position = markerProvider.position.toJSON();
 							}
 						}
 					} else {
 						//If the user has zoomed and the developer intends to respect user zoom
 						//then the current map center will be used.
-						position = this.provider.getCenter().toJSON();
+						position = centerChanged
+							? (this.config.center as OSFramework.Maps.OSStructures.OSMap.Coordinates)
+							: this.provider.getCenter().toJSON();
 					}
-				} else if (this.markers[0].provider !== undefined) {
+				} else if (markerProvider !== undefined) {
 					//If there's only one marker, and is already created, its location will be
 					//used as the map center.
-					// The TS definitions appear to be outdated.
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
-					position = (this.markers[0].provider as any).position.toJSON();
+					position = markerProvider.position.toJSON();
 				}
 			}
 
