@@ -87,7 +87,7 @@ namespace Provider.Maps.Leaflet.Feature {
 				.then((response) => {
 					this._map.config.center = response;
 					this._initialCenter = response;
-					this._map.refresh();
+					this._map.refresh(true);
 				})
 				.catch(() => {
 					this._map.mapEvents.trigger(

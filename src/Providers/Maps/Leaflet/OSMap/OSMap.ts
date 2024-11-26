@@ -260,7 +260,7 @@ namespace Provider.Maps.Leaflet.OSMap {
 			this._provider = undefined;
 		}
 
-		public refresh(): void {
+		public refresh(centerChanged?: boolean): void {
 			//Let's stop listening to the zoom event be caused by the refreshZoom
 			this._removeMapZoomHandler();
 
@@ -277,11 +277,15 @@ namespace Provider.Maps.Leaflet.OSMap {
 						//If the user hasn't change zoom, or the developer is ignoring
 						//it (current behavior), then the map will be centered tentatively
 						//in the first marker.
-						position = markerProvider.getLatLng();
+						if (this.features.zoom.isAutofit) {
+							position = markerProvider.getLatLng();
+						}
 					} else {
 						//If the user has zoomed and the developer intends to respect user zoom
 						//then the current map center will be used.
-						position = this.provider.getCenter();
+						position = centerChanged
+							? (this.config.center as OSFramework.Maps.OSStructures.OSMap.Coordinates)
+							: this.provider.getCenter();
 					}
 				} else if (markerProvider !== undefined) {
 					//If there's only one marker, and is already created, its location will be
