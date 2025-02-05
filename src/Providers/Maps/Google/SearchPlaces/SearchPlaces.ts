@@ -7,7 +7,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 		OSFramework.Maps.Configuration.IConfigurationSearchPlaces
 	> {
 		private _addedEvents: Array<string>;
-		private _externalModulesHelper: SharedComponents.ExternalModules;
+		private readonly _externalModulesHelper: SharedComponents.ExternalModules;
 		private _scriptCallback: OSFramework.Maps.Callbacks.Generic;
 
 		constructor(searchPlacesId: string, configs: JSON) {

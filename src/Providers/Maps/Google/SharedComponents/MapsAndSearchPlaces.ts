@@ -150,7 +150,7 @@ namespace Provider.Maps.Google.SharedComponents {
 	 */
 	export class ExternalModules {
 		private _providerBuildRetryTimeout: number = undefined;
-		private _timeoutInterval: number = 100;
+		private readonly _timeoutInterval: number = 100;
 
 		constructor() {
 			this._providerBuildRetryTimeout = undefined;
