@@ -7,12 +7,14 @@ namespace Provider.Maps.Google.SearchPlaces {
 		OSFramework.Maps.Configuration.IConfigurationSearchPlaces
 	> {
 		private _addedEvents: Array<string>;
+		private _externalModulesHelper: SharedComponents.ExternalModules;
 		private _scriptCallback: OSFramework.Maps.Callbacks.Generic;
 
 		constructor(searchPlacesId: string, configs: JSON) {
 			super(searchPlacesId, new Configuration.SearchPlaces.SearchPlacesConfig(configs));
 			this._addedEvents = [];
 			this._scriptCallback = this._createGooglePlaces.bind(this);
+			this._externalModulesHelper = new SharedComponents.ExternalModules();
 		}
 
 		// From the structure Bounds (north, south, east, weast) we need to convert the locations into the correct format of bounds
@@ -63,7 +65,48 @@ namespace Provider.Maps.Google.SearchPlaces {
 				);
 			}
 
-			if (typeof google === 'object' && typeof google.maps === 'object') {
+			if (typeof google.maps.places === 'object') {
+				this._prepareProviderConfigs(true);
+			} else {
+				// If module is not available already, let's use this helper method to re-attempt before we use its content. 
+				this._externalModulesHelper.checkProviderModules(
+					google.maps.places,
+					this._prepareProviderConfigs,
+					this
+				);
+			}
+		}
+
+		private _createProvider(configs: Configuration.SearchPlaces.ISearchPlacesProviderConfig): void {
+			const input: HTMLInputElement = OSFramework.Maps.Helper.GetElementByUniqueId(this.uniqueId).querySelector(
+				`${OSFramework.Maps.Helper.Constants.runtimeSearchPlacesUniqueIdCss} input`
+			);
+			if (this._validInput(input) === false) return;
+
+			// SearchPlaces(input, options)
+			this._provider = new google.maps.places.Autocomplete(input, configs as unknown);
+			// Check if the provider has been created with a valid APIKey
+			window[Constants.googleMapsAuthFailure] = () => {
+				this.searchPlacesEvents.trigger(
+					OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType.OnError,
+					this,
+					OSFramework.Maps.Enum.ErrorCodes.LIB_InvalidApiKeySearchPlaces
+				);
+			};
+
+			this.finishBuild();
+			this._setSearchPlacesEvents();
+		}
+
+		/**
+		 * Method to guarantee that places library is available before building a new places.Autocomplete
+		 *
+		 *
+		 * @private
+		 * @memberof SearchPlaces
+		 */
+		private _prepareProviderConfigs(moduleAvailable: boolean): void {
+			if (moduleAvailable) {
 				const local_configs =
 					this.getProviderConfig() as Configuration.SearchPlaces.ISearchPlacesProviderConfig;
 				// If all searchArea bounds are empty, then we don't want to create a searchArea
@@ -94,29 +137,14 @@ namespace Provider.Maps.Google.SearchPlaces {
 					this._createProvider(local_configs);
 				}
 			} else {
-				throw Error(`The google.maps lib has not been loaded.`);
-			}
-		}
-
-		private _createProvider(configs: Configuration.SearchPlaces.ISearchPlacesProviderConfig): void {
-			const input: HTMLInputElement = OSFramework.Maps.Helper.GetElementByUniqueId(this.uniqueId).querySelector(
-				`${OSFramework.Maps.Helper.Constants.runtimeSearchPlacesUniqueIdCss} input`
-			);
-			if (this._validInput(input) === false) return;
-
-			// SearchPlaces(input, options)
-			this._provider = new google.maps.places.Autocomplete(input, configs as unknown);
-			// Check if the provider has been created with a valid APIKey
-			window[Constants.googleMapsAuthFailure] = () => {
 				this.searchPlacesEvents.trigger(
 					OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType.OnError,
 					this,
-					OSFramework.Maps.Enum.ErrorCodes.LIB_InvalidApiKeySearchPlaces
+					OSFramework.Maps.Enum.ErrorCodes.LIB_FailedGeocodingSearchAreaLocations,
+					undefined,
+					`The google.maps.places lib has not been loaded.`
 				);
-			};
-
-			this.finishBuild();
-			this._setSearchPlacesEvents();
+			}
 		}
 
 		private _setSearchPlacesEvents(): void {
@@ -265,6 +293,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 		}
 
 		public dispose(): void {
+			this._externalModulesHelper.clearBuildTimeout();
 			this._provider = undefined;
 			super.dispose();
 		}
