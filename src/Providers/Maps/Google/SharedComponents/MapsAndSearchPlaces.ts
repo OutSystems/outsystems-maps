@@ -168,12 +168,12 @@ namespace Provider.Maps.Google.SharedComponents {
 		 * @param {unknown} context
 		 * @memberof ExternalModules
 		 */
-		public checkProviderModules<T>(moduleName: object, cb: (obj: T) => void, context: unknown): void {
+		public checkProviderModules<T>(moduleName: () => T, cb: (success: boolean) => void, context: unknown): void {
 			let _buildAttempts = 0;
 
 			const attempt = () => {
 				this.clearBuildTimeout();
-				if (typeof moduleName === 'object') {
+				if (typeof moduleName() === 'object') {
 					cb.call(context, true);
 				} else if (_buildAttempts < Constants.checkGoogleMapsLibrariesMaxAttempts) {
 					_buildAttempts++;

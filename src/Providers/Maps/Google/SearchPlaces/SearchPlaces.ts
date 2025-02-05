@@ -68,9 +68,9 @@ namespace Provider.Maps.Google.SearchPlaces {
 			if (typeof google.maps.places === 'object') {
 				this._prepareProviderConfigs(true);
 			} else {
-				// If module is not available already, let's use this helper method to re-attempt before we use its content. 
+				// If module is not available already, let's use this helper method to re-attempt before we use its content.
 				this._externalModulesHelper.checkProviderModules(
-					google.maps.places,
+					() => google.maps.places,
 					this._prepareProviderConfigs,
 					this
 				);
