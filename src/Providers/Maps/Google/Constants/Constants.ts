@@ -35,6 +35,8 @@ namespace Provider.Maps.Google.Constants {
 	// In order to use the heatmap we need to add it into the libraries via the URL = visualization
 	// In order to use the searchplaces we need to add it into the libraries via the URL = places (in case the Map is the first to import the scripts)
 	export const GoogleMapsLibraries = 'drawing,visualization,places,marker';
+	// Used to check if modules are available on cycles of 100ms */
+	export const checkGoogleMapsLibrariesMaxAttempts = 25;
 	// Version of the Google Maps to be loaded.
 	export const googleMapsVersion = '3.58'; //Stable version Mid-November 2024.
 }
