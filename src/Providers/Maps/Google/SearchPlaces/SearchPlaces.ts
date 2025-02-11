@@ -78,24 +78,27 @@ namespace Provider.Maps.Google.SearchPlaces {
 		}
 
 		private _createProvider(configs: Configuration.SearchPlaces.ISearchPlacesProviderConfig): void {
-			const input: HTMLInputElement = OSFramework.Maps.Helper.GetElementByUniqueId(this.uniqueId).querySelector(
-				`${OSFramework.Maps.Helper.Constants.runtimeSearchPlacesUniqueIdCss} input`
-			);
-			if (this._validInput(input) === false) return;
+			// This is to guarantee that the widget was not disposed before reaching this method
+			if (this.uniqueId !== undefined) {
+				const input: HTMLInputElement = OSFramework.Maps.Helper.GetElementByUniqueId(
+					this.uniqueId
+				).querySelector(`${OSFramework.Maps.Helper.Constants.runtimeSearchPlacesUniqueIdCss} input`);
+				if (this._validInput(input) === false) return;
 
-			// SearchPlaces(input, options)
-			this._provider = new google.maps.places.Autocomplete(input, configs as unknown);
-			// Check if the provider has been created with a valid APIKey
-			window[Constants.googleMapsAuthFailure] = () => {
-				this.searchPlacesEvents.trigger(
-					OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType.OnError,
-					this,
-					OSFramework.Maps.Enum.ErrorCodes.LIB_InvalidApiKeySearchPlaces
-				);
-			};
+				// SearchPlaces(input, options)
+				this._provider = new google.maps.places.Autocomplete(input, configs as unknown);
+				// Check if the provider has been created with a valid APIKey
+				window[Constants.googleMapsAuthFailure] = () => {
+					this.searchPlacesEvents.trigger(
+						OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType.OnError,
+						this,
+						OSFramework.Maps.Enum.ErrorCodes.LIB_InvalidApiKeySearchPlaces
+					);
+				};
 
-			this.finishBuild();
-			this._setSearchPlacesEvents();
+				this.finishBuild();
+				this._setSearchPlacesEvents();
+			}
 		}
 
 		/**
