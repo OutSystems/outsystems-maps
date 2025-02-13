@@ -7,14 +7,12 @@ namespace Provider.Maps.Google.SearchPlaces {
 		OSFramework.Maps.Configuration.IConfigurationSearchPlaces
 	> {
 		private _addedEvents: Array<string>;
-		private readonly _externalModulesHelper: SharedComponents.ExternalModules;
 		private _scriptCallback: OSFramework.Maps.Callbacks.Generic;
 
 		constructor(searchPlacesId: string, configs: JSON) {
 			super(searchPlacesId, new Configuration.SearchPlaces.SearchPlacesConfig(configs));
 			this._addedEvents = [];
 			this._scriptCallback = this._createGooglePlaces.bind(this);
-			this._externalModulesHelper = new SharedComponents.ExternalModules();
 		}
 
 		// From the structure Bounds (north, south, east, weast) we need to convert the locations into the correct format of bounds
@@ -53,6 +51,11 @@ namespace Provider.Maps.Google.SearchPlaces {
 		 * Creates the SearchPlaces via GoogleMap API
 		 */
 		private _createGooglePlaces(): void {
+			// This will prevent the creation of the provider if the component was destroyed
+			// while the code was waiting for script callback to be called
+			if (this._built === undefined) {
+				return;
+			}
 			const script = document.getElementById(Constants.googleMapsScript) as HTMLScriptElement;
 
 			// Make sure the GoogleMaps script in the <head> of the html page contains the same apiKey as the one in the configs.
@@ -65,16 +68,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 				);
 			}
 
-			if (typeof google.maps.places === 'object') {
-				this._prepareProviderConfigs(true);
-			} else {
-				// If module is not available already, let's use this helper method to re-attempt before we use its content.
-				this._externalModulesHelper.checkProviderModules(
-					() => google.maps.places,
-					this._prepareProviderConfigs,
-					this
-				);
-			}
+			this._prepareProviderConfigs(true);
 		}
 
 		private _createProvider(configs: Configuration.SearchPlaces.ISearchPlacesProviderConfig): void {
@@ -298,7 +292,6 @@ namespace Provider.Maps.Google.SearchPlaces {
 		}
 
 		public dispose(): void {
-			this._externalModulesHelper.clearBuildTimeout();
 			this._provider = undefined;
 			super.dispose();
 		}

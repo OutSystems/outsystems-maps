@@ -191,7 +191,8 @@ namespace OSFramework.Maps.OSMap {
 		}
 
 		public dispose(): void {
-			this._isReady = false;
+			// The undefined value will be used to check if the Map was destroyed
+			this._isReady = undefined;
 			// Let's make sure we remove both markers and shapes from the map
 			this._markers.forEach((marker: Marker.IMarker, markerId: string) => {
 				this.removeMarker(markerId);

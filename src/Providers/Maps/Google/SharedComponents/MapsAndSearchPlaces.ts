@@ -5,12 +5,13 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.SharedComponents {
 	let googleMapsLoadPromise = undefined;
+	let googleMapsIsLoaded = false;
 	export function InitializeScripts(
 		apiKey: string,
 		localization: OSFramework.Maps.OSStructures.OSMap.Localization,
 		cb: () => void
 	): void {
-		if (typeof google === 'object' && typeof google.maps === 'object') {
+		if (googleMapsIsLoaded) {
 			cb();
 		} else {
 			/**
@@ -26,6 +27,7 @@ namespace Provider.Maps.Google.SharedComponents {
 						window.GMCB = undefined;
 						resolve(0);
 						googleMapsLoadPromise = undefined;
+						googleMapsIsLoaded = true;
 					};
 
 					const script = document.createElement('script');
