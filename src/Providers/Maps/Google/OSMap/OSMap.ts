@@ -84,44 +84,46 @@ namespace Provider.Maps.Google.OSMap {
 				// Make sure the center is saved before setting a default value which is going to be used
 				// before the conversion of the location to coordinates gets resolved
 				const currentCenter = this.config.center;
+				// This is to guarantee that the widget was not disposed before reaching this method
+				const mapElement = OSFramework.Maps.Helper.GetElementByUniqueId(this.uniqueId, false);
 
-				this._provider = new google.maps.Map(
-					OSFramework.Maps.Helper.GetElementByUniqueId(this.uniqueId).querySelector(
-						OSFramework.Maps.Helper.Constants.runtimeMapUniqueIdCss
-					),
-					// The provider config will retrieve the default center position
-					// (this.config.center = OSFramework.Maps.Helper.Constants.defaultMapCenter)
-					// Which will get updated after the Map is rendered
-					this._getProviderConfig()
-				);
-				// Check if the provider has been created with a valid APIKey
-				window[Constants.googleMapsAuthFailure] = () =>
-					this.mapEvents.trigger(
-						OSFramework.Maps.Event.OSMap.MapEventType.OnError,
-						this,
-						OSFramework.Maps.Enum.ErrorCodes.LIB_InvalidApiKeyMap
+				if (mapElement !== undefined) {
+					this._provider = new google.maps.Map(
+						mapElement.querySelector(OSFramework.Maps.Helper.Constants.runtimeMapUniqueIdCss),
+						// The provider config will retrieve the default center position
+						// (this.config.center = OSFramework.Maps.Helper.Constants.defaultMapCenter)
+						// Which will get updated after the Map is rendered
+						this._getProviderConfig()
 					);
+					// Check if the provider has been created with a valid APIKey
+					window[Constants.googleMapsAuthFailure] = () =>
+						this.mapEvents.trigger(
+							OSFramework.Maps.Event.OSMap.MapEventType.OnError,
+							this,
+							OSFramework.Maps.Enum.ErrorCodes.LIB_InvalidApiKeyMap
+						);
 
-				this.buildFeatures();
-				this._buildMarkers();
-				this._buildShapes();
-				this._buildDrawingTools();
-				this._buildFileLayers();
-				this._buildHeatmapLayers();
-				this.finishBuild();
+					this.buildFeatures();
+					this._buildMarkers();
+					this._buildShapes();
+					this._buildDrawingTools();
+					this._buildFileLayers();
+					this._buildHeatmapLayers();
+					this.finishBuild();
 
-				// Make sure to change the center after the conversion of the location to coordinates
-				this.features.center.updateCenter(currentCenter as string);
+					// Make sure to change the center after the conversion of the location to coordinates
+					this.features.center.updateCenter(currentCenter as string);
 
-				// Make sure the style is converted from an id to the correspondent JSON
-				this._provider.setOptions({
-					styles: GetStyleByStyleId(this.config.style),
-					...this._advancedFormatObj,
-				});
+					// Make sure the style is converted from an id to the correspondent JSON
+					this._provider.setOptions({
+						styles: GetStyleByStyleId(this.config.style),
+						...this._advancedFormatObj,
+					});
 
-				// We can only set the events on the provider after its creation
-				this._setMapEvents(this._advancedFormatObj.mapEvents);
-				this._addMapZoomHandler();
+					// We can only set the events on the provider after its creation
+					this._setMapEvents(this._advancedFormatObj.mapEvents);
+					this._addMapZoomHandler();
+				}
 			} else {
 				throw Error(`The google.maps lib has not been loaded.`);
 			}

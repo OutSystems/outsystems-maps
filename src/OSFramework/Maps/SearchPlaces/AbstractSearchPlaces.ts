@@ -80,7 +80,6 @@ namespace OSFramework.Maps.SearchPlaces {
 
 		public dispose(): void {
 			this._built = false;
-			this._uniqueId = undefined;
 		}
 
 		public equalsToID(id: string): boolean {

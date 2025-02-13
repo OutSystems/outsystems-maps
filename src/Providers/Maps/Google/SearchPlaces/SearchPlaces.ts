@@ -79,10 +79,12 @@ namespace Provider.Maps.Google.SearchPlaces {
 
 		private _createProvider(configs: Configuration.SearchPlaces.ISearchPlacesProviderConfig): void {
 			// This is to guarantee that the widget was not disposed before reaching this method
-			if (this.uniqueId !== undefined) {
-				const input: HTMLInputElement = OSFramework.Maps.Helper.GetElementByUniqueId(
-					this.uniqueId
-				).querySelector(`${OSFramework.Maps.Helper.Constants.runtimeSearchPlacesUniqueIdCss} input`);
+			const placesElement = OSFramework.Maps.Helper.GetElementByUniqueId(this.uniqueId, false);
+
+			if (placesElement !== undefined) {
+				const input: HTMLInputElement = placesElement.querySelector(
+					`${OSFramework.Maps.Helper.Constants.runtimeSearchPlacesUniqueIdCss} input`
+				);
 				if (this._validInput(input) === false) return;
 
 				// SearchPlaces(input, options)
