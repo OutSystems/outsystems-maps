@@ -284,7 +284,6 @@ namespace Provider.Maps.Google.SearchPlaces {
 						);
 					case OSFramework.Maps.Enum.OS_Config_SearchPlaces.searchType:
 						return this.provider.setTypes([
-							// eslint-disable-next-line @typescript-eslint/no-unused-vars
 							Provider.Maps.Google.SearchPlaces.SearchTypes[propertyValue as string],
 						]);
 				}
