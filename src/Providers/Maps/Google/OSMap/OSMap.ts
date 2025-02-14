@@ -69,6 +69,11 @@ namespace Provider.Maps.Google.OSMap {
 		 * Creates the Map via GoogleMap API
 		 */
 		private _createGoogleMap(): void {
+			// This will prevent the creation of the provider if the component was destroyed
+			// while the code was waiting for script callback to be called
+			if (this.isReady === undefined) {
+				return;
+			}
 			const script = document.getElementById(Constants.googleMapsScript) as HTMLScriptElement;
 
 			// Make sure the GoogleMaps script in the <head> of the html page contains the same apiKey as the one in the configs.
@@ -80,15 +85,15 @@ namespace Provider.Maps.Google.OSMap {
 				);
 			}
 
-			if (typeof google === 'object' && typeof google.maps === 'object') {
-				// Make sure the center is saved before setting a default value which is going to be used
-				// before the conversion of the location to coordinates gets resolved
-				const currentCenter = this.config.center;
+			// Make sure the center is saved before setting a default value which is going to be used
+			// before the conversion of the location to coordinates gets resolved
+			const currentCenter = this.config.center;
+			// This is to guarantee that the widget was not disposed before reaching this method
+			const mapElement = OSFramework.Maps.Helper.GetElementByUniqueId(this.uniqueId, false);
 
+			if (mapElement !== undefined) {
 				this._provider = new google.maps.Map(
-					OSFramework.Maps.Helper.GetElementByUniqueId(this.uniqueId).querySelector(
-						OSFramework.Maps.Helper.Constants.runtimeMapUniqueIdCss
-					),
+					mapElement.querySelector(OSFramework.Maps.Helper.Constants.runtimeMapUniqueIdCss),
 					// The provider config will retrieve the default center position
 					// (this.config.center = OSFramework.Maps.Helper.Constants.defaultMapCenter)
 					// Which will get updated after the Map is rendered
@@ -122,8 +127,6 @@ namespace Provider.Maps.Google.OSMap {
 				// We can only set the events on the provider after its creation
 				this._setMapEvents(this._advancedFormatObj.mapEvents);
 				this._addMapZoomHandler();
-			} else {
-				throw Error(`The google.maps lib has not been loaded.`);
 			}
 		}
 

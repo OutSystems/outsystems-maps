@@ -79,8 +79,8 @@ namespace OSFramework.Maps.SearchPlaces {
 		}
 
 		public dispose(): void {
-			this._built = false;
-			this._uniqueId = undefined;
+			// The undefined value will be used to check if the Places was destroyed
+			this._built = undefined;
 		}
 
 		public equalsToID(id: string): boolean {
