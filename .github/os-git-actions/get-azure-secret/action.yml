@@ -1,0 +1,46 @@
+name: 'get-azure-secret'
+description: 'Gets a secret from a given Azure Key Vault'
+inputs:
+    client-id:
+        description: 'The input parameter client-id specifies the login client id. It could be the client id of a service principal or a user-assigned managed identity.'
+        required: true
+        default: ''
+    tenant-id:
+        description: 'The input parameter tenant-id specifies the login tenant id.'
+        required: true
+        default: ''
+    subscription-id:
+        description: 'The input parameter subscription-id specifies the login subscription id.'
+        required: false
+        default: false
+    vault-name:
+        description: 'The input parameter vault-name specifies the name of the key vault.'
+        required: true
+        default: ''
+    key-name:
+        description: 'The input parameter key-name specifies the name of the key to get the secret from.'
+        required: false
+        default: ''
+outputs:
+    OBTAINED_SECRET:
+        description: 'The output parameter OBTAINED_SECRET specifies the secret value.'
+        value: ${{ steps.GetSecret.outputs.az-obtained-secret }}
+
+runs:
+    using: composite
+    steps:
+        - name: 'Az CLI login'
+          uses: azure/login@v2
+          with:
+              client-id: ${{ inputs.client-id }}
+              tenant-id: ${{ inputs.tenant-id }}
+              subscription-id: ${{ inputs.subscription-id }}
+
+        - name: get keyvault secrets
+          uses: azure/cli@v2
+          id: GetSecret
+          with:
+              inlineScript: |
+                  secretValue=$(az keyvault secret show --name "${{ inputs.key-name }}" --vault-name "${{ inputs.vault-name }}" --query "value" --output tsv)
+                  echo "::add-mask::$secretValue"
+                  echo "az-obtained-secret=$secretValue" >> $GITHUB_OUTPUT
