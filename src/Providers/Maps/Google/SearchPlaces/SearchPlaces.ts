@@ -51,9 +51,12 @@ namespace Provider.Maps.Google.SearchPlaces {
 		 * Creates the SearchPlaces via GoogleMap API
 		 */
 		private _createGooglePlaces(): void {
-			const script = document.getElementById(
-				OSFramework.Maps.Helper.Constants.googleMapsScript
-			) as HTMLScriptElement;
+			// This will prevent the creation of the provider if the component was destroyed
+			// while the code was waiting for script callback to be called
+			if (this._built === undefined) {
+				return;
+			}
+			const script = document.getElementById(Constants.googleMapsScript) as HTMLScriptElement;
 
 			// Make sure the GoogleMaps script in the <head> of the html page contains the same apiKey as the one in the configs.
 			const apiKey = /key=(.*)&libraries/.exec(script.src)[1];
@@ -65,7 +68,44 @@ namespace Provider.Maps.Google.SearchPlaces {
 				);
 			}
 
-			if (typeof google === 'object' && typeof google.maps === 'object') {
+			this._prepareProviderConfigs(true);
+		}
+
+		private _createProvider(configs: Configuration.SearchPlaces.ISearchPlacesProviderConfig): void {
+			// This is to guarantee that the widget was not disposed before reaching this method
+			const placesElement = OSFramework.Maps.Helper.GetElementByUniqueId(this.uniqueId, false);
+
+			if (placesElement !== undefined) {
+				const input: HTMLInputElement = placesElement.querySelector(
+					`${OSFramework.Maps.Helper.Constants.runtimeSearchPlacesUniqueIdCss} input`
+				);
+				if (this._validInput(input) === false) return;
+
+				// SearchPlaces(input, options)
+				this._provider = new google.maps.places.Autocomplete(input, configs as unknown);
+				// Check if the provider has been created with a valid APIKey
+				window[Constants.googleMapsAuthFailure] = () => {
+					this.searchPlacesEvents.trigger(
+						OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType.OnError,
+						this,
+						OSFramework.Maps.Enum.ErrorCodes.LIB_InvalidApiKeySearchPlaces
+					);
+				};
+
+				this.finishBuild();
+				this._setSearchPlacesEvents();
+			}
+		}
+
+		/**
+		 * Method to guarantee that places library is available before building a new places.Autocomplete
+		 *
+		 *
+		 * @private
+		 * @memberof SearchPlaces
+		 */
+		private _prepareProviderConfigs(moduleAvailable: boolean): void {
+			if (moduleAvailable) {
 				const local_configs =
 					this.getProviderConfig() as Configuration.SearchPlaces.ISearchPlacesProviderConfig;
 				// If all searchArea bounds are empty, then we don't want to create a searchArea
@@ -96,29 +136,14 @@ namespace Provider.Maps.Google.SearchPlaces {
 					this._createProvider(local_configs);
 				}
 			} else {
-				throw Error(`The google.maps lib has not been loaded.`);
-			}
-		}
-
-		private _createProvider(configs: Configuration.SearchPlaces.ISearchPlacesProviderConfig): void {
-			const input: HTMLInputElement = OSFramework.Maps.Helper.GetElementByUniqueId(this.uniqueId).querySelector(
-				`${OSFramework.Maps.Helper.Constants.runtimeSearchPlacesUniqueIdCss} input`
-			);
-			if (this._validInput(input) === false) return;
-
-			// SearchPlaces(input, options)
-			this._provider = new google.maps.places.Autocomplete(input, configs as unknown);
-			// Check if the provider has been created with a valid APIKey
-			window[OSFramework.Maps.Helper.Constants.googleMapsAuthFailure] = () => {
 				this.searchPlacesEvents.trigger(
 					OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType.OnError,
 					this,
-					OSFramework.Maps.Enum.ErrorCodes.LIB_InvalidApiKeySearchPlaces
+					OSFramework.Maps.Enum.ErrorCodes.LIB_FailedGeocodingSearchAreaLocations,
+					undefined,
+					`The google.maps.places lib has not been loaded.`
 				);
-			};
-
-			this.finishBuild();
-			this._setSearchPlacesEvents();
+			}
 		}
 
 		private _setSearchPlacesEvents(): void {
@@ -196,7 +221,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 			 * 1) Add the script from GoogleAPIS to the header of the page
 			 * 2) Creates the SearchPlaces via GoogleMap API
 			 */
-			SharedComponents.InitializeScripts(this.config.apiKey, this._scriptCallback);
+			SharedComponents.InitializeScripts(this.config.apiKey, this.config.localization, this._scriptCallback);
 		}
 
 		public changeProperty(propertyName: string, propertyValue: unknown): void {
@@ -211,6 +236,14 @@ namespace Provider.Maps.Google.SearchPlaces {
 								OSFramework.Maps.Enum.ErrorCodes.CFG_APIKeyAlreadySetSearchPlaces
 							);
 						}
+						return;
+					case OSFramework.Maps.Enum.OS_Config_SearchPlaces.localization:
+						// Trigger an error to alert the user that the localization can only be set one time
+						this.searchPlacesEvents.trigger(
+							OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType.OnError,
+							this,
+							OSFramework.Maps.Enum.ErrorCodes.CFG_LocalizationAlreadySetMap
+						);
 						return;
 					case OSFramework.Maps.Enum.OS_Config_SearchPlaces.searchArea:
 						// eslint-disable-next-line no-case-declarations
@@ -251,7 +284,6 @@ namespace Provider.Maps.Google.SearchPlaces {
 						);
 					case OSFramework.Maps.Enum.OS_Config_SearchPlaces.searchType:
 						return this.provider.setTypes([
-							// eslint-disable-next-line @typescript-eslint/no-unused-vars
 							Provider.Maps.Google.SearchPlaces.SearchTypes[propertyValue as string],
 						]);
 				}

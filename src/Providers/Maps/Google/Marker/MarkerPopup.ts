@@ -4,7 +4,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.Marker {
 	export class MarkerPopup
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		extends Marker
 		implements OSFramework.Maps.Marker.IMarkerPopup
 	{

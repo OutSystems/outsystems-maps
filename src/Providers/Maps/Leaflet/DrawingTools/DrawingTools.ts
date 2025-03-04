@@ -109,13 +109,10 @@ namespace Provider.Maps.Leaflet.DrawingTools {
 
 		private _setDrawingToolsEvents(): void {
 			// Make sure the listeners get removed before adding the new ones
-			this.map.provider.off(OSFramework.Maps.Helper.Constants.drawingLeafletCompleted);
+			this.map.provider.off(Constants.drawingLeafletCompleted);
 
 			// Add the handler that will create the shape/marker element and remove the overlay created by the drawing tool on the map
-			this.map.provider.on(
-				OSFramework.Maps.Helper.Constants.drawingLeafletCompleted,
-				this._addCompletedEventHandler.bind(this)
-			);
+			this.map.provider.on(Constants.drawingLeafletCompleted, this._addCompletedEventHandler.bind(this));
 		}
 
 		// We don't have the types for the drawingTools features

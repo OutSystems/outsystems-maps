@@ -52,9 +52,29 @@ namespace Provider.Maps.Leaflet.Feature {
 			return responseObj;
 		}
 
-		public refreshCenter(value: OSFramework.Maps.OSStructures.OSMap.Coordinates): void {
-			const coordinates = new L.LatLng(value.lat as number, value.lng as number);
+		public refreshCenter(value: OSFramework.Maps.OSStructures.OSMap.Coordinates, allowRefreshZoom: boolean): void {
+			let coordinates = new L.LatLng(value.lat as number, value.lng as number);
 			this._map.provider.setView(coordinates);
+			if (allowRefreshZoom) {
+				if (this._map.features.zoom.isAutofit) {
+					if (
+						this._map.markers.length > 1 ||
+						(this._map.shapes.length > 0 && this._map.config.autoZoomOnShapes === true)
+					) {
+						this._map.provider.setView(coordinates);
+						this._map.features.zoom.refreshZoom();
+						const tempCenter = this._map.features.center.getCurrentCenter();
+						coordinates = new L.LatLng(tempCenter.lat as number, tempCenter.lng as number);
+					} else {
+						this._map.provider.setView(coordinates, OSFramework.Maps.Helper.Constants.zoomAutofit);
+					}
+				} else {
+					this._map.provider.setView(coordinates, this._map.features.zoom.level);
+				}
+			} else {
+				this._map.provider.setView(coordinates);
+			}
+
 			this._currentCenter = coordinates;
 		}
 
@@ -67,7 +87,7 @@ namespace Provider.Maps.Leaflet.Feature {
 				.then((response) => {
 					this._map.config.center = response;
 					this._initialCenter = response;
-					this._map.refresh();
+					this._map.refresh(true);
 				})
 				.catch(() => {
 					this._map.mapEvents.trigger(

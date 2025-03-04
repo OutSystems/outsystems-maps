@@ -17,8 +17,10 @@ namespace OSFramework.Maps.Enum {
 	export enum ErrorCodes {
 		// Error Codes - CONFiguration errors - Any error related with missing or wrong configuration of the application.
 		CFG_APIKeyAlreadySetMap = 'MAPS-CFG-01001',
+		CFG_LocalizationAlreadySetMap = 'MAPS-CFG-01003',
 		CFG_APIKeyAlreadySetStaticMap = 'MAPS-CFG-02001',
 		CFG_CantChangeParamsStaticMap = 'MAPS-CFG-02002',
+		CFG_LocalizationAlreadySetStaticMap = 'MAPS-CFG-02003',
 		CFG_InvalidPolylineShapeLocations = 'MAPS-CFG-05001',
 		CFG_InvalidPolygonShapeLocations = 'MAPS-CFG-05002',
 		CFG_InvalidCircleShapeCenter = 'MAPS-CFG-05003',
@@ -70,6 +72,7 @@ namespace OSFramework.Maps.Enum {
 		GEN_InvalidChangePropertyShape = 'MAPS-GEN-05001',
 		GEN_InvalidChangePropertyDrawingTools = 'MAPS-GEN-06001',
 		GEN_InvalidChangePropertyTools = 'MAPS-GEN-06002',
+		GEN_InvalidChangePropertyUseAdvancedMarkers = 'MAPS-GEN-06005',
 		GEN_UnsupportedEventShape = 'MAPS-GEN-05002',
 		GEN_UnsupportedEventDrawingTools = 'MAPS-GEN-06003',
 		GEN_ToolTypeAlreadyExists = 'MAPS-GEN-06004',

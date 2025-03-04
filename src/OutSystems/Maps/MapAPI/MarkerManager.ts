@@ -4,6 +4,35 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 	const markerArr = new Array<OSFramework.Maps.Marker.IMarker>();
 
 	/**
+	 * Gets the Map to which the Marker belongs to
+	 *
+	 * @param {string} markerId Id of the Marker that exists on the Map
+	 * @returns {*}  {MarkerMapper} this structure has the id of Map, and the reference to the instance of the Map
+	 */
+	function GetMapByMarkerId(markerId: string): OSFramework.Maps.OSMap.IMap {
+		let map: OSFramework.Maps.OSMap.IMap;
+
+		//markerId is the UniqueId
+		if (markerMap.has(markerId)) {
+			map = MapManager.GetMapById(markerMap.get(markerId), false);
+		}
+		//UniqueID not found
+		else {
+			// Try to find its reference on DOM
+			const elem = OSFramework.Maps.Helper.GetElementByUniqueId(markerId, false);
+
+			// If element is found, means that the DOM was rendered
+			if (elem !== undefined) {
+				//Find the closest Map
+				const mapId = OSFramework.Maps.Helper.GetClosestMapId(elem);
+				map = MapManager.GetMapById(mapId);
+			}
+		}
+
+		return map;
+	}
+
+	/**
 	 * Creates and adds a marker to a map.
 	 *
 	 * @export
@@ -97,8 +126,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 				// Check if the feature is enabled!
 				if (map.hasMarkerClusterer()) {
 					const marker = map.markers.find((marker) => {
-						// eslint-disable-next-line @typescript-eslint/no-explicit-any
-						return (marker.provider as any).location === markerPosition;
+						return marker.config.location === markerPosition;
 					});
 
 					// Check if there is a marker with the given Position/Location
@@ -140,20 +168,24 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 	 */
 	export function CreateMarker(mapId: string, markerId: string, configs: string): OSFramework.Maps.Marker.IMarker {
 		const map = MapManager.GetMapById(mapId, true);
-		if (!map.hasMarker(markerId)) {
-			const _marker = Provider.Maps.Google.Marker.MarkerFactory.MakeMarker(
-				map,
-				markerId,
-				OSFramework.Maps.Enum.MarkerType.Marker,
-				JSON.parse(configs)
-			);
-			markerArr.push(_marker);
-			markerMap.set(markerId, map.uniqueId);
-			map.addMarker(_marker);
+		if (map.providerType === OSFramework.Maps.Enum.ProviderType.Google) {
+			if (!map.hasMarker(markerId)) {
+				const _marker = Provider.Maps.Google.Marker.MarkerFactory.MakeMarker(
+					map,
+					markerId,
+					OSFramework.Maps.Enum.MarkerType.Marker,
+					JSON.parse(configs)
+				);
+				markerArr.push(_marker);
+				markerMap.set(markerId, map.uniqueId);
+				map.addMarker(_marker);
 
-			return _marker;
+				return _marker;
+			} else {
+				throw new Error(`There is already a Marker registered on the specified Map under id:${markerId}`);
+			}
 		} else {
-			throw new Error(`There is already a Marker registered on the specified Map under id:${markerId}`);
+			throw new Error(`The provider type '${map.providerType}' does not support this operation.`);
 		}
 	}
 
@@ -190,37 +222,6 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 	}
 
 	/**
-	 * [Not used]
-	 * Gets the Map to which the Marker belongs to
-	 *
-	 * @param {string} markerId Id of the Marker that exists on the Map
-	 * @returns {*}  {MarkerMapper} this structure has the id of Map, and the reference to the instance of the Map
-	 */
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	function GetMapByMarkerId(markerId: string): OSFramework.Maps.OSMap.IMap {
-		let map: OSFramework.Maps.OSMap.IMap;
-
-		//markerId is the UniqueId
-		if (markerMap.has(markerId)) {
-			map = MapManager.GetMapById(markerMap.get(markerId), false);
-		}
-		//UniqueID not found
-		else {
-			// Try to find its reference on DOM
-			const elem = OSFramework.Maps.Helper.GetElementByUniqueId(markerId, false);
-
-			// If element is found, means that the DOM was rendered
-			if (elem !== undefined) {
-				//Find the closest Map
-				const mapId = OSFramework.Maps.Helper.GetClosestMapId(elem);
-				map = MapManager.GetMapById(mapId);
-			}
-		}
-
-		return map;
-	}
-
-	/**
 	 * Returns a Marker based on Id
 	 * @param markerId Id of the Marker
 	 */
@@ -232,16 +233,18 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 			// Get all maps
 			const allMaps = [...MapManager.GetMapsFromPage().values()];
 
-			// On each map, look for all drawingTools and on each one look, on the createdElements array, for the markerId passed
+			// On each map, look for all drawingTools and on each one look,
+			// on the createdElements array, for the markerId passed.
 			allMaps.find((map: OSFramework.Maps.OSMap.IMap) => {
-				return (marker =
-					map.drawingTools &&
-					(map.drawingTools.createdElements.find((marker: OSFramework.Maps.Marker.IMarker) =>
-						marker.equalsToID(markerId)
-					) as OSFramework.Maps.Marker.IMarker));
+				if (map.drawingTools) {
+					marker = map.drawingTools.createdElements.find(
+						(marker: OSFramework.Maps.Marker.IMarker) => marker && marker.equalsToID(markerId)
+					) as OSFramework.Maps.Marker.IMarker;
+				}
+				return marker;
 			});
 
-			// If still wasn't found, then it does not exist and throw error
+			// If still wasn't found, then it does not exist - throw error
 			if (marker === undefined && raiseError) {
 				throw new Error(`Marker id:${markerId} not found`);
 			}

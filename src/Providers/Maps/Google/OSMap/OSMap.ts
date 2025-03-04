@@ -69,9 +69,12 @@ namespace Provider.Maps.Google.OSMap {
 		 * Creates the Map via GoogleMap API
 		 */
 		private _createGoogleMap(): void {
-			const script = document.getElementById(
-				OSFramework.Maps.Helper.Constants.googleMapsScript
-			) as HTMLScriptElement;
+			// This will prevent the creation of the provider if the component was destroyed
+			// while the code was waiting for script callback to be called
+			if (this.isReady === undefined) {
+				return;
+			}
+			const script = document.getElementById(Constants.googleMapsScript) as HTMLScriptElement;
 
 			// Make sure the GoogleMaps script in the <head> of the html page contains the same apiKey as the one in the configs.
 			const apiKey = /key=(.*)&libraries/.exec(script.src)[1];
@@ -82,22 +85,22 @@ namespace Provider.Maps.Google.OSMap {
 				);
 			}
 
-			if (typeof google === 'object' && typeof google.maps === 'object') {
-				// Make sure the center is saved before setting a default value which is going to be used
-				// before the conversion of the location to coordinates gets resolved
-				const currentCenter = this.config.center;
+			// Make sure the center is saved before setting a default value which is going to be used
+			// before the conversion of the location to coordinates gets resolved
+			const currentCenter = this.config.center;
+			// This is to guarantee that the widget was not disposed before reaching this method
+			const mapElement = OSFramework.Maps.Helper.GetElementByUniqueId(this.uniqueId, false);
 
+			if (mapElement !== undefined) {
 				this._provider = new google.maps.Map(
-					OSFramework.Maps.Helper.GetElementByUniqueId(this.uniqueId).querySelector(
-						OSFramework.Maps.Helper.Constants.runtimeMapUniqueIdCss
-					),
+					mapElement.querySelector(OSFramework.Maps.Helper.Constants.runtimeMapUniqueIdCss),
 					// The provider config will retrieve the default center position
 					// (this.config.center = OSFramework.Maps.Helper.Constants.defaultMapCenter)
 					// Which will get updated after the Map is rendered
 					this._getProviderConfig()
 				);
 				// Check if the provider has been created with a valid APIKey
-				window[OSFramework.Maps.Helper.Constants.googleMapsAuthFailure] = () =>
+				window[Constants.googleMapsAuthFailure] = () =>
 					this.mapEvents.trigger(
 						OSFramework.Maps.Event.OSMap.MapEventType.OnError,
 						this,
@@ -124,14 +127,21 @@ namespace Provider.Maps.Google.OSMap {
 				// We can only set the events on the provider after its creation
 				this._setMapEvents(this._advancedFormatObj.mapEvents);
 				this._addMapZoomHandler();
-			} else {
-				throw Error(`The google.maps lib has not been loaded.`);
 			}
 		}
 
 		private _getProviderConfig(): google.maps.MapOptions {
 			// Make sure the center has a default value before the conversion of the location to coordinates
 			this.config.center = OSFramework.Maps.Helper.Constants.defaultMapCenter;
+
+			// If the advancedMarkers is set to true, we need to set the mapId in the config
+			if (this.config.useAdvancedMarkers) {
+				// If the mapStyleId is not set, we will use the uniqueId as the mapStyleId
+				if (!this.config.mapStyleId) {
+					this.config.mapStyleId = this.uniqueId;
+				}
+			}
+
 			// Take care of the advancedFormat options which can override the previous configuration
 			this._advancedFormatObj = OSFramework.Maps.Helper.JsonFormatter(
 				this.config.advancedFormat
@@ -211,6 +221,10 @@ namespace Provider.Maps.Google.OSMap {
 			return OSFramework.Maps.Helper.Constants.mapTag;
 		}
 
+		public get useAdvancedMarkers(): boolean {
+			return this.config.useAdvancedMarkers;
+		}
+
 		public addDrawingTools(
 			drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools
 		): OSFramework.Maps.DrawingTools.IDrawingTools {
@@ -273,7 +287,7 @@ namespace Provider.Maps.Google.OSMap {
 			 * 1) Add the script from GoogleAPIS to the header of the page
 			 * 2) Creates the Map via GoogleMap API
 			 */
-			SharedComponents.InitializeScripts(this.config.apiKey, this._scriptCallback);
+			SharedComponents.InitializeScripts(this.config.apiKey, this.config.localization, this._scriptCallback);
 		}
 
 		public buildFeatures(): void {
@@ -326,7 +340,13 @@ namespace Provider.Maps.Google.OSMap {
 
 		public changeProperty(propertyName: string, propertyValue: unknown): void {
 			const propValue = OSFramework.Maps.Enum.OS_Config_Map[propertyName];
-			super.changeProperty(propertyName, propertyValue);
+
+			// Changing the useAdvancedMarkers property is not allowed after the map is created.
+			// An error is triggered if the property is changed after the map is created.
+			if (OSFramework.Maps.Enum.OS_Config_Map.useAdvancedMarkers !== propValue) {
+				super.changeProperty(propertyName, propertyValue);
+			}
+
 			if (this.isReady) {
 				switch (propValue) {
 					case OSFramework.Maps.Enum.OS_Config_Map.apiKey:
@@ -337,31 +357,54 @@ namespace Provider.Maps.Google.OSMap {
 								OSFramework.Maps.Enum.ErrorCodes.CFG_APIKeyAlreadySetMap
 							);
 						}
-						return;
+						break;
 					case OSFramework.Maps.Enum.OS_Config_Map.center:
-						return this.features.center.updateCenter(propertyValue as string);
+						this.features.center.updateCenter(propertyValue as string);
+						break;
 					case OSFramework.Maps.Enum.OS_Config_Map.offset:
-						return this.features.offset.setOffset(JSON.parse(propertyValue as string));
+						this.features.offset.setOffset(JSON.parse(propertyValue as string));
+						break;
+					case OSFramework.Maps.Enum.OS_Config_Map.localization:
+						// Trigger an error to alert the user that the localization can only be set one time
+						this.mapEvents.trigger(
+							OSFramework.Maps.Event.OSMap.MapEventType.OnError,
+							this,
+							OSFramework.Maps.Enum.ErrorCodes.CFG_LocalizationAlreadySetMap
+						);
+						break;
 					case OSFramework.Maps.Enum.OS_Config_Map.zoom:
-						return this.features.zoom.setLevel(propertyValue as OSFramework.Maps.Enum.OSMap.Zoom);
+						this.features.zoom.setLevel(propertyValue as OSFramework.Maps.Enum.OSMap.Zoom);
+						break;
 					case OSFramework.Maps.Enum.OS_Config_Map.type:
-						return this._provider.setMapTypeId(propertyValue as string);
+						this._provider.setMapTypeId(propertyValue as string);
+						break;
 					case OSFramework.Maps.Enum.OS_Config_Map.style:
-						return this._provider.setOptions({
+						this._provider.setOptions({
 							styles: GetStyleByStyleId(propertyValue as number),
 						});
+						break;
 					case OSFramework.Maps.Enum.OS_Config_Map.advancedFormat:
 						propertyValue = OSFramework.Maps.Helper.JsonFormatter(propertyValue as string) as unknown;
 						// Make sure the MapEvents that are associated in the advancedFormat get updated
 						this._setMapEvents((propertyValue as GoogleAdvancedFormatObj).mapEvents);
-						return this._provider.setOptions(propertyValue);
+						this._provider.setOptions(propertyValue);
+						break;
 					case OSFramework.Maps.Enum.OS_Config_Map.showTraffic:
-						return this.features.trafficLayer.setState(propertyValue as boolean);
+						this.features.trafficLayer.setState(propertyValue as boolean);
+						break;
 					case OSFramework.Maps.Enum.OS_Config_Map.markerClustererActive:
 					case OSFramework.Maps.Enum.OS_Config_Map.markerClustererMaxZoom:
 					case OSFramework.Maps.Enum.OS_Config_Map.markerClustererMinClusterSize:
 					case OSFramework.Maps.Enum.OS_Config_Map.markerClustererZoomOnClick:
-						return this.features.markerClusterer.changeProperty(propertyName, propertyValue);
+						this.features.markerClusterer.changeProperty(propertyName, propertyValue);
+						break;
+					case OSFramework.Maps.Enum.OS_Config_Map.useAdvancedMarkers:
+						this.mapEvents.trigger(
+							OSFramework.Maps.Event.OSMap.MapEventType.OnError,
+							this,
+							OSFramework.Maps.Enum.ErrorCodes.GEN_InvalidChangePropertyUseAdvancedMarkers
+						);
+						break;
 				}
 			}
 		}
@@ -386,7 +429,7 @@ namespace Provider.Maps.Google.OSMap {
 			this._provider = undefined;
 		}
 
-		public refresh(): void {
+		public refresh(centerChanged?: boolean): void {
 			//Let's stop listening to the zoom event be caused by the refreshZoom
 			this._removeMapZoomHandler();
 
@@ -399,34 +442,35 @@ namespace Provider.Maps.Google.OSMap {
 			//If there are markers, let's choose the map center accordingly.
 			//Otherwise, the map center will be the one defined in the configs.
 			if (this.markers.length > 0) {
+				// The TS definitions appear to be outdated.
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				const markerProvider: any = this.markers[0].provider;
 				if (this.markers.length > 1) {
 					//As the map has more than one marker, let's see if the map
 					//center should be changed.
 					//If the user hasn't change zoom, or the developer is ignoring it (current behavior).
 					if (this.allowRefreshZoom) {
 						//Let's check if the marker provider is ready to be used.
-						if (this.markers[0].provider !== undefined) {
+						if (markerProvider !== undefined) {
 							//If the map center, is the same as the default, then the map will ignore it.
 							//Otherwise, the isAutofit config will be checked, and if false, then the current
 							//center will not be changed.
 							if (isDefault || this.features.zoom.isAutofit) {
 								//Let's use the first marker as the center of the map.
-								// The TS definitions appear to be outdated.
-								// eslint-disable-next-line @typescript-eslint/no-explicit-any
-								position = (this.markers[0].provider as google.maps.Marker as any).position.toJSON();
+								position = markerProvider.position.toJSON();
 							}
 						}
 					} else {
 						//If the user has zoomed and the developer intends to respect user zoom
 						//then the current map center will be used.
-						position = this.provider.getCenter().toJSON();
+						position = centerChanged
+							? (this.config.center as OSFramework.Maps.OSStructures.OSMap.Coordinates)
+							: this.provider.getCenter().toJSON();
 					}
-				} else if (this.markers[0].provider !== undefined) {
+				} else if (markerProvider !== undefined) {
 					//If there's only one marker, and is already created, its location will be
 					//used as the map center.
-					// The TS definitions appear to be outdated.
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
-					position = (this.markers[0].provider as google.maps.Marker as any).position.toJSON();
+					position = markerProvider.position.toJSON();
 				}
 			}
 

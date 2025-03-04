@@ -7,6 +7,7 @@ namespace OSFramework.Maps.Configuration {
 	export interface IConfigurationSearchPlaces extends IConfiguration {
 		apiKey: string;
 		countries: Array<string>;
+		localization: OSFramework.Maps.OSStructures.OSMap.Localization;
 		searchArea: OSStructures.OSMap.BoundsString;
 		searchType: Enum.SearchTypes;
 	}

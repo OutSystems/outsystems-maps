@@ -86,7 +86,7 @@ namespace Provider.Maps.Google.OSMap {
 
 			image.src =
 				/* eslint-disable prettier/prettier */
-				`${OSFramework.Maps.Helper.Constants.googleMapsApiStaticMap}?` +
+				`${Constants.googleMapsApiStaticMap}?` +
 				'key=' +
 				this.config.apiKey +
 				'&center=' +
@@ -102,7 +102,9 @@ namespace Provider.Maps.Google.OSMap {
 				'&size=' +
 				this._size.width +
 				'x' +
-				this._size.height;
+				this._size.height +
+				(this.config.localization.language !== '' ? `&language=${this.config.localization.language}` : '') +
+				(this.config.localization.region !== '' ? `&region=${this.config.localization.region}` : '');
 			image.onerror = () => {
 				// Check if needed
 				this.mapEvents.trigger(
@@ -115,12 +117,16 @@ namespace Provider.Maps.Google.OSMap {
 			};
 		}
 
+		public get addedEvents(): Array<string> {
+			throw new Error('StaticMap provider has no events');
+		}
+
 		public get mapTag(): string {
 			return OSFramework.Maps.Helper.Constants.staticMapTag;
 		}
 
-		public get addedEvents(): Array<string> {
-			throw new Error('StaticMap provider has no events');
+		public get useAdvancedMarkers(): boolean {
+			return this.config.useAdvancedMarkers;
 		}
 
 		public addMarker(marker: OSFramework.Maps.Marker.IMarker): OSFramework.Maps.Marker.IMarker {

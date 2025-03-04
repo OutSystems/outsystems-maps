@@ -5,8 +5,13 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.SharedComponents {
 	let googleMapsLoadPromise = undefined;
-	export function InitializeScripts(apiKey: string, cb: () => void): void {
-		if (typeof google === 'object' && typeof google.maps === 'object') {
+	let googleMapsIsLoaded = false;
+	export function InitializeScripts(
+		apiKey: string,
+		localization: OSFramework.Maps.OSStructures.OSMap.Localization,
+		cb: () => void
+	): void {
+		if (googleMapsIsLoaded) {
 			cb();
 		} else {
 			/**
@@ -22,18 +27,23 @@ namespace Provider.Maps.Google.SharedComponents {
 						window.GMCB = undefined;
 						resolve(0);
 						googleMapsLoadPromise = undefined;
+						googleMapsIsLoaded = true;
 					};
+
 					const script = document.createElement('script');
+
 					script.src =
-						`${OSFramework.Maps.Helper.Constants.googleMapsApiMap}?` +
+						`${Constants.googleMapsApiMap}?` +
 						`key=${apiKey}` +
-						`&libraries=${OSFramework.Maps.Helper.Constants.gmlibraries}` +
-						`&v=${OSFramework.Maps.Helper.Constants.gmversion}` +
+						`&libraries=${Constants.GoogleMapsLibraries}` +
+						`&v=${Version.Get()}` +
 						`&loading=async` +
-						`&callback=GMCB`;
+						`&callback=GMCB` +
+						(localization.language !== '' ? `&language=${localization.language}` : '') +
+						(localization.region !== '' ? `&region=${localization.region}` : '');
 					script.async = true;
 					script.defer = true;
-					script.id = OSFramework.Maps.Helper.Constants.googleMapsScript;
+					script.id = Constants.googleMapsScript;
 					document.head.appendChild(script);
 				});
 			}

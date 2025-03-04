@@ -18,20 +18,22 @@ namespace Provider.Maps.Google.DrawingTools {
 		}
 
 		private _setOnChangeEvent(_marker: OSFramework.Maps.Marker.IMarker): void {
-			const markerProvider = _marker.provider as google.maps.Marker;
 			_marker.markerEvents.addHandler(
 				// changing the marker location is only available via the drag-and-drop, so the solution passes by adding the dragend event listener as the marker's OnChanged event
 				'dragend' as OSFramework.Maps.Event.Marker.MarkerEventType,
 				// Trigger the onDrawingChangeEvent with the extra information (marker uniqueId and flag indicating that the element is not new)
 				() => {
+					const _latitude = Helper.Conversions.GetCoordinateValue(_marker.getPosition().lat);
+					const _longitude = Helper.Conversions.GetCoordinateValue(_marker.getPosition().lng);
+
 					this.triggerOnDrawingChangeEvent(
 						_marker.uniqueId,
 						false,
 						JSON.stringify({
-							Lat: markerProvider.getPosition().lat(),
-							Lng: markerProvider.getPosition().lng(),
+							Lat: _latitude,
+							Lng: _longitude,
 						}),
-						`${markerProvider.getPosition().lat()}, ${markerProvider.getPosition().lng()}`
+						`${_latitude}, ${_longitude}`
 					);
 				}
 			);
@@ -42,11 +44,11 @@ namespace Provider.Maps.Google.DrawingTools {
 			return OSFramework.Maps.Helper.Constants.drawingMarkerCompleted;
 		}
 
-		public get options(): google.maps.MarkerOptions {
+		public get options(): GoogleMapsMarkerOptions {
 			return this.drawingTools.provider.get('markerOptions');
 		}
 
-		protected set options(options: google.maps.MarkerOptions) {
+		protected set options(options: GoogleMapsMarkerOptions) {
 			const allOptions = { ...this.options, ...options };
 			this.drawingTools.provider.setOptions({
 				markerOptions: allOptions,
@@ -55,13 +57,24 @@ namespace Provider.Maps.Google.DrawingTools {
 
 		protected createElement(
 			uniqueId: string,
-			marker: google.maps.Marker,
+			marker: GoogleMapsMarker,
 			configs: unknown[]
 		): OSFramework.Maps.Marker.IMarker {
-			const location = `${marker.getPosition().lat()},${marker.getPosition().lng()}`;
+			let position = undefined;
 
-			this._latLng.lat = marker.getPosition().lat();
-			this._latLng.lng = marker.getPosition().lng();
+			if (Helper.TypeChecker.IsAdvancedMarker(marker)) {
+				position = (marker as google.maps.marker.AdvancedMarkerElement).position;
+			} else {
+				position = (marker as google.maps.Marker).getPosition();
+			}
+
+			const _latitude = Helper.Conversions.GetCoordinateValue(position.lat);
+			const _longitude = Helper.Conversions.GetCoordinateValue(position.lng);
+
+			const location = `${_latitude},${_longitude}`;
+
+			this._latLng.lat = _latitude;
+			this._latLng.lng = _longitude;
 
 			// Join both the configs that were provided for the new marker element and the location that was provided by the DrawingTools markercomplete event
 			const finalConfigs = { ...configs, location };

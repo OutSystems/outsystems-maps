@@ -6,7 +6,7 @@ namespace Provider.Maps.Google.Shape {
 		T extends OSFramework.Maps.Configuration.IConfigurationShape,
 		W extends google.maps.MVCObject,
 	> extends OSFramework.Maps.Shape.AbstractShape<W, T> {
-		private _shapeChangedEventTimeout: number;
+		private _shapeChangedEventTimeout: number | NodeJS.Timeout;
 
 		private _resetShapeEvents(): void {
 			// Make sure the listeners get removed before adding the new ones

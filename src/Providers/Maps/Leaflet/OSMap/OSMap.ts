@@ -19,8 +19,8 @@ namespace Provider.Maps.Leaflet.OSMap {
 			);
 			this._addedEvents = [];
 			// Set the openStreetMapLayer with the URL and the attribution needed
-			this._openStreetMapLayer = new L.TileLayer(OSFramework.Maps.Helper.Constants.openStreetMapTileLayer.url, {
-				attribution: OSFramework.Maps.Helper.Constants.openStreetMapTileLayer.attribution,
+			this._openStreetMapLayer = new L.TileLayer(Constants.openStreetMapTileLayer.url, {
+				attribution: Constants.openStreetMapTileLayer.attribution,
 			});
 		}
 
@@ -260,7 +260,7 @@ namespace Provider.Maps.Leaflet.OSMap {
 			this._provider = undefined;
 		}
 
-		public refresh(): void {
+		public refresh(centerChanged?: boolean): void {
 			//Let's stop listening to the zoom event be caused by the refreshZoom
 			this._removeMapZoomHandler();
 
@@ -277,11 +277,15 @@ namespace Provider.Maps.Leaflet.OSMap {
 						//If the user hasn't change zoom, or the developer is ignoring
 						//it (current behavior), then the map will be centered tentatively
 						//in the first marker.
-						position = markerProvider.getLatLng();
+						if (this.features.zoom.isAutofit) {
+							position = markerProvider.getLatLng();
+						}
 					} else {
 						//If the user has zoomed and the developer intends to respect user zoom
 						//then the current map center will be used.
-						position = this.provider.getCenter();
+						position = centerChanged
+							? (this.config.center as OSFramework.Maps.OSStructures.OSMap.Coordinates)
+							: this.provider.getCenter();
 					}
 				} else if (markerProvider !== undefined) {
 					//If there's only one marker, and is already created, its location will be
@@ -290,13 +294,8 @@ namespace Provider.Maps.Leaflet.OSMap {
 				}
 			}
 
-			// Refresh the center position
-			this.features.center.refreshCenter(position);
-
-			if (this.allowRefreshZoom) {
-				// Refresh the zoom
-				this.features.zoom.refreshZoom();
-			}
+			// Refresh the center position and zoom if needed
+			this.features.center.refreshCenter(position, this.allowRefreshZoom);
 
 			// Refresh the offset
 			this.features.offset.setOffset(this.features.offset.getOffset);

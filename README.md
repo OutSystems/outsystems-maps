@@ -1,4 +1,7 @@
-# OutSystems Maps · [![GitHub license](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/OutSystems/outsystems-maps/blob/master/LICENSE) ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg) 
+# OutSystems Maps · v2.0.1
+
+![GitHub License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg) ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
+
 
 Add maps to your applications **OutSystems Reactive Web apps** with a single or multiple locations. Fully customizable and adaptable, allows you to change map behaviors, customize your map, add markers and customize each of them, according to your use case.
 

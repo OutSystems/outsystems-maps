@@ -4,4 +4,8 @@ namespace OSFramework.Maps.OSStructures.OSMap {
 		public offsetX: number;
 		public offsetY: number;
 	}
+	export class Localization {
+		public language: string;
+		public region: string;
+	}
 }
