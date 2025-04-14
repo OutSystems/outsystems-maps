@@ -341,9 +341,12 @@ namespace Provider.Maps.Google.OSMap {
 		public changeProperty(propertyName: string, propertyValue: unknown): void {
 			const propValue = OSFramework.Maps.Enum.OS_Config_Map[propertyName];
 
-			// Changing the useAdvancedMarkers property is not allowed after the map is created.
-			// An error is triggered if the property is changed after the map is created.
-			if (OSFramework.Maps.Enum.OS_Config_Map.useAdvancedMarkers !== propValue) {
+			// Changing the useAdvancedMarkers/mapStyleId properties is not allowed after the map is created.
+			// An error is triggered if the properties are changed after the map is created.
+			if (
+				OSFramework.Maps.Enum.OS_Config_Map.useAdvancedMarkers !== propValue &&
+				OSFramework.Maps.Enum.OS_Config_Map.mapStyleId !== propValue
+			) {
 				super.changeProperty(propertyName, propertyValue);
 			}
 
@@ -403,6 +406,13 @@ namespace Provider.Maps.Google.OSMap {
 							OSFramework.Maps.Event.OSMap.MapEventType.OnError,
 							this,
 							OSFramework.Maps.Enum.ErrorCodes.GEN_InvalidChangePropertyUseAdvancedMarkers
+						);
+						break;
+					case OSFramework.Maps.Enum.OS_Config_Map.mapStyleId:
+						this.mapEvents.trigger(
+							OSFramework.Maps.Event.OSMap.MapEventType.OnError,
+							this,
+							OSFramework.Maps.Enum.ErrorCodes.GEN_InvalidChangePropertyMapStyleId
 						);
 						break;
 				}
