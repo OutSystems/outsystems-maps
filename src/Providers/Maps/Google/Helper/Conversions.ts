@@ -74,6 +74,27 @@ namespace Provider.Maps.Google.Helper.Conversions {
 	}
 
 	/**
+	 * Converts a string with coordinates into a google.maps.LatLngLiteral object.
+	 *
+	 * @export
+	 * @param {string} coordinates
+	 * @return {*}  {google.maps.LatLngLiteral}
+	 */
+	export function GetCoordinatesFromString(coordinates: string): google.maps.LatLngLiteral {
+		let latitude: number;
+		let longitude: number;
+		// split the coordinates into latitude and longitude
+		if (coordinates.indexOf(',') > -1) {
+			latitude = parseFloat(coordinates.split(',')[0].replace(' ', ''));
+			longitude = parseFloat(coordinates.split(',')[1].replace(' ', ''));
+
+			return { lat: latitude, lng: longitude };
+		} else {
+			return { lat: 0, lng: 0 };
+		}
+	}
+
+	/**
 	 * Get the value of a coordinate, if it is a function, call it and get the value
 	 *
 	 * @export
