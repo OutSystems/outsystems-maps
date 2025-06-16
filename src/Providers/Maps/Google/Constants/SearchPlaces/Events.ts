@@ -6,4 +6,8 @@ namespace Provider.Maps.Google.Constants.SearchPlaces {
 	export enum EventsV1 {
 		OnPlaceSelect = 'place_changed',
 	}
+
+	export enum EventsV2 {
+		OnPlaceSelect = 'gmp-select',
+	}
 }

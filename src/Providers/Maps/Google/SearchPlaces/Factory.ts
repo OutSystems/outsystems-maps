@@ -10,6 +10,8 @@ namespace Provider.Maps.Google.SearchPlaces {
 			switch (searchPlacesVersion) {
 				case OSFramework.Maps.Enum.GoogleSearchPlacesApiVersion.v1:
 					return new SearchPlaces(searchPlacesId, configs);
+				case OSFramework.Maps.Enum.GoogleSearchPlacesApiVersion.v2:
+					return new SearchPlacesV2(searchPlacesId, configs);
 			}
 		}
 	}
