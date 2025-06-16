@@ -10,7 +10,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 		private _scriptCallback: OSFramework.Maps.Callbacks.Generic;
 
 		constructor(searchPlacesId: string, configs: JSON) {
-			super(searchPlacesId, new Configuration.SearchPlaces.SearchPlacesConfig(configs));
+			super(searchPlacesId, new Configuration.SearchPlaces.SearchPlacesConfigV1(configs));
 			this._addedEvents = [];
 			this._scriptCallback = this._createGooglePlaces.bind(this);
 		}
@@ -71,7 +71,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 			this._prepareProviderConfigs(true);
 		}
 
-		private _createProvider(configs: Configuration.SearchPlaces.ISearchPlacesProviderConfig): void {
+		private _createProvider(configs: Configuration.SearchPlaces.ISearchPlacesProviderConfigV1): void {
 			// This is to guarantee that the widget was not disposed before reaching this method
 			const placesElement = OSFramework.Maps.Helper.GetElementByUniqueId(this.uniqueId, false);
 
@@ -107,7 +107,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 		private _prepareProviderConfigs(moduleAvailable: boolean): void {
 			if (moduleAvailable) {
 				const local_configs =
-					this.getProviderConfig() as Configuration.SearchPlaces.ISearchPlacesProviderConfig;
+					this.getProviderConfig() as Configuration.SearchPlaces.ISearchPlacesProviderConfigV1;
 				// If all searchArea bounds are empty, then we don't want to create a searchArea
 				// If not, create a searchArea with the bounds that were specified
 				// But if one of the bounds is empty, throw an error
@@ -156,8 +156,8 @@ namespace Provider.Maps.Google.SearchPlaces {
 				)
 			) {
 				// Add the event OnPlaceSelect into the addedEvents auxiliar list
-				this._addedEvents.push(Constants.SearchPlaces.Events.OnPlaceSelect);
-				this._provider.addListener(Constants.SearchPlaces.Events.OnPlaceSelect, () => {
+				this._addedEvents.push(Constants.SearchPlaces.EventsV1.OnPlaceSelect);
+				this._provider.addListener(Constants.SearchPlaces.EventsV1.OnPlaceSelect, () => {
 					const place = this._provider.getPlace();
 					const spParams: OSFramework.Maps.SearchPlaces.ISearchPlacesEventParams = {
 						name: place.name,
@@ -172,7 +172,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 						this.searchPlacesEvents.trigger(
 							OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType.OnPlaceSelect,
 							this, // searchPlacesObj
-							Constants.SearchPlaces.Events.OnPlaceSelect, // event name (eventInfo)
+							Constants.SearchPlaces.EventsV1.OnPlaceSelect, // event name (eventInfo)
 							// Extra parameters to be passed as arguments on the callback of the OnPlaceSelect event handler
 							spParams
 						);

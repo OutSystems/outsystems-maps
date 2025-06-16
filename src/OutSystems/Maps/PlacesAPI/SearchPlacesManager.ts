@@ -28,11 +28,13 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager {
 	 */
 	export function CreateSearchPlaces(
 		searchPlacesId: string,
-		configs: string
+		configs: string,
+		apiversion: string
 	): OSFramework.Maps.SearchPlaces.ISearchPlaces {
 		const _searchPlaces = Provider.Maps.Google.SearchPlaces.SearchPlacesFactory.MakeSearchPlaces(
 			searchPlacesId,
-			JSON.parse(configs)
+			JSON.parse(configs),
+			apiversion
 		);
 
 		if (searchPlacesMap.has(searchPlacesId)) {
@@ -143,12 +145,13 @@ namespace PlacesAPI.SearchPlacesManager {
 
 	export function CreateSearchPlaces(
 		searchPlacesId: string,
-		configs: string
+		configs: string,
+		apiVersion: string
 	): OSFramework.Maps.SearchPlaces.ISearchPlaces {
 		OSFramework.Maps.Helper.LogWarningMessage(
 			`${OSFramework.Maps.Helper.warningMessage}  'OutSystems.Maps.PlacesAPI.SearchPlacesManager.CreateSearchPlaces()'`
 		);
-		return OutSystems.Maps.PlacesAPI.SearchPlacesManager.CreateSearchPlaces(searchPlacesId, configs);
+		return OutSystems.Maps.PlacesAPI.SearchPlacesManager.CreateSearchPlaces(searchPlacesId, configs, apiVersion);
 	}
 
 	export function GetActiveSearchPlaces(): OSFramework.Maps.SearchPlaces.ISearchPlaces {

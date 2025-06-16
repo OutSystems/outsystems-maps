@@ -1,17 +1,9 @@
 /// <reference path="../../../../../OSFramework/Maps/Configuration/AbstractConfiguration.ts" />
+/// <reference path="./AbstractSearchPlacesConfig.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.Configuration.SearchPlaces {
-	export class SearchPlacesConfigV1
-		extends OSFramework.Maps.Configuration.AbstractConfiguration
-		implements OSFramework.Maps.Configuration.IConfigurationSearchPlaces
-	{
-		public apiKey: string;
-		public countries: Array<string>;
-		public localization: OSFramework.Maps.OSStructures.OSMap.Localization;
-		public searchArea: OSFramework.Maps.OSStructures.OSMap.BoundsString;
-		public searchType: OSFramework.Maps.Enum.SearchTypes;
-
+	export class SearchPlacesConfigV1 extends AbstractSearchPlacesConfig {
 		public getProviderConfig(): ISearchPlacesProviderConfigV1 {
 			// eslint-disable-next-line prefer-const
 			let provider: ISearchPlacesProviderConfigV1 = {
