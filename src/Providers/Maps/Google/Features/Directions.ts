@@ -96,7 +96,7 @@ namespace Provider.Maps.Google.Feature {
 				this._currRouteTime = parseInt(firstRoute.duration);
 				this._currRouteDistance = firstRoute.distanceMeters;
 
-				this._currRouteLegs = firstRoute.legs[0].steps;
+				this._currRouteLegs = this._retriveLegsFromRoute ? firstRoute.legs[0].steps : undefined;
 
 				const result = this._routeRenderer.renderRoute(firstRoute.polyline.encodedPolyline);
 
@@ -286,7 +286,7 @@ namespace Provider.Maps.Google.Feature {
 					body: JSON.stringify(this._getRoutesRequestBody(directionOptions)),
 				})
 					.then((response) => {
-						if (response.status !== 200) {
+						if (response.status === 200) {
 							response
 								.json()
 								.then((responseJSON) => {
