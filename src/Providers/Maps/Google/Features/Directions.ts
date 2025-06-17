@@ -116,7 +116,7 @@ namespace Provider.Maps.Google.Feature {
 		private _waypointsCleanup(waypoints: string[]): Types.Waypoint[] {
 			return waypoints.reduce((acc, curr) => {
 				const isCoordinates = Helper.TypeChecker.IsValidCoordinates(curr);
-				const waypoint: Types.Waypoint = {
+				const waypoint: Types.Waypoint = this._createWaypoint(curr, true);
 					location: isCoordinates
 						? {
 								latLng: Helper.Conversions.GetCoordinatesFromString(curr),
