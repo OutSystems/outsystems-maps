@@ -50,6 +50,20 @@ namespace Provider.Maps.Google.Feature {
 			return travelMode;
 		}
 
+		/** Creates a waypoint for the directions request. */
+		private _createWaypoint(coordinates: string): Types.Waypoint {
+			const isCoordinates = Helper.TypeChecker.IsValidCoordinates(coordinates);
+			const local = isCoordinates
+				? { latLng: Helper.Conversions.GetCoordinatesFromString(coordinates) }
+				: undefined;
+			const address = isCoordinates ? undefined : coordinates;
+			return {
+				location: local,
+				address: address,
+				via: true,
+			};
+		}
+
 		/** Builds the request body for the Google Maps Directions API. */
 		private _getRoutesRequestBody(
 			directionOptions: OSFramework.Maps.OSStructures.Directions.Options
@@ -115,16 +129,7 @@ namespace Provider.Maps.Google.Feature {
 		/** Makes sure all waypoints from a list of locations (string) gets converted into a list of {location, stopover}. */
 		private _waypointsCleanup(waypoints: string[]): Types.Waypoint[] {
 			return waypoints.reduce((acc, curr) => {
-				const isCoordinates = Helper.TypeChecker.IsValidCoordinates(curr);
-				const waypoint: Types.Waypoint = this._createWaypoint(curr, true);
-					location: isCoordinates
-						? {
-								latLng: Helper.Conversions.GetCoordinatesFromString(curr),
-							}
-						: undefined,
-					address: isCoordinates ? undefined : curr,
-					via: true,
-				};
+				const waypoint: Types.Waypoint = this._createWaypoint(curr);
 				acc.push(waypoint);
 				return acc;
 			}, [] as Types.Waypoint[]);
