@@ -38,5 +38,5 @@ namespace Provider.Maps.Google.Constants {
 	// Used to check if modules are available on cycles of 100ms */
 	export const checkGoogleMapsLibrariesMaxAttempts = 25;
 	// Version of the Google Maps to be loaded.
-	export const googleMapsVersion = '3.60'; //Stable version Mid-November 2024.
+	export const googleMapsVersion = '3.60'; //Stable version May 2025.
 }
