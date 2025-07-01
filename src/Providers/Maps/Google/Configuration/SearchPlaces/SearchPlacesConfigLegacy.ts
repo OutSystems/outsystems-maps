@@ -1,9 +1,10 @@
 /// <reference path="../../../../../OSFramework/Maps/Configuration/AbstractConfiguration.ts" />
+/// <reference path="./AbstractSearchPlacesConfig.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.Configuration.SearchPlaces {
 	export class SearchPlacesConfigLegacy
-		extends OSFramework.Maps.Configuration.AbstractConfiguration
+		extends AbstractSearchPlacesConfig
 		implements OSFramework.Maps.Configuration.IConfigurationSearchPlaces
 	{
 		public apiKey: string;
