@@ -2,7 +2,7 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.Configuration.SearchPlaces {
-	export class SearchPlacesConfig
+	export class SearchPlacesConfigLegacy
 		extends OSFramework.Maps.Configuration.AbstractConfiguration
 		implements OSFramework.Maps.Configuration.IConfigurationSearchPlaces
 	{
@@ -12,15 +12,15 @@ namespace Provider.Maps.Google.Configuration.SearchPlaces {
 		public searchArea: OSFramework.Maps.OSStructures.OSMap.BoundsString;
 		public searchType: OSFramework.Maps.Enum.SearchTypes;
 
-		public getProviderConfig(): ISearchPlacesProviderConfig {
+		public getProviderConfig(): ISearchPlacesProviderConfigLegacy {
 			// eslint-disable-next-line prefer-const
-			let provider: ISearchPlacesProviderConfig = {
+			let provider: ISearchPlacesProviderConfigLegacy = {
 				bounds: this.searchArea,
 				strictBounds: !!this.searchArea,
 				componentRestrictions: this.countries ? { country: this.countries } : undefined,
 				types: this.searchType
 					? // eslint-disable-next-line @typescript-eslint/no-unused-vars
-						[Google.SearchPlaces.SearchTypes[this.searchType]]
+						[Google.SearchPlaces.SearchTypesLegacy[this.searchType]]
 					: undefined,
 			};
 

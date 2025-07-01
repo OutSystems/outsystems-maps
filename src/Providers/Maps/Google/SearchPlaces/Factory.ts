@@ -5,7 +5,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 			searchPlacesId: string,
 			configs: JSON
 		): OSFramework.Maps.SearchPlaces.ISearchPlaces {
-			return new SearchPlaces(searchPlacesId, configs);
+			return new SearchPlacesLegacy(searchPlacesId, configs);
 		}
 	}
 }

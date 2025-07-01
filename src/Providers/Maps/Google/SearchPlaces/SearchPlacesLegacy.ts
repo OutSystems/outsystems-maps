@@ -2,7 +2,7 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.SearchPlaces {
-	export class SearchPlaces extends OSFramework.Maps.SearchPlaces.AbstractSearchPlaces<
+	export class SearchPlacesLegacy extends OSFramework.Maps.SearchPlaces.AbstractSearchPlaces<
 		google.maps.places.Autocomplete,
 		OSFramework.Maps.Configuration.IConfigurationSearchPlaces
 	> {
@@ -10,7 +10,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 		private _scriptCallback: OSFramework.Maps.Callbacks.Generic;
 
 		constructor(searchPlacesId: string, configs: JSON) {
-			super(searchPlacesId, new Configuration.SearchPlaces.SearchPlacesConfig(configs));
+			super(searchPlacesId, new Configuration.SearchPlaces.SearchPlacesConfigLegacy(configs));
 			this._addedEvents = [];
 			this._scriptCallback = this._createGooglePlaces.bind(this);
 		}
@@ -71,7 +71,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 			this._prepareProviderConfigs(true);
 		}
 
-		private _createProvider(configs: Configuration.SearchPlaces.ISearchPlacesProviderConfig): void {
+		private _createProvider(configs: Configuration.SearchPlaces.ISearchPlacesProviderConfigLegacy): void {
 			// This is to guarantee that the widget was not disposed before reaching this method
 			const placesElement = OSFramework.Maps.Helper.GetElementByUniqueId(this.uniqueId, false);
 
@@ -107,7 +107,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 		private _prepareProviderConfigs(moduleAvailable: boolean): void {
 			if (moduleAvailable) {
 				const local_configs =
-					this.getProviderConfig() as Configuration.SearchPlaces.ISearchPlacesProviderConfig;
+					this.getProviderConfig() as Configuration.SearchPlaces.ISearchPlacesProviderConfigLegacy;
 				// If all searchArea bounds are empty, then we don't want to create a searchArea
 				// If not, create a searchArea with the bounds that were specified
 				// But if one of the bounds is empty, throw an error
@@ -284,7 +284,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 						);
 					case OSFramework.Maps.Enum.OS_Config_SearchPlaces.searchType:
 						return this.provider.setTypes([
-							Provider.Maps.Google.SearchPlaces.SearchTypes[propertyValue as string],
+							Provider.Maps.Google.SearchPlaces.SearchTypesLegacy[propertyValue as string],
 						]);
 				}
 			}
