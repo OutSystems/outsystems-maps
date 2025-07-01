@@ -1,9 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.Constants.SearchPlaces {
 	/**
-	 * Array of strings that define the available Provider Events
+	 * Enum of strings that define the available Provider Events
 	 */
-	export enum Events {
+	export enum EventsLegacy {
 		OnPlaceSelect = 'place_changed',
 	}
 }
