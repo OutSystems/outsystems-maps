@@ -3,7 +3,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 	/**
 	 * Internal type definition
 	 */
-	export enum SearchTypesLegacy {
+	export enum SearchTypes {
 		Addresses = 'address',
 		Cities = '(cities)',
 		Establishments = 'establishment',

@@ -156,8 +156,8 @@ namespace Provider.Maps.Google.SearchPlaces {
 				)
 			) {
 				// Add the event OnPlaceSelect into the addedEvents auxiliar list
-				this._addedEvents.push(Constants.SearchPlaces.Events.OnPlaceSelect);
-				this._provider.addListener(Constants.SearchPlaces.Events.OnPlaceSelect, () => {
+				this._addedEvents.push(Constants.SearchPlaces.EventsLegacy.OnPlaceSelect);
+				this._provider.addListener(Constants.SearchPlaces.EventsLegacy.OnPlaceSelect, () => {
 					const place = this._provider.getPlace();
 					const spParams: OSFramework.Maps.SearchPlaces.ISearchPlacesEventParams = {
 						name: place.name,
@@ -172,7 +172,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 						this.searchPlacesEvents.trigger(
 							OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType.OnPlaceSelect,
 							this, // searchPlacesObj
-							Constants.SearchPlaces.Events.OnPlaceSelect, // event name (eventInfo)
+							Constants.SearchPlaces.EventsLegacy.OnPlaceSelect, // event name (eventInfo)
 							// Extra parameters to be passed as arguments on the callback of the OnPlaceSelect event handler
 							spParams
 						);
@@ -284,7 +284,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 						);
 					case OSFramework.Maps.Enum.OS_Config_SearchPlaces.searchType:
 						return this.provider.setTypes([
-							Provider.Maps.Google.SearchPlaces.SearchTypesLegacy[propertyValue as string],
+							Provider.Maps.Google.SearchPlaces.SearchTypes[propertyValue as string],
 						]);
 				}
 			}

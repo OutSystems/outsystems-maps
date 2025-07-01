@@ -20,7 +20,7 @@ namespace Provider.Maps.Google.Configuration.SearchPlaces {
 				componentRestrictions: this.countries ? { country: this.countries } : undefined,
 				types: this.searchType
 					? // eslint-disable-next-line @typescript-eslint/no-unused-vars
-						[Google.SearchPlaces.SearchTypesLegacy[this.searchType]]
+						[Google.SearchPlaces.SearchTypes[this.searchType]]
 					: undefined,
 			};
 

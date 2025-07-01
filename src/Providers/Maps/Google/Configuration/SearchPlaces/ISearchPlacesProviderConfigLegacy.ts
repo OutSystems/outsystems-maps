@@ -4,6 +4,6 @@ namespace Provider.Maps.Google.Configuration.SearchPlaces {
 		bounds?: OSFramework.Maps.OSStructures.OSMap.BoundsString;
 		componentRestrictions: { country: string[] };
 		strictBounds?: boolean;
-		types: [Google.SearchPlaces.SearchTypesLegacy];
+		types: [Google.SearchPlaces.SearchTypes];
 	}
 }
