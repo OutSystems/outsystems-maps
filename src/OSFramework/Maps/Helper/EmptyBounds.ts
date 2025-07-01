@@ -2,6 +2,9 @@
 namespace OSFramework.Maps.Helper {
 	/** Check if all bounds (north, south, east or west) are empty. If one or more are not, then return False */
 	export function HasAllEmptyBounds(location: OSStructures.OSMap.BoundsString): boolean {
+		if (!location) {
+			return true;
+		}
 		return (
 			IsEmptyString(location.north) &&
 			IsEmptyString(location.south) &&
@@ -12,6 +15,9 @@ namespace OSFramework.Maps.Helper {
 
 	/** Check if any of the bounds (north, south, east or west) is empty. If one or more are empty, then return True */
 	export function HasAnyEmptyBound(location: OSStructures.OSMap.BoundsString): boolean {
+		if (!location) {
+			return true;
+		}
 		return (
 			IsEmptyString(location.north) ||
 			IsEmptyString(location.south) ||
