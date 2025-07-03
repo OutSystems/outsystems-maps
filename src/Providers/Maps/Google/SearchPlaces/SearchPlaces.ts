@@ -56,18 +56,6 @@ namespace Provider.Maps.Google.SearchPlaces {
 			if (this._built === undefined) {
 				return;
 			}
-			const script = document.getElementById(Constants.googleMapsScript) as HTMLScriptElement;
-
-			// Make sure the GoogleMaps script in the <head> of the html page contains the same apiKey as the one in the configs.
-			const apiKey = /key=(.*)&libraries/.exec(script.src)[1];
-			if (this.config.apiKey !== apiKey) {
-				return this.searchPlacesEvents.trigger(
-					OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType.OnError,
-					this,
-					OSFramework.Maps.Enum.ErrorCodes.CFG_APIKeyDiffersFromPlacesToMaps
-				);
-			}
-
 			this._prepareProviderConfigs(!!google?.maps?.places?.PlaceAutocompleteElement);
 		}
 
