@@ -3,7 +3,7 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.Configuration.SearchPlaces {
-	export class SearchPlacesConfigLegacy
+	export class SearchPlacesLegacyConfig
 		extends AbstractSearchPlacesConfig
 		implements OSFramework.Maps.Configuration.IConfigurationSearchPlaces
 	{

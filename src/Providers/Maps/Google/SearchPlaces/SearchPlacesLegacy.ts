@@ -10,7 +10,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 		private _scriptCallback: OSFramework.Maps.Callbacks.Generic;
 
 		constructor(searchPlacesId: string, configs: JSON) {
-			super(searchPlacesId, new Configuration.SearchPlaces.SearchPlacesConfigLegacy(configs));
+			super(searchPlacesId, new Configuration.SearchPlaces.SearchPlacesLegacyConfig(configs));
 			this._addedEvents = [];
 			this._scriptCallback = this._createGooglePlaces.bind(this);
 		}
