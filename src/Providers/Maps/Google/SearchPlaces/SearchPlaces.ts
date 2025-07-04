@@ -2,15 +2,15 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.SearchPlaces {
-	export class SearchPlacesLegacy extends OSFramework.Maps.SearchPlaces.AbstractSearchPlaces<
-		google.maps.places.Autocomplete,
+	export class SearchPlaces extends OSFramework.Maps.SearchPlaces.AbstractSearchPlaces<
+		google.maps.places.PlaceAutocompleteElement,
 		OSFramework.Maps.Configuration.IConfigurationSearchPlaces
 	> {
-		private _addedEvents: Array<string>;
+		private readonly _addedEvents: Array<string>;
 		private _scriptCallback: OSFramework.Maps.Callbacks.Generic;
 
 		constructor(searchPlacesId: string, configs: JSON) {
-			super(searchPlacesId, new Configuration.SearchPlaces.SearchPlacesLegacyConfig(configs));
+			super(searchPlacesId, new Configuration.SearchPlaces.SearchPlacesConfig(configs));
 			this._addedEvents = [];
 			this._scriptCallback = this._createGooglePlaces.bind(this);
 		}
@@ -56,34 +56,19 @@ namespace Provider.Maps.Google.SearchPlaces {
 			if (this._built === undefined) {
 				return;
 			}
-			const script = document.getElementById(Constants.googleMapsScript) as HTMLScriptElement;
-
-			// Make sure the GoogleMaps script in the <head> of the html page contains the same apiKey as the one in the configs.
-			const apiKey = /key=(.*)&libraries/.exec(script.src)[1];
-			if (this.config.apiKey !== apiKey) {
-				return this.searchPlacesEvents.trigger(
-					OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType.OnError,
-					this,
-					OSFramework.Maps.Enum.ErrorCodes.CFG_APIKeyDiffersFromPlacesToMaps
-				);
-			}
-
-			this._prepareProviderConfigs(true);
+			this._prepareProviderConfigs(!!google?.maps?.places?.PlaceAutocompleteElement);
 		}
 
-		private _createProvider(configs: Configuration.SearchPlaces.ISearchPlacesLegacyProviderConfig): void {
+		private _createProvider(configs: Configuration.SearchPlaces.ISearchPlacesProviderConfig): void {
 			// This is to guarantee that the widget was not disposed before reaching this method
 			const placesElement = OSFramework.Maps.Helper.GetElementByUniqueId(this.uniqueId, false);
-
 			if (placesElement !== undefined) {
-				const input: HTMLInputElement = placesElement.querySelector(
-					`${OSFramework.Maps.Helper.Constants.runtimeSearchPlacesUniqueIdCss} input`
-				);
-				if (this._validInput(input) === false) return;
-
 				// SearchPlaces(input, options)
-				this._provider = new google.maps.places.Autocomplete(input, configs as unknown);
+				this._provider = new google.maps.places.PlaceAutocompleteElement(configs as unknown);
 				// Check if the provider has been created with a valid APIKey
+
+				placesElement.appendChild(this.provider);
+
 				window[Constants.googleMapsAuthFailure] = () => {
 					this.searchPlacesEvents.trigger(
 						OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType.OnError,
@@ -104,20 +89,20 @@ namespace Provider.Maps.Google.SearchPlaces {
 		 * @private
 		 * @memberof SearchPlaces
 		 */
-		private _prepareProviderConfigs(moduleAvailable: boolean): void {
-			if (moduleAvailable) {
+		private _prepareProviderConfigs(isModuleAvailable: boolean): void {
+			if (isModuleAvailable) {
 				const local_configs =
-					this.getProviderConfig() as Configuration.SearchPlaces.ISearchPlacesLegacyProviderConfig;
+					this.getProviderConfig() as Configuration.SearchPlaces.ISearchPlacesProviderConfig;
 				// If all searchArea bounds are empty, then we don't want to create a searchArea
 				// If not, create a searchArea with the bounds that were specified
 				// But if one of the bounds is empty, throw an error
-				if (OSFramework.Maps.Helper.HasAllEmptyBounds(local_configs.bounds) === false) {
-					const bounds = this._convertStringToBounds(local_configs.bounds);
+				if (OSFramework.Maps.Helper.HasAllEmptyBounds(local_configs.locationRestriction) === false) {
+					const bounds = this._convertStringToBounds(local_configs.locationRestriction);
 					// If countries > 5 than throw an error
 					if (this._validCountriesMaxLength(this.config.countries) && bounds !== undefined) {
 						bounds
 							.then((coords: OSFramework.Maps.OSStructures.OSMap.Bounds) => {
-								local_configs.bounds =
+								local_configs.locationRestriction =
 									coords as unknown as OSFramework.Maps.OSStructures.OSMap.BoundsString;
 								this._createProvider(local_configs);
 							})
@@ -132,7 +117,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 							});
 					}
 				} else {
-					delete local_configs.bounds;
+					delete local_configs.locationRestriction;
 					this._createProvider(local_configs);
 				}
 			} else {
@@ -141,7 +126,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 					this,
 					OSFramework.Maps.Enum.ErrorCodes.LIB_FailedGeocodingSearchAreaLocations,
 					undefined,
-					`The google.maps.places lib has not been loaded.`
+					`The google.maps.places lib has not been loaded, or the version of Google Maps does not support it. Requires version > "3.59", loaded version is "${Version.Get()}".`
 				);
 			}
 		}
@@ -156,27 +141,31 @@ namespace Provider.Maps.Google.SearchPlaces {
 				)
 			) {
 				// Add the event OnPlaceSelect into the addedEvents auxiliar list
-				this._addedEvents.push(Constants.SearchPlaces.EventsLegacy.OnPlaceSelect);
-				this._provider.addListener(Constants.SearchPlaces.EventsLegacy.OnPlaceSelect, () => {
-					const place = this._provider.getPlace();
-					const spParams: OSFramework.Maps.SearchPlaces.ISearchPlacesEventParams = {
-						name: place.name,
-						coordinates: JSON.stringify({
-							Lat: place.geometry.location.lat(),
-							Lng: place.geometry.location.lng(),
-						}),
-						address: place.formatted_address,
-					};
+				this._addedEvents.push(Constants.SearchPlaces.Events.OnPlaceSelect);
+				this._provider.addEventListener(
+					Constants.SearchPlaces.Events.OnPlaceSelect,
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					async ({ placePrediction }: any) => {
+						const place = placePrediction.toPlace();
+						await place.fetchFields({ fields: ['displayName', 'formattedAddress', 'location'] });
+						const spParams: OSFramework.Maps.SearchPlaces.ISearchPlacesEventParams = {
+							name: place.displayName,
+							coordinates: JSON.stringify({
+								Lat: Helper.Conversions.GetCoordinateValue(place.location.lat),
+								Lng: Helper.Conversions.GetCoordinateValue(place.location.lng),
+							}),
+							address: place.formattedAddress,
+						};
 
-					place.geometry &&
 						this.searchPlacesEvents.trigger(
 							OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType.OnPlaceSelect,
 							this, // searchPlacesObj
-							Constants.SearchPlaces.EventsLegacy.OnPlaceSelect, // event name (eventInfo)
+							Constants.SearchPlaces.Events.OnPlaceSelect, // event name (eventInfo)
 							// Extra parameters to be passed as arguments on the callback of the OnPlaceSelect event handler
 							spParams
 						);
-				});
+					}
+				);
 			}
 		}
 
@@ -236,7 +225,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 								OSFramework.Maps.Enum.ErrorCodes.CFG_APIKeyAlreadySetSearchPlaces
 							);
 						}
-						return;
+						break;
 					case OSFramework.Maps.Enum.OS_Config_SearchPlaces.localization:
 						// Trigger an error to alert the user that the localization can only be set one time
 						this.searchPlacesEvents.trigger(
@@ -244,7 +233,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 							this,
 							OSFramework.Maps.Enum.ErrorCodes.CFG_LocalizationAlreadySetMap
 						);
-						return;
+						break;
 					case OSFramework.Maps.Enum.OS_Config_SearchPlaces.searchArea:
 						// eslint-disable-next-line no-case-declarations
 						const searchArea = this._buildSearchArea(propertyValue as string);
@@ -252,9 +241,8 @@ namespace Provider.Maps.Google.SearchPlaces {
 						if (searchArea !== undefined) {
 							searchArea
 								.then((bounds) => {
-									this.provider.setBounds(bounds);
+									this.provider.locationBias = bounds;
 									// Make sure the strictBounds are set to True whenever the searchArea changes
-									this.provider.set('strictBounds', true);
 								})
 								.catch((error) => {
 									this.searchPlacesEvents.trigger(
@@ -267,31 +255,35 @@ namespace Provider.Maps.Google.SearchPlaces {
 								});
 						} else {
 							// Remove the bounds from the SearchPlaces and the strictBounds parameter
-							this.provider.set('bounds', null);
-							this.provider.set('strictBounds', false);
+							this.provider.locationBias = undefined;
 						}
-						return;
+						break;
 					case OSFramework.Maps.Enum.OS_Config_SearchPlaces.countries:
 						// eslint-disable-next-line no-case-declarations
-						const countries = JSON.parse(propertyValue as string);
+						const countries = JSON.parse(propertyValue as string) as Array<string>;
 						// If validation returns false -> do nothing
 						// Else set restrictions to component (apply countries)
-						return (
-							this._validCountriesMaxLength(countries) &&
-							this.provider.setComponentRestrictions({
-								country: countries,
-							})
-						);
+
+						this._validCountriesMaxLength(countries) &&
+							// The types of Google Maps are outdated, so we need to cast it to any.
+							// eslint-disable-next-line @typescript-eslint/no-explicit-any
+							((this.provider as any).includedRegionCodes = countries);
+						break;
 					case OSFramework.Maps.Enum.OS_Config_SearchPlaces.searchType:
-						return this.provider.setTypes([
+						// The types of Google Maps are outdated, so we need to cast it to any.
+						// eslint-disable-next-line @typescript-eslint/no-explicit-any
+						(this.provider as any).includedPrimaryTypes = [
 							Provider.Maps.Google.SearchPlaces.SearchTypes[propertyValue as string],
-						]);
+						];
+						break;
 				}
 			}
 		}
 
 		public dispose(): void {
 			this._provider = undefined;
+			this._scriptCallback = undefined;
+			this._addedEvents.length = 0; // Clear the addedEvents array
 			super.dispose();
 		}
 	}
