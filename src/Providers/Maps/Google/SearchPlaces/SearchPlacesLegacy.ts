@@ -236,7 +236,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 								OSFramework.Maps.Enum.ErrorCodes.CFG_APIKeyAlreadySetSearchPlaces
 							);
 						}
-						return;
+						break;
 					case OSFramework.Maps.Enum.OS_Config_SearchPlaces.localization:
 						// Trigger an error to alert the user that the localization can only be set one time
 						this.searchPlacesEvents.trigger(
@@ -244,7 +244,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 							this,
 							OSFramework.Maps.Enum.ErrorCodes.CFG_LocalizationAlreadySetMap
 						);
-						return;
+						break;
 					case OSFramework.Maps.Enum.OS_Config_SearchPlaces.searchArea:
 						// eslint-disable-next-line no-case-declarations
 						const searchArea = this._buildSearchArea(propertyValue as string);
@@ -270,7 +270,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 							this.provider.set('bounds', null);
 							this.provider.set('strictBounds', false);
 						}
-						return;
+						break;
 					case OSFramework.Maps.Enum.OS_Config_SearchPlaces.countries:
 						// eslint-disable-next-line no-case-declarations
 						const countries = JSON.parse(propertyValue as string);
