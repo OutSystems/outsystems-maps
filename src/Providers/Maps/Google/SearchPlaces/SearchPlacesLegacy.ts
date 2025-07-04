@@ -71,7 +71,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 			this._prepareProviderConfigs(true);
 		}
 
-		private _createProvider(configs: Configuration.SearchPlaces.ISearchPlacesProviderConfigLegacy): void {
+		private _createProvider(configs: Configuration.SearchPlaces.ISearchPlacesLegacyProviderConfig): void {
 			// This is to guarantee that the widget was not disposed before reaching this method
 			const placesElement = OSFramework.Maps.Helper.GetElementByUniqueId(this.uniqueId, false);
 
@@ -107,7 +107,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 		private _prepareProviderConfigs(moduleAvailable: boolean): void {
 			if (moduleAvailable) {
 				const local_configs =
-					this.getProviderConfig() as Configuration.SearchPlaces.ISearchPlacesProviderConfigLegacy;
+					this.getProviderConfig() as Configuration.SearchPlaces.ISearchPlacesLegacyProviderConfig;
 				// If all searchArea bounds are empty, then we don't want to create a searchArea
 				// If not, create a searchArea with the bounds that were specified
 				// But if one of the bounds is empty, throw an error

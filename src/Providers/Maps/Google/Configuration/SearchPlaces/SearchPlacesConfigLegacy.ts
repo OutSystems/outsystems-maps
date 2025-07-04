@@ -13,9 +13,9 @@ namespace Provider.Maps.Google.Configuration.SearchPlaces {
 		public searchArea: OSFramework.Maps.OSStructures.OSMap.BoundsString;
 		public searchType: OSFramework.Maps.Enum.SearchTypes;
 
-		public getProviderConfig(): ISearchPlacesProviderConfigLegacy {
+		public getProviderConfig(): ISearchPlacesLegacyProviderConfig {
 			// eslint-disable-next-line prefer-const
-			let provider: ISearchPlacesProviderConfigLegacy = {
+			let provider: ISearchPlacesLegacyProviderConfig = {
 				bounds: this.searchArea,
 				strictBounds: !!this.searchArea,
 				componentRestrictions: this.countries ? { country: this.countries } : undefined,

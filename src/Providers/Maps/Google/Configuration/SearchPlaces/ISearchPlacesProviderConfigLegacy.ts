@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.Configuration.SearchPlaces {
-	export interface ISearchPlacesProviderConfigLegacy {
+	export interface ISearchPlacesLegacyProviderConfig {
 		bounds?: OSFramework.Maps.OSStructures.OSMap.BoundsString;
 		componentRestrictions: { country: string[] };
 		strictBounds?: boolean;
