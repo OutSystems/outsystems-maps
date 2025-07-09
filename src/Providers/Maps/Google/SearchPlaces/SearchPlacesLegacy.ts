@@ -8,6 +8,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 	> {
 		private _addedEvents: Array<string>;
 		private _scriptCallback: OSFramework.Maps.Callbacks.Generic;
+		protected readonly _searchPlacesTag = OSFramework.Maps.Helper.Constants.searchPlacesTag_Legacy;
 
 		constructor(searchPlacesId: string, configs: JSON) {
 			super(searchPlacesId, new Configuration.SearchPlaces.SearchPlacesLegacyConfig(configs));

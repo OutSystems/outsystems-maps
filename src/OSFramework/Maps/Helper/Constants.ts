@@ -28,6 +28,7 @@ namespace OSFramework.Maps.Helper.Constants {
 	export const heatmapLayerTag = '[data-block="HeatmapLayer.HeatmapLayer"]';
 	/** Tag used to find the SearchPlaces */
 	export const searchPlacesTag = '[data-block="SearchPlaces.SearchPlaces"]';
+	export const searchPlacesTag_Legacy = '[data-block="SearchPlacesLegacy.SearchPlaces_Legacy"]';
 
 	/** Tag used to find a generic widget */
 	export const outsystemsWidgetTag = '[data-block]';
