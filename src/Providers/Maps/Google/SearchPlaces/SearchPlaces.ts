@@ -6,7 +6,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 		google.maps.places.PlaceAutocompleteElement,
 		OSFramework.Maps.Configuration.IConfigurationSearchPlaces
 	> {
-		private readonly _addedEvents: Array<string>;
+		private _addedEvents: Array<string>;
 		private _scriptCallback: OSFramework.Maps.Callbacks.Generic;
 		protected readonly _searchPlacesTag = OSFramework.Maps.Helper.Constants.searchPlacesTag;
 
@@ -284,7 +284,7 @@ namespace Provider.Maps.Google.SearchPlaces {
 		public dispose(): void {
 			this._provider = undefined;
 			this._scriptCallback = undefined;
-			this._addedEvents.length = 0; // Clear the addedEvents array
+			this._addedEvents = undefined;
 			super.dispose();
 		}
 	}

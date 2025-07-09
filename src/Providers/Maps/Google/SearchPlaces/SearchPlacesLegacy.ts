@@ -293,6 +293,8 @@ namespace Provider.Maps.Google.SearchPlaces {
 
 		public dispose(): void {
 			this._provider = undefined;
+			this._scriptCallback = undefined;
+			this._addedEvents = undefined;
 			super.dispose();
 		}
 	}
