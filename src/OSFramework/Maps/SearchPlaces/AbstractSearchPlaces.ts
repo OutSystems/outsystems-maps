@@ -11,6 +11,7 @@ namespace OSFramework.Maps.SearchPlaces {
 
 		protected _built: boolean;
 		protected _provider: W;
+		protected abstract readonly _searchPlacesTag: string;
 
 		public abstract addedEvents: Array<string>;
 
@@ -46,7 +47,7 @@ namespace OSFramework.Maps.SearchPlaces {
 
 		private _setWidgetId(): void {
 			this._widgetId = Helper.GetElementByUniqueId(this.uniqueId, false)
-				? Helper.GetElementByUniqueId(this.uniqueId).closest(Helper.Constants.searchPlacesTag).id
+				? Helper.GetElementByUniqueId(this.uniqueId).closest(this._searchPlacesTag).id
 				: undefined;
 		}
 
