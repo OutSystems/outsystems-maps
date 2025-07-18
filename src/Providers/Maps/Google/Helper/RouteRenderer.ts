@@ -64,9 +64,11 @@ namespace Provider.Maps.Google.Helper {
 			this._isRouteRendered && this.removeRoute();
 
 			if (encodedPolyline) {
+				const bounds = new google.maps.LatLngBounds();
 				const routePath = google.maps.geometry.encoding.decodePath(encodedPolyline);
 
 				this._startMarker = this._buildMarker(routePath[0], 'A');
+				bounds.extend(routePath[0]);
 
 				this._pathPolyline = new google.maps.Polyline({
 					path: routePath,
@@ -75,6 +77,9 @@ namespace Provider.Maps.Google.Helper {
 					map: this._map.provider,
 				});
 				this._endMarker = this._buildMarker(routePath[routePath.length - 1], 'B');
+				bounds.extend(routePath[routePath.length - 1]);
+
+				this._map.provider.fitBounds(bounds);
 
 				this._isRouteRendered = true;
 
