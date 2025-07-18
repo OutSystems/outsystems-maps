@@ -1,6 +1,6 @@
 namespace Provider.Maps.Google.Constants {
 	// Regular expression to validate if a string is a set of coordinates. Accepts "12.300,-8.220" and "12.300, -8.220".
-	export const coordinateValidator = /^-{0,1}\d*\.{0,1}\d*,( )?-{0,1}\d*\.{0,1}\d*$/;
+	export const coordinateValidator = /^-{0,1}\d*\.{0,1}\d*( )?,( )?-{0,1}\d*\.{0,1}\d*$/;
 
 	// Name of the Google Maps Version in the LocalStorage
 	export const googleMapsLocalStorageVersionKey = 'gmVersion';
