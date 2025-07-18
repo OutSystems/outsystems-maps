@@ -11,7 +11,10 @@ namespace Provider.Maps.Google.Helper {
 			this._routeMarkers = [];
 		}
 
-		private _buildMarker(position: google.maps.LatLng, label: string): google.maps.marker.AdvancedMarkerElement {
+		private _buildMarker(
+			position: google.maps.LatLng | google.maps.LatLngLiteral,
+			label: string
+		): google.maps.marker.AdvancedMarkerElement {
 			// The pin element is the colored teardrop shape.
 			const pin = new google.maps.marker.PinElement({
 				background: '#EA4335', // Red background
@@ -23,8 +26,8 @@ namespace Provider.Maps.Google.Helper {
 			// Create the advanced marker.
 			const marker = new google.maps.marker.AdvancedMarkerElement({
 				position: {
-					lat: Helper.Conversions.GetCoordinateValue(position.lat()),
-					lng: Helper.Conversions.GetCoordinateValue(position.lng()),
+					lat: Helper.Conversions.GetCoordinateValue(position.lat),
+					lng: Helper.Conversions.GetCoordinateValue(position.lng),
 				},
 				map: this._map.provider,
 				content: pin.element,
@@ -55,7 +58,10 @@ namespace Provider.Maps.Google.Helper {
 			this._isRouteRendered = false;
 		}
 
-		public renderRoute(encodedPolyline: string): OSFramework.Maps.OSStructures.ReturnMessage {
+		public renderRoute(
+			encodedPolyline: string,
+			_waypoints?: string[]
+		): OSFramework.Maps.OSStructures.ReturnMessage {
 			this._isRouteRendered && this.removeRoute();
 
 			if (encodedPolyline) {
@@ -70,6 +76,25 @@ namespace Provider.Maps.Google.Helper {
 					map: this._map.provider,
 				});
 
+				let pointCharacter = 65; // ASCII code for 'A'
+
+				const buildMarkerWithLabel = (point: google.maps.LatLng | google.maps.LatLngLiteral) => {
+					// Create a marker for each point in the route path.
+					const label = String.fromCharCode(pointCharacter++);
+					// Build the marker with the point and label.
+					const marker = this._buildMarker(point, label);
+					// Store the marker in the route markers array.
+					this._routeMarkers.push(marker);
+					bounds.extend(point);
+				};
+
+				buildMarkerWithLabel(routePath[0]);
+
+				_waypoints.forEach((waypoint) => {
+					buildMarkerWithLabel(Helper.Conversions.GetCoordinatesFromString(waypoint));
+				});
+
+				buildMarkerWithLabel(routePath[routePath.length - 1]);
 
 				// Set the map bounds to fit the route.
 				this._map.provider.fitBounds(bounds);
