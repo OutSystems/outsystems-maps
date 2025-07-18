@@ -54,7 +54,7 @@ namespace Provider.Maps.Google.Feature {
 		private _createWaypoint(coordinates: string): Types.Waypoint {
 			const isCoordinates = Helper.TypeChecker.IsValidCoordinates(coordinates);
 			const local = isCoordinates
-				? { latLng: Helper.Conversions.GetCoordinatesFromString(coordinates) }
+				? { latLng: this._transformCoordinatesToLocationPoint(coordinates) }
 				: undefined;
 			const address = isCoordinates ? undefined : coordinates;
 			return {
@@ -75,7 +75,7 @@ namespace Provider.Maps.Google.Feature {
 				origin: {
 					location: isOriginCoordinate
 						? {
-								latLng: Helper.Conversions.GetCoordinatesFromString(directionOptions.originRoute),
+								latLng: this._transformCoordinatesToLocationPoint(directionOptions.originRoute),
 							}
 						: undefined,
 					address: isOriginCoordinate ? undefined : directionOptions.originRoute,
@@ -83,7 +83,7 @@ namespace Provider.Maps.Google.Feature {
 				destination: {
 					location: isDestinationCoordinate
 						? {
-								latLng: Helper.Conversions.GetCoordinatesFromString(directionOptions.destinationRoute),
+								latLng: this._transformCoordinatesToLocationPoint(directionOptions.destinationRoute),
 							}
 						: undefined,
 					address: isDestinationCoordinate ? undefined : directionOptions.destinationRoute,
@@ -124,6 +124,25 @@ namespace Provider.Maps.Google.Feature {
 					message: 'No routes found for the provided origin, destination and waypoints.',
 				};
 			}
+		}
+
+		/**
+		 * Method to transform a string of coordinates into a structured object with latitude and longitude.
+		 * The reason is that Google Maps API expects coordinates in a specific structure, that is different
+		 * from what it used until now:
+		 *
+		 * {
+		 *   latitude: number;
+		 *   longitude: number;
+		 * }
+		 *
+		 */
+		private _transformCoordinatesToLocationPoint(coordinates: string): Types.LocationCoordinates {
+			const structuredCoordenate = Helper.Conversions.GetCoordinatesFromString(coordinates);
+			return {
+				latitude: structuredCoordenate.lat,
+				longitude: structuredCoordenate.lng,
+			};
 		}
 
 		/** Makes sure all waypoints from a list of locations (string) gets converted into a list of {location, stopover}. */
