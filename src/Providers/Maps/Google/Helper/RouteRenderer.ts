@@ -1,14 +1,14 @@
 namespace Provider.Maps.Google.Helper {
 	export class RouteRenderer implements OSFramework.Maps.Interface.IDisposable {
-		private _endMarker: google.maps.marker.AdvancedMarkerElement;
 		private _isRouteRendered: boolean;
 		private _map: OSMap.IMapGoogle;
 		private _pathPolyline: google.maps.Polyline;
-		private _startMarker: google.maps.marker.AdvancedMarkerElement;
+		private _routeMarkers: google.maps.marker.AdvancedMarkerElement[];
 
 		constructor(map: OSMap.IMapGoogle) {
 			this._map = map;
 			this._isRouteRendered = false;
+			this._routeMarkers = [];
 		}
 
 		private _buildMarker(position: google.maps.LatLng, label: string): google.maps.marker.AdvancedMarkerElement {
@@ -38,8 +38,7 @@ namespace Provider.Maps.Google.Helper {
 		public dispose(): void {
 			this.removeRoute();
 			this._map = undefined;
-			this._startMarker = undefined;
-			this._endMarker = undefined;
+			this._routeMarkers = [];
 			this._pathPolyline = undefined;
 			this._isRouteRendered = false;
 		}
@@ -49,14 +48,10 @@ namespace Provider.Maps.Google.Helper {
 				this._pathPolyline.setMap(null);
 				this._pathPolyline = undefined;
 			}
-			if (this._startMarker) {
-				this._startMarker.map = undefined;
-				this._startMarker = undefined;
-			}
-			if (this._endMarker) {
-				this._endMarker.map = null;
-				this._endMarker = undefined;
-			}
+			this._routeMarkers.forEach((marker) => {
+				marker.map = undefined;
+			});
+			this._routeMarkers = [];
 			this._isRouteRendered = false;
 		}
 
@@ -67,11 +62,6 @@ namespace Provider.Maps.Google.Helper {
 				const bounds = new google.maps.LatLngBounds();
 				const routePath = google.maps.geometry.encoding.decodePath(encodedPolyline);
 
-				// Create the start marker at the first point of the route.
-				this._startMarker = this._buildMarker(routePath[0], 'A');
-				// Extend the bounds to include the start marker.
-				bounds.extend(routePath[0]);
-
 				// Create the polyline for the route path.
 				this._pathPolyline = new google.maps.Polyline({
 					path: routePath,
@@ -80,10 +70,6 @@ namespace Provider.Maps.Google.Helper {
 					map: this._map.provider,
 				});
 
-				// Create the end marker at the last point of the route.
-				this._endMarker = this._buildMarker(routePath[routePath.length - 1], 'B');
-				// Extend the bounds to include the end marker.
-				bounds.extend(routePath[routePath.length - 1]);
 
 				// Set the map bounds to fit the route.
 				this._map.provider.fitBounds(bounds);
