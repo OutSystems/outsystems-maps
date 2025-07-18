@@ -67,18 +67,25 @@ namespace Provider.Maps.Google.Helper {
 				const bounds = new google.maps.LatLngBounds();
 				const routePath = google.maps.geometry.encoding.decodePath(encodedPolyline);
 
+				// Create the start marker at the first point of the route.
 				this._startMarker = this._buildMarker(routePath[0], 'A');
+				// Extend the bounds to include the start marker.
 				bounds.extend(routePath[0]);
 
+				// Create the polyline for the route path.
 				this._pathPolyline = new google.maps.Polyline({
 					path: routePath,
 					strokeColor: '#4285F470', // A solid red color
 					strokeWeight: 6,
 					map: this._map.provider,
 				});
+
+				// Create the end marker at the last point of the route.
 				this._endMarker = this._buildMarker(routePath[routePath.length - 1], 'B');
+				// Extend the bounds to include the end marker.
 				bounds.extend(routePath[routePath.length - 1]);
 
+				// Set the map bounds to fit the route.
 				this._map.provider.fitBounds(bounds);
 
 				this._isRouteRendered = true;
