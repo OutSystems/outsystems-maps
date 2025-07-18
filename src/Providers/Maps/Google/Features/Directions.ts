@@ -13,6 +13,7 @@ namespace Provider.Maps.Google.Feature {
 		private _map: OSMap.IMapGoogle;
 		private _retriveLegsFromRoute: boolean;
 		private _routeRenderer: Helper.RouteRenderer;
+		private _waypoints: string[];
 
 		constructor(map: OSMap.IMapGoogle) {
 			this._map = map;
@@ -70,6 +71,7 @@ namespace Provider.Maps.Google.Feature {
 		): Types.RoutesRequestBody {
 			const isOriginCoordinate = Helper.TypeChecker.IsValidCoordinates(directionOptions.originRoute);
 			const isDestinationCoordinate = Helper.TypeChecker.IsValidCoordinates(directionOptions.destinationRoute);
+			this._waypoints = directionOptions.waypoints;
 
 			const requestBody: Types.RoutesRequestBody = {
 				origin: {
@@ -112,7 +114,7 @@ namespace Provider.Maps.Google.Feature {
 
 				this._currRouteLegs = this._retriveLegsFromRoute ? firstRoute.legs[0].steps : undefined;
 
-				const result = this._routeRenderer.renderRoute(firstRoute.polyline.encodedPolyline);
+				const result = this._routeRenderer.renderRoute(firstRoute.polyline.encodedPolyline, this._waypoints);
 
 				return result;
 			} else {
@@ -261,6 +263,7 @@ namespace Provider.Maps.Google.Feature {
 		 */
 		public removeRoute(): OSFramework.Maps.OSStructures.ReturnMessage {
 			this.setState(false);
+			this._waypoints.length = 0; // Clear the waypoints array
 
 			return {
 				isSuccess: true,
