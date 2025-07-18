@@ -1,7 +1,13 @@
 namespace Provider.Maps.Google.Types {
+
+    export interface LocationCoordinates {
+        latitude: number;
+        longitude: number;
+    }
+
     export interface LocationPoint {
         location?: {
-            latLng: google.maps.LatLngLiteral,
+            latLng: LocationCoordinates,
         },
         address?: string
     }
@@ -14,7 +20,7 @@ namespace Provider.Maps.Google.Types {
 
         // Union field location_type can be only one of the following:
         location?: {
-            latLng: google.maps.LatLngLiteral,
+            latLng: LocationCoordinates,
             heading?: integer
         },
         placeId?: string,
