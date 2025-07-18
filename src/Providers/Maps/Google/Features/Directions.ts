@@ -6,107 +6,255 @@ namespace Provider.Maps.Google.Feature {
 			OSFramework.Maps.Interface.IBuilder,
 			OSFramework.Maps.Interface.IDisposable
 	{
-		private _directionsRenderer: google.maps.DirectionsRenderer;
-		private _directionsService: google.maps.DirectionsService;
+		private _currRouteDistance: number;
+		private _currRouteLegs: Types.RoutesResponseLegStep[];
+		private _currRouteTime: number;
 		private _isEnabled: boolean;
 		private _map: OSMap.IMapGoogle;
+		private _retriveLegsFromRoute: boolean;
+		private _routeRenderer: Helper.RouteRenderer;
 
 		constructor(map: OSMap.IMapGoogle) {
 			this._map = map;
 			this._isEnabled = false;
+			this._currRouteDistance = 0;
+			this._currRouteTime = 0;
+			this._currRouteLegs = [];
+			this._retriveLegsFromRoute = false;
+			this._routeRenderer = new Helper.RouteRenderer(map);
+		}
+
+		private get _fieldMask(): string {
+			return `${Constants.GoogleMapsRouteOptions}${this._retriveLegsFromRoute ? ',routes.legs.steps' : ''}`;
+		}
+
+		/** Converts the travel mode input into a valid Google Maps travel mode. */
+		private _convertTravelMode(travelModeInput: string): string {
+			let travelMode = Types.TravelModes.DRIVING;
+			switch (travelModeInput) {
+				case 'DRIVING':
+					travelMode = Types.TravelModes.DRIVING;
+					break;
+				case 'BICYCLING':
+					travelMode = Types.TravelModes.BICYCLING;
+					break;
+				case 'WALKING':
+					travelMode = Types.TravelModes.WALKING;
+					break;
+				default:
+					OSFramework.Maps.Helper.LogWarningMessage(
+						`The Google Maps API for Routes does not support ${travelModeInput} directions. Using DRIVING mode instead.`
+					);
+					break;
+			}
+			return travelMode;
+		}
+
+		/** Creates a waypoint for the directions request. */
+		private _createWaypoint(coordinates: string): Types.Waypoint {
+			const isCoordinates = Helper.TypeChecker.IsValidCoordinates(coordinates);
+			const local = isCoordinates
+				? { latLng: Helper.Conversions.GetCoordinatesFromString(coordinates) }
+				: undefined;
+			const address = isCoordinates ? undefined : coordinates;
+			return {
+				location: local,
+				address: address,
+				via: true,
+			};
+		}
+
+		/** Builds the request body for the Google Maps Directions API. */
+		private _getRoutesRequestBody(
+			directionOptions: OSFramework.Maps.OSStructures.Directions.Options
+		): Types.RoutesRequestBody {
+			const isOriginCoordinate = Helper.TypeChecker.IsValidCoordinates(directionOptions.originRoute);
+			const isDestinationCoordinate = Helper.TypeChecker.IsValidCoordinates(directionOptions.destinationRoute);
+
+			const requestBody: Types.RoutesRequestBody = {
+				origin: {
+					location: isOriginCoordinate
+						? {
+								latLng: Helper.Conversions.GetCoordinatesFromString(directionOptions.originRoute),
+							}
+						: undefined,
+					address: isOriginCoordinate ? undefined : directionOptions.originRoute,
+				},
+				destination: {
+					location: isDestinationCoordinate
+						? {
+								latLng: Helper.Conversions.GetCoordinatesFromString(directionOptions.destinationRoute),
+							}
+						: undefined,
+					address: isDestinationCoordinate ? undefined : directionOptions.destinationRoute,
+				},
+				intermediates: this._waypointsCleanup(directionOptions.waypoints),
+				travelMode: this._convertTravelMode(directionOptions.travelMode),
+				routingPreference: directionOptions.travelMode === 'DRIVING' ? 'TRAFFIC_UNAWARE' : undefined,
+				routeModifiers: {
+					avoidTolls: directionOptions.exclude.avoidTolls,
+					avoidHighways: directionOptions.exclude.avoidHighways,
+					avoidFerries: directionOptions.exclude.avoidFerries,
+				},
+				languageCode: (this._map.config as Configuration.OSMap.GoogleMapConfig).localization.language,
+				units: 'METRIC',
+			};
+
+			return requestBody;
+		}
+
+		/** Sets the route in the map based on the response from the Google Maps Routes API. */
+		private _setRouteInMap(response: Types.RoutesResponse): OSFramework.Maps.OSStructures.ReturnMessage {
+			if (response.routes.length > 0) {
+				const firstRoute = response.routes[0];
+				this._currRouteTime = parseInt(firstRoute.duration);
+				this._currRouteDistance = firstRoute.distanceMeters;
+
+				this._currRouteLegs = this._retriveLegsFromRoute ? firstRoute.legs[0].steps : undefined;
+
+				const result = this._routeRenderer.renderRoute(firstRoute.polyline.encodedPolyline);
+
+				return result;
+			} else {
+				this._currRouteTime = 0;
+				this._currRouteDistance = 0;
+
+				return {
+					code: OSFramework.Maps.Enum.ErrorCodes.LIB_FailedSetDirections,
+					message: 'No routes found for the provided origin, destination and waypoints.',
+				};
+			}
 		}
 
 		/** Makes sure all waypoints from a list of locations (string) gets converted into a list of {location, stopover}. */
-		private _waypointsCleanup(waypoints: string[]): google.maps.DirectionsWaypoint[] {
+		private _waypointsCleanup(waypoints: string[]): Types.Waypoint[] {
 			return waypoints.reduce((acc, curr) => {
-				acc.push({ location: curr, stopover: true });
+				const waypoint: Types.Waypoint = this._createWaypoint(curr);
+				acc.push(waypoint);
 				return acc;
-			}, []);
+			}, [] as Types.Waypoint[]);
+		}
+
+		/**
+		 * Sets a value indicating whether the legs from the route should be retrieved.
+		 *
+		 * @memberof Directions
+		 */
+		public set retrieveLegsFromRoute(value: boolean) {
+			if (value) {
+				OSFramework.Maps.Helper.LogWarningMessage(
+					'By requesting the legs from the route, you will be retrieving a lot of data. This may cause higher costs of usage in the Google Maps API. Use it wisely.'
+				);
+			}
+			this._retriveLegsFromRoute = value;
 		}
 
 		public get isEnabled(): boolean {
 			return this._isEnabled;
 		}
-		public build(): void {
-			this._directionsRenderer = new google.maps.DirectionsRenderer();
-			this._directionsService = new google.maps.DirectionsService();
-			this._directionsRenderer.setMap(this._map.provider);
 
+		/**
+		 * Builds the Directions feature.
+		 *
+		 * @memberof Directions
+		 */
+		public build(): void {
 			this.setState(this._isEnabled);
 		}
+
+		/**
+		 * Disposes the Directions feature.
+		 *
+		 * @memberof Directions
+		 */
 		public dispose(): void {
 			this.setState(false);
-			this._directionsService = undefined;
-			this._directionsRenderer = undefined;
+			this._map = undefined;
+			this._routeRenderer.dispose();
+			this._routeRenderer = undefined;
 		}
+
+		/**
+		 * Gets all the legs from the current route.
+		 *
+		 * @return {*}  {Array<OSFramework.Maps.OSStructures.Directions.DirectionLegs>}
+		 * @memberof Directions
+		 */
 		public getLegsFromDirection(): Array<OSFramework.Maps.OSStructures.Directions.DirectionLegs> {
 			// If the Map has the directions disabled return 0 (meters)
 			if (this._isEnabled === false) return [];
+			if (!this._currRouteLegs || this._currRouteLegs.length === 0) return [];
 
-			const legs = this._directionsRenderer
-				.getDirections()
-				.routes[0].legs.reduce(
-					(
-						acc: Array<OSFramework.Maps.OSStructures.Directions.DirectionLegs>,
-						curr: google.maps.DirectionsLeg
-					) => {
-						// For each leg, push an object containing the origin (coords), distination (coords), distance (in meters) and duration (in seconds)
-						acc.push({
-							origin: curr.start_location.toJSON(),
-							destination: curr.end_location.toJSON(),
-							distance: curr.distance.value,
-							duration: curr.duration.value,
-						});
-						return acc;
-					},
-					[]
-				);
+			const legs = this._currRouteLegs.reduce(
+				(
+					acc: Array<OSFramework.Maps.OSStructures.Directions.DirectionLegs>,
+					curr: Types.RoutesResponseLegStep
+				) => {
+					acc.push({
+						origin: JSON.parse(JSON.stringify(curr.startLocation.latLng)),
+						destination: JSON.parse(JSON.stringify(curr.endLocation.latLng)),
+						distance: curr.distanceMeters,
+						duration: parseInt(curr.staticDuration) || 0,
+					});
+					return acc;
+				},
+				[]
+			);
 
 			return legs;
 		}
+
+		/**
+		 * Gets the total distance in meters from the current route.
+		 *
+		 * @return {*}  {Promise<number>}
+		 * @memberof Directions
+		 */
 		public getTotalDistanceFromDirection(): Promise<number> {
 			return new Promise((resolve) => {
 				// If no route has been set before requesting the distance return 0 (meters)
 				if (this._isEnabled === false) resolve(0);
 
-				const distance = this._directionsRenderer.getDirections().routes[0].legs.reduce((acc, curr) => {
-					// For each leg, sum the distance values (in meters)
-					acc += curr.distance.value;
-					return acc;
-				}, 0);
-
-				resolve(distance);
+				resolve(this._currRouteDistance);
 			});
 		}
+
+		/**
+		 * Gets the total duration in seconds from the current route.
+		 *
+		 * @return {*}  {Promise<number>}
+		 * @memberof Directions
+		 */
 		public getTotalDurationFromDirection(): Promise<number> {
 			return new Promise((resolve) => {
 				// If no route has been set before requesting the duration return 0 (meters)
 				if (this._isEnabled === false) resolve(0);
 
-				const duration = this._directionsRenderer.getDirections().routes[0].legs.reduce((acc, curr) => {
-					// For each leg, sum the duration values (in seconds)
-					acc += curr.duration.value;
-					return acc;
-				}, 0);
-
-				resolve(duration);
+				resolve(this._currRouteTime);
 			});
 		}
+
+		/**
+		 * Removes the current route from the map.
+		 *
+		 * @return {*}  {OSFramework.Maps.OSStructures.ReturnMessage}
+		 * @memberof Directions
+		 */
 		public removeRoute(): OSFramework.Maps.OSStructures.ReturnMessage {
 			this.setState(false);
-			if (this._directionsRenderer.getMap() === null) {
-				return {
-					isSuccess: true,
-				};
-			} else {
-				return {
-					code: OSFramework.Maps.Enum.ErrorCodes.API_FailedRemoveDirections,
-				};
-			}
+
+			return {
+				isSuccess: true,
+			};
 		}
 
 		/**
 		 * SetPlugin for GoogleMaps provider is not needed.
+		 *
+		 * @param {string} providerName
+		 * @param {string} apiKey
+		 * @return {*}  {OSFramework.Maps.OSStructures.ReturnMessage}
+		 * @memberof Directions
 		 */
 		public setPlugin(
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -121,52 +269,83 @@ namespace Provider.Maps.Google.Feature {
 			return;
 		}
 
+		/**
+		 * Sets the route in the map based on the provided direction options.
+		 *
+		 * @param {OSFramework.Maps.OSStructures.Directions.Options} directionOptions
+		 * @return {*}  {Promise<OSFramework.Maps.OSStructures.ReturnMessage>}
+		 * @memberof Directions
+		 */
 		public setRoute(
 			directionOptions: OSFramework.Maps.OSStructures.Directions.Options
 		): Promise<OSFramework.Maps.OSStructures.ReturnMessage> {
-			const waypts: google.maps.DirectionsWaypoint[] = this._waypointsCleanup(directionOptions.waypoints);
-			return (
-				this._directionsService
-					.route(
-						{
-							origin: {
-								query: directionOptions.originRoute,
-							},
-							destination: {
-								query: directionOptions.destinationRoute,
-							},
-							waypoints: waypts,
-							optimizeWaypoints: directionOptions.optimizeWaypoints,
-							travelMode: directionOptions.travelMode as google.maps.TravelMode,
-							avoidTolls: directionOptions.exclude.avoidTolls,
-							avoidHighways: directionOptions.exclude.avoidHighways,
-							avoidFerries: directionOptions.exclude.avoidFerries,
-						},
-						(response, status) => {
-							if (status === 'OK') {
-								this._directionsRenderer.setDirections(response);
-							}
+			const routeSetPromise = new Promise<OSFramework.Maps.OSStructures.ReturnMessage>((resolve, reject) => {
+				// Fetch the Google Maps Routes API to get the route based on the provided options
+				fetch(Constants.googleMapsRoutesApiURL, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'X-Goog-Api-Key': this._map.config.apiKey,
+						'X-Goog-FieldMask': this._fieldMask,
+					},
+					body: JSON.stringify(this._getRoutesRequestBody(directionOptions)),
+				})
+					.then((response) => {
+						if (response.status === 200) {
+							response
+								.json()
+								.then((responseJSON) => {
+									const result = this._setRouteInMap(responseJSON);
+
+									if (result.isSuccess) {
+										this.setState(true);
+										resolve(result);
+									} else {
+										this.setState(false);
+										reject(result);
+									}
+								})
+								// Else, we want to return the reason
+								.catch((reason: string) => {
+									this.setState(false);
+									reject({
+										code: OSFramework.Maps.Enum.ErrorCodes.LIB_FailedSetDirections,
+										message: `${reason}`,
+									});
+								});
+						} else {
+							reject({
+								code: OSFramework.Maps.Enum.ErrorCodes.LIB_FailedSetDirections,
+								message: response.statusText,
+							});
 						}
-					)
-					// If the previous request returns status OK, then we want to return success
-					.then(() => {
-						this.setState(true);
-						return {
-							isSuccess: true,
-						};
 					})
 					// Else, we want to return the reason
 					.catch((reason: string) => {
 						this.setState(false);
-						return {
+						reject({
 							code: OSFramework.Maps.Enum.ErrorCodes.LIB_FailedSetDirections,
 							message: `${reason}`,
-						};
-					})
-			);
+						});
+					});
+			});
+
+			return routeSetPromise;
 		}
+
+		/**
+		 * Sets the state of the Directions feature.
+		 *
+		 * @param {boolean} value
+		 * @memberof Directions
+		 */
 		public setState(value: boolean): void {
-			this._directionsRenderer.setMap(value === true ? this._map.provider : null);
+			if (!value) {
+				this._routeRenderer.removeRoute();
+				this._currRouteLegs = [];
+				this._currRouteDistance = 0;
+				this._currRouteTime = 0;
+			}
 			this._isEnabled = value;
 		}
 	}
