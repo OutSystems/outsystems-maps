@@ -9,10 +9,10 @@ namespace Provider.Maps.Google.Feature {
 		private _currRouteDistance: number;
 		private _currRouteLegs: Types.RoutesResponseLegStep[];
 		private _currRouteTime: number;
+		private _directionsRenderer: DirectionsRenderer;
 		private _isEnabled: boolean;
 		private _map: OSMap.IMapGoogle;
 		private _retriveLegsFromRoute: boolean;
-		private _routeRenderer: Helper.RouteRenderer;
 		private _waypoints: string[];
 
 		constructor(map: OSMap.IMapGoogle) {
@@ -22,7 +22,7 @@ namespace Provider.Maps.Google.Feature {
 			this._currRouteTime = 0;
 			this._currRouteLegs = [];
 			this._retriveLegsFromRoute = false;
-			this._routeRenderer = new Helper.RouteRenderer(map);
+			this._directionsRenderer = new DirectionsRenderer(map);
 		}
 
 		private get _fieldMask(): string {
@@ -114,7 +114,10 @@ namespace Provider.Maps.Google.Feature {
 
 				this._currRouteLegs = this._retriveLegsFromRoute ? firstRoute.legs[0].steps : undefined;
 
-				const result = this._routeRenderer.renderRoute(firstRoute.polyline.encodedPolyline, this._waypoints);
+				const result = this._directionsRenderer.renderRoute(
+					firstRoute.polyline.encodedPolyline,
+					this._waypoints
+				);
 
 				return result;
 			} else {
@@ -191,8 +194,8 @@ namespace Provider.Maps.Google.Feature {
 		public dispose(): void {
 			this.setState(false);
 			this._map = undefined;
-			this._routeRenderer.dispose();
-			this._routeRenderer = undefined;
+			this._directionsRenderer.dispose();
+			this._directionsRenderer = undefined;
 		}
 
 		/**
@@ -363,7 +366,7 @@ namespace Provider.Maps.Google.Feature {
 		 */
 		public setState(value: boolean): void {
 			if (!value) {
-				this._routeRenderer.removeRoute();
+				this._directionsRenderer.removeRoute();
 				this._currRouteLegs = [];
 				this._currRouteDistance = 0;
 				this._currRouteTime = 0;
