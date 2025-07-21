@@ -226,10 +226,16 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 	 * @param markerId Id of the Marker
 	 */
 	export function GetMarkerById(markerId: string, raiseError = true): OSFramework.Maps.Marker.IMarker {
-		let marker: OSFramework.Maps.Marker.IMarker = markerArr.find((p) => p && p.equalsToID(markerId));
+		let foundMarker: boolean = false;
+		let marker: OSFramework.Maps.Marker.IMarker = markerArr.find((p) => {
+			foundMarker = p?.equalsToID(markerId);
+			return foundMarker;
+		});
 
 		// if didn't found marker, check if it was draw by the DrawingTools
-		if (marker === undefined) {
+		// But check if the marker was found in the markerArr. This means that
+		// the marker, was destroyed by the map.
+		if (marker === undefined && foundMarker === false) {
 			// Get all maps
 			const allMaps = [...MapManager.GetMapsFromPage().values()];
 
@@ -237,8 +243,8 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 			// on the createdElements array, for the markerId passed.
 			allMaps.find((map: OSFramework.Maps.OSMap.IMap) => {
 				if (map.drawingTools) {
-					marker = map.drawingTools.createdElements.find(
-						(marker: OSFramework.Maps.Marker.IMarker) => marker && marker.equalsToID(markerId)
+					marker = map.drawingTools.createdElements.find((marker: OSFramework.Maps.Marker.IMarker) =>
+						marker?.equalsToID(markerId)
 					) as OSFramework.Maps.Marker.IMarker;
 				}
 				return marker;
@@ -275,13 +281,15 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 		};
 		try {
 			const marker = GetMarkerById(markerId);
-			const map = marker.map;
-			map && map.removeMarker(markerId);
+			// The marker might not exist anymore, if the map was removed.
+			const map = marker?.map;
+			map?.removeMarker(markerId);
 
+			// When the map was removed, the marker is destroyed, but still exists in the markerArr and markerMap.
 			markerMap.delete(markerId);
 			markerArr.splice(
 				markerArr.findIndex((p) => {
-					return p && p.equalsToID(markerId);
+					return p?.equalsToID(markerId);
 				}),
 				1
 			);
@@ -319,7 +327,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 					markerMap.delete(storedMarkerId);
 					markerArr.splice(
 						markerArr.findIndex((p) => {
-							return p && p.equalsToID(storedMarkerId);
+							return p?.equalsToID(storedMarkerId);
 						}),
 						1
 					);
