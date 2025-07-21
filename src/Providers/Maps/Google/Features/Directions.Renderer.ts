@@ -41,9 +41,6 @@ namespace Provider.Maps.Google.Feature {
 		public dispose(): void {
 			this.removeRoute();
 			this._map = undefined;
-			this._routeMarkers = [];
-			this._pathPolyline = undefined;
-			this._isRouteRendered = false;
 		}
 
 		public removeRoute(): void {
