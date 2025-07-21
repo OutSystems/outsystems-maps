@@ -1,5 +1,5 @@
-namespace Provider.Maps.Google.Helper {
-	export class RouteRenderer implements OSFramework.Maps.Interface.IDisposable {
+namespace Provider.Maps.Google.Feature.Directions {
+	export class Renderer implements OSFramework.Maps.Interface.IDisposable {
 		private _isRouteRendered: boolean;
 		private _map: OSMap.IMapGoogle;
 		private _pathPolyline: google.maps.Polyline;
