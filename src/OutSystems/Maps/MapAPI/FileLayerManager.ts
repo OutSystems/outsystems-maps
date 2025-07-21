@@ -104,11 +104,11 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
 		const fileLayer = GetFileLayerById(fileLayerId);
 		const map = fileLayer.map;
 
-		map && map.removeFileLayer(fileLayerId);
+		map?.removeFileLayer(fileLayerId);
 		fileLayerMap.delete(fileLayerId);
 		fileLayerArr.splice(
 			fileLayerArr.findIndex((p) => {
-				return p && p.equalsToID(fileLayerId);
+				return p?.equalsToID(fileLayerId);
 			}),
 			1
 		);
