@@ -5,8 +5,9 @@ namespace OutSystems.Maps.MapAPI.Directions {
 	 * @param mapId Id of the Map to get the legs from the direction.
 	 */
 	export function GetLegsFromDirection(mapId: string): string {
-		const map = OutSystems.Maps.MapAPI.MapManager.GetMapById(mapId, true);
-		return JSON.stringify(map.features.directions.getLegsFromDirection());
+		const map = OutSystems.Maps.MapAPI.MapManager.GetMapById(mapId);
+		const response = map.features.directions.getLegsFromDirection();
+		return JSON.stringify(response);
 	}
 
 	/**
@@ -14,7 +15,7 @@ namespace OutSystems.Maps.MapAPI.Directions {
 	 * @param mapId Id of the Map where the total distance of the direction will be calculated.
 	 */
 	export function GetTotalDistanceFromDirection(mapId: string): Promise<number> {
-		const map = MapManager.GetMapById(mapId, true);
+		const map = MapManager.GetMapById(mapId);
 		return map.features.directions.getTotalDistanceFromDirection();
 	}
 
@@ -23,7 +24,7 @@ namespace OutSystems.Maps.MapAPI.Directions {
 	 * @param mapId Id of the Map where the total duration of the direction will be calculated.
 	 */
 	export function GetTotalDurationFromDirection(mapId: string): Promise<number> {
-		const map = MapManager.GetMapById(mapId, true);
+		const map = MapManager.GetMapById(mapId);
 		return map.features.directions.getTotalDurationFromDirection();
 	}
 
@@ -40,7 +41,7 @@ namespace OutSystems.Maps.MapAPI.Directions {
 		providerName: string,
 		apiKey: string
 	): string {
-		const map = MapManager.GetMapById(mapId, true);
+		const map = MapManager.GetMapById(mapId);
 		const pluginResponse = map.features.directions.setPlugin(providerName, apiKey);
 		return JSON.stringify(pluginResponse);
 	}
@@ -51,9 +52,10 @@ namespace OutSystems.Maps.MapAPI.Directions {
 	 * @param options Defines the stringified options from which to calculate directions. (contains origin, destination, travelMode, waypoints, optimizeWaypoints and avoidance criteria)
 	 */
 	export async function SetDirections(mapId: string, options: string): Promise<string> {
-		const map = MapManager.GetMapById(mapId, true);
+		const map = MapManager.GetMapById(mapId);
 		const directionOptions = JSON.parse(options);
-		return map.features.directions.setRoute(directionOptions).then((response) => JSON.stringify(response));
+		const response = await map.features.directions.setRoute(directionOptions);
+		return JSON.stringify(response);
 	}
 
 	/**
@@ -61,8 +63,9 @@ namespace OutSystems.Maps.MapAPI.Directions {
 	 * @param mapId Id of the Map to add a direction
 	 */
 	export function RemoveDirections(mapId: string): string {
-		const map = MapManager.GetMapById(mapId, true);
-		return JSON.stringify(map.features.directions.removeRoute());
+		const map = MapManager.GetMapById(mapId);
+		const response = map.features.directions.removeRoute();
+		return JSON.stringify(response);
 	}
 }
 
