@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 	const drawingToolsMap = new Map<string, string>(); //drawingTools.uniqueId -> map.uniqueId
-	let drawingToolsElement = undefined;
+	let activeDrawingTools: OSFramework.Maps.DrawingTools.IDrawingTools = undefined;
 
 	/* pending tools map holds the tools to be created if the drawing tools block is not ready to add new tools */
 	const _pendingTools = new Map<string, Array<OSFramework.Maps.OSStructures.API.PendingTools>>(); //drawingTools.uniqueId -> Array<tool.uniqueId, tool.type, tool.configs>
@@ -37,13 +37,13 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 	 *
 	 * @param {string} drawingToolsId Id of the DrawingTools that exists on the Map
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	function GetMapByDrawingToolsId(drawingToolsId: string): OSFramework.Maps.OSMap.IMap {
 		let map: OSFramework.Maps.OSMap.IMap;
 
 		//drawingToolsId is the UniqueId
 		if (drawingToolsMap.has(drawingToolsId)) {
-			map = MapManager.GetMapById(drawingToolsMap.get(drawingToolsId), false);
+			const mapId = drawingToolsMap.get(drawingToolsId);
+			map = MapManager.GetMapById(mapId, false);
 		}
 		//UniqueID not found
 		else {
@@ -54,7 +54,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 			if (elem !== undefined) {
 				//Find the closest Map
 				const mapId = OSFramework.Maps.Helper.GetClosestMapId(elem);
-				map = OutSystems.Maps.MapAPI.MapManager.GetMapById(mapId);
+				map = MapManager.GetMapById(mapId);
 			}
 		}
 
@@ -79,13 +79,11 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 		const drawingTools = GetDrawingToolsById(drawingToolsId, false);
 		if (drawingTools !== undefined) {
 			return CreateTool(drawingTools, toolId, type, configs);
+		} else if (_pendingTools.has(drawingToolsId)) {
+			_pendingTools.get(drawingToolsId).push({ toolId, type, configs });
 		} else {
 			// If the drawingTools block is not created then add the tool into a pendingTools Map.
-			if (_pendingTools.has(drawingToolsId)) {
-				_pendingTools.get(drawingToolsId).push({ toolId, type, configs });
-			} else {
-				_pendingTools.set(drawingToolsId, [{ toolId, type, configs }]);
-			}
+			_pendingTools.set(drawingToolsId, [{ toolId, type, configs }]);
 		}
 	}
 
@@ -99,11 +97,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 	 */
 	export function ChangeProperty(drawingToolsId: string, propertyName: string, propertyValue: unknown): void {
 		const drawingTools = GetDrawingToolsById(drawingToolsId);
-		const map = drawingTools.map;
-
-		if (map !== undefined) {
-			map.changeDrawingToolsProperty(drawingToolsId, propertyName, propertyValue);
-		}
+		drawingTools.map?.changeDrawingToolsProperty(drawingToolsId, propertyName, propertyValue);
 	}
 
 	/**
@@ -116,11 +110,8 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 	 */
 	export function ChangeToolProperty(toolId: string, propertyName: string, propertyValue: unknown): void {
 		const drawingToolsId = GetDrawingToolsByToolUniqueId(toolId);
-		const drawingTools = GetDrawingToolsById(drawingToolsId, false);
-
-		if (drawingTools !== undefined) {
-			drawingTools.changeToolProperty(toolId, propertyName, propertyValue);
-		}
+		const drawingTools = GetDrawingToolsById(drawingToolsId);
+		drawingTools?.changeToolProperty(toolId, propertyName, propertyValue);
 	}
 
 	/**
@@ -154,28 +145,32 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 		drawingToolsId: string,
 		configs: string
 	): OSFramework.Maps.DrawingTools.IDrawingTools {
+		let drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools;
 		const map = GetMapByDrawingToolsId(drawingToolsId);
-		if (
-			OSFramework.Maps.Helper.ValidateFeatureProvider(map, OSFramework.Maps.Enum.Feature.DrawingTools) === false
-		) {
-			return;
-		}
-		if (!map.drawingTools) {
-			const _drawingTools = OSFramework.Maps.DrawingTools.DrawingToolsFactory.MakeDrawingTools(
-				map,
-				drawingToolsId,
-				JSON.parse(configs)
-			);
-			drawingToolsElement = _drawingTools;
-			drawingToolsMap.set(drawingToolsId, map.uniqueId);
-			map.addDrawingTools(_drawingTools);
+		const validateFeatureProvider = OSFramework.Maps.Helper.ValidateFeatureProvider(
+			map,
+			OSFramework.Maps.Enum.Feature.DrawingTools
+		);
 
-			CheckPendingTools(_drawingTools);
+		if (validateFeatureProvider) {
+			if (!map.drawingTools) {
+				drawingTools = OSFramework.Maps.DrawingTools.DrawingToolsFactory.MakeDrawingTools(
+					map,
+					drawingToolsId,
+					JSON.parse(configs)
+				);
+				activeDrawingTools = drawingTools;
+				drawingToolsMap.set(drawingToolsId, map.uniqueId);
+				map.addDrawingTools(drawingTools);
 
-			return _drawingTools;
-		} else {
-			console.error(`There is already a DrawingTools registered on the specified Map under id:${drawingToolsId}`);
+				CheckPendingTools(drawingTools);
+			} else {
+				console.error(
+					`There is already a DrawingTools registered on the specified Map under id:${drawingToolsId}`
+				);
+			}
 		}
+		return drawingTools;
 	}
 
 	/**
@@ -188,8 +183,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 		drawingToolsId: string,
 		raiseError = true
 	): OSFramework.Maps.DrawingTools.IDrawingTools {
-		const drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools =
-			drawingToolsElement && drawingToolsElement.equalsToID(drawingToolsId) ? drawingToolsElement : undefined;
+		const drawingTools = activeDrawingTools?.equalsToID(drawingToolsId) ? activeDrawingTools : undefined;
 		if (drawingTools === undefined && raiseError) {
 			throw new Error(`DrawingTools id:${drawingToolsId} not found`);
 		}
@@ -218,9 +212,9 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 		if (drawingTools !== undefined) {
 			const map = drawingTools.map;
 
-			map && map.removeDrawingTools(drawingToolsId);
+			map?.removeDrawingTools(drawingToolsId);
 			drawingToolsMap.delete(drawingToolsId);
-			drawingToolsElement = undefined;
+			activeDrawingTools = undefined;
 		}
 	}
 
@@ -234,7 +228,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 		const drawingToolsId = GetDrawingToolsByToolUniqueId(toolId);
 		const drawingTools = GetDrawingToolsById(drawingToolsId, false);
 
-		drawingTools && drawingTools.removeTool(toolId);
+		drawingTools?.removeTool(toolId);
 	}
 }
 
