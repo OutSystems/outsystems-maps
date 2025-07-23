@@ -202,6 +202,18 @@ namespace OSFramework.Maps.OSMap {
 			});
 			// Let's make sure we remove the DrawingTools from the map
 			this.drawingTools && this.removeDrawingTools(this.drawingTools.uniqueId);
+
+			this._config = undefined;
+			this._drawingTools = undefined;
+			this._fileLayers.clear();
+			this._fileLayersSet.clear();
+			this._heatmapLayers.clear();
+			this._heatmapLayersSet.clear();
+			this._markers.clear();
+			this._markersSet.clear();
+			this._shapes.clear();
+			this._shapesSet.clear();
+			this._mapEvents = undefined;
 		}
 
 		public equalsToID(mapId: string): boolean {

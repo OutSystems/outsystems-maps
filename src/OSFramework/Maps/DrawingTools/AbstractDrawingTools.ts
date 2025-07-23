@@ -108,8 +108,11 @@ namespace OSFramework.Maps.DrawingTools {
 
 		public dispose(): void {
 			this._built = false;
-
 			this.removeAllTools();
+			this._map = undefined;
+			this._config = undefined;
+			this._tools = undefined;
+			this._toolsSet = undefined;
 		}
 
 		public equalsToID(id: string): boolean {

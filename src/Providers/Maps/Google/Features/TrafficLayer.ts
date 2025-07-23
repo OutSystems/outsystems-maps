@@ -24,6 +24,7 @@ namespace Provider.Maps.Google.Feature {
 		}
 		public dispose(): void {
 			this._trafficLayer = undefined;
+			this._map = undefined;
 		}
 		public setState(value: boolean): void {
 			this._trafficLayer.setMap(value === true ? this._map.provider : null);

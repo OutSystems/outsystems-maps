@@ -87,6 +87,8 @@ namespace OSFramework.Maps.Marker {
 		public dispose(): void {
 			this._built = false;
 			this._destroyed = true;
+			this._map = undefined;
+			this._config = undefined;
 		}
 
 		public equalsToID(id: string): boolean {

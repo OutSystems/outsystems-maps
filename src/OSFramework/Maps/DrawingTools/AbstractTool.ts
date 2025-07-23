@@ -79,6 +79,9 @@ namespace OSFramework.Maps.DrawingTools {
 
 		public dispose(): void {
 			this._built = false;
+			this._config = undefined;
+			this._drawingTools = undefined;
+			this._map = undefined;
 		}
 
 		public equalsToID(id: string): boolean {

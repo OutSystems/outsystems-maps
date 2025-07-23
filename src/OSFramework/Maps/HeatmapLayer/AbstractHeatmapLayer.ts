@@ -78,6 +78,8 @@ namespace OSFramework.Maps.HeatmapLayer {
 
 		public dispose(): void {
 			this._built = false;
+			this._map = undefined;
+			this._config = undefined;
 		}
 
 		public equalsToID(id: string): boolean {
