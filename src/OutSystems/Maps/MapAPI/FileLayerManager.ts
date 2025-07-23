@@ -84,9 +84,7 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
 	 * @param fileLayerId Id of the FileLayer
 	 */
 	export function GetFileLayerById(fileLayerId: string, raiseError = true): OSFramework.Maps.FileLayer.IFileLayer {
-		const fileLayer: OSFramework.Maps.FileLayer.IFileLayer = fileLayerArr.find(
-			(p) => p && p.equalsToID(fileLayerId)
-		);
+		const fileLayer = fileLayerArr.find((p) => p?.equalsToID(fileLayerId));
 
 		if (fileLayer === undefined && raiseError) {
 			throw new Error(`FileLayer id:${fileLayerId} not found`);

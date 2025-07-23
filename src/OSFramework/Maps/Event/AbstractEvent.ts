@@ -11,7 +11,7 @@ namespace OSFramework.Maps.Event {
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	export abstract class AbstractEvent<T> implements IEvent<T> {
-		private _handlers: IHandler[] = [];
+		private readonly _handlers: IHandler[] = [];
 
 		protected get handlers(): IHandler[] {
 			return this._handlers;

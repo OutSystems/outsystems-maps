@@ -8,7 +8,7 @@ namespace OSFramework.Maps.Event.Shape {
 	 * @extends {AbstractEventsManager<ShapeEventType, string>}
 	 */
 	export class ShapeEventsManager extends AbstractEventsManager<ShapeEventType, string> {
-		private _shape: OSFramework.Maps.Shape.IShape;
+		private readonly _shape: OSFramework.Maps.Shape.IShape;
 
 		constructor(shape: OSFramework.Maps.Shape.IShape) {
 			super();
@@ -61,15 +61,10 @@ namespace OSFramework.Maps.Event.Shape {
 
 				switch (eventType) {
 					case ShapeEventType.Initialized:
+					case ShapeEventType.OnClick:
 						handlerEvent.trigger(
 							this._shape.map.widgetId, // Id of Map block that was initialized
 							this._shape.widgetId || this._shape.uniqueId // Id of Shape block that was initialized
-						);
-						break;
-					case ShapeEventType.OnClick:
-						handlerEvent.trigger(
-							this._shape.map.widgetId, // Id of Map block that was clicked
-							this._shape.widgetId || this._shape.uniqueId // Id of Shape block that was clicked
 						);
 						break;
 					case ShapeEventType.ProviderEvent:

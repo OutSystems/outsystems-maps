@@ -93,9 +93,7 @@ namespace OutSystems.Maps.MapAPI.HeatmapLayerManager {
 		heatmapLayerId: string,
 		raiseError = true
 	): OSFramework.Maps.HeatmapLayer.IHeatmapLayer {
-		const heatmapLayer: OSFramework.Maps.HeatmapLayer.IHeatmapLayer = heatmapLayerArr.find(
-			(p) => p && p.equalsToID(heatmapLayerId)
-		);
+		const heatmapLayer = heatmapLayerArr.find((p) => p?.equalsToID(heatmapLayerId));
 
 		if (heatmapLayer === undefined && raiseError) {
 			throw new Error(`Marker id:${heatmapLayerId} not found`);
@@ -113,11 +111,11 @@ namespace OutSystems.Maps.MapAPI.HeatmapLayerManager {
 		const heatmapLayer = GetHeatmapLayerById(heatmapLayerId);
 		const map = heatmapLayer.map;
 
-		map && map.removeHeatmapLayer(heatmapLayerId);
+		map?.removeHeatmapLayer(heatmapLayerId);
 		heatmapLayerMap.delete(heatmapLayerId);
 		heatmapLayerArr.splice(
 			heatmapLayerArr.findIndex((p) => {
-				return p && p.equalsToID(heatmapLayerId);
+				return p?.equalsToID(heatmapLayerId);
 			}),
 			1
 		);

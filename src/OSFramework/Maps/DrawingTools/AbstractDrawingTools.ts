@@ -10,7 +10,7 @@ namespace OSFramework.Maps.DrawingTools {
 		private _map: OSMap.IMap;
 		private _tools: Map<string, ITool>;
 		private _toolsSet: Set<ITool>;
-		private _uniqueId: string;
+		private readonly _uniqueId: string;
 		private _widgetId: string;
 
 		protected _built: boolean;

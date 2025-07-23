@@ -8,7 +8,7 @@ namespace OSFramework.Maps.Event.DrawingTools {
 	 * @extends {AbstractEventsManager<DrawingToolsEventType, string>}
 	 */
 	export class DrawingToolsEventsManager extends AbstractEventsManager<DrawingToolsEventType, string> {
-		private _drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools;
+		private readonly _drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools;
 
 		constructor(drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools) {
 			super();
@@ -16,26 +16,20 @@ namespace OSFramework.Maps.Event.DrawingTools {
 		}
 
 		protected getInstanceOfEventType(eventType: DrawingToolsEventType): OSFramework.Maps.Event.IEvent<string> {
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			let event: OSFramework.Maps.Event.IEvent<string>;
+			let event: OSFramework.Maps.Event.IEvent<string> = undefined;
 
-			switch (eventType) {
-				case DrawingToolsEventType.Initialized:
-					event = new DrawingToolsInitializedEvent();
-					break;
-				default:
-					// Validate if google provider has this event before creating the instance of DrawingToolsProviderEvent
-					if (this._drawingTools.validateProviderEvent(eventType) === true) {
-						event = new DrawingToolsProviderEvent();
-						break;
-					}
-					this._drawingTools.map.mapEvents.trigger(
-						OSMap.MapEventType.OnError,
-						this._drawingTools.map,
-						Enum.ErrorCodes.GEN_UnsupportedEventDrawingTools,
-						`${eventType}`
-					);
-					return;
+			if (eventType === DrawingToolsEventType.Initialized) {
+				event = new DrawingToolsInitializedEvent();
+			} else if (this._drawingTools.validateProviderEvent(eventType) === true) {
+				// Validate if google provider has this event before creating the instance of DrawingToolsProviderEvent
+				event = new DrawingToolsProviderEvent();
+			} else {
+				this._drawingTools.map.mapEvents.trigger(
+					OSMap.MapEventType.OnError,
+					this._drawingTools.map,
+					Enum.ErrorCodes.GEN_UnsupportedEventDrawingTools,
+					`${eventType}`
+				);
 			}
 			return event;
 		}

@@ -8,7 +8,7 @@ namespace OSFramework.Maps.Event.FileLayer {
 	 * @extends {AbstractEventsManager<FileLayersEventType, string>}
 	 */
 	export class FileLayersEventsManager extends AbstractEventsManager<FileLayersEventType, string> {
-		private _fileLayer: OSFramework.Maps.FileLayer.IFileLayer;
+		private readonly _fileLayer: OSFramework.Maps.FileLayer.IFileLayer;
 
 		constructor(fileLayer: OSFramework.Maps.FileLayer.IFileLayer) {
 			super();

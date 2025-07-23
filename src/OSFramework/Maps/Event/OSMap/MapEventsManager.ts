@@ -10,7 +10,7 @@ namespace OSFramework.Maps.Event.OSMap {
 	 * @extends {AbstractEventsManager<MapEventType, OSFramework.Maps.OSMap.IMap>}
 	 */
 	export class MapEventsManager extends AbstractEventsManager<MapEventType, Maps.OSMap.IMap> {
-		private _map: Maps.OSMap.IMap;
+		private readonly _map: Maps.OSMap.IMap;
 
 		constructor(map: Maps.OSMap.IMap) {
 			super();

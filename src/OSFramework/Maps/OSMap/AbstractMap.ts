@@ -11,7 +11,7 @@ namespace OSFramework.Maps.OSMap {
 		private _isReady: boolean;
 		private _mapEvents: Event.OSMap.MapEventsManager;
 		private _mapRefreshRequest: number | NodeJS.Timeout;
-		private _mapType: Enum.MapType;
+		private readonly _mapType: Enum.MapType;
 		private _markers: Map<string, Marker.IMarker>;
 		private _markersSet: Set<Marker.IMarker>;
 		private _providerType: Enum.ProviderType;
@@ -212,7 +212,7 @@ namespace OSFramework.Maps.OSMap {
 			if (this._fileLayers.has(fileLayerId)) {
 				return this._fileLayers.get(fileLayerId);
 			} else {
-				return this.fileLayers.find((p) => p && p.equalsToID(fileLayerId));
+				return this.fileLayers.find((p) => p?.equalsToID(fileLayerId));
 			}
 		}
 
@@ -220,7 +220,7 @@ namespace OSFramework.Maps.OSMap {
 			if (this._heatmapLayers.has(heatmapLayerId)) {
 				return this._heatmapLayers.get(heatmapLayerId);
 			} else {
-				return this.heatmapLayers.find((p) => p && p.equalsToID(heatmapLayerId));
+				return this.heatmapLayers.find((p) => p?.equalsToID(heatmapLayerId));
 			}
 		}
 
@@ -228,7 +228,7 @@ namespace OSFramework.Maps.OSMap {
 			if (this._markers.has(markerId)) {
 				return this._markers.get(markerId);
 			} else {
-				return this.markers.find((p) => p && p.equalsToID(markerId));
+				return this.markers.find((p) => p?.equalsToID(markerId));
 			}
 		}
 
@@ -236,7 +236,7 @@ namespace OSFramework.Maps.OSMap {
 			if (this._shapes.has(shape)) {
 				return this._shapes.get(shape);
 			} else {
-				return this.shapes.find((p) => p && p.equalsToID(shape));
+				return this.shapes.find((p) => p?.equalsToID(shapeId));
 			}
 		}
 

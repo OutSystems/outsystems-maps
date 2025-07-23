@@ -5,8 +5,8 @@ namespace OSFramework.Maps.DrawingTools {
 		private _config: T;
 		private _drawingTools: IDrawingTools;
 		private _map: OSMap.IMap;
-		private _type: string;
-		private _uniqueId: string;
+		private readonly _type: string;
+		private readonly _uniqueId: string;
 		private _widgetId: string;
 
 		protected _built: boolean;

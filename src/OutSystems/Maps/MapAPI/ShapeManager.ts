@@ -103,7 +103,7 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
 	 * @param shapeId Id of the Shape
 	 */
 	export function GetShapeById(shapeId: string, raiseError = true): OSFramework.Maps.Shape.IShape {
-		let shape: OSFramework.Maps.Shape.IShape = shapeArr.find((p) => p && p.equalsToID(shapeId));
+		let shape = shapeArr.find((p) => p?.equalsToID(shapeId));
 
 		// if didn't found shape, check if it was draw by the DrawingTools
 		if (shape === undefined) {
@@ -157,11 +157,11 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
 		const shape = GetShapeById(shapeId);
 		const map = shape.map;
 
-		map && map.removeShape(shapeId);
+		map?.removeShape(shapeId);
 		shapeMap.delete(shapeId);
 		shapeArr.splice(
 			shapeArr.findIndex((p) => {
-				return p && p.equalsToID(shapeId);
+				return p?.equalsToID(shapeId);
 			}),
 			1
 		);

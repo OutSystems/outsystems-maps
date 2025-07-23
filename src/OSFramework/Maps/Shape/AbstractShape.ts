@@ -4,8 +4,8 @@ namespace OSFramework.Maps.Shape {
 		/** Configuration reference */
 		private _config: T;
 		private _map: OSMap.IMap;
-		private _type: Enum.ShapeType;
-		private _uniqueId: string;
+		private readonly _type: Enum.ShapeType;
+		private readonly _uniqueId: string;
 		private _widgetId: string;
 
 		protected _addedEvents: Array<string>;

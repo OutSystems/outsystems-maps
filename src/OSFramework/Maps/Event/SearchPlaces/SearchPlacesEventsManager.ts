@@ -11,7 +11,7 @@ namespace OSFramework.Maps.Event.SearchPlaces {
 		SearchPlacesEventType,
 		OSFramework.Maps.SearchPlaces.ISearchPlaces
 	> {
-		private _searchPlaces: OSFramework.Maps.SearchPlaces.ISearchPlaces;
+		private readonly _searchPlaces: OSFramework.Maps.SearchPlaces.ISearchPlaces;
 
 		constructor(searchPlaces: OSFramework.Maps.SearchPlaces.ISearchPlaces) {
 			super();

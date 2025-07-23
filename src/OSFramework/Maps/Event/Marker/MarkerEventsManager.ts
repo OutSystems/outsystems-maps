@@ -8,7 +8,7 @@ namespace OSFramework.Maps.Event.Marker {
 	 * @extends {AbstractEventsManager<MarkerEventType, string>}
 	 */
 	export class MarkerEventsManager extends AbstractEventsManager<MarkerEventType, string> {
-		private _marker: OSFramework.Maps.Marker.IMarker;
+		private readonly _marker: OSFramework.Maps.Marker.IMarker;
 
 		constructor(marker: OSFramework.Maps.Marker.IMarker) {
 			super();

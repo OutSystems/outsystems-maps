@@ -231,6 +231,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 			foundMarker = p?.equalsToID(markerId);
 			return foundMarker;
 		});
+		let marker = markerArr.find((p) => p?.equalsToID(markerId));
 
 		// if didn't found marker, check if it was draw by the DrawingTools
 		// But check if the marker was found in the markerArr. This means that

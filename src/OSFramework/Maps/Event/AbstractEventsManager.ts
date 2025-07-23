@@ -13,7 +13,7 @@ namespace OSFramework.Maps.Event {
 	 * @template D  this will the type of Data to be passed, by default to the handlers.
 	 */
 	export abstract class AbstractEventsManager<ET, D> {
-		private _handlers: Map<ET, IEvent<D>>;
+		private readonly _handlers: Map<ET, IEvent<D>>;
 
 		constructor() {
 			this._handlers = new Map<ET, IEvent<D>>();
@@ -24,7 +24,7 @@ namespace OSFramework.Maps.Event {
 		}
 
 		public addHandler(eventType: ET, handler: Callbacks.Generic, eventUniqueId?: string): void {
-			if (this._handlers && this._handlers.has(eventType)) {
+			if (this._handlers?.has(eventType)) {
 				this._handlers.get(eventType).addHandler(handler, eventUniqueId);
 			} else {
 				const ev = this.getInstanceOfEventType(eventType);

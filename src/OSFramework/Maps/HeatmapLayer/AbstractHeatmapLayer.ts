@@ -9,7 +9,7 @@ namespace OSFramework.Maps.HeatmapLayer {
 		/** Configuration reference */
 		private _config: T;
 		private _map: OSMap.IMap;
-		private _uniqueId: string;
+		private readonly _uniqueId: string;
 		private _widgetId: string;
 
 		protected _built: boolean;
