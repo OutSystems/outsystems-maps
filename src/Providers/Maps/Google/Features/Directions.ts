@@ -107,7 +107,7 @@ namespace Provider.Maps.Google.Feature {
 
 		/** Sets the route in the map based on the response from the Google Maps Routes API. */
 		private _setRouteInMap(response: Types.RoutesResponse): OSFramework.Maps.OSStructures.ReturnMessage {
-			if (response.routes.length > 0) {
+			if (response?.routes?.length > 0) {
 				const firstRoute = response.routes[0];
 				this._currRouteTime = parseInt(firstRoute.duration);
 				this._currRouteDistance = firstRoute.distanceMeters;
