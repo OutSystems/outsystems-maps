@@ -244,9 +244,9 @@ namespace OSFramework.Maps.OSMap {
 			}
 		}
 
-		public getShape(shape: string): Shape.IShape {
-			if (this._shapes.has(shape)) {
-				return this._shapes.get(shape);
+		public getShape(shapeId: string): Shape.IShape {
+			if (this._shapes.has(shapeId)) {
+				return this._shapes.get(shapeId);
 			} else {
 				return this.shapes.find((p) => p?.equalsToID(shapeId));
 			}
@@ -281,8 +281,8 @@ namespace OSFramework.Maps.OSMap {
 				);
 				return;
 			}
-			this._fileLayers.forEach((marker) => {
-				marker.dispose();
+			this._fileLayers.forEach((layer) => {
+				layer.dispose();
 			});
 
 			this._fileLayers.clear();
