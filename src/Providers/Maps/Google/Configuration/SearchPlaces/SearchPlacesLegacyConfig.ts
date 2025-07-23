@@ -19,10 +19,7 @@ namespace Provider.Maps.Google.Configuration.SearchPlaces {
 				bounds: this.searchArea,
 				strictBounds: !!this.searchArea,
 				componentRestrictions: this.countries ? { country: this.countries } : undefined,
-				types: this.searchType
-					? // eslint-disable-next-line @typescript-eslint/no-unused-vars
-						[Google.SearchPlaces.SearchTypes[this.searchType]]
-					: undefined,
+				types: this.searchType ? [Google.SearchPlaces.SearchTypes[this.searchType]] : undefined,
 			};
 
 			//Cleanning undefined properties

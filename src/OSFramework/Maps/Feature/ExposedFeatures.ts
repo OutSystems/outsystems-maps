@@ -1,6 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.Maps.Feature {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	export class ExposedFeatures {
 		public center: ICenter;
 		public directions: IDirections;

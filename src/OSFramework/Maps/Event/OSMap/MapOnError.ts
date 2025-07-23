@@ -17,7 +17,6 @@ namespace OSFramework.Maps.Event.OSMap {
 		 * @param errorMessage Extra error messages that might come from errors that occurred using the Provider APIs
 		 */
 		public trigger(
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			mapObj: OSFramework.Maps.OSMap.IMap,
 			mapId: string,
 			eventName: string,

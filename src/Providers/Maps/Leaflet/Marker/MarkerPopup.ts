@@ -3,11 +3,7 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Leaflet.Marker {
-	export class MarkerPopup
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		extends Marker
-		implements OSFramework.Maps.Marker.IMarkerPopup
-	{
+	export class MarkerPopup extends Marker implements OSFramework.Maps.Marker.IMarkerPopup {
 		private _contentString: string;
 
 		protected _setMarkerEvents(): void {

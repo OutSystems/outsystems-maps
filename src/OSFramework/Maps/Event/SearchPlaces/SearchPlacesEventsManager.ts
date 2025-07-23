@@ -21,7 +21,6 @@ namespace OSFramework.Maps.Event.SearchPlaces {
 		protected getInstanceOfEventType(
 			eventType: SearchPlacesEventType
 		): OSFramework.Maps.Event.IEvent<OSFramework.Maps.SearchPlaces.ISearchPlaces> {
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			let event: OSFramework.Maps.Event.IEvent<OSFramework.Maps.SearchPlaces.ISearchPlaces>;
 
 			switch (eventType) {

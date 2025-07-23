@@ -8,7 +8,6 @@ namespace OSFramework.Maps.Event.DrawingTools {
 	 * @class AbstractShapeEvent
 	 * @extends {AbstractEvent<string>}
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	export abstract class AbstractDrawingToolsEvent extends AbstractEvent<string> {
 		// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 		public trigger(mapId: string, drawingToolsId: string, ...args: unknown[]): void {

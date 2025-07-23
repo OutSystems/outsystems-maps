@@ -16,7 +16,6 @@ namespace OSFramework.Maps.Event.FileLayer {
 		}
 
 		protected getInstanceOfEventType(eventType: FileLayersEventType): OSFramework.Maps.Event.IEvent<string> {
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			let event: OSFramework.Maps.Event.IEvent<string>;
 
 			switch (eventType) {

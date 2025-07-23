@@ -16,7 +16,6 @@ namespace OSFramework.Maps.Event.Marker {
 		}
 
 		protected getInstanceOfEventType(eventType: MarkerEventType): OSFramework.Maps.Event.IEvent<string> {
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			let event: OSFramework.Maps.Event.IEvent<string>;
 
 			// The following events are being deprecated. They should get removed soon.

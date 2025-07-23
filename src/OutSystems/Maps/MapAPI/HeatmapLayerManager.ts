@@ -8,7 +8,6 @@ namespace OutSystems.Maps.MapAPI.HeatmapLayerManager {
 	 *
 	 * @param {string} heatmapLayerId Id of the HeatmapLayer that exists on the Map
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	function GetMapByHeatmapLayerId(heatmapLayerId: string): OSFramework.Maps.OSMap.IMap {
 		let map: OSFramework.Maps.OSMap.IMap;
 
@@ -56,7 +55,6 @@ namespace OutSystems.Maps.MapAPI.HeatmapLayerManager {
 	 * @param {string} configs configurations for the HeatmapLayer in JSON format
 	 * @returns {*}  {HeatmapLayer.IHeatmapLayer} instance of the HeatmapLayer
 	 */
-	// eslint-disable-next-line @typescript-eslint/naming-convention
 	export function CreateHeatmapLayer(
 		heatmapLayerId: string,
 		configs: string

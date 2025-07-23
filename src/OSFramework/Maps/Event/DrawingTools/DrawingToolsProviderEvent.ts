@@ -18,7 +18,6 @@ namespace OSFramework.Maps.Event.DrawingTools {
 		 * @param location string contaning the shape coordinates and other properties as circle radius
 		 */
 		public trigger(
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			mapId: string,
 			drawingToolsId: string,
 			isNewElement: boolean,

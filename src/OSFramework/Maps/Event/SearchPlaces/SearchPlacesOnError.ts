@@ -17,7 +17,6 @@ namespace OSFramework.Maps.Event.SearchPlaces {
 		 * @param errorMessage Extra error messages that might come from errors that occurred using the Provider APIs
 		 */
 		public trigger(
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			searchPlacesObj: OSFramework.Maps.SearchPlaces.ISearchPlaces,
 			searchPlacesId: string,
 			eventName: string,

@@ -8,7 +8,6 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
 	 *
 	 * @param {string} fileLayerId Id of the FileLayer that exists on the Map
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	function GetMapByFileLayerId(fileLayerId: string): OSFramework.Maps.OSMap.IMap {
 		let map: OSFramework.Maps.OSMap.IMap;
 

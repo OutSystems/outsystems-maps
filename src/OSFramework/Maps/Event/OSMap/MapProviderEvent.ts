@@ -17,7 +17,6 @@ namespace OSFramework.Maps.Event.OSMap {
 		 * @param coords Stringified object containing both Lat and Lng from the event (can be empty)
 		 */
 		public trigger(
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			mapObj: OSFramework.Maps.OSMap.IMap,
 			mapId: string,
 			eventName: string,

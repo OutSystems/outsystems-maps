@@ -16,13 +16,7 @@ namespace OSFramework.Maps.Event.Marker {
 		 * @param eventName Name of the event that got raised
 		 * @param coords Stringified object containing both Lat and Lng from the event (can be empty)
 		 */
-		public trigger(
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			mapId: string,
-			markerId: string,
-			eventName: string,
-			coords: string
-		): void {
+		public trigger(mapId: string, markerId: string, eventName: string, coords: string): void {
 			this.handlers
 				.slice(0)
 				.forEach((h) => Helper.CallbackAsyncInvocation(h.eventHandler, mapId, markerId, eventName, coords));
