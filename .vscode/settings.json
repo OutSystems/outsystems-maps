@@ -29,7 +29,7 @@
 		"editor.defaultFormatter": "vscode.json-language-features"
 	},
 	"sonarlint.connectedMode.project": {
-		"connectionId": "outsystemsrd",
+		"connectionId": "outsystems",
 		"projectKey": "OutSystems_outsystems-maps"
 	}
 }
