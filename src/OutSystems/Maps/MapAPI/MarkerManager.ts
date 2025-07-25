@@ -290,18 +290,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 		};
 		try {
 			const marker = GetMarkerById(markerId);
-			const map = marker.map;
-			map && map.removeMarker(markerId);
-
-			markerMap.delete(markerId);
-			markerArr.splice(
-				markerArr.findIndex((p) => {
-					return p && p.equalsToID(markerId);
-				}),
-				1
-			);
 			marker.map?.removeMarker(markerId);
-
 			CleanMarkerArrays(markerId);
 		} catch (error) {
 			responseObj.isSuccess = false;
