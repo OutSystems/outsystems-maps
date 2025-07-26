@@ -33,6 +33,21 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 	}
 
 	/**
+	 * Cleans the markerMap and markerArr from the marker with the given id.
+	 *
+	 * @param {string} markerId Id of the Marker to be removed
+	 */
+	function CleanMarkerArrays(markerId: string): void {
+		markerMap.has(markerId) && markerMap.delete(markerId);
+		markerArr.splice(
+			markerArr.findIndex((marker) => {
+				return marker?.equalsToID(markerId);
+			}),
+			1
+		);
+	}
+
+	/**
 	 * Creates and adds a marker to a map.
 	 *
 	 * @export
@@ -282,18 +297,45 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 		};
 		try {
 			const marker = GetMarkerById(markerId);
-			// The marker might not exist anymore, if the map was removed.
-			const map = marker?.map;
-			map?.removeMarker(markerId);
+			marker.map?.removeMarker(markerId);
+			CleanMarkerArrays(markerId);
+		} catch (error) {
+			responseObj.isSuccess = false;
+			responseObj.message = error.message;
+			responseObj.code = OSFramework.Maps.Enum.ErrorCodes.API_FailedRemoveMarker;
+		}
 
-			// When the map was removed, the marker is destroyed, but still exists in the markerArr and markerMap.
-			markerMap.delete(markerId);
-			markerArr.splice(
-				markerArr.findIndex((p) => {
-					return p?.equalsToID(markerId);
-				}),
-				1
-			);
+		return JSON.stringify(responseObj);
+	}
+
+	/**
+	 * Removes all the markers created by the API.
+	 *
+	 * @export
+	 * @return {*}  {string}
+	 */
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	export function RemoveAllMarkersCreatedByAPI(mapId: string, removeFromMap = true): string {
+		const responseObj = {
+			isSuccess: true,
+			message: 'Success',
+			code: '200',
+		};
+		try {
+			if (removeFromMap) {
+				// First we try to remove the markers from the map.
+				MapManager.RemoveMarkers(mapId);
+			}
+
+			for (const [storedMarkerId, storedMapId] of markerMap) {
+				if (storedMapId === mapId) {
+					const marker = GetMarkerById(storedMarkerId, false);
+					if (marker && marker.widgetId === undefined) {
+						// If the marker does not have a widgetId, it means it was created by
+						CleanMarkerArrays(storedMarkerId);
+					}
+				}
+			}
 		} catch (error) {
 			responseObj.isSuccess = false;
 			responseObj.message = error.message;
@@ -325,13 +367,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 			// Second remove the markers to destroy from local variables.
 			markerMap.forEach((storedMapId, storedMarkerId) => {
 				if (mapId === storedMapId) {
-					markerMap.delete(storedMarkerId);
-					markerArr.splice(
-						markerArr.findIndex((p) => {
-							return p?.equalsToID(storedMarkerId);
-						}),
-						1
-					);
+					CleanMarkerArrays(storedMarkerId);
 				}
 			});
 		} catch (error) {

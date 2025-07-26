@@ -54,8 +54,14 @@ namespace OutSystems.Maps.MapAPI.Directions {
 	export async function SetDirections(mapId: string, options: string): Promise<string> {
 		const map = MapManager.GetMapById(mapId);
 		const directionOptions = JSON.parse(options);
-		const response = await map.features.directions.setRoute(directionOptions);
-		return JSON.stringify(response);
+		return map.features.directions
+			.setRoute(directionOptions)
+			.then((result) => {
+				return JSON.stringify(result);
+			})
+			.catch((error) => {
+				return JSON.stringify(error);
+			});
 	}
 
 	/**
