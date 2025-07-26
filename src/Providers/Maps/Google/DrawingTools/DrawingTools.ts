@@ -6,7 +6,6 @@ namespace Provider.Maps.Google.DrawingTools {
 		google.maps.drawing.DrawingManager,
 		OSFramework.Maps.Configuration.IConfigurationDrawingTools
 	> {
-		protected _provider: google.maps.drawing.DrawingManager;
 		constructor(map: OSFramework.Maps.OSMap.IMap, drawingToolsId: string, configs: JSON) {
 			super(map, drawingToolsId, new Configuration.DrawingTools.DrawingToolsConfig(configs));
 		}

@@ -147,30 +147,10 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 	): OSFramework.Maps.DrawingTools.IDrawingTools {
 		let drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools;
 		const map = GetMapByDrawingToolsId(drawingToolsId);
-<<<<<<< Updated upstream
-=======
-		if (
-			OSFramework.Maps.Helper.ValidateFeatureProvider(map, OSFramework.Maps.Enum.Feature.DrawingTools) === false
-		) {
-			return;
-		}
->>>>>>> Stashed changes
 		const validateFeatureProvider = OSFramework.Maps.Helper.ValidateFeatureProvider(
 			map,
 			OSFramework.Maps.Enum.Feature.DrawingTools
 		);
-<<<<<<< Updated upstream
-=======
-		if (!map.drawingTools) {
-			const _drawingTools = OSFramework.Maps.DrawingTools.DrawingToolsFactory.MakeDrawingTools(
-				map,
-				drawingToolsId,
-				JSON.parse(configs)
-			);
-			drawingToolsElement = _drawingTools;
-			drawingToolsMap.set(drawingToolsId, map.uniqueId);
-			map.addDrawingTools(_drawingTools);
->>>>>>> Stashed changes
 
 		if (validateFeatureProvider) {
 			if (!map.drawingTools) {
@@ -182,28 +162,6 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 				activeDrawingTools = drawingTools;
 				drawingToolsMap.set(drawingToolsId, map.uniqueId);
 				map.addDrawingTools(drawingTools);
-
-<<<<<<< Updated upstream
-=======
-			return _drawingTools;
-		} else {
-			console.error(`There is already a DrawingTools registered on the specified Map under id:${drawingToolsId}`);
-			activeDrawingTools = _drawingTools;
-			drawingToolsMap.set(drawingToolsId, map.uniqueId);
-			map.addDrawingTools(_drawingTools);
-
-		if (validateFeatureProvider) {
-			if (!map.drawingTools) {
-				drawingTools = OSFramework.Maps.DrawingTools.DrawingToolsFactory.MakeDrawingTools(
-					map,
-					drawingToolsId,
-					JSON.parse(configs)
-				);
-				activeDrawingTools = drawingTools;
-				drawingToolsMap.set(drawingToolsId, map.uniqueId);
-				map.addDrawingTools(drawingTools);
-
->>>>>>> Stashed changes
 				CheckPendingTools(drawingTools);
 			} else {
 				console.error(
@@ -224,12 +182,6 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 		drawingToolsId: string,
 		raiseError = true
 	): OSFramework.Maps.DrawingTools.IDrawingTools {
-<<<<<<< Updated upstream
-		const drawingTools = activeDrawingTools?.equalsToID(drawingToolsId) ? activeDrawingTools : undefined;
-=======
-		const drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools =
-			drawingToolsElement && drawingToolsElement.equalsToID(drawingToolsId) ? drawingToolsElement : undefined;
-		const drawingTools = activeDrawingTools?.equalsToID(drawingToolsId) ? activeDrawingTools : undefined;
 		let drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools = activeDrawingTools?.equalsToID(drawingToolsId)
 			? activeDrawingTools
 			: undefined;
@@ -239,7 +191,6 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 			drawingTools = map?.drawingTools;
 		}
 
->>>>>>> Stashed changes
 		if (drawingTools === undefined && raiseError) {
 			throw new Error(`DrawingTools id:${drawingToolsId} not found`);
 		}

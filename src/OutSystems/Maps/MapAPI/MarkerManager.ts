@@ -241,17 +241,12 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 	 * @param markerId Id of the Marker
 	 */
 	export function GetMarkerById(markerId: string, raiseError = true): OSFramework.Maps.Marker.IMarker {
-		let foundMarker: boolean = false;
-		let marker: OSFramework.Maps.Marker.IMarker = markerArr.find((p) => {
-			foundMarker = p?.equalsToID(markerId);
-			return foundMarker;
-		});
 		let marker = markerArr.find((p) => p?.equalsToID(markerId));
 
 		// if didn't found marker, check if it was draw by the DrawingTools
 		// But check if the marker was found in the markerArr. This means that
 		// the marker, was destroyed by the map.
-		if (marker === undefined && foundMarker === false) {
+		if (marker === undefined) {
 			// Get all maps
 			const allMaps = [...MapManager.GetMapsFromPage().values()];
 
