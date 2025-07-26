@@ -7,7 +7,7 @@ namespace Provider.Maps.Google.Helper.Conversions {
 	 * @param apiKey Google API Key
 	 * @returns Promise that will retrieve the coordinates
 	 */
-	const googleMapsApiGeocode = function (location: string): Promise<OSFramework.Maps.OSStructures.OSMap.Coordinates> {
+	const googleMapsApiGeocode = async (location: string): Promise<OSFramework.Maps.OSStructures.OSMap.Coordinates> => {
 		// Encodes a location string into a valid format
 		const geo = new google.maps.Geocoder();
 
