@@ -111,37 +111,3 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager.Events {
 		}
 	}
 }
-
-/// Overrides for the old namespace - calls the new one, lets users know this is no longer in use
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace MapAPI.FileLayerManager.Events {
-	export function CheckPendingEvents(fileLayer: OSFramework.Maps.FileLayer.IFileLayer): void {
-		OSFramework.Maps.Helper.LogWarningMessage(
-			`${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.Events.CheckPendingEvents()'`
-		);
-		OutSystems.Maps.MapAPI.FileLayerManager.Events.CheckPendingEvents(fileLayer);
-	}
-
-	export function Subscribe(
-		fileLayerId: string,
-		eventName: OSFramework.Maps.Event.FileLayer.FileLayersEventType,
-		callback: OSFramework.Maps.Callbacks.FileLayer.Event
-	): void {
-		OSFramework.Maps.Helper.LogWarningMessage(
-			`${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.Events.Subscribe()'`
-		);
-		OutSystems.Maps.MapAPI.FileLayerManager.Events.Subscribe(fileLayerId, eventName, callback);
-	}
-
-	export function Unsubscribe(
-		fileLayerId: string,
-		eventName: OSFramework.Maps.Event.FileLayer.FileLayersEventType,
-		callback: OSFramework.Maps.Callbacks.FileLayer.Event
-	): void {
-		OSFramework.Maps.Helper.LogWarningMessage(
-			`${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.Events.Unsubscribe()'`
-		);
-		OutSystems.Maps.MapAPI.FileLayerManager.Events.Unsubscribe(fileLayerId, eventName, callback);
-	}
-}

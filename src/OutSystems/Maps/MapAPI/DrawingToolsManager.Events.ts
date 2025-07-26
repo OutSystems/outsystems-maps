@@ -113,37 +113,3 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager.Events {
 		}
 	}
 }
-
-/// Overrides for the old namespace - calls the new one, lets users know this is no longer in use
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace MapAPI.DrawingToolsManager.Events {
-	export function CheckPendingEvents(drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools): void {
-		OSFramework.Maps.Helper.LogWarningMessage(
-			`${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.Events.CheckPendingEvents()'`
-		);
-		OutSystems.Maps.MapAPI.DrawingToolsManager.Events.CheckPendingEvents(drawingTools);
-	}
-
-	export function SubscribeByToolUniqueId(
-		toolUniqueId: string,
-		eventName: OSFramework.Maps.Event.DrawingTools.DrawingToolsEventType,
-		callback: OSFramework.Maps.Callbacks.DrawingTools.Event
-	): void {
-		OSFramework.Maps.Helper.LogWarningMessage(
-			`${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.Events.SubscribeByToolUniqueId()'`
-		);
-		OutSystems.Maps.MapAPI.DrawingToolsManager.Events.SubscribeByToolUniqueId(toolUniqueId, eventName, callback);
-	}
-
-	export function UnsubscribeByToolId(
-		toolUniqueId: string,
-		eventName: OSFramework.Maps.Event.DrawingTools.DrawingToolsEventType,
-		callback: OSFramework.Maps.Callbacks.DrawingTools.Event
-	): void {
-		OSFramework.Maps.Helper.LogWarningMessage(
-			`${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.DrawingToolsManager.Events.UnsubscribeByToolId()'`
-		);
-		OutSystems.Maps.MapAPI.DrawingToolsManager.Events.UnsubscribeByToolId(toolUniqueId, eventName, callback);
-	}
-}
