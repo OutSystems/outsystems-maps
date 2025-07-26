@@ -111,36 +111,3 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
 		);
 	}
 }
-
-/// Overrides for the old namespace - calls the new one, lets users know this is no longer in use
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace MapAPI.FileLayerManager {
-	export function ChangeProperty(fileLayerId: string, propertyName: string, propertyValue: unknown): void {
-		OSFramework.Maps.Helper.LogWarningMessage(
-			`${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.ChangeProperty()'`
-		);
-		OutSystems.Maps.MapAPI.FileLayerManager.ChangeProperty(fileLayerId, propertyName, propertyValue);
-	}
-
-	export function CreateFileLayer(fileLayerId: string, configs: string): OSFramework.Maps.FileLayer.IFileLayer {
-		OSFramework.Maps.Helper.LogWarningMessage(
-			`${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.CreateFileLayer()'`
-		);
-		return OutSystems.Maps.MapAPI.FileLayerManager.CreateFileLayer(fileLayerId, configs);
-	}
-
-	export function GetFileLayerById(fileLayerId: string, raiseError = true): OSFramework.Maps.FileLayer.IFileLayer {
-		OSFramework.Maps.Helper.LogWarningMessage(
-			`${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.GetFileLayerById()'`
-		);
-		return OutSystems.Maps.MapAPI.FileLayerManager.GetFileLayerById(fileLayerId, raiseError);
-	}
-
-	export function RemoveFileLayer(fileLayerId: string): void {
-		OSFramework.Maps.Helper.LogWarningMessage(
-			`${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.RemoveFileLayer()'`
-		);
-		return OutSystems.Maps.MapAPI.FileLayerManager.RemoveFileLayer(fileLayerId);
-	}
-}
