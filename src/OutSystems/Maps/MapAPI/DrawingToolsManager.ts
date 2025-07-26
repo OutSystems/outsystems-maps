@@ -1,11 +1,29 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
+	/**
+	 * Map that will store the DrawingTools uniqueId and the Map uniqueId to which it belongs to.
+	 */
 	const drawingToolsMap = new Map<string, string>(); //drawingTools.uniqueId -> map.uniqueId
+
+	/**
+	 * Reference to the active DrawingTools instance.
+	 */
 	let activeDrawingTools: OSFramework.Maps.DrawingTools.IDrawingTools = undefined;
 
-	/* pending tools map holds the tools to be created if the drawing tools block is not ready to add new tools */
+	/**
+	 * Map that will store the tools to be created if the drawing tools block is not ready to add new tools.
+	 */
 	const _pendingTools = new Map<string, Array<OSFramework.Maps.OSStructures.API.PendingTools>>(); //drawingTools.uniqueId -> Array<tool.uniqueId, tool.type, tool.configs>
 
+	/**
+	 * Function that will create an instance of a Tool object with the configurations passed.
+	 *
+	 * @param {OSFramework.Maps.DrawingTools.IDrawingTools} drawingTools - The DrawingTools instance to which the Tool will be added.
+	 * @param {string} toolId - The uniqueId of the Tool to be created.
+	 * @param {OSFramework.Maps.Enum.DrawingToolsTypes} type - The type of the Tool to be created.
+	 * @param {string} configs - The configurations of the Tool to be created.
+	 * @returns {OSFramework.Maps.DrawingTools.ITool} The created Tool instance.
+	 */
 	function CreateTool(
 		drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
 		toolId: string,
@@ -36,6 +54,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 	 * Gets the Map to which the DrawingTools belongs to
 	 *
 	 * @param {string} drawingToolsId Id of the DrawingTools that exists on the Map
+	 * @returns {OSFramework.Maps.OSMap.IMap} The Map instance to which the DrawingTools belongs to.
 	 */
 	function GetMapByDrawingToolsId(drawingToolsId: string): OSFramework.Maps.OSMap.IMap {
 		let map: OSFramework.Maps.OSMap.IMap;
@@ -68,6 +87,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 	 * @param toolId identifier of the new tool
 	 * @param type type of the new tool (OSFramework.Maps.Enum.DrawingToolsTypes)
 	 * @param configs stringified configuration for the new tool
+	 * @returns {OSFramework.Maps.DrawingTools.ITool} The created Tool instance.
 	 */
 	export function AddTool(
 		toolId: string,
@@ -94,6 +114,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 	 * @param {string} drawingToolsId Id of the DrawingTools to be changed
 	 * @param {string} propertyName name of the property to be changed - some properties of the provider might not work out of be box
 	 * @param {*} propertyValue value to which the property should be changed to.
+	 * @returns {void}
 	 */
 	export function ChangeProperty(drawingToolsId: string, propertyName: string, propertyValue: unknown): void {
 		const drawingTools = GetDrawingToolsById(drawingToolsId);
@@ -107,6 +128,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 	 * @param {string} toolId Id of the Tool to be changed
 	 * @param {string} propertyName name of the property to be changed - some properties of the provider might not work out of be box
 	 * @param {*} propertyValue value to which the property should be changed to.
+	 * @returns {void}
 	 */
 	export function ChangeToolProperty(toolId: string, propertyName: string, propertyValue: unknown): void {
 		const drawingToolsId = GetDrawingToolsByToolUniqueId(toolId);
@@ -119,6 +141,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 	 *
 	 * @export
 	 * @param {string} drawingTools DrawingTools that is ready for events
+	 * @returns {void}
 	 */
 	export function CheckPendingTools(drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools): void {
 		// For each key of the pendingEvents check if the shape has the key as a widgetId or uniqueId and add the new handler
@@ -139,7 +162,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 	 *
 	 * @export
 	 * @param {string} configs configurations for the DrawingTools in JSON format
-	 * @returns {*}  {DrawingTools.IDrawingTools} instance of the DrawingTools
+	 * @returns {OSFramework.Maps.DrawingTools.IDrawingTools} instance of the DrawingTools
 	 */
 	export function CreateDrawingTools(
 		drawingToolsId: string,
@@ -177,6 +200,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 	 *
 	 * @export
 	 * @param drawingToolsId Id of the DrawingTools
+	 * @returns {OSFramework.Maps.DrawingTools.IDrawingTools} The DrawingTools instance.
 	 */
 	export function GetDrawingToolsById(
 		drawingToolsId: string,
@@ -202,6 +226,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 	 * Gets the DrawingTools element by the toolId
 	 *
 	 * @param {string} toolUniqueId Id of the tool
+	 * @returns {string} The DrawingTools uniqueId.
 	 */
 	export function GetDrawingToolsByToolUniqueId(toolUniqueId: string): string {
 		//Try to find in DOM only if not present on Map
@@ -213,6 +238,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 	 * Function that will destroy the DrawingTools from the map it belongs to
 	 * @export
 	 * @param {string} drawingToolsId id of the DrawingTools that is about to be removed
+	 * @returns {void}
 	 */
 	export function RemoveDrawingTools(drawingToolsId: string): void {
 		const drawingTools = GetDrawingToolsById(drawingToolsId, false);
@@ -230,6 +256,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 	 *
 	 * @export
 	 * @param {string} toolId id of the Tool that is about to be removed
+	 * @returns {void}
 	 */
 	export function RemoveTool(toolId: string): void {
 		const drawingToolsId = GetDrawingToolsByToolUniqueId(toolId);

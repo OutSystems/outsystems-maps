@@ -1,18 +1,23 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OutSystems.Maps.MapAPI.DrawingToolsManager.Events {
+	/**
+	 * Map that will store the pending events for a specific DrawingTools.
+	 * These are events that are added to the DrawingTools before it is ready.
+	 *
+	 */
 	const _pendingEvents: Map<
 		string,
 		{
 			cb: OSFramework.Maps.Callbacks.Generic;
 			event: OSFramework.Maps.Event.DrawingTools.DrawingToolsEventType;
-			uniqueId: string; //Event unique identifier
+			uniqueId: string;
 		}[]
 	> = new Map<
 		string,
 		{
 			cb: OSFramework.Maps.Callbacks.Generic;
 			event: OSFramework.Maps.Event.DrawingTools.DrawingToolsEventType;
-			uniqueId: string; //Event unique identifier
+			uniqueId: string;
 		}[]
 	>();
 
@@ -21,6 +26,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager.Events {
 	 *
 	 * @export
 	 * @param {string} drawingTools DrawingTools that is ready for events
+	 * @returns {void}
 	 */
 	export function CheckPendingEvents(drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools): void {
 		// For each key of the pendingEvents check if the shape has the key as a widgetId or uniqueId and add the new handler
@@ -43,6 +49,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager.Events {
 	 * @param {string} toolUniqueId Id of the tool
 	 * @param {OSFramework.Maps.Event.Map.MapEventType} eventName name fo the event to be attached
 	 * @param {MapAPI.Callbacks.OSMap.Event} callback callback to be invoked when the event occurs
+	 * @returns {void}
 	 */
 	export function SubscribeByToolUniqueId(
 		toolUniqueId: string,
@@ -81,6 +88,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager.Events {
 	 * @param {string} toolUniqueId Id of the tool
 	 * @param {OSFramework.Maps.Event.Map.MapEventType} eventName name fo the event to be attached
 	 * @param {MapAPI.Callbacks.OSMap.Event} callback callback to be invoked when the event occurs
+	 * @returns {void}
 	 */
 	export function UnsubscribeByToolId(
 		toolUniqueId: string,

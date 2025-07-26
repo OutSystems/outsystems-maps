@@ -1,6 +1,13 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OutSystems.Maps.MapAPI.ShapeManager {
+	/**
+	 * Map that will store the Shape uniqueId and the Map uniqueId to which it belongs to.
+	 */
 	const shapeMap = new Map<string, string>(); //shape.uniqueId -> map.uniqueId
+
+	/**
+	 * Array that will store the Shape instances.
+	 */
 	const shapeArr = new Array<OSFramework.Maps.Shape.IShape>();
 
 	/**
@@ -10,6 +17,7 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
 	 * @param {string} shapeId Id of the Shape to be changed
 	 * @param {string} propertyName name of the property to be changed - some properties of the provider might not work out of be box
 	 * @param {*} propertyValue value to which the property should be changed to.
+	 * @returns {void}
 	 */
 	export function ChangeProperty(shapeId: string, propertyName: string, propertyValue: unknown): void {
 		const shape = GetShapeById(shapeId);
@@ -25,7 +33,7 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
 	 *
 	 * @export
 	 * @param {string} configs configurations for the Shape in JSON format
-	 * @returns {*}  {Shape.IShape} instance of the Shape
+	 * @returns {OSFramework.Maps.Shape.IShape} instance of the Shape
 	 */
 	export function CreateShape(
 		shapeId: string,
@@ -49,6 +57,7 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
 	/**
 	 * Returns a set of properties from the Circle shape based on its WidgetId
 	 * @param shapeId Id of the Shape
+	 * @returns {string} The response from the API.
 	 */
 	export function GetCircle(shapeId: string): string {
 		const shape = GetShapeById(shapeId) as OSFramework.Maps.Shape.IShapeCircle;
@@ -73,7 +82,7 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
 	 * Gets the Map to which the Shape belongs to
 	 *
 	 * @param {string} shapeId Id of the Shape that exists on the Map
-	 * @returns {*}  {ShapeMapper} this structure has the id of Map, and the reference to the instance of the Map
+	 * @returns {OSFramework.Maps.OSMap.IMap} this structure has the id of Map, and the reference to the instance of the Map
 	 */
 	function GetMapByShapeId(shapeId: string): OSFramework.Maps.OSMap.IMap {
 		let map: OSFramework.Maps.OSMap.IMap;
@@ -101,6 +110,8 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
 	/**
 	 * Returns a Shape based on Id
 	 * @param shapeId Id of the Shape
+	 * @param {boolean} raiseError Whether to throw an error if the Shape is not found.
+	 * @returns {OSFramework.Maps.Shape.IShape} The Shape instance.
 	 */
 	export function GetShapeById(shapeId: string, raiseError = true): OSFramework.Maps.Shape.IShape {
 		let shape = shapeArr.find((p) => p?.equalsToID(shapeId));
@@ -131,6 +142,7 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
 	 * Returns a Shape path based on the WidgetId of the shape
 	 * Doesn't work for shapes like the Circle
 	 * @param shapeId Id of the Shape
+	 * @returns {string} The response from the API.
 	 */
 	export function GetShapePath(shapeId: string): string {
 		const shape = GetShapeById(shapeId) as OSFramework.Maps.Shape.IShapePolyshape;
@@ -152,6 +164,7 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
 	 *
 	 * @export
 	 * @param {string} shapeId id of the Shape that is about to be removed
+	 * @returns {void}
 	 */
 	export function RemoveShape(shapeId: string): void {
 		const shape = GetShapeById(shapeId);
@@ -172,6 +185,9 @@ namespace OutSystems.Maps.MapAPI.ShapeManager {
 	 *
 	 * @export
 	 * @param {string} shapeId id of the Shape that is about to be removed
+	 * @param {string} pointCoordinates The coordinates of the point to check if it is inside the shape.
+	 * @param {string} coordinatesList The coordinates of the shape to check if the point is inside.
+	 * @returns {string} The response from the API.
 	 */
 	export function ContainsLocation(
 		mapId: string,

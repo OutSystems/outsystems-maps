@@ -1,18 +1,22 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OutSystems.Maps.MapAPI.FileLayerManager.Events {
+	/**
+	 * Map that will store the pending events for a specific FileLayer.
+	 * These are events that are added to the FileLayer before it is ready.
+	 */
 	const _pendingEvents: Map<
 		string,
 		{
 			cb: OSFramework.Maps.Callbacks.Generic;
 			event: OSFramework.Maps.Event.FileLayer.FileLayersEventType;
-			uniqueId: string; //Event unique identifier
+			uniqueId: string;
 		}[]
 	> = new Map<
 		string,
 		{
 			cb: OSFramework.Maps.Callbacks.Generic;
 			event: OSFramework.Maps.Event.FileLayer.FileLayersEventType;
-			uniqueId: string; //Event unique identifier
+			uniqueId: string;
 		}[]
 	>();
 
@@ -21,6 +25,7 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager.Events {
 	 *
 	 * @export
 	 * @param {string} fileLayer FileLayer that is ready for events
+	 * @returns {void}
 	 */
 	export function CheckPendingEvents(fileLayer: OSFramework.Maps.FileLayer.IFileLayer): void {
 		// For each key of the pendingEvents check if the shape has the key as a widgetId or uniqueId and add the new handler
@@ -44,6 +49,7 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager.Events {
 	 * @param {string} fileLayerId FileLayer where the events will get attached
 	 * @param {OSFramework.Maps.Event.FileLayer.FileLayerEventType} eventName name of the event to get attached
 	 * @param {OSFramework.Maps.Callbacks.FileLayer.ClickEvent} callback to be invoked when the event occurs
+	 * @returns {void}
 	 */
 	export function Subscribe(
 		fileLayerId: string,
@@ -80,6 +86,7 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager.Events {
 	 * @param {string} eventUniqueId Event Id that will get removed
 	 * @param {OSFramework.Maps.Event.Map.MapEventType} eventName name of the event to be removed
 	 * @param {MapAPI.Callbacks.OSMap.Event} callback callback that will be removed
+	 * @returns {void}
 	 */
 	export function Unsubscribe(
 		fileLayerId: string,

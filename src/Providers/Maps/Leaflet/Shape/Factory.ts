@@ -1,6 +1,20 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Leaflet.Shape {
+	/**
+	 * Factory that will create the correct Shape object based on the type passed.
+	 *
+	 * @namespace ShapeFactory
+	 */
 	export namespace ShapeFactory {
+		/**
+		 * Function that will create the correct Shape object based on the type passed.
+		 *
+		 * @param map Map that the Shape will be added to
+		 * @param shapeId Id of the Shape
+		 * @param type Type of the Shape
+		 * @param configs Configurations of the Shape
+		 * @returns Shape object
+		 */
 		export function MakeShape(
 			map: OSFramework.Maps.OSMap.IMap,
 			shapeId: string,

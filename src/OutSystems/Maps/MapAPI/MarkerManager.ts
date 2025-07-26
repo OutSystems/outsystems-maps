@@ -1,13 +1,20 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OutSystems.Maps.MapAPI.MarkerManager {
+	/**
+	 * Map that will store the Marker uniqueId and the Map uniqueId to which it belongs to.
+	 */
 	const markerMap = new Map<string, string>(); //marker.uniqueId -> map.uniqueId
+
+	/**
+	 * Array that will store the Marker instances.
+	 */
 	const markerArr = new Array<OSFramework.Maps.Marker.IMarker>();
 
 	/**
 	 * Gets the Map to which the Marker belongs to
 	 *
 	 * @param {string} markerId Id of the Marker that exists on the Map
-	 * @returns {*}  {MarkerMapper} this structure has the id of Map, and the reference to the instance of the Map
+	 * @returns {OSFramework.Maps.OSMap.IMap} this structure has the id of Map, and the reference to the instance of the Map
 	 */
 	function GetMapByMarkerId(markerId: string): OSFramework.Maps.OSMap.IMap {
 		let map: OSFramework.Maps.OSMap.IMap;
@@ -36,6 +43,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 	 * Cleans the markerMap and markerArr from the marker with the given id.
 	 *
 	 * @param {string} markerId Id of the Marker to be removed
+	 * @returns {void}
 	 */
 	function CleanMarkerArrays(markerId: string): void {
 		markerMap.has(markerId) && markerMap.delete(markerId);
@@ -53,7 +61,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 	 * @export
 	 * @param {string} mapId Id of the map to which the marker should be added
 	 * @param {string} configs Configurations for the marker
-	 * @return {*}  {string}
+	 * @returns {string} The response from the API.
 	 */
 	export function AddMarker(mapId: string, configs: string): string {
 		const responseObj = {
@@ -92,6 +100,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 	 * @param {string} markerId Id of the Marker to be changed
 	 * @param {string} propertyName name of the property to be changed - some properties of the provider might not work out of be box
 	 * @param {*} propertyValue value to which the property should be changed to.
+	 * @returns {void}
 	 */
 	export function ChangeProperty(markerId: string, propertyName: string, propertyValue: unknown): void {
 		const marker = GetMarkerById(markerId);
@@ -105,6 +114,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 	/**
 	 * Close the Popup of the MarkerPopup
 	 * @param markerId Id of the Marker
+	 * @returns {void}
 	 */
 	export function ClosePopup(markerId: string): void {
 		const marker = GetMarkerById(markerId) as OSFramework.Maps.Marker.IMarkerPopup;
@@ -114,6 +124,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 	/**
 	 * Forces the refresh of the content inside the Popup of the MarkerPopup
 	 * @param markerId Id of the Marker
+	 * @returns {void}
 	 */
 	export function RefreshPopup(markerId: string): void {
 		const marker = GetMarkerById(markerId) as OSFramework.Maps.Marker.IMarkerPopup;
@@ -125,6 +136,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 	 *
 	 * @param mapId Id of the Map
 	 * @param markerPosition Defines the location of the marker. Works with addresses and coordinates (latitude and longitude).
+	 * @returns {string} The response from the API.
 	 */
 	export function RemoveMarkerFromCluster(mapId: string, markerPosition: string): string {
 		const responseObj = {
@@ -179,7 +191,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 	 * @export
 	 * @param {string} mapId Id of the Map where the change will occur
 	 * @param {string} configs configurations for the Map in JSON format
-	 * @returns {*}  {OSMap.IMarker} instance of the Map
+	 * @returns {OSFramework.Maps.Marker.IMarker} instance of the Map
 	 */
 	export function CreateMarker(mapId: string, markerId: string, configs: string): OSFramework.Maps.Marker.IMarker {
 		const map = MapManager.GetMapById(mapId, true);
@@ -209,7 +221,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 	 *
 	 * @export
 	 * @param {string} configs configurations for the Map in JSON format
-	 * @returns {*}  {OSMap.IMarker} instance of the Map
+	 * @returns {OSFramework.Maps.Marker.IMarker} instance of the Map
 	 */
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	export function CreateMarkerByUniqueID(
@@ -239,6 +251,8 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 	/**
 	 * Returns a Marker based on Id
 	 * @param markerId Id of the Marker
+	 * @param {boolean} raiseError Whether to throw an error if the Marker is not found.
+	 * @returns {OSFramework.Maps.Marker.IMarker} The Marker instance.
 	 */
 	export function GetMarkerById(markerId: string, raiseError = true): OSFramework.Maps.Marker.IMarker {
 		let marker = markerArr.find((p) => p?.equalsToID(markerId));
@@ -272,6 +286,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 	/**
 	 * Open the Popup of the MarkerPopup
 	 * @param markerId Id of the Marker
+	 * @returns {void}
 	 */
 	export function OpenPopup(markerId: string): void {
 		const marker = GetMarkerById(markerId) as OSFramework.Maps.Marker.IMarkerPopup;
@@ -283,6 +298,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 	 *
 	 * @export
 	 * @param {string} markerID id of the Marker that is about to be removed
+	 * @returns {string} The response from the API.
 	 */
 	export function RemoveMarker(markerId: string): string {
 		const responseObj = {
@@ -307,7 +323,9 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 	 * Removes all the markers created by the API.
 	 *
 	 * @export
-	 * @return {*}  {string}
+	 * @param {string} mapId Id of the Map
+	 * @param {boolean} removeFromMap Whether to remove the markers from the map.
+	 * @returns {string} The response from the API.
 	 */
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	export function RemoveAllMarkersCreatedByAPI(mapId: string, removeFromMap = true): string {
@@ -345,7 +363,8 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 	 *
 	 * @export
 	 * @param {string} mapId
-	 * @return {*}  {string}
+	 * @param {boolean} removeFromMap Whether to remove the markers from the map.
+	 * @returns {string} The response from the API.
 	 */
 	export function RemoveAllMarkers(mapId: string, removeFromMap = true): string {
 		const responseObj = {

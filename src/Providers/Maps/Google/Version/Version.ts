@@ -16,11 +16,12 @@ namespace Provider.Maps.Google.Version {
 	}
 
 	/**
-	 * Set the version of Google Maps to be used on the page.
+	 * Sets the version of Google Maps to be used on the page.
+	 * Stores the desired version in local storage and returns whether the version has changed.
 	 *
 	 * @export
-	 * @param {string} newVersion
-	 * @return {*}  {boolean}
+	 * @param {string} newVersion - The desired Google Maps version.
+	 * @returns {boolean} True if the version has changed, false otherwise.
 	 */
 	export function Change(newVersion: string): boolean {
 		const currentVersion =
@@ -38,10 +39,11 @@ namespace Provider.Maps.Google.Version {
 	}
 
 	/**
-	 * Get the current version of Google Maps loaded on the page.
+	 * Gets the current version of Google Maps loaded on the page.
+	 * If the loaded version differs from the desired version, logs a warning and returns the loaded version.
 	 *
 	 * @export
-	 * @return {*}  {string}
+	 * @returns {string} The Google Maps version string.
 	 */
 	export function Get(): string {
 		let currentVersion =

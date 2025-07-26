@@ -1,6 +1,19 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Leaflet.DrawingTools {
+	/**
+	 * Factory that will create the correct DrawingTools object based on the type passed.
+	 *
+	 * @namespace DrawingToolsFactory
+	 */
 	export namespace DrawingToolsFactory {
+		/**
+		 * Function that will create the correct DrawingTools object based on the type passed.
+		 *
+		 * @param map Map that the DrawingTools will be added to
+		 * @param drawingToolsId Id of the DrawingTools
+		 * @param configs Configurations of the DrawingTools
+		 * @returns DrawingTools object
+		 */
 		export function MakeDrawingTools(
 			map: OSFramework.Maps.OSMap.IMap,
 			drawingToolsId: string,
@@ -11,6 +24,16 @@ namespace Provider.Maps.Leaflet.DrawingTools {
 			return new DrawingTools(map, drawingToolsId, configs);
 		}
 
+		/**
+		 * Function that will create the correct Tool object based on the type passed.
+		 *
+		 * @param map Map that the Tool will be added to
+		 * @param drawingTools DrawingTools that the Tool will be added to
+		 * @param toolId Id of the Tool
+		 * @param type Type of the Tool
+		 * @param configs Configurations of the Tool
+		 * @returns Tool object
+		 */
 		export function MakeTool(
 			map: OSFramework.Maps.OSMap.IMap,
 			drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,

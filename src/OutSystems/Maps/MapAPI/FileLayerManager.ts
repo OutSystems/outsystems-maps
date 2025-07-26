@@ -1,12 +1,20 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OutSystems.Maps.MapAPI.FileLayerManager {
+	/**
+	 * Map that will store the FileLayer uniqueId and the Map uniqueId to which it belongs to.
+	 */
 	const fileLayerMap = new Map<string, string>(); //fileLayer.uniqueId -> map.uniqueId
+
+	/**
+	 * Array that will store the FileLayer instances.
+	 */
 	const fileLayerArr = new Array<OSFramework.Maps.FileLayer.IFileLayer>();
 
 	/**
 	 * Gets the Map to which the FileLayer belongs to
 	 *
 	 * @param {string} fileLayerId Id of the FileLayer that exists on the Map
+	 * @returns {OSFramework.Maps.OSMap.IMap} The Map instance to which the FileLayer belongs to.
 	 */
 	function GetMapByFileLayerId(fileLayerId: string): OSFramework.Maps.OSMap.IMap {
 		let map: OSFramework.Maps.OSMap.IMap;
@@ -38,6 +46,7 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
 	 * @param {string} fileLayerId Id of the FileLayer to be changed
 	 * @param {string} propertyName name of the property to be changed - some properties of the provider might not work out of be box
 	 * @param {*} propertyValue value to which the property should be changed to.
+	 * @returns {void}
 	 */
 	export function ChangeProperty(fileLayerId: string, propertyName: string, propertyValue: unknown): void {
 		const fileLayer = GetFileLayerById(fileLayerId);
@@ -53,7 +62,7 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
 	 *
 	 * @export
 	 * @param {string} configs configurations for the FileLayer in JSON format
-	 * @returns {*}  {FileLayer.IFileLayer} instance of the FileLayer
+	 * @returns {OSFramework.Maps.FileLayer.IFileLayer} instance of the FileLayer
 	 */
 	export function CreateFileLayer(fileLayerId: string, configs: string): OSFramework.Maps.FileLayer.IFileLayer {
 		const map = GetMapByFileLayerId(fileLayerId);
@@ -81,6 +90,8 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
 	 *
 	 * @export
 	 * @param fileLayerId Id of the FileLayer
+	 * @param {boolean} raiseError Whether to throw an error if the FileLayer is not found.
+	 * @returns {OSFramework.Maps.FileLayer.IFileLayer} The FileLayer instance.
 	 */
 	export function GetFileLayerById(fileLayerId: string, raiseError = true): OSFramework.Maps.FileLayer.IFileLayer {
 		const fileLayer = fileLayerArr.find((p) => p?.equalsToID(fileLayerId));
@@ -96,6 +107,7 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
 	 * Function that will destroy the FileLayer from the map it belongs to
 	 * @export
 	 * @param {string} fileLayerId id of the FileLayer that is about to be removed
+	 * @returns {void}
 	 */
 	export function RemoveFileLayer(fileLayerId: string): void {
 		const fileLayer = GetFileLayerById(fileLayerId);

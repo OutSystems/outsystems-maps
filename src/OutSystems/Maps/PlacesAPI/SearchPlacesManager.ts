@@ -1,6 +1,13 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager {
+	/**
+	 * Map that will store the SearchPlaces uniqueId and the SearchPlaces instance.
+	 */
 	const searchPlacesMap = new Map<string, OSFramework.Maps.SearchPlaces.ISearchPlaces>(); //searchPlaces.uniqueId -> SearchPlaces obj
+
+	/**
+	 * The active SearchPlaces instance.
+	 */
 	let activeSearchPlaces: OSFramework.Maps.SearchPlaces.ISearchPlaces = undefined;
 
 	/**
@@ -10,6 +17,7 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager {
 	 * @param {string} searchPlacesId Id of the SearchPlaces where the change will occur.
 	 * @param {string} propertyName name of the property to be changed - some properties of the provider might not work out of be box.
 	 * @param {*} propertyValue value to which the property should be changed to.
+	 * @returns {void}
 	 */
 	export function ChangeProperty(searchPlacesId: string, propertyName: string, propertyValue: unknown): void {
 		const searchPlaces = GetSearchPlacesById(searchPlacesId);
@@ -24,7 +32,7 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager {
 	 * @param {string} searchPlacesId Id of the SearchPlaces that is going to be created.
 	 * @param {string} providerType Type of the Provider (e.g. GoogleProvider, etc)
 	 * @param {string} configs configurations for the SearchPlaces in JSON format.
-	 * @returns {*}  {SearchPlaces.ISearchPlaces} instance of the SearchPlaces.
+	 * @returns {OSFramework.Maps.SearchPlaces.ISearchPlaces} instance of the SearchPlaces.
 	 */
 	export function CreateSearchPlaces(
 		searchPlacesId: string,
@@ -53,7 +61,7 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager {
 	 * Function that will get the instance of the current active SearchPlaces. The active SearchPlaces, is always the last (existing) SearchPlaces that was created in the page.
 	 *
 	 * @export
-	 * @returns {*}  {SearchPlaces.ISearchPlaces} instance of the active SearchPlaces.
+	 * @returns {OSFramework.Maps.SearchPlaces.ISearchPlaces} instance of the active SearchPlaces.
 	 */
 	export function GetActiveSearchPlaces(): OSFramework.Maps.SearchPlaces.ISearchPlaces {
 		return activeSearchPlaces;
@@ -65,7 +73,7 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager {
 	 * @export
 	 * @param {string} searchPlacesId Id of the SearchPlaces where the change will occur.
 	 * @param {boolean} raiseError Will raise errors when there is no object with this uniqueId
-	 * @returns {*}  {SearchPlaces.ISearchPlaces} instance of the SearchPlaces.
+	 * @returns {OSFramework.Maps.SearchPlaces.ISearchPlaces} instance of the SearchPlaces.
 	 */
 	export function GetSearchPlacesById(
 		searchPlacesId: string,
@@ -95,7 +103,7 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager {
 
 	/**
 	 * Function that will get all the searchPlacess from the current page
-	 * @returns SearchPlaces structure containing all the searchPlacess and the corresponding uniqueId
+	 * @returns {Map<string, OSFramework.Maps.SearchPlaces.ISearchPlaces>} SearchPlaces structure containing all the searchPlacess and the corresponding uniqueId
 	 */
 	export function GetSearchPlacessFromPage(): Map<string, OSFramework.Maps.SearchPlaces.ISearchPlaces> {
 		return searchPlacesMap;
@@ -106,6 +114,7 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager {
 	 * The current provider SearchPlaces is GoogleSearchPlacess.
 	 * @export
 	 * @param {string} searchPlacesId Id of the SearchPlaces that is going to be initialized.
+	 * @returns {void}
 	 */
 	export function InitializeSearchPlaces(searchPlacesId: string): void {
 		const searchPlaces = GetSearchPlacesById(searchPlacesId);
@@ -118,6 +127,7 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager {
 	 *
 	 * @export
 	 * @param {string} searchPlacesId Id of the SearchPlaces to be destroyed.
+	 * @returns {void}
 	 */
 	export function RemoveSearchPlaces(searchPlacesId: string): void {
 		const _searchPlaces = GetSearchPlacesById(searchPlacesId);

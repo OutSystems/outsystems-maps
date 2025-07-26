@@ -5,7 +5,7 @@ namespace OutSystems.Maps.MapAPI.ProviderLibrary {
 	 *
 	 * @export
 	 * @param {OSFramework.Maps.Enum.ProviderType} provider
-	 * @return {*}  {string}
+	 * @returns {string} The version of the provider.
 	 */
 	export function GetVersion(provider: OSFramework.Maps.Enum.ProviderType): string {
 		return OSFramework.Maps.ProviderVersion.Get(provider);
@@ -18,6 +18,7 @@ namespace OutSystems.Maps.MapAPI.ProviderLibrary {
 	 * @param {OSFramework.Maps.Enum.ProviderType} provider
 	 * @param {string} version
 	 * @param {boolean} [forceRefresh=false]
+	 * @returns {void}
 	 */
 	export function SetVersion(
 		provider: OSFramework.Maps.Enum.ProviderType,

@@ -1,21 +1,28 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OutSystems.Maps.MapAPI.MapManager.Events {
+	/**
+	 * Map that will store the pending events for a specific Map.
+	 * These are events that are added to the Map before it is ready.
+	 */
 	const _pendingEvents: Map<
 		string,
 		{
 			cb: OSFramework.Maps.Callbacks.Generic;
 			event: OSFramework.Maps.Event.OSMap.MapEventType;
-			uniqueId: string; //Event unique identifier
+			uniqueId: string;
 		}[]
 	> = new Map<
 		string,
 		{
 			cb: OSFramework.Maps.Callbacks.Generic;
 			event: OSFramework.Maps.Event.OSMap.MapEventType;
-			uniqueId: string; //Event unique identifier
+			uniqueId: string;
 		}[]
 	>();
 
+	/**
+	 * Map that will store the event uniqueId and the Map uniqueId to which it belongs to.
+	 */
 	const _eventsToMapId = new Map<string, string>(); //event.uniqueId -> map.uniqueId
 
 	/**
@@ -23,6 +30,7 @@ namespace OutSystems.Maps.MapAPI.MapManager.Events {
 	 *
 	 * @export
 	 * @param {string} map Map that is ready for events
+	 * @returns {void}
 	 */
 	export function CheckPendingEvents(map: OSFramework.Maps.OSMap.IMap): void {
 		// For each key of the pendingEvents check if the map has the key as a widgetId or uniqueId and add the new handler
@@ -41,6 +49,7 @@ namespace OutSystems.Maps.MapAPI.MapManager.Events {
 	 * Returns the MapId based on the eventUniqueId
 	 * @param eventUniqueId UniqueId of our Event
 	 * @param lookUpDOM Search in DOM by the parent Map
+	 * @returns {string} The Map uniqueId.
 	 */
 	export function GetMapByEventUniqueId(eventUniqueId: string, lookUpDOM = true): string {
 		//Try to find in DOM only if not present on Map
@@ -65,6 +74,7 @@ namespace OutSystems.Maps.MapAPI.MapManager.Events {
 	 * @param {string} mapId Map where the event will be attached
 	 * @param {OSFramework.Maps.Event.Map.MapEventType} eventName name fo the event to be attached
 	 * @param {MapAPI.Callbacks.OSMap.Event} callback callback to be invoked when the event occurs
+	 * @returns {void}
 	 */
 	export function Subscribe(
 		mapId: string,
@@ -101,6 +111,7 @@ namespace OutSystems.Maps.MapAPI.MapManager.Events {
 	 * @param {string} uniqueId Id of the Event to be attached
 	 * @param {OSFramework.Maps.Event.Map.MapEventType} eventName name fo the event to be attached
 	 * @param {MapAPI.Callbacks.OSMap.Event} callback callback to be invoked when the event occurs
+	 * @returns {void}
 	 */
 	export function SubscribeByUniqueId(
 		eventUniqueId: string,
@@ -140,6 +151,7 @@ namespace OutSystems.Maps.MapAPI.MapManager.Events {
 	 * @param {string} eventUniqueId Event Id that will get removed
 	 * @param {OSFramework.Maps.Event.Map.MapEventType} eventName name of the event to be removed
 	 * @param {MapAPI.Callbacks.OSMap.Event} callback callback that will be removed
+	 * @returns {void}
 	 */
 	export function Unsubscribe(
 		eventUniqueId: string,

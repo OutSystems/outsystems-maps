@@ -1,5 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events {
+	/**
+	 * Map that will store the pending events for a specific SearchPlaces.
+	 * These are events that are added to the SearchPlaces before it is ready.
+	 */
 	const _pendingEvents: Map<
 		string,
 		{
@@ -16,6 +20,9 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events {
 		}[]
 	>();
 
+	/**
+	 * Map that will store the event uniqueId and the SearchPlaces uniqueId to which it belongs to.
+	 */
 	const _eventsToSearchPlacesId = new Map<string, string>(); //event.uniqueId -> searchPlaces.uniqueId
 
 	/**
@@ -41,6 +48,7 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events {
 	 * Returns the SearchPlacesId based on the eventUniqueId
 	 * @param eventUniqueId UniqueId of our Event
 	 * @param lookUpDOM Search in DOM by the parent SearchPlaces
+	 * @returns {string} The SearchPlaces uniqueId.
 	 */
 	export function GetSearchPlacesByEventUniqueId(eventUniqueId: string, lookUpDOM = true): string {
 		//Try to find in DOM only if not present on SearchPlaces
@@ -64,6 +72,7 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events {
 	 * @param {string} searchPlacesId SearchPlaces where the event will be attached
 	 * @param {OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType} eventName name fo the event to be attached
 	 * @param {SearchPlacesAPI.Callbacks.SearchPlaces.Event} callback callback to be invoked when the event occurs
+	 * @returns {void}
 	 */
 	export function Subscribe(
 		searchPlacesId: string,
@@ -100,6 +109,7 @@ namespace OutSystems.Maps.PlacesAPI.SearchPlacesManager.Events {
 	 * @param {string} eventUniqueId Event Id that will get removed
 	 * @param {OSFramework.Maps.Event.SearchPlaces.SearchPlacesEventType} eventName name of the event to be removed
 	 * @param {SearchPlacesAPI.Callbacks.SearchPlaces.Event} callback callback that will be removed
+	 * @returns {void}
 	 */
 	export function Unsubscribe(
 		eventUniqueId: string,

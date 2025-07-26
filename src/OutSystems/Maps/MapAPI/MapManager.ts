@@ -1,6 +1,13 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OutSystems.Maps.MapAPI.MapManager {
+	/**
+	 * Map that will store the Map uniqueId and the Map instance.
+	 */
 	const maps = new Map<string, OSFramework.Maps.OSMap.IMap>(); //map.uniqueId -> Map obj
+
+	/**
+	 * The active Map instance.
+	 */
 	let activeMap: OSFramework.Maps.OSMap.IMap = undefined;
 
 	/**
@@ -10,6 +17,7 @@ namespace OutSystems.Maps.MapAPI.MapManager {
 	 * @param {string} mapId Id of the Map where the change will occur.
 	 * @param {string} propertyName name of the property to be changed - some properties of the provider might not work out of be box.
 	 * @param {*} propertyValue value to which the property should be changed to.
+	 * @returns {void}
 	 */
 	export function ChangeProperty(mapId: string, propertyName: string, propertyValue: unknown): void {
 		const map = GetMapById(mapId);
@@ -24,7 +32,7 @@ namespace OutSystems.Maps.MapAPI.MapManager {
 	 * @param {string} mapId Id of the Map that is going to be created.
 	 * @param {string} providerType Type of the Provider (e.g. GoogleProvider, etc)
 	 * @param {string} configs configurations for the Map in JSON format.
-	 * @returns {*}  {OSMap.IMap} instance of the Map.
+	 * @returns {OSFramework.Maps.OSMap.IMap} instance of the Map.
 	 */
 	export function CreateMap(
 		mapId: string,
@@ -50,7 +58,7 @@ namespace OutSystems.Maps.MapAPI.MapManager {
 	 * Function that will get the instance of the current active Map. The active Map, is always the last (existing) Map that was created in the page.
 	 *
 	 * @export
-	 * @returns {*}  {OSMap.IMap} instance of the active Map.
+	 * @returns {OSFramework.Maps.OSMap.IMap} instance of the active Map.
 	 */
 	export function GetActiveMap(): OSFramework.Maps.OSMap.IMap {
 		return activeMap;
@@ -61,6 +69,7 @@ namespace OutSystems.Maps.MapAPI.MapManager {
 	 *
 	 * @export
 	 * @param {string} mapId Id of the Map to get the Markers.
+	 * @returns {Array<OSFramework.Maps.Marker.IMarker>} Array of Markers.
 	 */
 	export function GetAllMarkers(mapId: string): Array<OSFramework.Maps.Marker.IMarker> {
 		const map = GetMapById(mapId);
@@ -74,7 +83,7 @@ namespace OutSystems.Maps.MapAPI.MapManager {
 	 * @export
 	 * @param {string} mapId Id of the Map where the change will occur.
 	 * @param {boolean} raiseError Will raise errors when there is no object with this uniqueId
-	 * @returns {*}  {OSMap.IMap} instance of the Map.
+	 * @returns {OSFramework.Maps.OSMap.IMap} instance of the Map.
 	 */
 	export function GetMapById(mapId: string, raiseError = true): OSFramework.Maps.OSMap.IMap {
 		let map: OSFramework.Maps.OSMap.IMap;
@@ -110,7 +119,7 @@ namespace OutSystems.Maps.MapAPI.MapManager {
 	 *
 	 * @export
 	 * @param {string} mapId Id of the Map where the change will occur.
-	 * @returns {*}  {OSMap.IMap} instance of the Map.
+	 * @returns {string} The center coordinates of the Map.
 	 */
 	export function GetMapCenter(mapId: string): string {
 		const map = MapManager.GetMapById(mapId, true);
@@ -119,7 +128,7 @@ namespace OutSystems.Maps.MapAPI.MapManager {
 	}
 	/**
 	 * Function that will get all the maps from the current page
-	 * @returns Map structure containing all the maps and the corresponding uniqueId
+	 * @returns {Map<string, OSFramework.Maps.OSMap.IMap>} Map structure containing all the maps and the corresponding uniqueId
 	 */
 	export function GetMapsFromPage(): Map<string, OSFramework.Maps.OSMap.IMap> {
 		return maps;
@@ -130,6 +139,7 @@ namespace OutSystems.Maps.MapAPI.MapManager {
 	 * The current provider Map is GoogleMaps.
 	 * @export
 	 * @param {string} mapId Id of the Map that is going to be initialized.
+	 * @returns {void}
 	 */
 	export function InitializeMap(mapId: string): void {
 		const map = GetMapById(mapId);
@@ -143,6 +153,7 @@ namespace OutSystems.Maps.MapAPI.MapManager {
 	 *
 	 * @export
 	 * @param {string} mapId Id of the Map to be destroyed.
+	 * @returns {void}
 	 */
 	export function RemoveMap(mapId: string): void {
 		const map = GetMapById(mapId);
@@ -165,6 +176,7 @@ namespace OutSystems.Maps.MapAPI.MapManager {
 	 *
 	 * @export
 	 * @param {string} mapId Id of the Map to have markers removed.
+	 * @returns {void}
 	 */
 	export function RemoveMarkers(mapId: string): void {
 		const map = GetMapById(mapId);
@@ -177,6 +189,7 @@ namespace OutSystems.Maps.MapAPI.MapManager {
 	 *
 	 * @export
 	 * @param {string} mapId Id of the Map to have markers removed.
+	 * @returns {void}
 	 */
 	export function RemoveFileLayers(mapId: string): void {
 		const map = GetMapById(mapId);
@@ -190,6 +203,7 @@ namespace OutSystems.Maps.MapAPI.MapManager {
 	 * @export
 	 * @param {string} mapId Id of the Map where the change will occur.
 	 * @param {string} height new height for the map.
+	 * @returns {void}
 	 */
 	export function SetHeight(mapId: string, height: string): void {
 		const map = GetMapById(mapId);
@@ -238,6 +252,7 @@ namespace OutSystems.Maps.MapAPI.MapManager {
 	 * @export
 	 * @param {string} mapId
 	 * @param {OSFramework.Maps.Feature.IMarkerClusterer} renderer
+	 * @returns {void}
 	 */
 	export function SetClusterRenderer(mapId: string, renderer: OSFramework.Maps.Feature.IMarkerClustererRender) {
 		const map = GetMapById(mapId);

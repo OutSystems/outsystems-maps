@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Leaflet.Version {
 	/**
-	 * Set the version of Google Maps to be used on the page.
+	 * Set the version of Leaflet Maps to be used on the page.
 	 * Currently, changing the version of Leaflet is not supported.
 	 *
 	 * @export
@@ -17,7 +17,7 @@ namespace Provider.Maps.Leaflet.Version {
 	}
 
 	/**
-	 * Get the current version of Google Maps loaded on the page.
+	 * Get the current version of Leaflet Maps loaded on the page.
 	 *
 	 * @export
 	 * @return {*}  {string}

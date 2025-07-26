@@ -1,6 +1,19 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Leaflet.OSMap {
+	/**
+	 * Factory that will create the correct Map object based on the type passed.
+	 *
+	 * @namespace MapFactory
+	 */
 	export namespace MapFactory {
+		/**
+		 * Function that will create the correct Map object based on the type passed.
+		 *
+		 * @param type Type of the Map
+		 * @param mapdId Id of the Map
+		 * @param configs Configurations of the Map
+		 * @returns Map object
+		 */
 		export function MakeMap(
 			type: OSFramework.Maps.Enum.MapType,
 			mapdId: string,

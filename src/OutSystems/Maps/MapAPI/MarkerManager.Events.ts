@@ -1,21 +1,28 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
+	/**
+	 * Map that will store the pending events for a specific Marker.
+	 * These are events that are added to the Marker before it is ready.
+	 */
 	const _pendingEvents: Map<
 		string,
 		{
 			cb: OSFramework.Maps.Callbacks.Generic;
 			event: OSFramework.Maps.Event.Marker.MarkerEventType;
-			uniqueId: string; //Event unique identifier
+			uniqueId: string;
 		}[]
 	> = new Map<
 		string,
 		{
 			cb: OSFramework.Maps.Callbacks.Generic;
 			event: OSFramework.Maps.Event.Marker.MarkerEventType;
-			uniqueId: string; //Event unique identifier
+			uniqueId: string;
 		}[]
 	>();
 
+	/**
+	 * Map that will store the event uniqueId and the Marker uniqueId to which it belongs to.
+	 */
 	const _eventsToMarkerId = new Map<string, string>(); //event.uniqueId -> marker.uniqueId
 
 	/**
@@ -41,6 +48,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
 	 * Returns the MarkerId based on the eventUniqueId
 	 * @param eventUniqueId UniqueId of our Event
 	 * @param lookUpDOM Search in DOM by the parent Marker
+	 * @returns {string} The Marker uniqueId.
 	 */
 	export function GetMarkerIdByEventUniqueId(eventUniqueId: string, lookUpDOM = true): string {
 		//Try to find in DOM only if not present on Map
@@ -61,6 +69,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
 	 * @param {string} markerId Marker where the events will get attached
 	 * @param {OSFramework.Maps.Event.Marker.MarkerEventType} eventName name of the event to get attached
 	 * @param {OSFramework.Maps.Callbacks.Marker.Event} callback to be invoked when the event occurs
+	 * @returns {string} The response from the API.
 	 */
 	export function Subscribe(
 		markerId: string,
@@ -93,6 +102,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
 	 * @param {string} eventUniqueId Id of the Event to be attached
 	 * @param {OSFramework.Maps.Event.Map.MapEventType} eventName name fo the event to be attached
 	 * @param {OSFramework.Maps.Callbacks.Marker.Event} callback callback to be invoked when the event occurs
+	 * @returns {void}
 	 */
 	export function SubscribeByUniqueId(
 		eventUniqueId: string,
@@ -130,6 +140,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
 	 * @param {string} mapId Map where all the markers will get the event attached
 	 * @param {OSFramework.Maps.Event.Marker.MarkerEventType} eventName name of the event to get attached
 	 * @param {OSFramework.Maps.Callbacks.Marker.ClickEvent} callback to be invoked when the event occurs
+	 * @returns {void}
 	 */
 	export function SubscribeAll(
 		mapId: string,
@@ -150,6 +161,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
 	 * @param {string} eventUniqueId Map where the event will be removed
 	 * @param {OSFramework.Maps.Event.Map.MapEventType} eventName name of the event to be removed
 	 * @param {OSFramework.Maps.Callbacks.Marker.Event} callback callback that will be removed
+	 * @returns {void}
 	 */
 	export function Unsubscribe(
 		eventUniqueId: string,
@@ -174,6 +186,14 @@ namespace OutSystems.Maps.MapAPI.MarkerManager.Events {
 		}
 	}
 
+	/**
+	 * API method to unsubscribe an event from a specific Marker
+	 *
+	 * @param {string} markerId Marker where the event will be removed
+	 * @param {OSFramework.Maps.Event.Marker.MarkerEventType} eventName name of the event to be removed
+	 * @param {OSFramework.Maps.Callbacks.Marker.Event} callback callback that will be removed
+	 * @returns {string} The response from the API.
+	 */
 	export function UnsubscribeByMarkerId(
 		markerId: string,
 		eventName: OSFramework.Maps.Event.Marker.MarkerEventType,
