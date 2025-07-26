@@ -19,7 +19,7 @@ namespace Provider.Maps.Google.Feature {
 
 		private _setBounds(useShapes: boolean) {
 			const bounds = new google.maps.LatLngBounds();
-			this._map.markers.forEach(function (item) {
+			this._map.markers.forEach((item) => {
 				if (item.provider === undefined) return;
 				// The TS definitions appear to be outdated.
 				if (Helper.TypeChecker.IsAdvancedMarker(item.provider)) {
@@ -33,7 +33,7 @@ namespace Provider.Maps.Google.Feature {
 			});
 
 			if (useShapes) {
-				this._map.shapes.forEach(function (item) {
+				this._map.shapes.forEach((item) => {
 					if (item.provider === undefined) return;
 					bounds.union(item.providerBounds as google.maps.LatLngBounds);
 				});

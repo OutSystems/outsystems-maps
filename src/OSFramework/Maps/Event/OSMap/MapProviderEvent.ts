@@ -25,7 +25,7 @@ namespace OSFramework.Maps.Event.OSMap {
 		): void {
 			this.handlers.slice(0).forEach((h) => {
 				// Checks if event block exists on page before calling its callback
-				if (document.querySelector('.event-preview[name="' + h.uniqueId + '"]')) {
+				if (document.querySelector(`.event-preview[name="${h.uniqueId}"]`)) {
 					Helper.CallbackAsyncInvocation(h.eventHandler, mapObj, mapId, eventName, coords, eventUniqueId);
 				}
 			});

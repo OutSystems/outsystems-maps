@@ -216,10 +216,10 @@ namespace OutSystems.Maps.MapAPI.MapManager {
 					parentHeight = currParent.offsetHeight;
 					currParent = currParent.parentNode as HTMLElement;
 				} while (parentHeight <= 200 && currParent !== document.body);
-				height = parentHeight + 'px';
+				height = `${parentHeight}px`;
 			} else {
 				if (isNaN(Number(height)) === false) {
-					height = height + 'px';
+					height = `${height}px`;
 				}
 			}
 

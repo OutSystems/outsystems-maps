@@ -19,7 +19,7 @@ namespace OSFramework.Maps.Helper {
 		//     });
 
 		// eslint-disable-next-line no-eval
-		json = eval('(' + text + ')');
+		json = eval(`(${text})`);
 
 		return json as JSON;
 	}

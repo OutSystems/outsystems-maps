@@ -19,13 +19,13 @@ namespace Provider.Maps.Leaflet.Feature {
 
 		private _setBounds(useShapes: boolean) {
 			let bounds: L.LatLngBounds;
-			this._map.markers.forEach(function (marker) {
+			this._map.markers.forEach((marker) => {
 				if (marker.provider === undefined) return;
 				const loc: L.LatLng = (marker.provider as L.Marker).getLatLng();
 				bounds = bounds ? bounds.extend(loc) : new L.LatLngBounds(loc, loc);
 			});
 			if (useShapes) {
-				this._map.shapes.forEach(function (shape) {
+				this._map.shapes.forEach((shape) => {
 					if (shape.provider === undefined) return;
 					const loc: L.LatLngBounds = shape.providerBounds as L.LatLngBounds;
 					bounds = bounds ? bounds.extend(loc) : loc;

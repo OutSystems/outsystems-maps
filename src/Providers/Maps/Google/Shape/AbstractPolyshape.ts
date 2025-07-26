@@ -62,7 +62,7 @@ namespace Provider.Maps.Google.Shape {
 
 		public get providerBounds(): google.maps.LatLngBounds {
 			const bounds = new google.maps.LatLngBounds();
-			this.providerPath.forEach(function (item) {
+			this.providerPath.forEach((item) => {
 				bounds.extend(new google.maps.LatLng(item.lat as number, item.lng as number));
 			});
 			return bounds;
