@@ -42,26 +42,14 @@ namespace Provider.Maps.Google.Helper.Conversions {
 			console.warn(
 				'Invalid location. Using the default location -> 55 Thomson Pl 2nd floor, Boston, MA 02210, United States'
 			);
-			return new Promise((resolve) => {
-				resolve(OSFramework.Maps.Helper.Constants.defaultMapCenter);
-			});
+			return Promise.resolve(OSFramework.Maps.Helper.Constants.defaultMapCenter);
 		}
 
-		// Regex that validates if string is a set of coordinates
-		// Accepts "12.300,-8.220" and "12.300, -8.220"
-		const regexValidator = /^-{0,1}\d*\.{0,1}\d*,( )?-{0,1}\d*\.{0,1}\d*$/;
 		// If the provided location is a set of coordinates
-		if (regexValidator.test(location)) {
-			let latitude: number;
-			let longitude: number;
+		if (Helper.TypeChecker.IsValidCoordinates(location)) {
 			// split the coordinates into latitude and longitude
 			if (location.indexOf(',') > -1) {
-				latitude = parseFloat(location.split(',')[0].replace(' ', ''));
-				longitude = parseFloat(location.split(',')[1].replace(' ', ''));
-
-				return new Promise((resolve) => {
-					resolve({ lat: latitude, lng: longitude });
-				});
+				return Promise.resolve(GetCoordinatesFromString(location));
 			} else {
 				// Try to get the address via the googleMapsAPIGeocode
 				return googleMapsApiGeocode(location);
@@ -70,6 +58,27 @@ namespace Provider.Maps.Google.Helper.Conversions {
 		// If the location is an address try to get the address via the googleMapsAPIGeocode
 		else {
 			return googleMapsApiGeocode(location);
+		}
+	}
+
+	/**
+	 * Converts a string with coordinates into a google.maps.LatLngLiteral object.
+	 *
+	 * @export
+	 * @param {string} coordinates
+	 * @return {*}  {google.maps.LatLngLiteral}
+	 */
+	export function GetCoordinatesFromString(coordinates: string): google.maps.LatLngLiteral {
+		let latitude: number;
+		let longitude: number;
+		// split the coordinates into latitude and longitude
+		if (coordinates.indexOf(',') > -1) {
+			latitude = parseFloat(coordinates.split(',')[0].replace(' ', ''));
+			longitude = parseFloat(coordinates.split(',')[1].replace(' ', ''));
+
+			return { lat: latitude, lng: longitude };
+		} else {
+			return { lat: 0, lng: 0 };
 		}
 	}
 

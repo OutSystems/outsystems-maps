@@ -1,24 +1,22 @@
 /// <reference path="../../../../../OSFramework/Maps/Configuration/AbstractConfiguration.ts" />
+/// <reference path="./AbstractSearchPlacesConfig.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.Configuration.SearchPlaces {
-	export class SearchPlacesConfig
-		extends OSFramework.Maps.Configuration.AbstractConfiguration
-		implements OSFramework.Maps.Configuration.IConfigurationSearchPlaces
-	{
-		public apiKey: string;
-		public countries: Array<string>;
-		public localization: OSFramework.Maps.OSStructures.OSMap.Localization;
-		public searchArea: OSFramework.Maps.OSStructures.OSMap.BoundsString;
-		public searchType: OSFramework.Maps.Enum.SearchTypes;
-
+	export class SearchPlacesConfig extends AbstractSearchPlacesConfig {
 		public getProviderConfig(): ISearchPlacesProviderConfig {
 			// eslint-disable-next-line prefer-const
 			let provider: ISearchPlacesProviderConfig = {
-				bounds: this.searchArea,
-				strictBounds: !!this.searchArea,
-				componentRestrictions: this.countries ? { country: this.countries } : undefined,
-				types: this.searchType
+				locationBias: this.searchArea
+					? ({
+							east: Number(this.searchArea.east),
+							north: Number(this.searchArea.north),
+							south: Number(this.searchArea.south),
+							west: Number(this.searchArea.west),
+						} as google.maps.places.LocationBias)
+					: undefined,
+				includedRegionCodes: this.countries ?? undefined,
+				includedPrimaryTypes: this.searchType
 					? // eslint-disable-next-line @typescript-eslint/no-unused-vars
 						[Google.SearchPlaces.SearchTypes[this.searchType]]
 					: undefined,
