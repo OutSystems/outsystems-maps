@@ -4,15 +4,15 @@ on:
     workflow_dispatch:
         inputs:
             new-version:
-                description: "Version to be released."
+                description: 'Version to be released.'
                 type: string
                 required: true
             update-prerelease-into-latest:
-                description: "Update pre-release into latest."
+                description: 'Update pre-release into latest.'
                 type: boolean
                 default: true
             delete-rc-branch:
-                description: "Delete rc* branch at the end of process."
+                description: 'Delete rc* branch at the end of process.'
                 type: boolean
                 default: true
 

@@ -4,15 +4,15 @@ on:
     workflow_dispatch:
         inputs:
             new-version:
-                description: "New version to be set. (1.0.1)"
+                description: 'New version to be set. (1.0.1)'
                 type: string
                 required: true
             release-date:
-                description: "Release date. (YYYY-MM-DD)"
+                description: 'Release date. (YYYY-MM-DD)'
                 type: string
                 required: true
             new-dev-release:
-                description: "Set the new dev version. (1.0.1)"
+                description: 'Set the new dev version. (1.0.1)'
                 type: string
                 required: false
 
