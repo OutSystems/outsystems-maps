@@ -31,13 +31,12 @@ namespace Provider.Maps.Leaflet.Feature {
 					bounds = bounds ? bounds.extend(loc) : loc;
 				});
 			}
-			const osMap = (this._map as Provider.Maps.Leaflet.OSMap.Map);
-			
-			if (osMap.allowRefreshZoom) {
+
+			if (this._map.allowRefreshZoom) {
 				this._map.provider.fitBounds(bounds);
 				this._map.provider.panInsideBounds(bounds);
 			}
-			if (osMap.allowRefreshPosition) {
+			if (this._map.allowRefreshPosition) {
 				this._map.features.center.setCurrentCenter(bounds.getCenter());
 			}
 		}

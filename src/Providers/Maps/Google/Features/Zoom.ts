@@ -39,13 +39,11 @@ namespace Provider.Maps.Google.Feature {
 				});
 			}
 
-			const osMap = (this._map as Provider.Maps.Google.OSMap.Map);
-			
-			if (osMap.allowRefreshZoom) {
+			if (this._map.allowRefreshZoom) {
 				this._map.provider.fitBounds(bounds);
 				this._map.provider.panToBounds(bounds);
 			}
-			if (osMap.allowRefreshPosition) {
+			if (this._map.allowRefreshPosition) {
 				this._map.features.center.setCurrentCenter(bounds.getCenter());
 			}
 		}

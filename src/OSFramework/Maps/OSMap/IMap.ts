@@ -1,6 +1,10 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.Maps.OSMap {
 	export interface IMap extends Interface.IBuilder, Interface.ISearchById, Interface.IDisposable {
+		/** Verify if developer wants to respect the user position */
+		allowRefreshPosition: boolean;
+		/** Verify if developer wants to respect the user zoom */
+		allowRefreshZoom: boolean;
 		/** Map configuration */
 		config: Configuration.IConfigurationMap;
 		/** Get the DrawingTools from the Map */
