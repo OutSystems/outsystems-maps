@@ -9,6 +9,7 @@ namespace Provider.Maps.Google.OSMap {
 		private _addedEvents: Array<string>;
 		private _advancedFormatObj: GoogleAdvancedFormatObj;
 		private _fBuilder: Feature.FeatureBuilder;
+		private _gPostionChangeListener: google.maps.MapsEventListener;
 		private _gZoomChangeListener: google.maps.MapsEventListener;
 		private _scriptCallback: OSFramework.Maps.Callbacks.Generic;
 
@@ -22,6 +23,17 @@ namespace Provider.Maps.Google.OSMap {
 			this._addedEvents = [];
 			this._scriptCallback = this._createGoogleMap.bind(this);
 			this._gZoomChangeListener = undefined;
+		}
+
+		private _addMapDragEndHandler(): void {
+
+			if (this && this._provider && this._gPostionChangeListener === undefined) {
+				this._gPostionChangeListener = google.maps.event.addListener(
+					this._provider,
+					Constants.OSMap.ProviderEventNames.dragend,
+					this._mapPositionChangeCallback
+				);
+			}
 		}
 
 		private _addMapZoomHandler(): void {
@@ -127,6 +139,7 @@ namespace Provider.Maps.Google.OSMap {
 				// We can only set the events on the provider after its creation
 				this._setMapEvents(this._advancedFormatObj.mapEvents);
 				this._addMapZoomHandler();
+				this._addMapDragEndHandler();
 			}
 		}
 
@@ -148,6 +161,13 @@ namespace Provider.Maps.Google.OSMap {
 			) as unknown as GoogleAdvancedFormatObj;
 
 			return this.config.getProviderConfig();
+		}
+
+		private _removeMapPositionHandler(): void {
+			if (this._gPostionChangeListener) {
+				google.maps.event.removeListener(this._gPostionChangeListener);
+				this._gPostionChangeListener = undefined;
+			}
 		}
 
 		private _removeMapZoomHandler(): void {
@@ -436,10 +456,12 @@ namespace Provider.Maps.Google.OSMap {
 				this._fBuilder.dispose();
 			}
 
+			this._removeMapPositionHandler();
+
 			this._provider = undefined;
 		}
 
-		public refresh(centerChanged?: boolean): void {
+		public refresh(): void {
 			//Let's stop listening to the zoom event be caused by the refreshZoom
 			this._removeMapZoomHandler();
 
@@ -449,38 +471,24 @@ namespace Provider.Maps.Google.OSMap {
 				position.lat === OSFramework.Maps.Helper.Constants.defaultMapCenter.lat &&
 				position.lng === OSFramework.Maps.Helper.Constants.defaultMapCenter.lng;
 
-			//If there are markers, let's choose the map center accordingly.
-			//Otherwise, the map center will be the one defined in the configs.
-			if (this.markers.length > 0) {
-				// The TS definitions appear to be outdated.
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				const markerProvider: any = this.markers[0].provider;
-				if (this.markers.length > 1) {
-					//As the map has more than one marker, let's see if the map
-					//center should be changed.
-					//If the user hasn't change zoom, or the developer is ignoring it (current behavior).
-					if (this.allowRefreshZoom) {
-						//Let's check if the marker provider is ready to be used.
-						if (markerProvider !== undefined) {
-							//If the map center, is the same as the default, then the map will ignore it.
-							//Otherwise, the isAutofit config will be checked, and if false, then the current
-							//center will not be changed.
-							if (isDefault || this.features.zoom.isAutofit) {
-								//Let's use the first marker as the center of the map.
-								position = markerProvider.position.toJSON();
-							}
+			//If the user has zoomed or dragged the map and the developer intends to respect user zoom
+			//then the current map center will be used.
+			if (this.respectUserChange && this.hasZoomOrPositionChanged) {
+				position = this.provider.getCenter().toJSON();
+			} else {
+				//If there are markers, let's choose the map center accordingly.
+				//Otherwise, the map center will be the one current center position.
+				if (this.markers.length > 0) {
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					const markerProvider: any = this.markers[0].provider;
+					//Validate if the marker is already created
+					if (markerProvider !== undefined) {
+						//If the position is default or the zoom is auto the marker position will be 
+						//used as center
+						if (isDefault || this.features.zoom.isAutofit) {
+							position = markerProvider.position.toJSON();
 						}
-					} else {
-						//If the user has zoomed and the developer intends to respect user zoom
-						//then the current map center will be used.
-						position = centerChanged
-							? (this.config.center as OSFramework.Maps.OSStructures.OSMap.Coordinates)
-							: this.provider.getCenter().toJSON();
 					}
-				} else if (markerProvider !== undefined) {
-					//If there's only one marker, and is already created, its location will be
-					//used as the map center.
-					position = markerProvider.position.toJSON();
 				}
 			}
 

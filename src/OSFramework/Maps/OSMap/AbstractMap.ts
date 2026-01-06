@@ -14,6 +14,7 @@ namespace OSFramework.Maps.OSMap {
 		private _mapType: Enum.MapType;
 		private _markers: Map<string, Marker.IMarker>;
 		private _markersSet: Set<Marker.IMarker>;
+		private _positionChanged: boolean;
 		private _providerType: Enum.ProviderType;
 		private _shapes: Map<string, Shape.IShape>;
 		private _shapesSet: Set<Shape.IShape>;
@@ -22,6 +23,7 @@ namespace OSFramework.Maps.OSMap {
 		private _zoomChanged: boolean;
 
 		protected _features: Feature.ExposedFeatures;
+		protected _mapPositionChangeCallback: Maps.Callbacks.Generic;
 		protected _mapZoomChangeCallback: Maps.Callbacks.Generic;
 		protected _provider: W;
 
@@ -40,14 +42,20 @@ namespace OSFramework.Maps.OSMap {
 			this._mapEvents = new Event.OSMap.MapEventsManager(this);
 			this._mapType = mapType;
 			this._mapRefreshRequest = 0;
+			this._positionChanged = false;
 			this._providerType = providerType;
 			this._zoomChanged = false;
+			this._mapPositionChangeCallback = this._mapPositionChangeHandler.bind(this);
 			this._mapZoomChangeCallback = this._mapZoomChangeHandler.bind(this);
 		}
 		public abstract get mapTag(): string;
 
-		protected get allowRefreshZoom(): boolean {
+		public get allowRefreshZoom(): boolean {
 			return !(this.config.respectUserZoom && this._zoomChanged);
+		}
+
+		public get allowRefreshPosition(): boolean {
+			return !(this.config.respectUserPosition && this._positionChanged);
 		}
 
 		public get shapes(): Shape.IShape[] {
@@ -72,6 +80,10 @@ namespace OSFramework.Maps.OSMap {
 
 		public get fileLayers(): FileLayer.IFileLayer[] {
 			return Array.from(this._fileLayersSet);
+		}
+
+		public get hasZoomOrPositionChanged(): boolean {
+			return this._zoomChanged || this._positionChanged;
 		}
 
 		public get heatmapLayers(): HeatmapLayer.IHeatmapLayer[] {
@@ -100,12 +112,22 @@ namespace OSFramework.Maps.OSMap {
 			return this._providerType;
 		}
 
+		public get respectUserChange(): boolean {
+			return this.config.respectUserZoom || this.config.respectUserPosition;
+		}
+
 		public get uniqueId(): string {
 			return this._uniqueId;
 		}
 
 		public get widgetId(): string {
 			return this._widgetId;
+		}
+
+		private _mapPositionChangeHandler(): void {
+			if (this.config.respectUserPosition) {
+				this._positionChanged = true;
+			}
 		}
 
 		private _mapZoomChangeHandler(): void {
@@ -180,6 +202,11 @@ namespace OSFramework.Maps.OSMap {
 				if (Maps.Enum.OS_Config_Map.respectUserZoom === Maps.Enum.OS_Config_Map[propertyName]) {
 					this._zoomChanged = false;
 				}
+
+				if (Maps.Enum.OS_Config_Map.respectUserPosition === Maps.Enum.OS_Config_Map[propertyName]) {
+					this._positionChanged = false;
+				}
+
 			} else {
 				this.mapEvents.trigger(
 					Event.OSMap.MapEventType.OnError,

@@ -15,6 +15,7 @@ namespace OSFramework.Maps.Enum {
 		markerClustererMinClusterSize,
 		markerClustererZoomOnClick,
 		offset,
+		respectUserPosition,
 		respectUserZoom,
 		showTraffic,
 		staticMap,

@@ -39,9 +39,15 @@ namespace Provider.Maps.Google.Feature {
 				});
 			}
 
-			this._map.provider.fitBounds(bounds);
-			this._map.provider.panToBounds(bounds);
-			this._map.features.center.setCurrentCenter(this._map.provider.getCenter());
+			const osMap = (this._map as Provider.Maps.Google.OSMap.Map);
+			
+			if (osMap.allowRefreshZoom) {
+				this._map.provider.fitBounds(bounds);
+				this._map.provider.panToBounds(bounds);
+			}
+			if (osMap.allowRefreshPosition) {
+				this._map.features.center.setCurrentCenter(bounds.getCenter());
+			}
 		}
 
 		public build(): void {

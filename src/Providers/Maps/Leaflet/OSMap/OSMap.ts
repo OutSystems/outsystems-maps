@@ -260,37 +260,34 @@ namespace Provider.Maps.Leaflet.OSMap {
 			this._provider = undefined;
 		}
 
-		public refresh(centerChanged?: boolean): void {
+		public refresh(): void {
 			//Let's stop listening to the zoom event be caused by the refreshZoom
 			this._removeMapZoomHandler();
 
 			let position = this.features.center.getCenter();
 
-			//If there are markers, let's choose the map center accordingly.
-			//Otherwise, the map center will be the one defined in the configs.
-			if (this.markers.length > 0) {
-				const markerProvider = this.markers[0].provider as L.Marker;
-				if (this.markers.length > 1) {
-					//As the map has more than one marker, let's see if the map
-					//center should be changed.
-					if (this.allowRefreshZoom) {
-						//If the user hasn't change zoom, or the developer is ignoring
-						//it (current behavior), then the map will be centered tentatively
-						//in the first marker.
-						if (this.features.zoom.isAutofit) {
-							position = markerProvider.getLatLng();
+			const isDefault =
+				position.lat === OSFramework.Maps.Helper.Constants.defaultMapCenter.lat &&
+				position.lng === OSFramework.Maps.Helper.Constants.defaultMapCenter.lng;
+
+			//If the user has zoomed or dragged the map and the developer intends to respect user zoom
+			//then the current map center will be used.
+			if (this.respectUserChange && this.hasZoomOrPositionChanged) {
+				position = this.provider.getCenter();
+			} else {
+				//If there are markers, let's choose the map center accordingly.
+				//Otherwise, the map center will be the one current center position.
+				if (this.markers.length > 0) {
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					const markerProvider: any = this.markers[0].provider;
+					//Validate if the marker is already created
+					if (markerProvider !== undefined) {
+						//If the position is default or the zoom is auto the marker position will be 
+						//used as center
+						if (isDefault || this.features.zoom.isAutofit) {
+							position = markerProvider.position.toJSON();
 						}
-					} else {
-						//If the user has zoomed and the developer intends to respect user zoom
-						//then the current map center will be used.
-						position = centerChanged
-							? (this.config.center as OSFramework.Maps.OSStructures.OSMap.Coordinates)
-							: this.provider.getCenter();
 					}
-				} else if (markerProvider !== undefined) {
-					//If there's only one marker, and is already created, its location will be
-					//used as the map center.
-					position = markerProvider.getLatLng();
 				}
 			}
 
