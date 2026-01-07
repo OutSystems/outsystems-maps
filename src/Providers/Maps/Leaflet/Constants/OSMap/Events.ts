@@ -16,6 +16,7 @@ namespace Provider.Maps.Leaflet.Constants.OSMap {
 		drag = 'drag',
 		dragend = 'dragend',
 		dragstart = 'dragstart',
+		mousedown = 'mousedown',
 		mousemove = 'mousemove',
 		mouseout = 'mouseout',
 		mouseover = 'mouseover',
@@ -27,5 +28,6 @@ namespace Provider.Maps.Leaflet.Constants.OSMap {
 		zoom_end = 'zoomend',
 		// eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
 		zoom = 'zoom',
+	
 	}
 }

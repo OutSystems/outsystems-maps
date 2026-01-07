@@ -28,6 +28,19 @@ namespace Provider.Maps.Leaflet.OSMap {
 			this._provider.on(Constants.OSMap.ProviderEventNames.zoom_end, this._mapZoomChangeCallback);
 		}
 
+		//Used to prevent page from scrolling when user puts Leaflet map on focus
+		//Leaflet calls focus() on a 'mousedown' listener making the page to scroll, this event is called before Leaflet event preventing the scroll.
+		// https://github.com/Leaflet/Leaflet/blob/b2daaeeb43dac8367a6d3800b69f29d7b6c128e0/src/map/handler/Map.Keyboard.js#L89C1-L89C32
+		private _addOnMouseDownHandler(): void {
+			this._provider.on(
+				Constants.OSMap.ProviderEventNames.mousedown,
+				() => {
+					this.provider.getContainer().focus({ preventScroll: true });
+				},
+				{ capture: true }
+			);
+		}
+
 		private _buildDrawingTools(): void {
 			// Here we aren't using a forEach because there is only one drawingTools per map
 			this.drawingTools && this.drawingTools.build();
@@ -174,6 +187,7 @@ namespace Provider.Maps.Leaflet.OSMap {
 			this.features.center.updateCenter(currentCenter as string);
 			this._setMapEvents();
 
+			this._addOnMouseDownHandler();
 			this._addMapZoomHandler();
 		}
 
