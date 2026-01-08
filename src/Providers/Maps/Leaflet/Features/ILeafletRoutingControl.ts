@@ -1,6 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Leaflet.Feature {
 	export interface ILeafletRoutingControl {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		options: any
 		addTo(map: L.Map): void;
 		getContainer?(): HTMLElement;
 		getPlan(): unknown;

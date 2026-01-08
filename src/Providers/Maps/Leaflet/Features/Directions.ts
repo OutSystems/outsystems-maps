@@ -153,6 +153,15 @@ namespace Provider.Maps.Leaflet.Feature {
 			this._directionsRenderer.off(Constants.Directions.Events.routesfound, bind);
 		}
 
+		private _setAllowDragRoute(allowCreation: boolean) {
+			// If the Map has no directionsRenderer, return false.
+			if (this._hasDirectionsRenderer() === false) return;
+
+			if (this._directionsRenderer.options) {
+				this._directionsRenderer.options.lineOptions = { addWaypoints: allowCreation };
+			}
+		}
+
 		/**
 		 * Sets the avoidance criteria (avoidTolls, avoidHighways, avoidFerries) on the directionsRenderer routing service
 		 */
@@ -325,6 +334,8 @@ namespace Provider.Maps.Leaflet.Feature {
 
 			// Set the exclude object (Avoidance criteria)
 			this._setExcludes(directionOptions.exclude);
+
+			this._setAllowDragRoute(directionOptions.allowDragRoute);
 
 			this._directionsRenderer.on(Constants.Directions.Events.routesfound, this._bindSetRoute);
 

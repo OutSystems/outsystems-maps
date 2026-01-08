@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.Maps.OSStructures.Directions {
 	export class Options {
+		public allowDragRoute: boolean;
 		public destinationRoute: string;
 		public exclude: ExcludeCriteria;
 		public optimizeWaypoints: boolean;
