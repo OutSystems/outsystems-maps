@@ -67,7 +67,7 @@ namespace Provider.Maps.Google.Feature {
 				.then((response) => {
 					this._map.config.center = response;
 					this._initialCenter = response;
-					this._map.refresh(true);
+					this._map.refresh();
 				})
 				.catch((error) => {
 					this._map.mapEvents.trigger(

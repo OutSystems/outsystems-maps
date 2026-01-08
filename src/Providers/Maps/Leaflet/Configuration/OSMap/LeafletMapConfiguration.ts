@@ -8,6 +8,7 @@ namespace Provider.Maps.Leaflet.Configuration.OSMap {
 		public center: string | OSFramework.Maps.OSStructures.OSMap.Coordinates;
 		public height: string;
 		public offset: OSFramework.Maps.OSStructures.OSMap.Offset;
+		public respectUserPosition: boolean;
 		public respectUserZoom: boolean;
 		public uniqueId: string;
 		public zoom: OSFramework.Maps.Enum.OSMap.Zoom;

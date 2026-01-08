@@ -39,9 +39,13 @@ namespace Provider.Maps.Google.Feature {
 				});
 			}
 
-			this._map.provider.fitBounds(bounds);
-			this._map.provider.panToBounds(bounds);
-			this._map.features.center.setCurrentCenter(this._map.provider.getCenter());
+			if (this._map.allowRefreshZoom) {
+				this._map.provider.fitBounds(bounds);
+				this._map.provider.panToBounds(bounds);
+			}
+			if (this._map.allowRefreshPosition) {
+				this._map.features.center.setCurrentCenter(bounds.getCenter());
+			}
 		}
 
 		public build(): void {
