@@ -296,10 +296,10 @@ namespace Provider.Maps.Leaflet.OSMap {
 					const markerProvider: any = this.markers[0].provider;
 					//Validate if the marker is already created
 					if (markerProvider !== undefined) {
-						//If the position is default or the zoom is auto the marker position will be 
+						//If the position is default or the zoom is auto the marker position will be
 						//used as center
 						if (isDefault || this.features.zoom.isAutofit) {
-							position = markerProvider.getLatLng();;
+							position = markerProvider.getLatLng();
 						}
 					}
 				}
