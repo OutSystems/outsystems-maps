@@ -41,11 +41,6 @@ namespace Provider.Maps.Leaflet.OSMap {
 			);
 		}
 
-		private _addZoomButtons(): void {
-			// Adds the zoom buttons to the map but with custom logic
-			new ZoomButtons.ZoomButtons({ position: 'topleft' }).addTo(this.provider);
-		}
-
 		private _buildDrawingTools(): void {
 			// Here we aren't using a forEach because there is only one drawingTools per map
 			this.drawingTools && this.drawingTools.build();
@@ -180,16 +175,12 @@ namespace Provider.Maps.Leaflet.OSMap {
 				{
 					...this._getProviderConfig(),
 					layers: [this._openStreetMapLayer],
-					// Removes default zoom control to add a custom that
-					// stops scrolling the page when set map on focus
-					zoomControl: false,
 				}
 			);
 			this.buildFeatures();
 			this._buildMarkers();
 			this._buildShapes();
 			this._buildDrawingTools();
-			this._addZoomButtons();
 			this.finishBuild();
 
 			// Make sure to change the center after the conversion of the location to coordinates
