@@ -60,3 +60,4 @@ stages:
         browser: Chrome
         environment: dev
         instances: 2
+        buildId: $(Build.BuildId)
