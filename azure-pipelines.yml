@@ -5,6 +5,7 @@ resources:
       type: github
       name: OutSystems/outsystems-maps-tests
       endpoint: OutSystems
+      ref: refs/heads/ROU-12357
 
 trigger:
   branches:
