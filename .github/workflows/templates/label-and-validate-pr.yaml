@@ -61,7 +61,7 @@ jobs:
       #    codeowners-path: ./CODEOWNERS
       - name: Check PR Title
         #uses: OutSystems/rd.github-reusable-workflows/.github/actions/validate-pr-title@v2.0.7
-        uses: .github/actions/validate-pr-title
+        uses: ./.github/actions/validate-pr-title
       - name: Validate PR labels
         #uses: OutSystems/rd.github-reusable-workflows/.github/actions/validate-pr-labels@v2.0.7
-        uses: .github/actions/validate-pr-labels
+        uses: ./.github/actions/validate-pr-labels

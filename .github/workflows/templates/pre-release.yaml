@@ -87,7 +87,7 @@ jobs:
         steps:
             - name: Azure Login
               #uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-login@9d497d1c5bc6e355aa8f4663539e6b75c212f6b4 #v2.0.7
-              uses: .github/actions/az-login
+              uses: ./.github/actions/az-login
               with:
                   client-id: ${{ secrets.OSUI_AZURE_CLIENT_ID }}
                   tenant-id: ${{ secrets.OSUI_AZURE_TENANT_ID }}
@@ -96,7 +96,7 @@ jobs:
             - name: Get GitHub Token
               id: get-github-token
               #uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-keyvault-get@9d497d1c5bc6e355aa8f4663539e6b75c212f6b4 #v2.0.7
-              uses: .github/actions/az-keyvault-get
+              uses: ./.github/actions/az-keyvault-get
               with:
                   key-name: o11odc-github-gitpersonal-token-prd
 
@@ -119,7 +119,7 @@ jobs:
         steps:
             - name: Azure Login
               #uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-login@9d497d1c5bc6e355aa8f4663539e6b75c212f6b4 #v2.0.7
-              uses: .github/actions/az-login
+              uses: ./.github/actions/az-login
               with:
                   client-id: ${{ secrets.OSUI_AZURE_CLIENT_ID }}
                   tenant-id: ${{ secrets.OSUI_AZURE_TENANT_ID }}
@@ -128,7 +128,7 @@ jobs:
             - name: Get GitHub Token
               id: get-github-token
               #uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-keyvault-get@9d497d1c5bc6e355aa8f4663539e6b75c212f6b4 #v2.0.7
-              uses: .github/actions/az-keyvault-get
+              uses: ./.github/actions/az-keyvault-get
               with:
                   key-name: o11odc-github-gitpersonal-token-prd
 
@@ -152,7 +152,7 @@ jobs:
         steps:
             - name: Azure Login
               #uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-login@9d497d1c5bc6e355aa8f4663539e6b75c212f6b4 #v2.0.7
-              uses: .github/actions/az-login
+              uses: ./.github/actions/az-login
               with:
                   client-id: ${{ secrets.OSUI_AZURE_CLIENT_ID }}
                   tenant-id: ${{ secrets.OSUI_AZURE_TENANT_ID }}
@@ -161,7 +161,7 @@ jobs:
             - name: Get GitHub Token
               id: get-github-token
               #uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-keyvault-get@9d497d1c5bc6e355aa8f4663539e6b75c212f6b4 #v2.0.7
-              uses: .github/actions/az-keyvault-get
+              uses: ./.github/actions/az-keyvault-get
               with:
                   key-name: o11odc-github-gitpersonal-token-prd
 
@@ -192,7 +192,7 @@ jobs:
         steps:
             - name: Azure Login
               #uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-login@9d497d1c5bc6e355aa8f4663539e6b75c212f6b4 #v2.0.7
-              uses: .github/actions/az-login
+              uses: ./.github/actions/az-login
               with:
                   client-id: ${{ secrets.OSUI_AZURE_CLIENT_ID }}
                   tenant-id: ${{ secrets.OSUI_AZURE_TENANT_ID }}
@@ -201,7 +201,7 @@ jobs:
             - name: Get GitHub Token
               id: get-github-token
               #uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-keyvault-get@9d497d1c5bc6e355aa8f4663539e6b75c212f6b4 #v2.0.7
-              uses: .github/actions/az-keyvault-get
+              uses: ./.github/actions/az-keyvault-get
               with:
                   key-name: o11odc-github-gitpersonal-token-prd
           
@@ -229,13 +229,13 @@ jobs:
             - name: Get GPG Passphrase from Azure Key Vault
               id: GetGPGPassphrase
               #uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-keyvault-get@9d497d1c5bc6e355aa8f4663539e6b75c212f6b4 #v2.0.7
-              uses: .github/actions/az-keyvault-get
+              uses: ./.github/actions/az-keyvault-get
               with:
                   key-name: o11odc-github-gpg-passphrase-prd
 
             - name: Sign and Commit version increment to branch dev
               #uses: OutSystems/rd.github-reusable-workflows/.github/actions/signed-commit@9d497d1c5bc6e355aa8f4663539e6b75c212f6b4 #v2.0.7
-              uses: .github/actions/signed-commit
+              uses: ./.github/actions/signed-commit
               with:
                   commit-branch: dev
                   commit-message: 'Updated into v${{ inputs.new-dev-release }} [skip ci]'

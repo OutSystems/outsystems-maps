@@ -32,5 +32,5 @@ jobs:
     steps:
       - name: Check PR labels
         #uses: OutSystems/rd.github-reusable-workflows/.github/actions/validate-pr-labels@v2.0.7
-        uses: .github/actions/validate-pr-labels
+        uses: ./.github/actions/validate-pr-labels
         
