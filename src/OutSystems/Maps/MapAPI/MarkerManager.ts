@@ -39,12 +39,10 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 	 */
 	function CleanMarkerArrays(markerId: string): void {
 		markerMap.has(markerId) && markerMap.delete(markerId);
-		markerArr.splice(
-			markerArr.findIndex((marker) => {
-				return marker?.equalsToID(markerId);
-			}),
-			1
-		);
+		const idx = markerArr.findIndex((marker) => marker?.equalsToID(markerId));
+		if (idx !== -1) {
+			markerArr.splice(idx, 1);
+		}
 	}
 
 	/**
