@@ -56,10 +56,6 @@ on:
                 required: false
                 default: false
 
-concurrency:
-    group: ${{ inputs.github-ref }}
-    cancel-in-progress: true
-
 jobs:
     build-n-test:
         runs-on: ubuntu-latest
