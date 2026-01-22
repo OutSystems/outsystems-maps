@@ -50,6 +50,16 @@ on:
                 type: boolean
                 required: false
                 default: false
+        secrets:
+            OSUI_AZURE_CLIENT_ID:
+                description: 'Azure Client ID for authentication'
+                required: true
+            OSUI_AZURE_TENANT_ID:
+                description: 'Azure Tenant ID for authentication'
+                required: true
+            OSUI_AZURE_SUBSCRIPTION_ID:
+                description: 'Azure Subscription ID for authentication'
+                required: true
 
 jobs:
     build-n-test:
