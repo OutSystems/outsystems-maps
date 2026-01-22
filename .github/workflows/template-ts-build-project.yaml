@@ -40,16 +40,6 @@ on:
                 description: 'GitHub reference to be used as base to create a new one to generate and be published.'
                 type: string
                 required: true
-            sonarcloud-host-url:
-                description: 'SonarCloud host URL.'
-                type: string
-                required: false
-                default: 'https://sonarcloud.io'
-            sonarcloud-org:
-                description: 'SonarCloud organization name.'
-                type: string
-                required: false
-                default: 'outsystemsrd'
             run-vitest:
                 description: 'Defines if Vitest tests should be run or not.'
                 type: boolean
@@ -106,5 +96,3 @@ jobs:
               uses: ./.github/actions/run-sonarcloud
               with:
                   sonarcloud-token: ${{ steps.get-sonarcloud-token.outputs.az-keyvault-value }}
-                  sonarcloud-host-url: ${{ inputs.sonarcloud-host-url }}
-                  sonarcloud-org: ${{ inputs.sonarcloud-org }}

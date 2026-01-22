@@ -27,14 +27,6 @@ inputs:
   sonarcloud-token:
     description: 'SonarCloud token with access to the repository.'
     required: true
-  sonarcloud-host-url:
-    description: 'SonarCloud host URL.'
-    required: false
-    default: 'https://sonarcloud.io'
-  sonarcloud-org:
-    description: 'SonarCloud organization name.'
-    required: false
-    default: 'outsystemsrd'
 
 runs:
     using: composite
@@ -43,7 +35,3 @@ runs:
         uses: SonarSource/sonarqube-scan-action@aa494459d7c39c106cc77b166de8b4250a32bb97 #v5.1.0
         env:
           SONAR_TOKEN: ${{ inputs.sonarcloud-token }}
-          SONAR_HOST_URL: ${{ inputs.sonarcloud-host-url }}
-        with:
-          args: >
-            -Dsonar.organization=${{ inputs.sonarcloud-org }}
