@@ -58,12 +58,11 @@ on:
                 description: 'GPG private key'
                 required: true
 
-permissions:
-    contents: read
-
 jobs:
     run-lint-on-dev:
         runs-on: ubuntu-latest
+        permissions:
+            contents: read
 
         if: ${{ inputs.new-version }}
         steps:
@@ -83,6 +82,7 @@ jobs:
         runs-on: ubuntu-latest
         permissions:
             id-token: write
+            contents: read
 
         if: ${{ inputs.new-version }}
         steps:
@@ -120,6 +120,7 @@ jobs:
         runs-on: ubuntu-latest
         permissions:
             id-token: write
+            contents: read
 
         if: ${{ inputs.new-version }}
         steps:
@@ -158,6 +159,7 @@ jobs:
         runs-on: ubuntu-latest
         permissions:
             id-token: write
+            contents: read
 
         if: ${{ inputs.new-version }}
         steps:
@@ -203,6 +205,7 @@ jobs:
         runs-on: ubuntu-latest
         permissions:
             id-token: write
+            contents: read
 
         if: ${{ inputs.new-version && inputs.new-dev-release }}
         steps:
