@@ -21,3 +21,4 @@ jobs:
         with:
             github-ref: ${{ github.ref }}
             run-vitest: false
+        secrets: inherit
