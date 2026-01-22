@@ -24,6 +24,7 @@ jobs:
         name: Create Release Candidate
         permissions:
             id-token: write
+            contents: read
         #uses: OutSystems/ui-components.github-reusable-workflows/.github/workflows/pre-release.yaml@7ffd7f90f6e5016bd92d0e050d2516084b99c2f6 #v0.2.5
         uses: ./.github/workflows/template-pre-release.yaml
         with:
