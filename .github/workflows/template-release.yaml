@@ -41,6 +41,10 @@ on:
                 type: boolean
                 default: true
 
+permissions:
+    id-token: write
+    contents: read
+
 jobs:
     run-lint-on-rc:
         runs-on: ubuntu-latest
@@ -124,6 +128,8 @@ jobs:
     delete-rc-branch:
         needs: merge-rc-into-main
         runs-on: ubuntu-latest
+        permissions:
+            contents: write
 
         if: ${{ inputs.delete-rc-branch == true }}
         steps:

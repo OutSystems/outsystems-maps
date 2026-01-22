@@ -51,6 +51,10 @@ on:
                 required: false
                 default: false
 
+permissions:
+    id-token: write
+    contents: read
+
 jobs:
     build-n-test:
         runs-on: ubuntu-latest
