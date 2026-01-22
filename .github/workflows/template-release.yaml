@@ -42,7 +42,6 @@ on:
                 default: true
 
 permissions:
-    id-token: write
     contents: read
 
 jobs:
@@ -65,6 +64,8 @@ jobs:
     merge-rc-into-main:
         needs: run-lint-on-rc
         runs-on: ubuntu-latest
+        permissions:
+            id-token: write
 
         if: ${{ inputs.new-version }}
         steps:
@@ -97,6 +98,8 @@ jobs:
     set-pre-release-as-lts:
         needs: merge-rc-into-main
         runs-on: ubuntu-latest
+        permissions:
+            id-token: write
 
         steps:
             - name: Checkout repository

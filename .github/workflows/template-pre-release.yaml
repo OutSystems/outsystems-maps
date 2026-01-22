@@ -59,7 +59,6 @@ on:
                 required: true
 
 permissions:
-    id-token: write
     contents: read
 
 jobs:
@@ -82,6 +81,8 @@ jobs:
     create-rc:
         needs: run-lint-on-dev
         runs-on: ubuntu-latest
+        permissions:
+            id-token: write
 
         if: ${{ inputs.new-version }}
         steps:
@@ -117,6 +118,8 @@ jobs:
     set-tag:
         needs: create-rc
         runs-on: ubuntu-latest
+        permissions:
+            id-token: write
 
         if: ${{ inputs.new-version }}
         steps:
@@ -153,6 +156,8 @@ jobs:
     set-pre-release:
         needs: set-tag
         runs-on: ubuntu-latest
+        permissions:
+            id-token: write
 
         if: ${{ inputs.new-version }}
         steps:
@@ -196,6 +201,8 @@ jobs:
     update-dev-version:
         needs: create-rc
         runs-on: ubuntu-latest
+        permissions:
+            id-token: write
 
         if: ${{ inputs.new-version && inputs.new-dev-release }}
         steps:
