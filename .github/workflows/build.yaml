@@ -20,4 +20,4 @@ jobs:
         uses: ./.github/workflows/template-ts-build-project.yaml
         with:
             github-ref: ${{ github.ref }}
-            run-jest-tests: false
+            run-vitest: false
