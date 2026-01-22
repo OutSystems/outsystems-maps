@@ -29,3 +29,4 @@ jobs:
             new-version: ${{ inputs.new-version }}
             update-prerelease-into-latest: ${{ inputs.update-prerelease-into-latest }}
             delete-rc-branch: ${{ inputs.delete-rc-branch }}
+        secrets: inherit

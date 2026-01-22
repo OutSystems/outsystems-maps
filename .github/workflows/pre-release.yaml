@@ -29,5 +29,5 @@ jobs:
             new-version: ${{ inputs.new-version }}
             release-date: ${{ inputs.release-date }}
             new-dev-release: ${{ inputs.new-dev-release }}
-        secrets:
-            GPG_PRIVATE_KEY: ${{ secrets.GPG_SIGN_KEY }}
+        secrets: inherit
+
