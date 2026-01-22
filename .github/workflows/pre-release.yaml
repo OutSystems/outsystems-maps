@@ -29,5 +29,9 @@ jobs:
             new-version: ${{ inputs.new-version }}
             release-date: ${{ inputs.release-date }}
             new-dev-release: ${{ inputs.new-dev-release }}
-        secrets: inherit
+        secrets:
+            GPG_PRIVATE_KEY: ${{ secrets.GPG_SIGN_KEY }}
+            OSUI_AZURE_CLIENT_ID: ${{ secrets.OSUI_AZURE_CLIENT_ID }}
+            OSUI_AZURE_TENANT_ID: ${{ secrets.OSUI_AZURE_TENANT_ID }}
+            OSUI_AZURE_SUBSCRIPTION_ID: ${{ secrets.OSUI_AZURE_SUBSCRIPTION_ID }}
 

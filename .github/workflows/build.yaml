@@ -22,4 +22,7 @@ jobs:
             github-ref: ${{ github.ref }}
             run-vitest: false
             run-sonarcloud: false
-        secrets: inherit
+        secrets:
+            OSUI_AZURE_CLIENT_ID: ${{ secrets.OSUI_AZURE_CLIENT_ID }}
+            OSUI_AZURE_TENANT_ID: ${{ secrets.OSUI_AZURE_TENANT_ID }}
+            OSUI_AZURE_SUBSCRIPTION_ID: ${{ secrets.OSUI_AZURE_SUBSCRIPTION_ID }}

@@ -29,4 +29,7 @@ jobs:
             new-version: ${{ inputs.new-version }}
             update-prerelease-into-latest: ${{ inputs.update-prerelease-into-latest }}
             delete-rc-branch: ${{ inputs.delete-rc-branch }}
-        secrets: inherit
+        secrets:
+            OSUI_AZURE_CLIENT_ID: ${{ secrets.OSUI_AZURE_CLIENT_ID }}
+            OSUI_AZURE_TENANT_ID: ${{ secrets.OSUI_AZURE_TENANT_ID }}
+            OSUI_AZURE_SUBSCRIPTION_ID: ${{ secrets.OSUI_AZURE_SUBSCRIPTION_ID }}
