@@ -21,4 +21,5 @@ jobs:
         with:
             github-ref: ${{ github.ref }}
             run-vitest: false
+            run-sonarcloud: false
         secrets: inherit
