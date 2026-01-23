@@ -26,8 +26,12 @@
 #     uses: OutSystems/rd.github-reusable-workflows/.github/workflows/ts-build-project@vVersionHash
 #     with:
 #         github-ref: ${{ github.ref }}
-#         sonarcloud-host-url: ${{ SONAR_HOST_URL }}
-#         sonarcloud-org: ${{ SONAR_ORG }}
+#         run-vitest: true        # or false, depending on whether you want to run Vitest tests
+#         run-sonarcloud: true    # or false, depending on whether you want to run SonarCloud analysis
+#     secrets:
+#         OSUI_AZURE_CLIENT_ID: ${{ secrets.OSUI_AZURE_CLIENT_ID }}
+#         OSUI_AZURE_TENANT_ID: ${{ secrets.OSUI_AZURE_TENANT_ID }}
+#         OSUI_AZURE_SUBSCRIPTION_ID: ${{ secrets.OSUI_AZURE_SUBSCRIPTION_ID }}
 #
 # ======================================================================
 #
