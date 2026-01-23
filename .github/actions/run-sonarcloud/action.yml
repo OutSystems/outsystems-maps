@@ -15,8 +15,6 @@
 #         uses: OutSystems/rd.github-reusable-workflows/.github/actions/run-sonarcloud@vVersionHash
 #         with:
 #           sonarcloud-token: ${{ SONAR_TOKEN }}
-#           sonarcloud-host-url: ${{ SONAR_HOST_URL }}
-#           sonarcloud-org: ${{ SONAR_ORG }}
 #
 # ======================================================================
 #
