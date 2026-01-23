@@ -1,6 +1,6 @@
 #
-# This action allows you to get a secret from Azure Key Vault using the Azure CLI.
-# The default values are set to the OutSystems Azure subscription and tenant used by the UI Components team.
+# This action performs Azure authentication using the Azure CLI.
+# It logs in to Azure with the provided subscription, tenant, and client IDs.
 #
 # HOW TO USE:
 #
@@ -14,8 +14,8 @@
 #     (...)
 #     steps:
 #     (...)
-#       - name: Get KeyVault Secret
-#         uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-devops-login@vVersionHash
+#       - name: Azure Login
+#         uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-login@vVersionHash
 #         with:
 #           subscription-id: ${{ AZURE_subscription-id }}
 #           tenant-id: ${{ AZURE_TENANT_ID }}
