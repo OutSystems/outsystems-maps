@@ -2,7 +2,7 @@ name: PullRequest into Dev
 on:
     # Triggers the workflow on push events but only for the "dev" branch.
     pull_request:
-        branches: ['ROU-12531']
+        branches: ['dev']
         types: [opened, reopened, synchronize]
 
 concurrency:
