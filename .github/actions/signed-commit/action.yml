@@ -58,17 +58,25 @@ runs:
         # GPG by default expects a TTY for passphrase input. In CI environments,
         # there's no TTY, so we configure GPG to use "loopback" pinentry mode
         # which allows passphrase to be provided programmatically.
+        # 
+        # Security: Use an isolated GNUPGHOME under $RUNNER_TEMP to avoid
+        # persisting keys/config in ~/.gnupg on self-hosted runners.
         - name: Configure GPG for non-interactive use
           shell: bash
           run: |
-              # Create GPG home directory with secure permissions
-              mkdir -p ~/.gnupg
-              chmod 700 ~/.gnupg
+              # Create isolated GPG home directory under runner temp with secure permissions
+              # This prevents key/config persistence on self-hosted runners
+              export GNUPGHOME="${RUNNER_TEMP}/gnupg-$$"
+              mkdir -p "$GNUPGHOME"
+              chmod 700 "$GNUPGHOME"
+              
+              # Persist GNUPGHOME for subsequent steps
+              echo "GNUPGHOME=$GNUPGHOME" >> $GITHUB_ENV
               
               # Configure gpg-agent:
               # - allow-loopback-pinentry: Allows passphrase input via loopback (not TTY)
               # - allow-preset-passphrase: Allows caching passphrase before it's needed
-              cat > ~/.gnupg/gpg-agent.conf << EOF
+              cat > "$GNUPGHOME/gpg-agent.conf" << EOF
               allow-loopback-pinentry
               allow-preset-passphrase
               EOF
@@ -76,13 +84,13 @@ runs:
               # Configure gpg:
               # - pinentry-mode loopback: Use loopback for passphrase (no TTY prompt)
               # - use-agent: Use gpg-agent for key operations
-              cat > ~/.gnupg/gpg.conf << EOF
+              cat > "$GNUPGHOME/gpg.conf" << EOF
               pinentry-mode loopback
               use-agent
               EOF
               
               # Set secure permissions on config files
-              chmod 600 ~/.gnupg/gpg-agent.conf ~/.gnupg/gpg.conf
+              chmod 600 "$GNUPGHOME/gpg-agent.conf" "$GNUPGHOME/gpg.conf"
               
               # Restart gpg-agent to pick up new configuration
               # || true prevents failure if agent wasn't running
@@ -278,3 +286,20 @@ runs:
               # and will use the cached passphrase from gpg-agent.
               git commit -m "${{ inputs.commit-message }}"
               git push origin -- "${{ inputs.commit-branch }}"
+
+        # ============================================================
+        # STEP 6: Cleanup GPG environment
+        # ============================================================
+        # Remove the isolated GNUPGHOME to prevent key/config persistence
+        # on self-hosted runners and avoid cross-job leakage.
+        - name: Cleanup GPG environment
+          shell: bash
+          if: always()
+          run: |
+              # Kill gpg-agent to release any locks on the GNUPGHOME directory
+              gpgconf --kill gpg-agent || true
+              
+              # Remove the isolated GNUPGHOME directory
+              if [ -n "$GNUPGHOME" ] && [ -d "$GNUPGHOME" ]; then
+                  rm -rf "$GNUPGHOME"
+              fi
