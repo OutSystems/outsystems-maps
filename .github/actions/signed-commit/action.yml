@@ -64,6 +64,15 @@ runs:
               fi
               echo "GPG inputs validated"
 
+        - name: Configure GPG for non-interactive use
+          shell: bash
+          run: |
+              mkdir -p ~/.gnupg
+              chmod 700 ~/.gnupg
+              echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+              echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
+              gpgconf --kill gpg-agent || true
+
         - name: Import and load GPG key
           uses: crazy-max/ghaction-import-gpg@cb9bde2e2525e640591a934b1fd28eef1dcaf5e5 # v6.2.0
           with:
