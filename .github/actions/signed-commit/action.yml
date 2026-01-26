@@ -192,16 +192,17 @@ runs:
               # ----------------------------------------------------------
               # Use full fingerprint (40 chars) for unambiguous key identification.
               # Short key IDs can collide when multiple keys exist.
-              git config --global user.signingkey "$FINGERPRINT"
-              git config --global commit.gpgsign true
-              git config --global gpg.program gpg
+              # Using --local to avoid persisting config on self-hosted runners.
+              git config --local user.signingkey "$FINGERPRINT"
+              git config --local commit.gpgsign true
+              git config --local gpg.program gpg
               
               # Set Git user identity from the GPG key (if extracted)
               if [ -n "$USER_EMAIL" ]; then
-                  git config --global user.email "$USER_EMAIL"
+                  git config --local user.email "$USER_EMAIL"
               fi
               if [ -n "$USER_NAME" ]; then
-                  git config --global user.name "$USER_NAME"
+                  git config --local user.name "$USER_NAME"
               fi
               
               # ----------------------------------------------------------
