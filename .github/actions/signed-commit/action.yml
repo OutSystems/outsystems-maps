@@ -21,6 +21,7 @@
 #           commit-new-files: ${{ true || false }}
 #           gpg-priv-key: ${{ GPG_SIGN_KEY }}
 #           gpg-pass-phrase: ${{ GPG_PASSPHRASE }}
+#           gpg-passphrase-timeout: ${{ GPG_PASSPHRASE_TIMEOUT }}  # Optional: default 300 seconds
 #
 # ======================================================================
 #
@@ -48,6 +49,10 @@ inputs:
         description: 'GPG passphrase.'
         required: false
         default: '""'
+    gpg-passphrase-timeout:
+        description: 'GPG passphrase cache timeout in seconds. Use -1 for no expiration (not recommended for self-hosted runners). Default: 300 (5 minutes).'
+        required: false
+        default: '300'
 
 runs:
     using: composite
@@ -276,8 +281,9 @@ runs:
                   
                   # PRESET_PASSPHRASE command format:
                   # PRESET_PASSPHRASE <keygrip> <timeout> <hex-passphrase>
-                  # -1 timeout means no expiration (cached until agent restarts)
-                  gpg-connect-agent "PRESET_PASSPHRASE $KEYGRIP -1 $PASSPHRASE_HEX" /bye
+                  # timeout in seconds: -1 = no expiration (cached until agent restarts)
+                  # Use configurable timeout to limit passphrase exposure on self-hosted runners
+                  gpg-connect-agent "PRESET_PASSPHRASE $KEYGRIP ${{ inputs.gpg-passphrase-timeout }} $PASSPHRASE_HEX" /bye
               fi
               
               # ----------------------------------------------------------
