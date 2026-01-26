@@ -207,10 +207,10 @@ runs:
               # ----------------------------------------------------------
               # Trust the imported key
               # ----------------------------------------------------------
-              # GPG won't sign with untrusted keys. Set trust level to 6 (ultimate).
+              # GPG won't sign with untrusted keys. Set trust level to 5 (full).
               # Format: <fingerprint>:<trust-level>:
-              # Trust levels: 2=unknown, 3=untrusted, 4=marginal, 5=full, 6=ultimate
-              echo "${FINGERPRINT}:6:" | gpg --import-ownertrust
+              # Trust levels: 2=unknown, 3=untrusted, 4=marginal, 5=full
+              echo "${FINGERPRINT}:5:" | gpg --import-ownertrust
 
         # ============================================================
         # STEP 4: Stage new files (optional)
