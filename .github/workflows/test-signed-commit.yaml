@@ -3,7 +3,7 @@ name: Test Signed Commit
 on:
     push:
         branches:
-            - dev
+            - ROU-12531-fix-2
         paths:
             - '.github/workflows/test-signed-commit.yaml'
             - '.github/actions/signed-commit/**'
