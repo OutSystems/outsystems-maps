@@ -57,10 +57,17 @@ runs:
           run: |
               mkdir -p ~/.gnupg
               chmod 700 ~/.gnupg
-              echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
-              echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
-              echo "use-agent" >> ~/.gnupg/gpg.conf
+              cat > ~/.gnupg/gpg-agent.conf << EOF
+              allow-loopback-pinentry
+              allow-preset-passphrase
+              EOF
+              cat > ~/.gnupg/gpg.conf << EOF
+              pinentry-mode loopback
+              use-agent
+              EOF
+              chmod 600 ~/.gnupg/gpg-agent.conf ~/.gnupg/gpg.conf
               gpgconf --kill gpg-agent || true
+              gpg-connect-agent reloadagent /bye || true
 
         - name: Import GPG key manually
           shell: bash
@@ -95,8 +102,8 @@ runs:
                   git config --global user.name "$USER_NAME"
               fi
               
-              # Trust the key
-              echo -e "5\ny\n" | gpg --batch --command-fd 0 --expert --edit-key $KEY_ID trust
+              # Trust the key ultimately
+              echo "$KEY_ID:6:" | gpg --import-ownertrust
 
         - name: Add new files (if needed)
           shell: bash
@@ -113,9 +120,16 @@ runs:
               KEY_ID=$(git config --get user.signingkey)
               KEYGRIP=$(gpg --list-secret-keys --with-keygrip $KEY_ID | grep Keygrip | head -1 | awk '{print $3}')
               
+              echo "Key ID: $KEY_ID"
+              echo "Keygrip: $KEYGRIP"
+              
+              # Ensure gpg-agent is running with correct config
+              gpgconf --kill gpg-agent || true
+              gpg-connect-agent /bye || true
+              
               # Preset the passphrase in gpg-agent
               if [ -n "$GPG_PASSPHRASE" ] && [ "$GPG_PASSPHRASE" != '""' ]; then
-                  echo "$GPG_PASSPHRASE" | /usr/lib/gnupg/gpg-preset-passphrase --preset $KEYGRIP
+                  /usr/lib/gnupg/gpg-preset-passphrase --preset "$KEYGRIP" <<< "$GPG_PASSPHRASE"
               fi
               
               git commit -m "${{ inputs.commit-message }}"
