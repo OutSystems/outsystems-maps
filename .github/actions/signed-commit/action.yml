@@ -90,7 +90,36 @@ runs:
               gpg-connect-agent reloadagent /bye || true
 
         # ============================================================
-        # STEP 2: Import GPG key and configure Git for signing
+        # STEP 2: Validate inputs
+        # ============================================================
+        # Validate required inputs early to provide clear error messages.
+        - name: Validate inputs
+          shell: bash
+          env:
+              GPG_PRIVATE_KEY: ${{ inputs.gpg-priv-key }}
+              COMMIT_BRANCH: ${{ inputs.commit-branch }}
+              COMMIT_MESSAGE: ${{ inputs.commit-message }}
+          run: |
+              # Validate GPG private key is not empty
+              if [ -z "$GPG_PRIVATE_KEY" ]; then
+                  echo "::error::GPG private key is empty. Please provide a valid GPG private key."
+                  exit 1
+              fi
+              
+              # Validate commit branch is not empty
+              if [ -z "$COMMIT_BRANCH" ]; then
+                  echo "::error::Commit branch is empty. Please specify a target branch."
+                  exit 1
+              fi
+              
+              # Validate commit message is not empty
+              if [ -z "$COMMIT_MESSAGE" ]; then
+                  echo "::error::Commit message is empty. Please provide a commit message."
+                  exit 1
+              fi
+
+        # ============================================================
+        # STEP 3: Import GPG key and configure Git for signing
         # ============================================================
         # This step imports the provided GPG private key, extracts its
         # fingerprint and user identity, then configures Git to use it
@@ -108,13 +137,16 @@ runs:
               # --with-colons outputs machine-readable format (not locale-dependent).
               # The 'fpr' line contains the fingerprint in field 10.
               # { grep fpr || true; } prevents pipeline failure if no match (pipefail safe).
-              IMPORT_OUTPUT=$(echo "$GPG_PRIVATE_KEY" | gpg --batch --import --import-options show-only --with-colons 2>/dev/null | { grep fpr || true; } | head -1 | cut -d':' -f10)
+              # Using printf '%s' instead of echo to avoid escape sequence interpretation
+              # and preserve exact multi-line armored key contents.
+              IMPORT_OUTPUT=$(printf '%s' "$GPG_PRIVATE_KEY" | gpg --batch --import --import-options show-only --with-colons 2>/dev/null | { grep fpr || true; } | head -1 | cut -d':' -f10)
               
               # ----------------------------------------------------------
               # Actually import the key into the keyring
               # ----------------------------------------------------------
               # --batch: Non-interactive mode, no prompts
-              echo "$GPG_PRIVATE_KEY" | gpg --batch --import
+              # Using printf '%s' to preserve exact key contents (avoid echo escape sequences)
+              printf '%s' "$GPG_PRIVATE_KEY" | gpg --batch --import
               
               # ----------------------------------------------------------
               # Determine the fingerprint to use
@@ -181,7 +213,7 @@ runs:
               echo "${FINGERPRINT}:6:" | gpg --import-ownertrust
 
         # ============================================================
-        # STEP 3: Stage new files (optional)
+        # STEP 4: Stage new files (optional)
         # ============================================================
         # If commit-new-files is true, stage all changes including new files.
         - name: Add new files (if needed)
@@ -191,7 +223,7 @@ runs:
               git add .
 
         # ============================================================
-        # STEP 4: Preset passphrase, commit, and push
+        # STEP 5: Preset passphrase, commit, and push
         # ============================================================
         # This step caches the passphrase in gpg-agent so GPG can sign
         # without prompting, then creates the signed commit and pushes.
@@ -227,10 +259,11 @@ runs:
               # Only do this if we have a passphrase and a valid keygrip.
               if [ -n "$GPG_PASSPHRASE" ] && [ "$GPG_PASSPHRASE" != '""' ] && [ -n "$KEYGRIP" ]; then
                   # gpg-connect-agent expects passphrase in hexadecimal format.
+                  # Using printf '%s' to avoid echo interpreting escape sequences in passphrase.
                   # xxd -p: Convert to plain hex dump
                   # -c 256: Output all on one line (up to 256 bytes)
                   # tr -d '\n': Remove any newlines
-                  PASSPHRASE_HEX=$(echo -n "$GPG_PASSPHRASE" | xxd -p -c 256 | tr -d '\n')
+                  PASSPHRASE_HEX=$(printf '%s' "$GPG_PASSPHRASE" | xxd -p -c 256 | tr -d '\n')
                   
                   # PRESET_PASSPHRASE command format:
                   # PRESET_PASSPHRASE <keygrip> <timeout> <hex-passphrase>
