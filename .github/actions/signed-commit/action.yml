@@ -244,4 +244,4 @@ runs:
               # Git will automatically use GPG to sign (commit.gpgsign = true)
               # and will use the cached passphrase from gpg-agent.
               git commit -m "${{ inputs.commit-message }}"
-              git push origin ${{ inputs.commit-branch }}
+              git push origin -- "${{ inputs.commit-branch }}"
