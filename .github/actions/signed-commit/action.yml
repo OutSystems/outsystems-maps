@@ -217,14 +217,6 @@ runs:
               if [ -n "$USER_NAME" ]; then
                   git config --local user.name "$USER_NAME"
               fi
-              
-              # ----------------------------------------------------------
-              # Trust the imported key
-              # ----------------------------------------------------------
-              # GPG won't sign with untrusted keys. Set trust level to 5 (full).
-              # Format: <fingerprint>:<trust-level>:
-              # Trust levels: 2=unknown, 3=untrusted, 4=marginal, 5=full
-              echo "${FINGERPRINT}:5:" | gpg --import-ownertrust
 
         # ============================================================
         # STEP 4: Stage new files (optional)
