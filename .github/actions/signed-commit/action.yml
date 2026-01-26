@@ -76,7 +76,7 @@ runs:
               chmod 700 "$GNUPGHOME"
               
               # Persist GNUPGHOME for subsequent steps
-              echo "GNUPGHOME=$GNUPGHOME" >> $GITHUB_ENV
+              echo "GNUPGHOME=$GNUPGHOME" >> "$GITHUB_ENV"
               
               # Configure gpg-agent:
               # - allow-loopback-pinentry: Allows passphrase input via loopback (not TTY)
