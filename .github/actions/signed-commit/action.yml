@@ -52,6 +52,18 @@ inputs:
 runs:
     using: composite
     steps:
+        - name: Validate GPG inputs
+          shell: bash
+          run: |
+              if [ -z "${{ inputs.gpg-priv-key }}" ]; then
+                  echo "::error::GPG private key is empty!"
+                  exit 1
+              fi
+              if [ -z "${{ inputs.gpg-pass-phrase }}" ] || [ "${{ inputs.gpg-pass-phrase }}" = '""' ]; then
+                  echo "::warning::GPG passphrase appears to be empty - this may cause signing to fail"
+              fi
+              echo "GPG inputs validated"
+
         - name: Import and load GPG key
           uses: crazy-max/ghaction-import-gpg@cb9bde2e2525e640591a934b1fd28eef1dcaf5e5 # v6.2.0
           with:
