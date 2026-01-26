@@ -303,10 +303,11 @@ runs:
           shell: bash
           if: always()
           run: |
-              # Kill gpg-agent to release any locks on the GNUPGHOME directory
-              gpgconf --kill gpg-agent || true
-              
-              # Remove the isolated GNUPGHOME directory
+              # Only kill gpg-agent if GNUPGHOME is set to avoid killing default agent
+              # on self-hosted runners. Use --homedir to target the isolated keyring.
               if [ -n "$GNUPGHOME" ] && [ -d "$GNUPGHOME" ]; then
+                  gpgconf --homedir "$GNUPGHOME" --kill gpg-agent || true
+                  
+                  # Remove the isolated GNUPGHOME directory
                   rm -rf "$GNUPGHOME"
               fi
