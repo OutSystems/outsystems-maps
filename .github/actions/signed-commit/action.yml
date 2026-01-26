@@ -1,7 +1,7 @@
 #
 # This action enables to perform signed commits. 
-# It uses the crazy-max/ghaction-import-gpg action to import the GPG key and set up the git configuration for signing commits.
-# The action then performs a manual git commit and push to the specified branch.
+# It imports the GPG key manually and sets up the git configuration for signing commits.
+# The action then performs a signed git commit and push to the specified branch.
 #
 # HOW TO USE:
 #
@@ -52,18 +52,6 @@ inputs:
 runs:
     using: composite
     steps:
-        - name: Validate GPG inputs
-          shell: bash
-          run: |
-              if [ -z "${{ inputs.gpg-priv-key }}" ]; then
-                  echo "::error::GPG private key is empty!"
-                  exit 1
-              fi
-              if [ -z "${{ inputs.gpg-pass-phrase }}" ] || [ "${{ inputs.gpg-pass-phrase }}" = '""' ]; then
-                  echo "::warning::GPG passphrase appears to be empty - this may cause signing to fail"
-              fi
-              echo "GPG inputs validated"
-
         - name: Configure GPG for non-interactive use
           shell: bash
           run: |
@@ -71,15 +59,44 @@ runs:
               chmod 700 ~/.gnupg
               echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
               echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
+              echo "use-agent" >> ~/.gnupg/gpg.conf
               gpgconf --kill gpg-agent || true
 
-        - name: Import and load GPG key
-          uses: crazy-max/ghaction-import-gpg@cb9bde2e2525e640591a934b1fd28eef1dcaf5e5 # v6.2.0
-          with:
-              gpg_private_key: ${{ inputs.gpg-priv-key }}
-              passphrase: ${{ inputs.gpg-pass-phrase }}
-              git_user_signingkey: true
-              git_commit_gpgsign: true
+        - name: Import GPG key manually
+          shell: bash
+          env:
+              GPG_PRIVATE_KEY: ${{ inputs.gpg-priv-key }}
+              GPG_PASSPHRASE: ${{ inputs.gpg-pass-phrase }}
+          run: |
+              # Import the key
+              echo "$GPG_PRIVATE_KEY" | gpg --batch --import
+              
+              # Get the key ID (first secret key)
+              KEY_ID=$(gpg --list-secret-keys --keyid-format LONG | grep sec | head -1 | awk '{print $2}' | cut -d'/' -f2)
+              echo "Found key ID: $KEY_ID"
+              
+              # Get the user identity from the key
+              USER_ID=$(gpg --list-secret-keys --keyid-format LONG | grep uid | head -1 | sed 's/.*] //')
+              USER_EMAIL=$(echo "$USER_ID" | grep -oP '<\K[^>]+' || echo "")
+              USER_NAME=$(echo "$USER_ID" | sed 's/ <.*//')
+              
+              echo "User: $USER_NAME <$USER_EMAIL>"
+              
+              # Configure git to use this key for signing
+              git config --global user.signingkey $KEY_ID
+              git config --global commit.gpgsign true
+              git config --global gpg.program gpg
+              
+              # Configure git user if we extracted them
+              if [ -n "$USER_EMAIL" ]; then
+                  git config --global user.email "$USER_EMAIL"
+              fi
+              if [ -n "$USER_NAME" ]; then
+                  git config --global user.name "$USER_NAME"
+              fi
+              
+              # Trust the key
+              echo -e "5\ny\n" | gpg --batch --command-fd 0 --expert --edit-key $KEY_ID trust
 
         - name: Add new files (if needed)
           shell: bash
@@ -89,6 +106,17 @@ runs:
 
         - name: Manual git commit
           shell: bash
+          env:
+              GPG_PASSPHRASE: ${{ inputs.gpg-pass-phrase }}
           run: |
+              # Get the key grip for presetting passphrase
+              KEY_ID=$(git config --get user.signingkey)
+              KEYGRIP=$(gpg --list-secret-keys --with-keygrip $KEY_ID | grep Keygrip | head -1 | awk '{print $3}')
+              
+              # Preset the passphrase in gpg-agent
+              if [ -n "$GPG_PASSPHRASE" ] && [ "$GPG_PASSPHRASE" != '""' ]; then
+                  echo "$GPG_PASSPHRASE" | /usr/lib/gnupg/gpg-preset-passphrase --preset $KEYGRIP
+              fi
+              
               git commit -m "${{ inputs.commit-message }}"
               git push origin ${{ inputs.commit-branch }}
