@@ -82,6 +82,10 @@ runs:
               KEY_ID=$(gpg --list-secret-keys --keyid-format LONG | grep sec | head -1 | awk '{print $2}' | cut -d'/' -f2)
               echo "Found key ID: $KEY_ID"
               
+              # Get the full fingerprint for trust
+              FINGERPRINT=$(gpg --list-secret-keys --with-colons | grep fpr | head -1 | cut -d':' -f10)
+              echo "Fingerprint: $FINGERPRINT"
+              
               # Get the user identity from the key
               USER_ID=$(gpg --list-secret-keys --keyid-format LONG | grep uid | head -1 | sed 's/.*] //')
               USER_EMAIL=$(echo "$USER_ID" | grep -oP '<\K[^>]+' || echo "")
@@ -102,8 +106,8 @@ runs:
                   git config --global user.name "$USER_NAME"
               fi
               
-              # Trust the key ultimately
-              echo "$KEY_ID:6:" | gpg --import-ownertrust
+              # Trust the key ultimately (6 = ultimate trust)
+              echo "${FINGERPRINT}:6:" | gpg --import-ownertrust
 
         - name: Add new files (if needed)
           shell: bash
