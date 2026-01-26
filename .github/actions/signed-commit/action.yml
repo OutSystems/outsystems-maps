@@ -52,59 +52,119 @@ inputs:
 runs:
     using: composite
     steps:
+        # ============================================================
+        # STEP 1: Configure GPG for non-interactive (CI) use
+        # ============================================================
+        # GPG by default expects a TTY for passphrase input. In CI environments,
+        # there's no TTY, so we configure GPG to use "loopback" pinentry mode
+        # which allows passphrase to be provided programmatically.
         - name: Configure GPG for non-interactive use
           shell: bash
           run: |
+              # Create GPG home directory with secure permissions
               mkdir -p ~/.gnupg
               chmod 700 ~/.gnupg
+              
+              # Configure gpg-agent:
+              # - allow-loopback-pinentry: Allows passphrase input via loopback (not TTY)
+              # - allow-preset-passphrase: Allows caching passphrase before it's needed
               cat > ~/.gnupg/gpg-agent.conf << EOF
               allow-loopback-pinentry
               allow-preset-passphrase
               EOF
+              
+              # Configure gpg:
+              # - pinentry-mode loopback: Use loopback for passphrase (no TTY prompt)
+              # - use-agent: Use gpg-agent for key operations
               cat > ~/.gnupg/gpg.conf << EOF
               pinentry-mode loopback
               use-agent
               EOF
+              
+              # Set secure permissions on config files
               chmod 600 ~/.gnupg/gpg-agent.conf ~/.gnupg/gpg.conf
+              
+              # Restart gpg-agent to pick up new configuration
+              # || true prevents failure if agent wasn't running
               gpgconf --kill gpg-agent || true
               gpg-connect-agent reloadagent /bye || true
 
+        # ============================================================
+        # STEP 2: Import GPG key and configure Git for signing
+        # ============================================================
+        # This step imports the provided GPG private key, extracts its
+        # fingerprint and user identity, then configures Git to use it
+        # for commit signing.
         - name: Import GPG key and configure git
           shell: bash
           env:
+              # Pass the private key via environment variable to avoid shell escaping issues
               GPG_PRIVATE_KEY: ${{ inputs.gpg-priv-key }}
           run: |
-              # Import the key and capture the fingerprint of the imported key
-              IMPORT_OUTPUT=$(echo "$GPG_PRIVATE_KEY" | gpg --batch --import --import-options show-only --with-colons 2>/dev/null | grep fpr | head -1 | cut -d':' -f10)
+              # ----------------------------------------------------------
+              # Extract fingerprint from the key BEFORE importing
+              # ----------------------------------------------------------
+              # Using --import-options show-only displays key info without importing.
+              # --with-colons outputs machine-readable format (not locale-dependent).
+              # The 'fpr' line contains the fingerprint in field 10.
+              # { grep fpr || true; } prevents pipeline failure if no match (pipefail safe).
+              IMPORT_OUTPUT=$(echo "$GPG_PRIVATE_KEY" | gpg --batch --import --import-options show-only --with-colons 2>/dev/null | { grep fpr || true; } | head -1 | cut -d':' -f10)
+              
+              # ----------------------------------------------------------
+              # Actually import the key into the keyring
+              # ----------------------------------------------------------
+              # --batch: Non-interactive mode, no prompts
               echo "$GPG_PRIVATE_KEY" | gpg --batch --import
               
-              # Use the fingerprint from import, or fall back to first secret key
+              # ----------------------------------------------------------
+              # Determine the fingerprint to use
+              # ----------------------------------------------------------
+              # Prefer the fingerprint from show-only (identifies exact key imported).
+              # Fall back to first secret key if show-only didn't work.
               if [ -n "$IMPORT_OUTPUT" ]; then
                   FINGERPRINT="$IMPORT_OUTPUT"
               else
-                  FINGERPRINT=$(gpg --list-secret-keys --with-colons | grep fpr | head -1 | cut -d':' -f10)
+                  FINGERPRINT=$(gpg --list-secret-keys --with-colons | { grep fpr || true; } | head -1 | cut -d':' -f10)
               fi
               
-              # Key ID is the last 16 characters of fingerprint
-              KEY_ID="${FINGERPRINT: -16}"
-              
-              # Get user identity using machine-readable format (uid line, field 10 contains the user ID string)
-              USER_ID=$(gpg --list-secret-keys --with-colons "$FINGERPRINT" | grep uid | head -1 | cut -d':' -f10)
-              
-              # Parse email and name from USER_ID (format: "Name <email>")
-              if [[ "$USER_ID" =~ \<([^>]+)\> ]]; then
-                  USER_EMAIL="${BASH_REMATCH[1]}"
-              else
-                  USER_EMAIL=""
+              # ----------------------------------------------------------
+              # Validate we got a fingerprint
+              # ----------------------------------------------------------
+              # Without a fingerprint, we can't configure signing - fail explicitly.
+              if [ -z "$FINGERPRINT" ]; then
+                  echo "::error::Failed to extract GPG key fingerprint"
+                  exit 1
               fi
-              USER_NAME=$(echo "$USER_ID" | sed 's/ <.*//')
               
-              # Configure git to use this key for signing
-              git config --global user.signingkey "$KEY_ID"
+              # ----------------------------------------------------------
+              # Extract user identity from the key
+              # ----------------------------------------------------------
+              # The 'uid' line in --with-colons format contains the user ID in field 10.
+              # Format is typically: "Real Name <email@example.com>"
+              USER_ID=$(gpg --list-secret-keys --with-colons "$FINGERPRINT" | { grep uid || true; } | head -1 | cut -d':' -f10)
+              
+              # Parse email (inside angle brackets) and name (before angle brackets)
+              USER_EMAIL=""
+              USER_NAME=""
+              if [ -n "$USER_ID" ]; then
+                  # Extract email using regex: match content between < and >
+                  if [[ "$USER_ID" =~ \<([^>]+)\> ]]; then
+                      USER_EMAIL="${BASH_REMATCH[1]}"
+                  fi
+                  # Extract name: everything before " <"
+                  USER_NAME=$(echo "$USER_ID" | sed 's/ <.*//')
+              fi
+              
+              # ----------------------------------------------------------
+              # Configure Git for GPG signing
+              # ----------------------------------------------------------
+              # Use full fingerprint (40 chars) for unambiguous key identification.
+              # Short key IDs can collide when multiple keys exist.
+              git config --global user.signingkey "$FINGERPRINT"
               git config --global commit.gpgsign true
               git config --global gpg.program gpg
               
-              # Configure git user from the key
+              # Set Git user identity from the GPG key (if extracted)
               if [ -n "$USER_EMAIL" ]; then
                   git config --global user.email "$USER_EMAIL"
               fi
@@ -112,34 +172,76 @@ runs:
                   git config --global user.name "$USER_NAME"
               fi
               
-              # Trust the key ultimately (6 = ultimate trust)
+              # ----------------------------------------------------------
+              # Trust the imported key
+              # ----------------------------------------------------------
+              # GPG won't sign with untrusted keys. Set trust level to 6 (ultimate).
+              # Format: <fingerprint>:<trust-level>:
+              # Trust levels: 2=unknown, 3=untrusted, 4=marginal, 5=full, 6=ultimate
               echo "${FINGERPRINT}:6:" | gpg --import-ownertrust
 
+        # ============================================================
+        # STEP 3: Stage new files (optional)
+        # ============================================================
+        # If commit-new-files is true, stage all changes including new files.
         - name: Add new files (if needed)
           shell: bash
           if: ${{ inputs.commit-new-files == 'true' }}
           run: |
               git add .
 
+        # ============================================================
+        # STEP 4: Preset passphrase, commit, and push
+        # ============================================================
+        # This step caches the passphrase in gpg-agent so GPG can sign
+        # without prompting, then creates the signed commit and pushes.
         - name: Commit and push
           shell: bash
           env:
+              # Pass passphrase via environment variable for security
               GPG_PASSPHRASE: ${{ inputs.gpg-pass-phrase }}
           run: |
-              # Get the key ID and keygrip using machine-readable format
-              KEY_ID=$(git config --get user.signingkey)
-              KEYGRIP=$(gpg --list-secret-keys --with-colons --with-keygrip "$KEY_ID" | grep grp | head -1 | cut -d':' -f10)
+              # ----------------------------------------------------------
+              # Get the signing key and its keygrip
+              # ----------------------------------------------------------
+              # Keygrip is a unique identifier for the key's cryptographic material,
+              # used by gpg-agent for passphrase caching.
+              SIGNING_KEY=$(git config --get user.signingkey)
               
-              # Ensure gpg-agent is running with correct config
+              # Extract keygrip from machine-readable output.
+              # 'grp' line contains the keygrip in field 10.
+              KEYGRIP=$(gpg --list-secret-keys --with-colons --with-keygrip "$SIGNING_KEY" | { grep grp || true; } | head -1 | cut -d':' -f10)
+              KEYGRIP="${KEYGRIP:-}"  # Ensure variable is defined (empty if not found)
+              
+              # ----------------------------------------------------------
+              # Restart gpg-agent with our configuration
+              # ----------------------------------------------------------
+              # Kill and restart to ensure agent uses our allow-preset-passphrase config.
               gpgconf --kill gpg-agent || true
-              gpg-connect-agent /bye || true
+              gpg-connect-agent /bye || true  # /bye starts agent and immediately disconnects
               
-              # Preset the passphrase in gpg-agent using gpg-connect-agent (portable approach)
+              # ----------------------------------------------------------
+              # Preset (cache) the passphrase in gpg-agent
+              # ----------------------------------------------------------
+              # This allows GPG to sign without prompting for the passphrase.
+              # Only do this if we have a passphrase and a valid keygrip.
               if [ -n "$GPG_PASSPHRASE" ] && [ "$GPG_PASSPHRASE" != '""' ] && [ -n "$KEYGRIP" ]; then
-                  # Convert passphrase to hex for gpg-connect-agent
+                  # gpg-connect-agent expects passphrase in hexadecimal format.
+                  # xxd -p: Convert to plain hex dump
+                  # -c 256: Output all on one line (up to 256 bytes)
+                  # tr -d '\n': Remove any newlines
                   PASSPHRASE_HEX=$(echo -n "$GPG_PASSPHRASE" | xxd -p -c 256 | tr -d '\n')
+                  
+                  # PRESET_PASSPHRASE command format:
+                  # PRESET_PASSPHRASE <keygrip> <timeout> <hex-passphrase>
+                  # -1 timeout means no expiration (cached until agent restarts)
                   gpg-connect-agent "PRESET_PASSPHRASE $KEYGRIP -1 $PASSPHRASE_HEX" /bye
               fi
               
+              # ----------------------------------------------------------
+              # Create signed commit and push
+              # ----------------------------------------------------------
+              # Git will automatically use GPG to sign (commit.gpgsign = true)
+              # and will use the cached passphrase from gpg-agent.
               git commit -m "${{ inputs.commit-message }}"
               git push origin ${{ inputs.commit-branch }}
