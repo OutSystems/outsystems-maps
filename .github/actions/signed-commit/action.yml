@@ -109,15 +109,16 @@ runs:
                           break
                           ;;
                   esac
-              done              
+              done
+
               # If signing and GPG_PASSPHRASE is set, inject --passphrase and --batch --pinentry-mode loopback
               if [ "\$IS_SIGNING" = true ] && [ -n "\$GPG_PASSPHRASE" ]; then
-                 exec gpg --homedir "\$GNUPGHOME" --batch --pinentry-mode loopback --passphrase "\$GPG_PASSPHRASE" "\$@"
+                  exec gpg --homedir "\$GNUPGHOME" --batch --pinentry-mode loopback --passphrase "\$GPG_PASSPHRASE" "\$@"
               else
-                 exec gpg --homedir "\$GNUPGHOME" --pinentry-mode loopback "\$@"
+                  exec gpg --homedir "\$GNUPGHOME" --pinentry-mode loopback "\$@"
               fi
               WRAPPER_EOF
-              chmod 755 "$GPG_WRAPPER"
+                            chmod 755 "$GPG_WRAPPER"
               
               # Export wrapper path for git to use
               echo "GPG_WRAPPER=$GPG_WRAPPER" >> "$GITHUB_ENV"
@@ -277,10 +278,10 @@ runs:
               git add .
 
         # ============================================================
-        # STEP 5: Preset passphrase, commit, and push
+        # STEP 5: Verify passphrase and commit
         # ============================================================
-        # This step caches the passphrase in gpg-agent so GPG can sign
-        # without prompting, then creates the signed commit and pushes.
+        # This step verifies the passphrase works, then creates the signed commit.
+        # The GPG wrapper script injects --passphrase when signing, avoiding TTY prompts.
         - name: Commit and push
           shell: bash
           env:
@@ -302,58 +303,19 @@ runs:
               fi
               
               # ----------------------------------------------------------
-              # Get the signing key and its keygrip
+              # Get the signing key and verify passphrase
               # ----------------------------------------------------------
-              # Keygrip is a unique identifier for the key's cryptographic material,
-              # used by gpg-agent for passphrase caching.
               SIGNING_KEY=$(git config --get user.signingkey)
               
-              # Extract keygrip from machine-readable output.
-              # CRITICAL: We need the keygrip of the SIGNING SUBKEY (ssb), not the primary key (sec).
-              # Git uses the signing subkey for commits, so we must cache the passphrase for that keygrip.
-              # Format: sec/ssb lines have capabilities in field 12, 's' = signing capability
-              #         grp lines contain the keygrip in field 10
-              KEYGRIP=$(
-                  gpg --homedir "$GNUPGHOME" --pinentry-mode loopback --list-secret-keys --with-colons --with-keygrip "$SIGNING_KEY" | \
-                  awk -F: '
-                      ($1=="sec" || $1=="ssb") {cap=$12; want=(cap ~ /s/)}
-                      ($1=="grp" && want) {print $10; exit}
-                  '
-              )
-              # Fallback: if no signing-capable subkey found, use first keygrip
-              if [ -z "$KEYGRIP" ]; then
-                  KEYGRIP=$(gpg --homedir "$GNUPGHOME" --pinentry-mode loopback --list-secret-keys --with-colons --with-keygrip "$SIGNING_KEY" | { grep grp || true; } | head -1 | cut -d':' -f10)
-              fi
-              KEYGRIP="${KEYGRIP:-}"  # Ensure variable is defined (empty if not found)
-              
-              # Fail early if keygrip couldn't be resolved (signing will fail later).
-              if [ -z "$KEYGRIP" ]; then
-                  echo "::error::Failed to resolve GPG keygrip for signing key '$SIGNING_KEY'."
-                  exit 1
-              fi
-              
-              # ----------------------------------------------------------
-              # Restart gpg-agent with our configuration FIRST
-              # ----------------------------------------------------------
-              # Kill and restart to ensure agent uses our allow-preset-passphrase config.
-              # This MUST happen before presetting passphrase or preflight checks.
-              # Use --homedir to ensure we target the isolated keyring
-              gpgconf --homedir "$GNUPGHOME" --kill gpg-agent || true
-              # Start agent explicitly with our config
-              gpg-agent --homedir "$GNUPGHOME" --daemon --allow-preset-passphrase >/dev/null 2>&1 || true
-              # Also reload to ensure config is active
-              gpg-connect-agent --homedir "$GNUPGHOME" reloadagent /bye || true
-              # Give agent a moment to fully initialize
-              sleep 1
-              
               # Preflight signing to ensure we won't prompt for a passphrase at commit time.
-              # If no passphrase is provided, this verifies the key is unprotected.
+              # The wrapper script will inject --passphrase when signing, so we verify it works.
               if [ -n "$GPG_PASSPHRASE" ] && [ "$GPG_PASSPHRASE" != '""' ]; then
                   if ! printf 'gpg-passphrase-check' | gpg --homedir "$GNUPGHOME" --batch --pinentry-mode loopback --passphrase "$GPG_PASSPHRASE" --local-user "$SIGNING_KEY" --clearsign >/dev/null 2>&1; then
                       echo "::error::GPG passphrase is invalid for the provided signing key."
                       exit 1
                   fi
               else
+                  # If no passphrase provided, verify the key is unprotected
                   if ! printf 'gpg-passphrase-check' | gpg --homedir "$GNUPGHOME" --batch --pinentry-mode loopback --local-user "$SIGNING_KEY" --clearsign >/dev/null 2>&1; then
                       echo "::error::GPG passphrase is required but not provided."
                       exit 1
@@ -361,29 +323,25 @@ runs:
               fi
               
               # ----------------------------------------------------------
-              # Verify passphrase works with our custom pinentry
-              # ----------------------------------------------------------
-              # Our custom pinentry wrapper reads from GPG_PASSPHRASE env var,
-              # so we just need to verify it works. No need to cache via PRESET_PASSPHRASE.
-              if [ -n "$GPG_PASSPHRASE" ] && [ "$GPG_PASSPHRASE" != '""' ]; then
-                  # Verify passphrase works by attempting a test sign
-                  # The custom pinentry will read GPG_PASSPHRASE from environment
-                  if ! printf 'test-sign' | gpg --homedir "$GNUPGHOME" --batch --pinentry-mode loopback --local-user "$SIGNING_KEY" --clearsign >/dev/null 2>&1; then
-                      echo "::error::GPG passphrase test signing failed. Passphrase may be incorrect or pinentry not working."
-                      exit 1
-                  fi
-              fi
-              
-              # ----------------------------------------------------------
               # Create signed commit and push
               # ----------------------------------------------------------
-              # Git will automatically use GPG to sign (commit.gpgsign = true)
-              # and will use the cached passphrase from gpg-agent.
+              # Git will automatically use GPG to sign (commit.gpgsign = true).
+              # The wrapper script detects signing operations and injects --passphrase
+              # from GPG_PASSPHRASE environment variable, avoiding TTY prompts.
               if [ -n "$GPG_WRAPPER" ] && [ -x "$GPG_WRAPPER" ]; then
                   git -c gpg.program="$GPG_WRAPPER" -c commit.gpgsign=true commit -m "${{ inputs.commit-message }}"
               else
                   git commit -m "${{ inputs.commit-message }}"
               fi
+              
+              # Verify the commit was actually signed
+              # %G? returns: G = good, B = bad, U = unknown validity, X = expired, Y = expired key, R = revoked, E = error, N = no signature
+              SIGNATURE_STATUS=$(git log -1 --format="%G?")
+              if [ "$SIGNATURE_STATUS" != "G" ] && [ "$SIGNATURE_STATUS" != "U" ]; then
+                  echo "::error::Commit was not properly signed (status: $SIGNATURE_STATUS). GPG signing may have failed."
+                  exit 1
+              fi
+              
               git push origin -- "${{ inputs.commit-branch }}"
 
         # ============================================================
