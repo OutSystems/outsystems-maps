@@ -99,8 +99,9 @@ runs:
               
               # Create a GPG wrapper script that always uses loopback pinentry mode
               # This ensures GPG never tries to access /dev/tty regardless of how it's invoked
+              # We embed GNUPGHOME directly so the wrapper works even if env isn't inherited
               GPG_WRAPPER="$GNUPGHOME/gpg-wrapper.sh"
-              printf '%s\n' '#!/bin/bash' 'exec gpg --pinentry-mode loopback "$@"' > "$GPG_WRAPPER"
+              printf '%s\n' '#!/bin/bash' "export GNUPGHOME=\"$GNUPGHOME\"" 'exec gpg --homedir "$GNUPGHOME" --pinentry-mode loopback "$@"' > "$GPG_WRAPPER"
               chmod 755 "$GPG_WRAPPER"
               
               # Export wrapper path for git to use
@@ -180,7 +181,7 @@ runs:
               if [ -n "$IMPORT_OUTPUT" ]; then
                   FINGERPRINT="$IMPORT_OUTPUT"
               else
-                  FINGERPRINT=$(gpg --list-secret-keys --with-colons | { grep fpr || true; } | head -1 | cut -d':' -f10)
+                  FINGERPRINT=$(gpg --pinentry-mode loopback --list-secret-keys --with-colons | { grep fpr || true; } | head -1 | cut -d':' -f10)
               fi
               
               # ----------------------------------------------------------
@@ -197,7 +198,7 @@ runs:
               # ----------------------------------------------------------
               # The 'uid' line in --with-colons format contains the user ID in field 10.
               # Format is typically: "Real Name <email@example.com>"
-              USER_ID=$(gpg --list-secret-keys --with-colons "$FINGERPRINT" | { grep uid || true; } | head -1 | cut -d':' -f10)
+              USER_ID=$(gpg --pinentry-mode loopback --list-secret-keys --with-colons "$FINGERPRINT" | { grep uid || true; } | head -1 | cut -d':' -f10)
               
               # Parse email (inside angle brackets) and name (before angle brackets)
               USER_EMAIL=""
@@ -268,7 +269,8 @@ runs:
               
               # Extract keygrip from machine-readable output.
               # 'grp' line contains the keygrip in field 10.
-              KEYGRIP=$(gpg --list-secret-keys --with-colons --with-keygrip "$SIGNING_KEY" | { grep grp || true; } | head -1 | cut -d':' -f10)
+              # --pinentry-mode loopback prevents TTY prompts
+              KEYGRIP=$(gpg --pinentry-mode loopback --list-secret-keys --with-colons --with-keygrip "$SIGNING_KEY" | { grep grp || true; } | head -1 | cut -d':' -f10)
               KEYGRIP="${KEYGRIP:-}"  # Ensure variable is defined (empty if not found)
               
               # ----------------------------------------------------------
