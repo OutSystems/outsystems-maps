@@ -11,9 +11,6 @@ on:
     push:
         branches:
             - ROU-12531-fix-2
-        paths:
-            - '.github/workflows/test-signed-commit.yaml'
-            - '.github/actions/signed-commit/**'
 
 permissions:
     contents: read
