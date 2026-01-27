@@ -106,10 +106,9 @@ jobs:
             # Create a pull request from the test branch into dev using GitHub CLI.
             # Since the commit is already pushed to the remote branch, we use gh pr create
             # instead of peter-evans/create-pull-request which expects uncommitted changes.
-            # The PR is created as a draft and with a skip-ci label to prevent CI checks from running.
             - name: 🔀 Create pull request
               run: |
-                  PR_NUMBER=$(gh pr create \
+                  gh pr create \
                     --base dev \
                     --head ${{ steps.determine-branch.outputs.branch-name }} \
                     --title "Test: GPG Signed Commit [skip ci]" \
@@ -122,11 +121,6 @@ jobs:
 
                   This PR was automatically created by the Test Signed Commit workflow.
                   EOF
-                  )" \
-                    --draft \
-                    --json number --jq '.[0].number')
-                  
-                  # Add skip-ci label if it exists (will fail silently if label doesn't exist)
-                  gh pr edit $PR_NUMBER --add-label "skip-ci" 2>/dev/null || true
+                  )"
               env:
                   GH_TOKEN: ${{ steps.get-github-token.outputs.az-keyvault-value }}
