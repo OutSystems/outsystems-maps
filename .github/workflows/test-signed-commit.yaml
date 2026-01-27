@@ -109,9 +109,12 @@ jobs:
             # The PR is created as a draft and with a skip-ci label to prevent CI checks from running.
             - name: 🔀 Create pull request
               run: |
-                  PR_NUMBER=$(gh pr create \
+                  BRANCH_NAME="${{ steps.determine-branch.outputs.branch-name }}"
+                  
+                  # Create the PR as a draft with skip-ci label
+                  gh pr create \
                     --base dev \
-                    --head ${{ steps.determine-branch.outputs.branch-name }} \
+                    --head $BRANCH_NAME \
                     --title "Test: GPG Signed Commit [skip ci]" \
                     --body "$(cat <<EOF
                   This PR tests the GPG signed commit functionality.
@@ -124,9 +127,6 @@ jobs:
                   EOF
                   )" \
                     --draft \
-                    --json number --jq '.[0].number')
-                  
-                  # Add skip-ci label if it exists (will fail silently if label doesn't exist)
-                  gh pr edit $PR_NUMBER --add-label "skip-ci" 2>/dev/null || true
+                    --label "skip-ci" || true
               env:
                   GH_TOKEN: ${{ steps.get-github-token.outputs.az-keyvault-value }}
