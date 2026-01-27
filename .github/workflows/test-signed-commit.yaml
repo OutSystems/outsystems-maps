@@ -103,24 +103,21 @@ jobs:
                   token: ${{ steps.get-github-token.outputs.az-keyvault-value }}
                   fetch-depth: 0
 
-            # Create a pull request from the test branch into dev using GitHub CLI.
-            # Since the commit is already pushed to the remote branch, we use gh pr create
-            # instead of peter-evans/create-pull-request which expects uncommitted changes.
+            # Create a pull request from the test branch into dev.
+            # Since the commit is already pushed to the remote branch, we use the create-pull-request
+            # action which uses GitHub CLI to create a PR from an existing branch.
             - name: 🔀 Create pull request
-              run: |
-                  gh pr create \
-                    --base dev \
-                    --head ${{ steps.determine-branch.outputs.branch-name }} \
-                    --title "Test: GPG Signed Commit [skip ci]" \
-                    --body "$(cat <<EOF
-                  This PR tests the GPG signed commit functionality.
+              uses: ./.github/actions/create-pull-request
+              with:
+                  token: ${{ steps.get-github-token.outputs.az-keyvault-value }}
+                  base: dev
+                  head: ${{ steps.determine-branch.outputs.branch-name }}
+                  title: 'Test: GPG Signed Commit [skip ci]'
+                  body: |
+                      This PR tests the GPG signed commit functionality.
 
-                  **Changes:**
-                  - Created test file to verify GPG signing works correctly
-                  - Commit is signed with GPG key
+                      **Changes:**
+                      - Created test file to verify GPG signing works correctly
+                      - Commit is signed with GPG key
 
-                  This PR was automatically created by the Test Signed Commit workflow.
-                  EOF
-                  )"
-              env:
-                  GH_TOKEN: ${{ steps.get-github-token.outputs.az-keyvault-value }}
+                      This PR was automatically created by the Test Signed Commit workflow.
