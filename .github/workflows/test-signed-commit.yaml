@@ -1,13 +1,6 @@
 name: Test Signed Commit
 
 on:
-    workflow_dispatch:
-        inputs:
-            test-branch:
-                description: 'Test branch name to create and commit to'
-                type: string
-                required: true
-                default: 'test-signed-commit'
     push:
         branches:
             - ROU-12531-fix-3
@@ -40,44 +33,29 @@ jobs:
               with:
                   key-name: o11odc-github-gitpersonal-token-prd
 
-            # Determine the branch to use:
-            # - If triggered manually (workflow_dispatch), use the input or default to 'test-signed-commit'
-            # - If triggered by push, use the branch that was pushed to (github.ref_name)
+            # Create a unique test branch name using the workflow run ID
             - name: 🔍 Determine branch name
               id: determine-branch
               run: |
-                  if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-                      BRANCH_NAME="${{ inputs.test-branch }}"
-                  else
-                      BRANCH_NAME="${{ github.ref_name }}"
-                  fi
+                  BRANCH_NAME="test-signed-commit-${{ github.run_id }}"
                   echo "branch-name=$BRANCH_NAME" >> $GITHUB_OUTPUT
                   echo "Using branch: $BRANCH_NAME"
 
-            # Checkout the target branch. If triggered by push, checkout the pushed branch.
-            # If triggered manually, checkout dev first, then create/checkout the test branch.
-            - name: 📂 Checkout branch
+            # Checkout dev branch as the base for creating the test branch
+            - name: 📂 Checkout dev
               uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
               with:
-                  ref: ${{ github.event_name == 'workflow_dispatch' && 'dev' || github.ref_name }}
+                  ref: dev
                   token: ${{ steps.get-github-token.outputs.az-keyvault-value }}
 
-            # Create a test branch from dev for testing signed commits (only when triggered manually).
-            # If the branch already exists, checkout the existing branch instead of creating a duplicate.
-            # When triggered by push, we're already on the correct branch.
+            # Create a new test branch from dev for testing signed commits.
+            # Each workflow run creates a unique branch using the workflow run ID.
             - name: 🔄 Create test branch ${{ steps.determine-branch.outputs.branch-name }}
-              if: github.event_name == 'workflow_dispatch'
               run: |
                   BRANCH_NAME="${{ steps.determine-branch.outputs.branch-name }}"
-                  if git ls-remote --exit-code --heads origin $BRANCH_NAME; then
-                      echo "Branch $BRANCH_NAME already exists. Checking out..."
-                      git fetch origin $BRANCH_NAME
-                      git checkout $BRANCH_NAME
-                  else
-                      echo "Creating new branch $BRANCH_NAME"
-                      git checkout -b $BRANCH_NAME
-                      git push -u origin $BRANCH_NAME
-                  fi
+                  echo "Creating new branch $BRANCH_NAME"
+                  git checkout -b $BRANCH_NAME
+                  git push -u origin $BRANCH_NAME
               env:
                   GITHUB_TOKEN: ${{ steps.get-github-token.outputs.az-keyvault-value }}
 
