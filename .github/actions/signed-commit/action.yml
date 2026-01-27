@@ -97,6 +97,18 @@ runs:
               # Set secure permissions on config files
               chmod 600 "$GNUPGHOME/gpg-agent.conf" "$GNUPGHOME/gpg.conf"
               
+              # Create a GPG wrapper script that always uses loopback pinentry mode
+              # This ensures GPG never tries to access /dev/tty regardless of how it's invoked
+              GPG_WRAPPER="$GNUPGHOME/gpg-wrapper.sh"
+              cat > "$GPG_WRAPPER" << 'WRAPPER_EOF'
+#!/bin/bash
+exec gpg --pinentry-mode loopback "$@"
+WRAPPER_EOF
+              chmod 755 "$GPG_WRAPPER"
+              
+              # Export wrapper path for git to use
+              echo "GPG_WRAPPER=$GPG_WRAPPER" >> "$GITHUB_ENV"
+              
               # Restart gpg-agent to pick up new configuration
               # || true prevents failure if agent wasn't running
               gpgconf --kill gpg-agent || true
@@ -152,14 +164,16 @@ runs:
               # { grep fpr || true; } prevents pipeline failure if no match (pipefail safe).
               # Using printf '%s' instead of echo to avoid escape sequence interpretation
               # and preserve exact multi-line armored key contents.
-              IMPORT_OUTPUT=$(printf '%s' "$GPG_PRIVATE_KEY" | gpg --batch --import --import-options show-only --with-colons 2>/dev/null | { grep fpr || true; } | head -1 | cut -d':' -f10)
+              # --pinentry-mode loopback: Explicitly set on command line for reliability.
+              IMPORT_OUTPUT=$(printf '%s' "$GPG_PRIVATE_KEY" | gpg --batch --pinentry-mode loopback --import --import-options show-only --with-colons 2>/dev/null | { grep fpr || true; } | head -1 | cut -d':' -f10)
               
               # ----------------------------------------------------------
               # Actually import the key into the keyring
               # ----------------------------------------------------------
               # --batch: Non-interactive mode, no prompts
+              # --pinentry-mode loopback: Prevents TTY prompts in CI environments
               # Using printf '%s' to preserve exact key contents (avoid echo escape sequences)
-              printf '%s' "$GPG_PRIVATE_KEY" | gpg --batch --import
+              printf '%s' "$GPG_PRIVATE_KEY" | gpg --batch --pinentry-mode loopback --import
               
               # ----------------------------------------------------------
               # Determine the fingerprint to use
@@ -208,7 +222,14 @@ runs:
               # Using --local to avoid persisting config on self-hosted runners.
               git config --local user.signingkey "$FINGERPRINT"
               git config --local commit.gpgsign true
-              git config --local gpg.program gpg
+              
+              # Use the GPG wrapper script that enforces loopback pinentry mode
+              # This prevents "cannot open /dev/tty" errors in CI environments
+              if [ -n "$GPG_WRAPPER" ] && [ -x "$GPG_WRAPPER" ]; then
+                  git config --local gpg.program "$GPG_WRAPPER"
+              else
+                  git config --local gpg.program gpg
+              fi
               
               # Set Git user identity from the GPG key (if extracted)
               if [ -n "$USER_EMAIL" ]; then
@@ -238,6 +259,8 @@ runs:
           env:
               # Pass passphrase via environment variable for security
               GPG_PASSPHRASE: ${{ inputs.gpg-pass-phrase }}
+              # Unset GPG_TTY to prevent GPG from trying to use a terminal
+              GPG_TTY: ""
           run: |
               # ----------------------------------------------------------
               # Get the signing key and its keygrip
