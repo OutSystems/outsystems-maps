@@ -216,6 +216,10 @@ runs:
               # Use full fingerprint (40 chars) for unambiguous key identification.
               # Short key IDs can collide when multiple keys exist.
               # Using --local to avoid persisting config on self-hosted runners.
+              if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+                  echo "::error::Git repository not found. Ensure actions/checkout runs before this action."
+                  exit 1
+              fi
               git config --local user.signingkey "$FINGERPRINT"
               git config --local commit.gpgsign true
               
@@ -225,6 +229,13 @@ runs:
                   git config --local gpg.program "$GPG_WRAPPER"
               else
                   git config --local gpg.program gpg
+              fi
+              
+              # Ensure gpg.program is set as expected, otherwise signing may use system gpg.
+              CURRENT_GPG_PROGRAM=$(git config --local gpg.program || true)
+              if [ -z "$CURRENT_GPG_PROGRAM" ]; then
+                  echo "::error::Failed to configure git gpg.program for signing."
+                  exit 1
               fi
               
               # Set Git user identity from the GPG key (if extracted)
@@ -325,7 +336,11 @@ runs:
               # ----------------------------------------------------------
               # Git will automatically use GPG to sign (commit.gpgsign = true)
               # and will use the cached passphrase from gpg-agent.
-              git commit -m "${{ inputs.commit-message }}"
+              if [ -n "$GPG_WRAPPER" ] && [ -x "$GPG_WRAPPER" ]; then
+                  git -c gpg.program="$GPG_WRAPPER" -c commit.gpgsign=true commit -m "${{ inputs.commit-message }}"
+              else
+                  git commit -m "${{ inputs.commit-message }}"
+              fi
               git push origin -- "${{ inputs.commit-branch }}"
 
         # ============================================================
