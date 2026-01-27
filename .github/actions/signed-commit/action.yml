@@ -269,6 +269,18 @@ runs:
               # Unset GPG_TTY to prevent GPG from trying to use a terminal
               GPG_TTY: ""
           run: |
+              # Verify GNUPGHOME is set (should be from Step 1)
+              if [ -z "$GNUPGHOME" ] || [ ! -d "$GNUPGHOME" ]; then
+                  echo "::error::GNUPGHOME is not set or invalid. GPG configuration failed."
+                  exit 1
+              fi
+              
+              # Verify GPG_WRAPPER exists
+              if [ -z "$GPG_WRAPPER" ] || [ ! -x "$GPG_WRAPPER" ]; then
+                  echo "::error::GPG wrapper script not found or not executable."
+                  exit 1
+              fi
+              
               # ----------------------------------------------------------
               # Get the signing key and its keygrip
               # ----------------------------------------------------------
@@ -277,10 +289,21 @@ runs:
               SIGNING_KEY=$(git config --get user.signingkey)
               
               # Extract keygrip from machine-readable output.
-              # 'grp' line contains the keygrip in field 10.
-              # --pinentry-mode loopback prevents TTY prompts
-              # --homedir ensures we use the isolated GNUPGHOME
-              KEYGRIP=$(gpg --homedir "$GNUPGHOME" --pinentry-mode loopback --list-secret-keys --with-colons --with-keygrip "$SIGNING_KEY" | { grep grp || true; } | head -1 | cut -d':' -f10)
+              # CRITICAL: We need the keygrip of the SIGNING SUBKEY (ssb), not the primary key (sec).
+              # Git uses the signing subkey for commits, so we must cache the passphrase for that keygrip.
+              # Format: sec/ssb lines have capabilities in field 12, 's' = signing capability
+              #         grp lines contain the keygrip in field 10
+              KEYGRIP=$(
+                  gpg --homedir "$GNUPGHOME" --pinentry-mode loopback --list-secret-keys --with-colons --with-keygrip "$SIGNING_KEY" | \
+                  awk -F: '
+                      ($1=="sec" || $1=="ssb") {cap=$12; want=(cap ~ /s/)}
+                      ($1=="grp" && want) {print $10; exit}
+                  '
+              )
+              # Fallback: if no signing-capable subkey found, use first keygrip
+              if [ -z "$KEYGRIP" ]; then
+                  KEYGRIP=$(gpg --homedir "$GNUPGHOME" --pinentry-mode loopback --list-secret-keys --with-colons --with-keygrip "$SIGNING_KEY" | { grep grp || true; } | head -1 | cut -d':' -f10)
+              fi
               KEYGRIP="${KEYGRIP:-}"  # Ensure variable is defined (empty if not found)
               
               # Fail early if keygrip couldn't be resolved (signing will fail later).
@@ -288,6 +311,15 @@ runs:
                   echo "::error::Failed to resolve GPG keygrip for signing key '$SIGNING_KEY'."
                   exit 1
               fi
+              
+              # ----------------------------------------------------------
+              # Restart gpg-agent with our configuration FIRST
+              # ----------------------------------------------------------
+              # Kill and restart to ensure agent uses our allow-preset-passphrase config.
+              # This MUST happen before presetting passphrase or preflight checks.
+              # Use --homedir to ensure we target the isolated keyring
+              gpgconf --homedir "$GNUPGHOME" --kill gpg-agent || true
+              gpg-connect-agent --homedir "$GNUPGHOME" /bye || true  # /bye starts agent and immediately disconnects
               
               # Preflight signing to ensure we won't prompt for a passphrase at commit time.
               # If no passphrase is provided, this verifies the key is unprotected.
@@ -302,14 +334,6 @@ runs:
                       exit 1
                   fi
               fi
-              
-              # ----------------------------------------------------------
-              # Restart gpg-agent with our configuration
-              # ----------------------------------------------------------
-              # Kill and restart to ensure agent uses our allow-preset-passphrase config.
-              # Use --homedir to ensure we target the isolated keyring
-              gpgconf --homedir "$GNUPGHOME" --kill gpg-agent || true
-              gpg-connect-agent --homedir "$GNUPGHOME" /bye || true  # /bye starts agent and immediately disconnects
               
               # ----------------------------------------------------------
               # Preset (cache) the passphrase in gpg-agent
@@ -328,7 +352,19 @@ runs:
                   # PRESET_PASSPHRASE <keygrip> <timeout> <hex-passphrase>
                   # timeout in seconds: -1 = no expiration (cached until agent restarts)
                   # Use configurable timeout to limit passphrase exposure on self-hosted runners
-                  gpg-connect-agent --homedir "$GNUPGHOME" "PRESET_PASSPHRASE $KEYGRIP ${{ inputs.gpg-passphrase-timeout }} $PASSPHRASE_HEX" /bye
+                  PRESET_RESULT=$(gpg-connect-agent --homedir "$GNUPGHOME" "PRESET_PASSPHRASE $KEYGRIP ${{ inputs.gpg-passphrase-timeout }} $PASSPHRASE_HEX" /bye 2>&1)
+                  
+                  # Verify PRESET_PASSPHRASE succeeded (should return "OK")
+                  if ! echo "$PRESET_RESULT" | grep -q "OK"; then
+                      echo "::error::Failed to cache GPG passphrase in gpg-agent. Output: $PRESET_RESULT"
+                      exit 1
+                  fi
+                  
+                  # Verify passphrase is actually cached by attempting a test sign
+                  if ! printf 'test-sign' | gpg --homedir "$GNUPGHOME" --batch --pinentry-mode loopback --local-user "$SIGNING_KEY" --clearsign >/dev/null 2>&1; then
+                      echo "::error::GPG passphrase was cached but test signing failed. Keygrip may be incorrect."
+                      exit 1
+                  fi
               fi
               
               # ----------------------------------------------------------
