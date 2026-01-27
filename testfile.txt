@@ -1,3 +1,0 @@
-This is a test file to be deleted.
-And another test commit.
-Testing changes.
