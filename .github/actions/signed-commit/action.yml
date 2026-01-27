@@ -92,11 +92,31 @@ runs:
               # Set secure permissions on config files
               chmod 600 "$GNUPGHOME/gpg-agent.conf" "$GNUPGHOME/gpg.conf"
               
-              # Create a GPG wrapper script that always uses loopback pinentry mode
-              # This ensures GPG never tries to access /dev/tty regardless of how it's invoked
-              # We embed GNUPGHOME directly so the wrapper works even if env isn't inherited
+              # Create a GPG wrapper script that injects --passphrase when signing
+              # This works around gpg-agent's PRESET_PASSPHRASE limitations
+              # Git calls gpg with --status-fd for signing, so we detect that
               GPG_WRAPPER="$GNUPGHOME/gpg-wrapper.sh"
-              printf '%s\n' '#!/bin/bash' "export GNUPGHOME=\"$GNUPGHOME\"" 'exec gpg --homedir "$GNUPGHOME" --pinentry-mode loopback "$@"' > "$GPG_WRAPPER"
+              cat > "$GPG_WRAPPER" << WRAPPER_EOF
+              #!/bin/bash
+              export GNUPGHOME="$GNUPGHOME"
+              # Check if this is a signing operation
+              # Git uses --status-fd for signing, or we check for signing-related flags
+              IS_SIGNING=false
+              for arg in "\$@"; do
+                  case "\$arg" in
+                      --status-fd*|-bsau|--sign|--clearsign|--detach-sign)
+                          IS_SIGNING=true
+                          break
+                          ;;
+                  esac
+              done              
+              # If signing and GPG_PASSPHRASE is set, inject --passphrase and --batch --pinentry-mode loopback
+              if [ "\$IS_SIGNING" = true ] && [ -n "\$GPG_PASSPHRASE" ]; then
+                 exec gpg --homedir "\$GNUPGHOME" --batch --pinentry-mode loopback --passphrase "\$GPG_PASSPHRASE" "\$@"
+              else
+                 exec gpg --homedir "\$GNUPGHOME" --pinentry-mode loopback "\$@"
+              fi
+              WRAPPER_EOF
               chmod 755 "$GPG_WRAPPER"
               
               # Export wrapper path for git to use
@@ -319,7 +339,12 @@ runs:
               # This MUST happen before presetting passphrase or preflight checks.
               # Use --homedir to ensure we target the isolated keyring
               gpgconf --homedir "$GNUPGHOME" --kill gpg-agent || true
-              gpg-connect-agent --homedir "$GNUPGHOME" /bye || true  # /bye starts agent and immediately disconnects
+              # Start agent explicitly with our config
+              gpg-agent --homedir "$GNUPGHOME" --daemon --allow-preset-passphrase >/dev/null 2>&1 || true
+              # Also reload to ensure config is active
+              gpg-connect-agent --homedir "$GNUPGHOME" reloadagent /bye || true
+              # Give agent a moment to fully initialize
+              sleep 1
               
               # Preflight signing to ensure we won't prompt for a passphrase at commit time.
               # If no passphrase is provided, this verifies the key is unprotected.
@@ -336,33 +361,15 @@ runs:
               fi
               
               # ----------------------------------------------------------
-              # Preset (cache) the passphrase in gpg-agent
+              # Verify passphrase works with our custom pinentry
               # ----------------------------------------------------------
-              # This allows GPG to sign without prompting for the passphrase.
-              # Only do this if we have a passphrase and a valid keygrip.
-              if [ -n "$GPG_PASSPHRASE" ] && [ "$GPG_PASSPHRASE" != '""' ] && [ -n "$KEYGRIP" ]; then
-                  # gpg-connect-agent expects passphrase in hexadecimal format.
-                  # Using printf '%s' to avoid echo interpreting escape sequences in passphrase.
-                  # xxd -p: Convert to plain hex dump
-                  # -c 256: Output all on one line (up to 256 bytes)
-                  # tr -d '\n': Remove any newlines
-                  PASSPHRASE_HEX=$(printf '%s' "$GPG_PASSPHRASE" | xxd -p -c 256 | tr -d '\n')
-                  
-                  # PRESET_PASSPHRASE command format:
-                  # PRESET_PASSPHRASE <keygrip> <timeout> <hex-passphrase>
-                  # timeout in seconds: -1 = no expiration (cached until agent restarts)
-                  # Use configurable timeout to limit passphrase exposure on self-hosted runners
-                  PRESET_RESULT=$(gpg-connect-agent --homedir "$GNUPGHOME" "PRESET_PASSPHRASE $KEYGRIP ${{ inputs.gpg-passphrase-timeout }} $PASSPHRASE_HEX" /bye 2>&1)
-                  
-                  # Verify PRESET_PASSPHRASE succeeded (should return "OK")
-                  if ! echo "$PRESET_RESULT" | grep -q "OK"; then
-                      echo "::error::Failed to cache GPG passphrase in gpg-agent. Output: $PRESET_RESULT"
-                      exit 1
-                  fi
-                  
-                  # Verify passphrase is actually cached by attempting a test sign
+              # Our custom pinentry wrapper reads from GPG_PASSPHRASE env var,
+              # so we just need to verify it works. No need to cache via PRESET_PASSPHRASE.
+              if [ -n "$GPG_PASSPHRASE" ] && [ "$GPG_PASSPHRASE" != '""' ]; then
+                  # Verify passphrase works by attempting a test sign
+                  # The custom pinentry will read GPG_PASSPHRASE from environment
                   if ! printf 'test-sign' | gpg --homedir "$GNUPGHOME" --batch --pinentry-mode loopback --local-user "$SIGNING_KEY" --clearsign >/dev/null 2>&1; then
-                      echo "::error::GPG passphrase was cached but test signing failed. Keygrip may be incorrect."
+                      echo "::error::GPG passphrase test signing failed. Passphrase may be incorrect or pinentry not working."
                       exit 1
                   fi
               fi
