@@ -93,6 +93,15 @@ jobs:
                   # gpg-priv-key: ${{ steps.GetGPGKey.outputs.az-keyvault-value }}
                   gpg-pass-phrase: ${{ steps.GetGPGPassphrase.outputs.az-keyvault-value }}
 
+            # Checkout the branch again after the commit to ensure we're on the correct branch
+            # with the committed changes when creating the PR.
+            - name: 📂 Checkout branch with changes
+              uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+              with:
+                  ref: ${{ steps.determine-branch.outputs.branch-name }}
+                  token: ${{ steps.get-github-token.outputs.az-keyvault-value }}
+                  fetch-depth: 0
+
             # Create a pull request from the test branch into dev.
             # If a PR already exists for this branch, the action will update it instead of creating a duplicate.
             # This makes the workflow idempotent and safe to run multiple times.
