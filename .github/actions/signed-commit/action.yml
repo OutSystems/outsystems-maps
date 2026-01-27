@@ -81,18 +81,13 @@ runs:
               # Configure gpg-agent:
               # - allow-loopback-pinentry: Allows passphrase input via loopback (not TTY)
               # - allow-preset-passphrase: Allows caching passphrase before it's needed
-              cat > "$GNUPGHOME/gpg-agent.conf" << EOF
-              allow-loopback-pinentry
-              allow-preset-passphrase
-              EOF
+              # Using printf to avoid heredoc indentation issues
+              printf '%s\n' 'allow-loopback-pinentry' 'allow-preset-passphrase' > "$GNUPGHOME/gpg-agent.conf"
               
               # Configure gpg:
               # - pinentry-mode loopback: Use loopback for passphrase (no TTY prompt)
               # - use-agent: Use gpg-agent for key operations
-              cat > "$GNUPGHOME/gpg.conf" << EOF
-              pinentry-mode loopback
-              use-agent
-              EOF
+              printf '%s\n' 'pinentry-mode loopback' 'use-agent' > "$GNUPGHOME/gpg.conf"
               
               # Set secure permissions on config files
               chmod 600 "$GNUPGHOME/gpg-agent.conf" "$GNUPGHOME/gpg.conf"
@@ -109,8 +104,9 @@ runs:
               
               # Restart gpg-agent to pick up new configuration
               # || true prevents failure if agent wasn't running
-              gpgconf --kill gpg-agent || true
-              gpg-connect-agent reloadagent /bye || true
+              # Use --homedir to ensure we target the isolated keyring
+              gpgconf --homedir "$GNUPGHOME" --kill gpg-agent || true
+              gpg-connect-agent --homedir "$GNUPGHOME" reloadagent /bye || true
 
         # ============================================================
         # STEP 2: Validate inputs
@@ -163,15 +159,17 @@ runs:
               # Using printf '%s' instead of echo to avoid escape sequence interpretation
               # and preserve exact multi-line armored key contents.
               # --pinentry-mode loopback: Explicitly set on command line for reliability.
-              IMPORT_OUTPUT=$(printf '%s' "$GPG_PRIVATE_KEY" | gpg --batch --pinentry-mode loopback --import --import-options show-only --with-colons 2>/dev/null | { grep fpr || true; } | head -1 | cut -d':' -f10)
+              # --homedir: Ensure we use the isolated GNUPGHOME
+              IMPORT_OUTPUT=$(printf '%s' "$GPG_PRIVATE_KEY" | gpg --homedir "$GNUPGHOME" --batch --pinentry-mode loopback --import --import-options show-only --with-colons 2>/dev/null | { grep fpr || true; } | head -1 | cut -d':' -f10)
               
               # ----------------------------------------------------------
               # Actually import the key into the keyring
               # ----------------------------------------------------------
               # --batch: Non-interactive mode, no prompts
               # --pinentry-mode loopback: Prevents TTY prompts in CI environments
+              # --homedir: Ensure we use the isolated GNUPGHOME
               # Using printf '%s' to preserve exact key contents (avoid echo escape sequences)
-              printf '%s' "$GPG_PRIVATE_KEY" | gpg --batch --pinentry-mode loopback --import
+              printf '%s' "$GPG_PRIVATE_KEY" | gpg --homedir "$GNUPGHOME" --batch --pinentry-mode loopback --import
               
               # ----------------------------------------------------------
               # Determine the fingerprint to use
@@ -181,7 +179,7 @@ runs:
               if [ -n "$IMPORT_OUTPUT" ]; then
                   FINGERPRINT="$IMPORT_OUTPUT"
               else
-                  FINGERPRINT=$(gpg --pinentry-mode loopback --list-secret-keys --with-colons | { grep fpr || true; } | head -1 | cut -d':' -f10)
+                  FINGERPRINT=$(gpg --homedir "$GNUPGHOME" --pinentry-mode loopback --list-secret-keys --with-colons | { grep fpr || true; } | head -1 | cut -d':' -f10)
               fi
               
               # ----------------------------------------------------------
@@ -198,7 +196,7 @@ runs:
               # ----------------------------------------------------------
               # The 'uid' line in --with-colons format contains the user ID in field 10.
               # Format is typically: "Real Name <email@example.com>"
-              USER_ID=$(gpg --pinentry-mode loopback --list-secret-keys --with-colons "$FINGERPRINT" | { grep uid || true; } | head -1 | cut -d':' -f10)
+              USER_ID=$(gpg --homedir "$GNUPGHOME" --pinentry-mode loopback --list-secret-keys --with-colons "$FINGERPRINT" | { grep uid || true; } | head -1 | cut -d':' -f10)
               
               # Parse email (inside angle brackets) and name (before angle brackets)
               USER_EMAIL=""
@@ -270,15 +268,37 @@ runs:
               # Extract keygrip from machine-readable output.
               # 'grp' line contains the keygrip in field 10.
               # --pinentry-mode loopback prevents TTY prompts
-              KEYGRIP=$(gpg --pinentry-mode loopback --list-secret-keys --with-colons --with-keygrip "$SIGNING_KEY" | { grep grp || true; } | head -1 | cut -d':' -f10)
+              # --homedir ensures we use the isolated GNUPGHOME
+              KEYGRIP=$(gpg --homedir "$GNUPGHOME" --pinentry-mode loopback --list-secret-keys --with-colons --with-keygrip "$SIGNING_KEY" | { grep grp || true; } | head -1 | cut -d':' -f10)
               KEYGRIP="${KEYGRIP:-}"  # Ensure variable is defined (empty if not found)
+              
+              # Fail early if keygrip couldn't be resolved (signing will fail later).
+              if [ -z "$KEYGRIP" ]; then
+                  echo "::error::Failed to resolve GPG keygrip for signing key '$SIGNING_KEY'."
+                  exit 1
+              fi
+              
+              # Preflight signing to ensure we won't prompt for a passphrase at commit time.
+              # If no passphrase is provided, this verifies the key is unprotected.
+              if [ -n "$GPG_PASSPHRASE" ] && [ "$GPG_PASSPHRASE" != '""' ]; then
+                  if ! printf 'gpg-passphrase-check' | gpg --homedir "$GNUPGHOME" --batch --pinentry-mode loopback --passphrase "$GPG_PASSPHRASE" --local-user "$SIGNING_KEY" --clearsign >/dev/null 2>&1; then
+                      echo "::error::GPG passphrase is invalid for the provided signing key."
+                      exit 1
+                  fi
+              else
+                  if ! printf 'gpg-passphrase-check' | gpg --homedir "$GNUPGHOME" --batch --pinentry-mode loopback --local-user "$SIGNING_KEY" --clearsign >/dev/null 2>&1; then
+                      echo "::error::GPG passphrase is required but not provided."
+                      exit 1
+                  fi
+              fi
               
               # ----------------------------------------------------------
               # Restart gpg-agent with our configuration
               # ----------------------------------------------------------
               # Kill and restart to ensure agent uses our allow-preset-passphrase config.
-              gpgconf --kill gpg-agent || true
-              gpg-connect-agent /bye || true  # /bye starts agent and immediately disconnects
+              # Use --homedir to ensure we target the isolated keyring
+              gpgconf --homedir "$GNUPGHOME" --kill gpg-agent || true
+              gpg-connect-agent --homedir "$GNUPGHOME" /bye || true  # /bye starts agent and immediately disconnects
               
               # ----------------------------------------------------------
               # Preset (cache) the passphrase in gpg-agent
@@ -297,7 +317,7 @@ runs:
                   # PRESET_PASSPHRASE <keygrip> <timeout> <hex-passphrase>
                   # timeout in seconds: -1 = no expiration (cached until agent restarts)
                   # Use configurable timeout to limit passphrase exposure on self-hosted runners
-                  gpg-connect-agent "PRESET_PASSPHRASE $KEYGRIP ${{ inputs.gpg-passphrase-timeout }} $PASSPHRASE_HEX" /bye
+                  gpg-connect-agent --homedir "$GNUPGHOME" "PRESET_PASSPHRASE $KEYGRIP ${{ inputs.gpg-passphrase-timeout }} $PASSPHRASE_HEX" /bye
               fi
               
               # ----------------------------------------------------------
