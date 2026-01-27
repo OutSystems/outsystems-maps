@@ -100,10 +100,7 @@ runs:
               # Create a GPG wrapper script that always uses loopback pinentry mode
               # This ensures GPG never tries to access /dev/tty regardless of how it's invoked
               GPG_WRAPPER="$GNUPGHOME/gpg-wrapper.sh"
-              cat > "$GPG_WRAPPER" << 'WRAPPER_EOF'
-#!/bin/bash
-exec gpg --pinentry-mode loopback "$@"
-WRAPPER_EOF
+              printf '%s\n' '#!/bin/bash' 'exec gpg --pinentry-mode loopback "$@"' > "$GPG_WRAPPER"
               chmod 755 "$GPG_WRAPPER"
               
               # Export wrapper path for git to use
