@@ -8,6 +8,9 @@ on:
                 type: string
                 required: true
                 default: 'test-signed-commit'
+    push:
+        branches:
+            - ROU-12531-fix-3
 
 jobs:
     test-signed-commit:
@@ -37,24 +40,43 @@ jobs:
               with:
                   key-name: o11odc-github-gitpersonal-token-prd
 
-            - name: 📂 Checkout into dev
+            # Determine the branch to use:
+            # - If triggered manually (workflow_dispatch), use the input or default to 'test-signed-commit'
+            # - If triggered by push, use the branch that was pushed to (github.ref_name)
+            - name: 🔍 Determine branch name
+              id: determine-branch
+              run: |
+                  if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+                      BRANCH_NAME="${{ inputs.test-branch }}"
+                  else
+                      BRANCH_NAME="${{ github.ref_name }}"
+                  fi
+                  echo "branch-name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+                  echo "Using branch: $BRANCH_NAME"
+
+            # Checkout the target branch. If triggered by push, checkout the pushed branch.
+            # If triggered manually, checkout dev first, then create/checkout the test branch.
+            - name: 📂 Checkout branch
               uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
               with:
-                  ref: dev
+                  ref: ${{ github.event_name == 'workflow_dispatch' && 'dev' || github.ref_name }}
                   token: ${{ steps.get-github-token.outputs.az-keyvault-value }}
 
-            # Create a test branch from dev for testing signed commits.
+            # Create a test branch from dev for testing signed commits (only when triggered manually).
             # If the branch already exists, checkout the existing branch instead of creating a duplicate.
-            - name: 🔄 Create test branch ${{ inputs.test-branch }}
+            # When triggered by push, we're already on the correct branch.
+            - name: 🔄 Create test branch ${{ steps.determine-branch.outputs.branch-name }}
+              if: github.event_name == 'workflow_dispatch'
               run: |
-                  if git ls-remote --exit-code --heads origin ${{ inputs.test-branch }}; then
-                      echo "Branch ${{ inputs.test-branch }} already exists. Checking out..."
-                      git fetch origin ${{ inputs.test-branch }}
-                      git checkout ${{ inputs.test-branch }}
+                  BRANCH_NAME="${{ steps.determine-branch.outputs.branch-name }}"
+                  if git ls-remote --exit-code --heads origin $BRANCH_NAME; then
+                      echo "Branch $BRANCH_NAME already exists. Checking out..."
+                      git fetch origin $BRANCH_NAME
+                      git checkout $BRANCH_NAME
                   else
-                      echo "Creating new branch ${{ inputs.test-branch }}"
-                      git checkout -b ${{ inputs.test-branch }}
-                      git push -u origin ${{ inputs.test-branch }}
+                      echo "Creating new branch $BRANCH_NAME"
+                      git checkout -b $BRANCH_NAME
+                      git push -u origin $BRANCH_NAME
                   fi
               env:
                   GITHUB_TOKEN: ${{ steps.get-github-token.outputs.az-keyvault-value }}
@@ -86,7 +108,7 @@ jobs:
               #uses: OutSystems/rd.github-reusable-workflows/.github/actions/signed-commit@9d497d1c5bc6e355aa8f4663539e6b75c212f6b4 #v2.0.7
               uses: ./.github/actions/signed-commit
               with:
-                  commit-branch: ${{ inputs.test-branch }}
+                  commit-branch: ${{ steps.determine-branch.outputs.branch-name }}
                   commit-message: 'Test: GPG signed commit [skip ci]'
                   commit-new-files: true
                   gpg-priv-key: ${{ secrets.GPG_SIGN_KEY }}
@@ -100,7 +122,7 @@ jobs:
               uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0 # v8.1.0
               with:
                   token: ${{ steps.get-github-token.outputs.az-keyvault-value }}
-                  branch: ${{ inputs.test-branch }}
+                  branch: ${{ steps.determine-branch.outputs.branch-name }}
                   base: dev
                   title: 'Test: GPG Signed Commit'
                   body: |
