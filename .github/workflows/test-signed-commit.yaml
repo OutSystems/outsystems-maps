@@ -1,0 +1,115 @@
+name: Test Signed Commit
+
+on:
+    workflow_dispatch:
+        inputs:
+            test-branch:
+                description: 'Test branch name to create and commit to'
+                type: string
+                required: true
+                default: 'test-signed-commit'
+
+jobs:
+    test-signed-commit:
+        name: 🔏 Test Signed Commit
+        runs-on: ubuntu-latest
+        permissions:
+            id-token: write
+            contents: write
+            pull-requests: write
+
+        steps:
+            - name: 📂 Checkout repository
+              uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+            - name: 🔐 Azure login
+              #uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-login@9d497d1c5bc6e355aa8f4663539e6b75c212f6b4 #v2.0.7
+              uses: ./.github/actions/az-login
+              with:
+                  client-id: ${{ secrets.OSUI_AZURE_CLIENT_ID }}
+                  tenant-id: ${{ secrets.OSUI_AZURE_TENANT_ID }}
+                  subscription-id: ${{ secrets.OSUI_AZURE_SUBSCRIPTION_ID }}
+
+            - name: 🔑 Get GitHub Token
+              id: get-github-token
+              #uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-keyvault-get@9d497d1c5bc6e355aa8f4663539e6b75c212f6b4 #v2.0.7
+              uses: ./.github/actions/az-keyvault-get
+              with:
+                  key-name: o11odc-github-gitpersonal-token-prd
+
+            - name: 📂 Checkout into dev
+              uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+              with:
+                  ref: dev
+                  token: ${{ steps.get-github-token.outputs.az-keyvault-value }}
+
+            # Create a test branch from dev for testing signed commits.
+            # If the branch already exists, checkout the existing branch instead of creating a duplicate.
+            - name: 🔄 Create test branch ${{ inputs.test-branch }}
+              run: |
+                  if git ls-remote --exit-code --heads origin ${{ inputs.test-branch }}; then
+                      echo "Branch ${{ inputs.test-branch }} already exists. Checking out..."
+                      git fetch origin ${{ inputs.test-branch }}
+                      git checkout ${{ inputs.test-branch }}
+                  else
+                      echo "Creating new branch ${{ inputs.test-branch }}"
+                      git checkout -b ${{ inputs.test-branch }}
+                      git push -u origin ${{ inputs.test-branch }}
+                  fi
+              env:
+                  GITHUB_TOKEN: ${{ steps.get-github-token.outputs.az-keyvault-value }}
+
+            # Create a test file to commit
+            - name: 📝 Create test file
+              run: |
+                  echo "Test signed commit - $(date)" > test-signed-commit.txt
+                  echo "This file was created to test GPG signed commits in GitHub Actions."
+
+            # 14 May 2025 - rug
+            # Currently Azure Key Vault does not support multi-line secrets, so we are using a secret instead.
+            # - name: Get GPG key from Azure Key Vault
+            #   id: GetGPGKey
+            #   uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-keyvault-get@9d497d1c5bc6e355aa8f4663539e6b75c212f6b4 #v2.0.7
+            #   with:
+            #       key-name: o11odc-github-gpg-key-prd
+
+            - name: 🔑 Get GPG Passphrase from Azure Key Vault
+              id: GetGPGPassphrase
+              #uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-keyvault-get@9d497d1c5bc6e355aa8f4663539e6b75c212f6b4 #v2.0.7
+              uses: ./.github/actions/az-keyvault-get
+              with:
+                  key-name: o11odc-github-gpg-passphrase-prd
+
+            # Test the signed commit action by committing the test file with GPG signing.
+            # This verifies that the GPG key configuration and signing process works correctly.
+            - name: 🔏 Test signed commit
+              #uses: OutSystems/rd.github-reusable-workflows/.github/actions/signed-commit@9d497d1c5bc6e355aa8f4663539e6b75c212f6b4 #v2.0.7
+              uses: ./.github/actions/signed-commit
+              with:
+                  commit-branch: ${{ inputs.test-branch }}
+                  commit-message: 'Test: GPG signed commit [skip ci]'
+                  commit-new-files: true
+                  gpg-priv-key: ${{ secrets.GPG_SIGN_KEY }}
+                  # gpg-priv-key: ${{ steps.GetGPGKey.outputs.az-keyvault-value }}
+                  gpg-pass-phrase: ${{ steps.GetGPGPassphrase.outputs.az-keyvault-value }}
+
+            # Create a pull request from the test branch into dev.
+            # If a PR already exists for this branch, the action will update it instead of creating a duplicate.
+            # This makes the workflow idempotent and safe to run multiple times.
+            - name: 🔀 Create pull request
+              uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0 # v8.1.0
+              with:
+                  token: ${{ steps.get-github-token.outputs.az-keyvault-value }}
+                  branch: ${{ inputs.test-branch }}
+                  base: dev
+                  title: 'Test: GPG Signed Commit'
+                  body: |
+                      This PR tests the GPG signed commit functionality.
+
+                      **Changes:**
+                      - Created test file to verify GPG signing works correctly
+                      - Commit is signed with GPG key
+
+                      This PR was automatically created by the Test Signed Commit workflow.
+                  delete-branch: false
+                  draft: false
