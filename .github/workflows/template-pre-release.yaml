@@ -355,17 +355,19 @@ jobs:
                   gpg-pass-phrase: ${{ steps.GetGPGPassphrase.outputs.az-keyvault-value  }}
 
             # Create a pull request from the chore/update-dev-version-${{ inputs.new-dev-release }} branch into dev.
-            # Since the commit is already pushed to the remote branch, we use the create-pull-request
-            # action which uses GitHub CLI to create a PR from an existing branch.
-            # Note: The action.yml file must be committed to the repository for this to work.
+            # Since the commit is already pushed to the remote branch, we use GitHub CLI to create a PR.
             - name: 🔀 Create pull request
-              uses: ./.github/actions/create-pull-request
-              with:
-                  token: ${{ steps.get-github-token.outputs.az-keyvault-value }}
-                  base: dev
-                  head: "chore/update-dev-version-${{ inputs.new-dev-release }}"    
-                  title: "Updated into v${{ inputs.new-dev-release }} [skip ci]"
-                  body: |
-                      This PR updates the dev version into v${{ inputs.new-dev-release }}.
+              run: |
+                  gh pr create \
+                    --base dev \
+                    --draft \
+                    --head chore/update-dev-version-${{ inputs.new-dev-release }} \
+                    --title "Updated into v${{ inputs.new-dev-release }} [skip ci]" \
+                    --body "$(cat <<EOF
+                  This PR updates the dev version into v${{ inputs.new-dev-release }}.
 
-                      This PR was automatically created by the Pre-Release workflow.
+                  This PR was automatically created by the Pre-Release workflow.
+                  EOF
+                  )"
+              env:
+                  GH_TOKEN: ${{ steps.get-github-token.outputs.az-keyvault-value }}
