@@ -76,7 +76,7 @@ runs:
               chmod 700 "$GNUPGHOME"
               
               # Persist GNUPGHOME for subsequent steps
-              echo "GNUPGHOME=$GNUPGHOME" >> $GITHUB_ENV
+              echo "GNUPGHOME=$GNUPGHOME" >> "$GITHUB_ENV"
               
               # Configure gpg-agent:
               # - allow-loopback-pinentry: Allows passphrase input via loopback (not TTY)
@@ -217,14 +217,6 @@ runs:
               if [ -n "$USER_NAME" ]; then
                   git config --local user.name "$USER_NAME"
               fi
-              
-              # ----------------------------------------------------------
-              # Trust the imported key
-              # ----------------------------------------------------------
-              # GPG won't sign with untrusted keys. Set trust level to 5 (full).
-              # Format: <fingerprint>:<trust-level>:
-              # Trust levels: 2=unknown, 3=untrusted, 4=marginal, 5=full
-              echo "${FINGERPRINT}:5:" | gpg --import-ownertrust
 
         # ============================================================
         # STEP 4: Stage new files (optional)
@@ -303,10 +295,11 @@ runs:
           shell: bash
           if: always()
           run: |
-              # Kill gpg-agent to release any locks on the GNUPGHOME directory
-              gpgconf --kill gpg-agent || true
-              
-              # Remove the isolated GNUPGHOME directory
+              # Only kill gpg-agent if GNUPGHOME is set to avoid killing default agent
+              # on self-hosted runners. Use --homedir to target the isolated keyring.
               if [ -n "$GNUPGHOME" ] && [ -d "$GNUPGHOME" ]; then
+                  gpgconf --homedir "$GNUPGHOME" --kill gpg-agent || true
+                  
+                  # Remove the isolated GNUPGHOME directory
                   rm -rf "$GNUPGHOME"
               fi
