@@ -111,7 +111,7 @@ jobs:
                   gh pr create \
                     --base dev \
                     --head ${{ steps.determine-branch.outputs.branch-name }} \
-                    --title "Test: GPG Signed Commit" \
+                    --title "Test: GPG Signed Commit [skip ci]" \
                     --body "$(cat <<EOF
                   This PR tests the GPG signed commit functionality.
 
