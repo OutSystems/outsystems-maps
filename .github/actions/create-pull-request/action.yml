@@ -60,12 +60,14 @@ runs:
                   gh pr create \
                     --base ${{ inputs.base }} \
                     --head ${{ inputs.head }} \
-                    --title "${{ inputs.title }}"
+                    --title "${{ inputs.title }}" \
+                    --draft
               else
                   # Use a here-doc to properly handle multi-line body text
                   gh pr create \
                     --base ${{ inputs.base }} \
                     --head ${{ inputs.head }} \
                     --title "${{ inputs.title }}" \
-                    --body "${{ inputs.body }}"
+                    --body "${{ inputs.body }}" \
+                    --draft
               fi
