@@ -94,7 +94,8 @@ jobs:
                   gpg-pass-phrase: ${{ steps.GetGPGPassphrase.outputs.az-keyvault-value }}
 
             # Checkout the branch again after the commit to ensure we're on the correct branch
-            # with the committed changes when creating the PR.
+            # with the committed changes when creating the PR. Pull the latest changes to ensure
+            # the commit is present in the working directory.
             - name: 📂 Checkout branch with changes
               uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
               with:
@@ -102,23 +103,24 @@ jobs:
                   token: ${{ steps.get-github-token.outputs.az-keyvault-value }}
                   fetch-depth: 0
 
-            # Create a pull request from the test branch into dev.
-            # If a PR already exists for this branch, the action will update it instead of creating a duplicate.
-            # This makes the workflow idempotent and safe to run multiple times.
+            # Create a pull request from the test branch into dev using GitHub CLI.
+            # Since the commit is already pushed to the remote branch, we use gh pr create
+            # instead of peter-evans/create-pull-request which expects uncommitted changes.
             - name: 🔀 Create pull request
-              uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0 # v8.1.0
-              with:
-                  token: ${{ steps.get-github-token.outputs.az-keyvault-value }}
-                  branch: ${{ steps.determine-branch.outputs.branch-name }}
-                  base: dev
-                  title: 'Test: GPG Signed Commit'
-                  body: |
-                      This PR tests the GPG signed commit functionality.
+              run: |
+                  gh pr create \
+                    --base dev \
+                    --head ${{ steps.determine-branch.outputs.branch-name }} \
+                    --title "Test: GPG Signed Commit" \
+                    --body "$(cat <<EOF
+                  This PR tests the GPG signed commit functionality.
 
-                      **Changes:**
-                      - Created test file to verify GPG signing works correctly
-                      - Commit is signed with GPG key
+                  **Changes:**
+                  - Created test file to verify GPG signing works correctly
+                  - Commit is signed with GPG key
 
-                      This PR was automatically created by the Test Signed Commit workflow.
-                  delete-branch: false
-                  draft: false
+                  This PR was automatically created by the Test Signed Commit workflow.
+                  EOF
+                  )"
+              env:
+                  GH_TOKEN: ${{ steps.get-github-token.outputs.az-keyvault-value }}
