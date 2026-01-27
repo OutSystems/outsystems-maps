@@ -14,7 +14,7 @@ permissions:
 
 jobs:
     build:
-        name: Build TypeScript Project
+        name: 🏗️ Build TypeScript Project
         permissions:
             id-token: write
             contents: read
