@@ -41,14 +41,14 @@ jobs:
                   echo "branch-name=$BRANCH_NAME" >> $GITHUB_OUTPUT
                   echo "Using branch: $BRANCH_NAME"
 
-            # Checkout dev branch as the base for creating the test branch
-            - name: 📂 Checkout dev
+            # Checkout ROU-12531-fix-3 branch as the base for creating the test branch
+            - name: 📂 Checkout ROU-12531-fix-3
               uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
               with:
-                  ref: dev
+                  ref: ROU-12531-fix-3
                   token: ${{ steps.get-github-token.outputs.az-keyvault-value }}
 
-            # Create a new test branch from dev for testing signed commits.
+            # Create a new test branch from ROU-12531-fix-3 for testing signed commits.
             # Each workflow run creates a unique branch using the workflow run ID.
             - name: 🔄 Create test branch ${{ steps.determine-branch.outputs.branch-name }}
               run: |
@@ -103,14 +103,15 @@ jobs:
                   token: ${{ steps.get-github-token.outputs.az-keyvault-value }}
                   fetch-depth: 0
 
-            # Create a pull request from the test branch into dev.
+            # Create a pull request from the test branch into ROU-12531-fix-3.
             # Since the commit is already pushed to the remote branch, we use the create-pull-request
             # action which uses GitHub CLI to create a PR from an existing branch.
+            # Note: The action.yml file must be committed to the repository for this to work.
             - name: 🔀 Create pull request
               uses: ./.github/actions/create-pull-request
               with:
                   token: ${{ steps.get-github-token.outputs.az-keyvault-value }}
-                  base: dev
+                  base: ROU-12531-fix-3
                   head: ${{ steps.determine-branch.outputs.branch-name }}
                   title: 'Test: GPG Signed Commit [skip ci]'
                   body: |
