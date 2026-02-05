@@ -31,9 +31,14 @@ namespace Provider.Maps.Leaflet.Feature {
 					bounds = bounds ? bounds.extend(loc) : loc;
 				});
 			}
-			this._map.provider.fitBounds(bounds);
-			this._map.provider.panInsideBounds(bounds);
-			this._map.features.center.setCurrentCenter(bounds.getCenter());
+
+			if (this._map.allowRefreshZoom) {
+				this._map.provider.fitBounds(bounds);
+				this._map.provider.panInsideBounds(bounds);
+			}
+			if (this._map.allowRefreshPosition) {
+				this._map.features.center.setCurrentCenter(bounds.getCenter());
+			}
 		}
 
 		public build(): void {
