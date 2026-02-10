@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OutSystems.Maps.MapAPI.MarkerManager {
-	const markerMap = new Map<string, string>(); //marker.uniqueId -> map.uniqueId
-	const markerArr = new Array<OSFramework.Maps.Marker.IMarker>();
+	//const markerArr = new Array<OSFramework.Maps.Marker.IMarker>();
+	const markerMap = new Map<string, OSFramework.Maps.Marker.IMarker>();
 
 	/**
 	 * Gets the Map to which the Marker belongs to
@@ -13,8 +13,8 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 		let map: OSFramework.Maps.OSMap.IMap;
 
 		//markerId is the UniqueId
-		if (markerMap.has(markerId)) {
-			map = MapManager.GetMapById(markerMap.get(markerId), false);
+		if (markerMap.has(markerId) && markerMap.get(markerId).map !== undefined) {
+			map = MapManager.GetMapById(markerMap.get(markerId).map.uniqueId, false);
 		}
 		//UniqueID not found
 		else {
@@ -38,11 +38,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 	 * @param {string} markerId Id of the Marker to be removed
 	 */
 	function CleanMarkerArrays(markerId: string): void {
-		markerMap.has(markerId) && markerMap.delete(markerId);
-		const idx = markerArr.findIndex((marker) => marker?.equalsToID(markerId));
-		if (idx !== -1) {
-			markerArr.splice(idx, 1);
-		}
+		markerMap.delete(markerId);
 	}
 
 	/**
@@ -69,8 +65,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 				OSFramework.Maps.Enum.MarkerType.Marker,
 				JSON.parse(configs)
 			);
-			markerArr.push(marker);
-			markerMap.set(markerId, map.uniqueId);
+			markerMap.set(markerId, marker);
 			map.addMarker(marker);
 
 			responseObj.message = markerId;
@@ -189,8 +184,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 					OSFramework.Maps.Enum.MarkerType.Marker,
 					JSON.parse(configs)
 				);
-				markerArr.push(_marker);
-				markerMap.set(markerId, map.uniqueId);
+				markerMap.set(markerId, _marker);
 				map.addMarker(_marker);
 
 				return _marker;
@@ -223,8 +217,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 				markerType,
 				JSON.parse(configs)
 			);
-			markerArr.push(_marker);
-			markerMap.set(markerId, map.uniqueId);
+			markerMap.set(markerId, _marker);
 			map.addMarker(_marker);
 
 			Events.CheckPendingEvents(_marker);
@@ -239,7 +232,7 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 	 * @param markerId Id of the Marker
 	 */
 	export function GetMarkerById(markerId: string, raiseError = true): OSFramework.Maps.Marker.IMarker {
-		let marker: OSFramework.Maps.Marker.IMarker = markerArr.find((p) => p && p.equalsToID(markerId));
+		let marker: OSFramework.Maps.Marker.IMarker = markerMap.get(markerId);
 
 		// if didn't found marker, check if it was draw by the DrawingTools
 		if (marker === undefined) {
@@ -318,8 +311,8 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 				MapManager.RemoveMarkers(mapId);
 			}
 
-			for (const [storedMarkerId, storedMapId] of markerMap) {
-				if (storedMapId === mapId) {
+			for (const [storedMarkerId, marker] of markerMap) {
+				if (marker.map !== undefined && marker.map.uniqueId === mapId) {
 					const marker = GetMarkerById(storedMarkerId, false);
 					if (marker && marker.widgetId === undefined) {
 						// If the marker does not have a widgetId, it means it was created by
@@ -356,8 +349,8 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 			}
 
 			// Second remove the markers to destroy from local variables.
-			markerMap.forEach((storedMapId, storedMarkerId) => {
-				if (mapId === storedMapId) {
+			markerMap.forEach((marker, storedMarkerId) => {
+				if (marker.map !== undefined && mapId === marker.map.uniqueId) {
 					CleanMarkerArrays(storedMarkerId);
 				}
 			});
