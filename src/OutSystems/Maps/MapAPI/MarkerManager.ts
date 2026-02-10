@@ -1,6 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OutSystems.Maps.MapAPI.MarkerManager {
-	//const markerArr = new Array<OSFramework.Maps.Marker.IMarker>();
 	const markerMap = new Map<string, OSFramework.Maps.Marker.IMarker>();
 
 	/**
