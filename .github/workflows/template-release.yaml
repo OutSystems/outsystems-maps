@@ -53,7 +53,7 @@ on:
 
 jobs:
     run-lint-on-rc:
-        name: 📦 Run lint on rc branch
+        name: Run lint on rc branch
         runs-on: ubuntu-latest
         permissions:
             contents: read
@@ -65,14 +65,14 @@ jobs:
               with:
                   ref: rc${{ inputs.new-version }}
 
-            - name: Install project dependencies
+            - name: 🕸️ Install project dependencies
               run: npm install
 
-            - name: Run build
+            - name: 🏗️ Run build
               run: npm run build
 
     merge-rc-into-main:
-        name: 🔄 Merge rc branch into main
+        name: Merge rc branch into main
         needs: run-lint-on-rc
         runs-on: ubuntu-latest
         permissions:
@@ -81,7 +81,7 @@ jobs:
 
         if: ${{ inputs.new-version }}
         steps:
-            - name: 📂 Checkout repository
+            - name: 📥 Checkout repository
               uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
             - name: 🔐 Azure login
@@ -108,7 +108,7 @@ jobs:
                   commit_message_template: 'Merged rc${{ inputs.new-version }} into main. [skip ci]'
 
     set-pre-release-as-lts:
-        name: 🔖 Set pre-release as LTS
+        name: Set pre-release as LTS
         needs: merge-rc-into-main
         runs-on: ubuntu-latest
         permissions:
@@ -116,7 +116,7 @@ jobs:
             contents: read
 
         steps:
-            - name: 📂 Checkout repository
+            - name: 📥 Checkout repository
               uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
             - name: 🔐 Azure login
@@ -141,9 +141,10 @@ jobs:
                   tag_name: v${{ inputs.new-version }}
                   prerelease: false
                   token: ${{ steps.get-github-token.outputs.az-keyvault-value }}
+                  make_latest: true
 
     delete-rc-branch:
-        name: 🗑️ Delete rc branch
+        name: Delete rc branch
         needs: merge-rc-into-main
         runs-on: ubuntu-latest
         permissions:
@@ -151,7 +152,7 @@ jobs:
 
         if: ${{ inputs.delete-rc-branch == true }}
         steps:
-            - name: 📂 Checkout branch dev
+            - name: 📥 Checkout branch dev
               uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
               with:
                   ref: dev
