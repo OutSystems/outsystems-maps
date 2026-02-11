@@ -9,14 +9,10 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 	 * @returns {*}  {MarkerMapper} this structure has the id of Map, and the reference to the instance of the Map
 	 */
 	function GetMapByMarkerId(markerId: string): OSFramework.Maps.OSMap.IMap {
-		let map: OSFramework.Maps.OSMap.IMap;
+		let map: OSFramework.Maps.OSMap.IMap = markerMap.get(markerId)?.map;
 
-		//markerId is the UniqueId
-		if (markerMap.has(markerId) && markerMap.get(markerId).map !== undefined) {
-			map = MapManager.GetMapById(markerMap.get(markerId).map.uniqueId, false);
-		}
 		//UniqueID not found
-		else {
+		if (map === undefined) {
 			// Try to find its reference on DOM
 			const elem = OSFramework.Maps.Helper.GetElementByUniqueId(markerId, false);
 
@@ -234,28 +230,26 @@ namespace OutSystems.Maps.MapAPI.MarkerManager {
 		let marker: OSFramework.Maps.Marker.IMarker =
 			markerMap.get(markerId) ?? Array.from(markerMap.values()).find((value) => value.equalsToID(markerId));
 
-		if (marker !== undefined) {
-			return marker;
-		}
-
 		// if didn't found marker, check if it was draw by the DrawingTools
-		// Get all maps
-		const allMaps = [...MapManager.GetMapsFromPage().values()];
+		if (marker === undefined) {
+			// Get all maps
+			const allMaps = [...MapManager.GetMapsFromPage().values()];
 
-		// On each map, look for all drawingTools and on each one look,
-		// on the createdElements array, for the markerId passed.
-		allMaps.find((map: OSFramework.Maps.OSMap.IMap) => {
-			if (map.drawingTools) {
-				marker = map.drawingTools.createdElements.find(
-					(marker: OSFramework.Maps.Marker.IMarker) => marker && marker.equalsToID(markerId)
-				) as OSFramework.Maps.Marker.IMarker;
+			// On each map, look for all drawingTools and on each one look,
+			// on the createdElements array, for the markerId passed.
+			allMaps.find((map: OSFramework.Maps.OSMap.IMap) => {
+				if (map.drawingTools) {
+					marker = map.drawingTools.createdElements.find(
+						(marker: OSFramework.Maps.Marker.IMarker) => marker && marker.equalsToID(markerId)
+					) as OSFramework.Maps.Marker.IMarker;
+				}
+				return marker;
+			});
+
+			// If still wasn't found, then it does not exist - throw error
+			if (marker === undefined && raiseError) {
+				throw new Error(`Marker id:${markerId} not found`);
 			}
-			return marker;
-		});
-
-		// If still wasn't found, then it does not exist - throw error
-		if (marker === undefined && raiseError) {
-			throw new Error(`Marker id:${markerId} not found`);
 		}
 
 		return marker;
