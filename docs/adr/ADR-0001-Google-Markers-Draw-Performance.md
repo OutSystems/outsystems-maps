@@ -49,7 +49,7 @@ Negative consequences:
 
 ## Links
 
--   [ROU-12504](https://outsystemsrd.atlassian.net/jira/software/c/projects/ROU/boards/544?quickFilter=11980&selectedIssue=ROU-12504)
+-   [ROU-12504](https://outsystemsrd.atlassian.net/browse/ROU-12504)
 
 
 ## Date
