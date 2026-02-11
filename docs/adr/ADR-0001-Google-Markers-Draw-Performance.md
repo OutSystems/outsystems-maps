@@ -37,7 +37,7 @@ Constraints:
 
 ## Decision Outcome
 
-Chosen option: "Option 1", because it is the only option that allows for performance benefits to reach the majority of users and developers quickly. It is also the best option to ensure that minimal changes are implemented with minimal impact on already developed applications.
+Chosen option: "Option 2", because it is the only option that allows for performance benefits to reach the majority of users and developers quickly. It is also the best option to ensure that minimal changes are implemented with minimal impact on already developed applications.
 
 Positive consequences:
 
@@ -49,7 +49,7 @@ Negative consequences:
 
 ## Links
 
--   [ROU-12504](https://outsystemsrd.atlassian.net/browse/ROU-12504)
+-   ROU-12504
 
 
 ## Date
