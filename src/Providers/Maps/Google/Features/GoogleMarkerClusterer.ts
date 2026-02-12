@@ -94,8 +94,9 @@ namespace Provider.Maps.Google.Feature {
 
 		public addMarker(marker: OSFramework.Maps.Marker.IMarker): void {
 			if (this.isEnabled && marker.isReady) {
-				// We need to make sure that a redraw is triggered whenever a new marker is added to the clusters
-				this._markerClusterer.addMarker(marker.provider as GoogleMapsMarker, false);
+				// The noDraw was set to true to avoid a redraw of the map everytime when a new marker is added to the clusters
+				// This will not impact the draw of the marker since we are calling the repaint function after the addMarker function
+				this._markerClusterer.addMarker(marker.provider as GoogleMapsMarker, true);
 			}
 		}
 
@@ -151,8 +152,9 @@ namespace Provider.Maps.Google.Feature {
 
 		public removeMarker(marker: OSFramework.Maps.Marker.IMarker): void {
 			if (this.isEnabled && marker.isReady) {
-				// We need to make sure that a redraw is triggered whenever a new marker is removed from the clusters
-				this._markerClusterer?.removeMarker(marker.provider as GoogleMapsMarker, false);
+				// The noDraw was set to true to avoid a redraw of the map everytime when a new marker is added to the clusters
+				// This will not impact the draw of the marker since we are calling the repaint function after the addMarker function
+				this._markerClusterer?.removeMarker(marker.provider as GoogleMapsMarker, true);
 			}
 		}
 
