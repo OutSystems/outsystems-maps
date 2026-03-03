@@ -1,47 +1,169 @@
-# Contributing to OUTSYSTEMS-MAPS
+# Contributing to OutSystems Maps
 
-Thank you for considering contributing to our project! 🚀
+Thank you for contributing to OutSystems Maps. This guide covers the development workflow and standards for this TypeScript-based mapping component library.
 
-We hope that the contribution of this repo is made in a way that meets the OutSystems guidelines.
+## Development Setup
 
-## Code of Conduct
+**Prerequisites:**
+- Node.js >= 12
+- npm
+- [Visual Studio Code](https://code.visualstudio.com/) (recommended)
 
-We must follow the code of conduct of OutSystems.
+**Recommended VS Code Extensions:**
+- Document This
+- ESLint
+- Prettier - Code formatter
 
-## Our Development Process
+**Setup:**
+```bash
+npm install
+npm run dev  # Starts development server at http://localhost:3000
+```
 
-We use GitHub to sync code to and from our internal repository.  
-We'll use JIRA to track issues and feature requests, and GitHub as well to accept pull requests.
+The development server watches for TypeScript changes and recompiles automatically.
 
-## Pull Requests
+## Development Workflow
 
-We actively welcome your pull requests.
+### Branch Naming
 
-1. Create your branch from `dev`.
-1. If you've added code that should have tests and be tested.
-1. Ensure the test suite passes.
-1. Make sure your code lints.
-1. The PR is compliant with all PR Checks.
-1. Ensure the PR has the correct label on title, as below:
+Create branches from `dev` following the pattern `<JIRA-ID>` or `<JIRA-ID>-description`:
 
-| Labels                                                                | Change | SemVer  |
-| --------------------------------------------------------------------- | :----: | ------- |
-| breaking<br>major                                                     | Major  | X+1.0.0 |
-| feat<br>feature<br>minor                                              | Minor  | 0.X+1.0 |
-| revert<br>perf<br>test<br>refactor<br>fix<br>bugfix<br>patch<br>chore | Patch  | 0.0.X+1 |
-| ci<br>none<br>docs<br>style<br>skip                                   |  None  | 0.0.0   |
+```bash
+git checkout dev
+git pull origin dev
+git checkout -b ROU-1234
+```
 
-## Trusted Committers
+Examples: `ROU-12619`, `ROU-12504-fix-marker-clustering`
 
-Our Trusted Committers are here to assist you with your contributions.  
-Feel free to reach out to them for guidance, reviews, and support.
+### Commit Messages
 
-Our Trusted Committer will always be the [UI Components team member on support rotation](mailto:rd.uicomponents.team@outsystems.com).
+No strict commit format enforced. Use clear, descriptive messages that explain the change.
 
-## Trusted Committer Availability Schedule
+### Pull Request Requirements
 
-Our Trusted Committees are available internally on Slack channel _#rd-uicomponents-contributors_ on business days from 2PM-3PM (PT time).
+**PR Title Format:**
+```
+<JIRA-ID> <description>
+```
+
+Examples:
+- `ROU-12619 Fix marker clustering performance`
+- `ROU-12558 Mark release as latest`
+
+The title must match the regex: `^([A-Z][A-Z0-9]*-\d+(:)?\s\w)` (enforced by CI).
+
+**Required Labels:**
+
+PRs must have at least one of these labels:
+- `feature`
+- `bug` / `bugfix`
+- `dependencies` / `dependency`
+- `chore`
+
+PRs with `do not merge` label will be blocked.
+
+**Before Submitting:**
+1. Test locally using the dev server
+2. Run `npm run build` to ensure the build succeeds
+3. Fix all ESLint errors and warnings
+4. Document your code using JSDoc comments (type `/**` above functions)
+5. Fill out the PR template completely
+
+**PR Template Requirements:**
+- Link to sample page demonstrating the change
+- What was happening (the problem)
+- What was done (the solution)
+- Test steps to verify the fix
+- Screenshots or animated GIFs
+- Checklist confirmation
+
+PRs require approval from 2 team members before merge.
+
+## Building and Testing
+
+| Command | Description |
+|---------|-------------|
+| `npm run setup` | Install dependencies and start dev server |
+| `npm run dev` | Start development server with hot reload |
+| `npm run build` | Build production bundle with linting |
+| `npm run lint` | Check code style (ESLint) |
+| `npm run lintfix` | Auto-fix ESLint issues |
+| `npm run prettier` | Format all JS/TS/CSS files |
+| `npm run docs` | Generate TypeDoc documentation |
+
+**Note:** `npm test` is not configured. Manual testing via the dev server and sample pages is required.
+
+## Testing
+
+Automated tests are maintained in a separate repository: [outsystems-maps-tests](https://github.com/OutSystems/outsystems-maps-tests)
+
+The test suite uses Gherkin/BDD framework with WebDriver.io and supports:
+- Multiple browsers (Chrome, Firefox, Edge, Safari)
+- Multiple environments (dev, qa)
+- Local and SauceLabs execution
+
+To run tests locally (from the tests repository):
+```bash
+npm run local -- --browsers=chrome --environment=dev --map=web
+```
+
+## Code Standards
+
+### TypeScript
+
+- **Target:** ES2017, compiled to AMD module
+- **Output:** Single file at `dist/OutSystemsMaps.js`
+- **Style:** Strict ESLint rules enforced (see `.eslintrc.json`)
+
+### Naming Conventions
+
+Enforced by ESLint:
+- **Exported functions:** `StrictPascalCase`
+- **Classes:** `StrictPascalCase`
+- **Interfaces:** `IPascalCase` (must start with `I`)
+- **Public/protected properties:** `strictCamelCase` (no leading underscore)
+- **Private properties:** `_strictCamelCase` (leading underscore required)
+- **Public/protected methods:** `strictCamelCase` (no leading underscore)
+- **Private methods:** `_strictCamelCase` (leading underscore required)
+
+### Member Ordering
+
+Class members alphabetically ordered within groups:
+1. Private fields
+2. Protected fields
+3. Public fields
+4. Constructor
+5. Private methods
+6. Protected methods
+7. Public methods
+
+### Formatting
+
+Enforced by Prettier (`.prettierrc.json`):
+- Single quotes
+- Semicolons required
+- 120 character line width
+- Tabs for indentation (width: 4)
+- ES5 trailing commas
+
+Run `npm run prettier` to format all files.
+
+## Documentation
+
+Document all public APIs using JSDoc comments. VS Code's "Document This" extension provides templates when you type `/**`.
+
+Architectural decisions are documented in `docs/adr/`. Follow the template in `docs/adr/ADR-0000-Title-of-ADR.md`.
+
+## Support and Communication
+
+**External Contributors:**
+Contact the UI Components team via [component support page](https://www.outsystems.com/forge/component-discussions/9909/OutSystems+Maps)
+
+**Internal Contributors:**
+Slack channel `#rd-uicomponents-contributors` (business days, 2-3 PM PT)
+Trusted Committer: [UI Components team on support rotation](mailto:rd.uicomponents.team@outsystems.com)
 
 ## License
 
-This repos belongs to OutSystems and rights are reserved.
+This repository is proprietary to OutSystems. All rights reserved.
