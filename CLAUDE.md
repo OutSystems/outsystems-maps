@@ -93,6 +93,9 @@ Provider selection happens in `OSFramework/Maps/OSMap/Factory.ts` via `MapFactor
 - Supports tile layers, markers with popups, vector geometries, image overlays, GeoJSON
 - Hardware acceleration on mobile, CSS-driven smooth panning/zooming
 - Custom map projections (EPSG:3857/4326/3395)
+- BSD 2-Clause License (highly permissive open-source)
+
+**External Context Note:** The external context provided information about the Leaflet library from its GitHub repository. This information is consistent with the codebase's use of Leaflet as one of the two supported map providers. The library size (~40 KB gzipped) and design principles match the implementation observed in `src/Providers/Maps/Leaflet/`.
 
 ### Configuration Pattern
 
