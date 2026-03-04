@@ -198,7 +198,8 @@ See [CONTRIBUTING.md](./.github/CONTRIBUTING.md#pull-request-requirements) for c
 
 ## Links
 
-- **Forge component:** https://www.outsystems.com/forge/component-overview/9909/outsystems-maps
+- **Forge component - O11:** https://www.outsystems.com/forge/component-overview/9909/outsystems-maps-o11
+- **Forge component - ODC:** https://www.outsystems.com/forge/component-overview/15930/outsystems-maps-odc
 - **Sample app:** https://www.outsystems.com/forge/component-overview/10984/outsystems-maps-sample
 - **Living docs:** https://outsystemsui.outsystems.com/OutSystemsMapsSample/
 - **Official docs:** https://success.outsystems.com/Documentation/11/Developing_an_Application/Design_UI/Patterns/Using_Mobile_and_Reactive_Patterns/Map
