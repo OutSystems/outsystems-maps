@@ -7,19 +7,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 OutSystems Maps is a TypeScript library providing a unified API for Google Maps and Leaflet/OpenStreetMap integration in OutSystems Reactive Web applications. The library compiles to a single AMD module (`dist/OutSystemsMaps.js`) that abstracts provider differences behind framework interfaces.
 
 **Foundation Documents:**
-- See [ARCHITECTURE.md](./ARCHITECTURE.md) for the provider abstraction pattern, architectural tenets (T1-T5), and external integrations table
-- See [CONTRIBUTING.md](./.github/CONTRIBUTING.md) for development workflow, PR requirements, and code standards
+- See [ARCHITECTURE.md](./ARCHITECTURE.md) for the provider abstraction pattern, architectural tenets (T1-T5), architecture diagram, and external integrations table
+- See [CONTRIBUTING.md](./.github/CONTRIBUTING.md) for development workflow, branch naming, PR requirements, code standards, and member ordering rules
 
 ## Build and Development Commands
 
-**Setup and Development:**
 ```bash
 npm install              # Install dependencies
 npm run dev              # Start dev server at http://localhost:3000 with hot reload
-```
-
-**Build and Quality:**
-```bash
 npm run build            # Production build: clean + transpile + lintfix + lint
 npm run lint             # Check ESLint errors/warnings
 npm run lintfix          # Auto-fix ESLint issues
@@ -27,9 +22,9 @@ npm run prettier         # Format all JS/TS/CSS files
 npm run docs             # Generate TypeDoc documentation
 ```
 
-**Note:** No automated tests exist in this repository (`npm test` exits with error). Automated tests are maintained in the separate [outsystems-maps-tests](https://github.com/OutSystems/outsystems-maps-tests) repository.
+**Build System:** Gulp-based. Check `gulpfile.js` and `gulp/Tasks/` for task definitions. TypeScript compiles to single file via `tsconfig.json` `outFile: "./dist/OutSystemsMaps.js"`.
 
-**Build System:** Gulp-based. Check `gulpfile.js` and `gulp/Tasks/` for task definitions. TypeScript compiles to single file via tsconfig `outFile: "./dist/OutSystemsMaps.js"`.
+**Testing:** No automated tests exist in this repository (`npm test` exits with error). Tests are maintained in separate private repository [outsystems-maps-tests](https://github.com/OutSystems/outsystems-maps-tests). See [CONTRIBUTING.md Testing section](./.github/CONTRIBUTING.md#testing) for how to run tests locally via `gh repo clone`.
 
 ## Repository Structure
 
@@ -38,6 +33,7 @@ src/
 ├── OSFramework/Maps/          # Framework layer (provider-agnostic)
 │   ├── Configuration/         # Config transformation interfaces
 │   ├── Event/                 # Event management (MapEventsManager, MarkerEventsManager, etc.)
+│   ├── Feature/               # Feature abstractions (Directions)
 │   ├── Marker/                # Marker abstractions
 │   ├── Shape/                 # Shape abstractions (Polygon, Polyline, Circle)
 │   ├── OSMap/                 # Map abstractions
@@ -49,53 +45,37 @@ src/
 │   ├── Google/                # Google Maps adapter
 │   └── Leaflet/               # Leaflet/OSM adapter
 ├── OutSystems/Maps/           # Public API
-│   ├── MapAPI/                # Map management (MapManager, MarkerManager, ShapeManager, etc.)
+│   ├── MapAPI/                # Map management (MapManager, MarkerManager, ShapeManager, Directions, etc.)
 │   └── PlacesAPI/             # Places search
-└── Files/                     # Static assets
+└── Files/                     # Static assets (loaded at runtime)
     ├── Google/                # Google Maps scripts
-    └── Leaflet/               # Leaflet scripts/styles
+    ├── Leaflet/               # Leaflet scripts/styles
+    │   └── Directions/        # Routing backend extensions (GraphHopper, TomTom)
+    └── Internal/              # Internal assets
 ```
 
-**Key Separation:** `OSFramework/` defines interfaces and abstractions. `Providers/` contains Google Maps and Leaflet implementations. `OutSystems/` exposes the public API. See [ARCHITECTURE.md T1](./ARCHITECTURE.md#t1-provider-abstraction-must-isolate-external-dependencies) for provider isolation details.
-
-## Testing and Verification
-
-Automated tests are maintained in a separate private repository: [outsystems-maps-tests](https://github.com/OutSystems/outsystems-maps-tests)
-
-**To run tests locally (requires gh CLI):**
-```bash
-# Clone the tests repository
-gh repo clone OutSystems/outsystems-maps-tests ../outsystems-maps-tests
-
-# Run tests
-cd ../outsystems-maps-tests
-npm run local -- --browsers=chrome --environment=dev --map=web
-```
-
-**Manual testing via dev server:**
-1. Start dev server: `npm run dev`
-2. Test changes at `http://localhost:3000`
-3. Reference sample app: https://www.outsystems.com/forge/component-overview/10984/outsystems-maps-sample
-4. Check component living docs: https://outsystemsui.outsystems.com/OutSystemsMapsSample/
+**Key Separation:** `OSFramework/` defines interfaces and abstractions. `Providers/` contains Google Maps and Leaflet implementations. `OutSystems/` exposes the public API. See [ARCHITECTURE.md T1](./ARCHITECTURE.md#t1-provider-abstraction-must-isolate-external-dependencies) for provider isolation enforcement.
 
 ## Important Context
 
 ### Map Provider Architecture
 
 The library supports two map providers selected at runtime:
-- **Google Maps:** Requires API key, provides full Google Maps JavaScript API capabilities (geocoding, places search, marker clustering, advanced markers)
-- **Leaflet:** Open-source library for mobile-friendly interactive maps (~42 KB, no dependencies), uses OpenStreetMap tiles (no API key required)
+- **Google Maps:** Requires API key, provides full Google Maps JavaScript API capabilities (geocoding, places search, marker clustering via `@googlemaps/markerclusterer` v2.5.3, advanced markers, directions via Google Routes API)
+- **Leaflet:** Open-source library for mobile-friendly interactive maps (~42 KB, no dependencies), uses OpenStreetMap tiles (no API key required), extensible with Leaflet plugins
 
 Provider selection happens in `OSFramework/Maps/OSMap/Factory.ts` via `MapFactory.MakeMap()`. All provider-specific code is isolated in `Providers/` directories.
 
-**Leaflet Characteristics:**
-- Design philosophy: simplicity, performance, usability
-- Supports tile layers, markers with popups, vector geometries, image overlays, GeoJSON
-- Hardware acceleration on mobile, CSS-driven smooth panning/zooming
-- Custom map projections (EPSG:3857/4326/3395)
-- BSD 2-Clause License (highly permissive open-source)
+**Directions/Routing:** Both providers support calculating routes between points. Google uses Routes API (`routes.googleapis.com/directions/v2:computeRoutes`). Leaflet uses [Leaflet Routing Machine](https://github.com/perliedman/leaflet-routing-machine) v3.2.12 with pluggable backends (OSRM default, plus GraphHopper/TomTom extensions in `Files/Leaflet/Directions/`). See [ARCHITECTURE.md External Integrations table](./ARCHITECTURE.md#external-integrations) for integration details.
 
-**External Context Note:** The external context provided information about the Leaflet library from its GitHub repository. This information is consistent with the codebase's use of Leaflet as one of the two supported map providers. The library size (~40 KB gzipped) and design principles match the implementation observed in `src/Providers/Maps/Leaflet/`.
+**Drawing Tools:** Both providers support interactive drawing and editing of geometries:
+- **Google:** Uses native Drawing Manager API
+- **Leaflet:** Combines three libraries:
+  - [Leaflet.Draw](https://github.com/Leaflet/Leaflet.draw) v1.0.4 - Provides drawing toolbar UI (`L.Control.Draw`) with handlers for polylines, polygons, rectangles, circles, markers
+  - [Leaflet.Editable](https://github.com/Leaflet/Leaflet.Editable) v1.3.0 - Enables programmatic geometry editing on individual layers
+  - [Leaflet.Path.Drag](https://github.com/w8r/Leaflet.Path.Drag) v1.9.5 - Adds drag capabilities to vector features (polygons, polylines), mirroring marker drag API with dragstart/drag/dragend events
+
+Implementation in `src/Providers/Maps/Leaflet/DrawingTools/DrawingTools.ts` uses Leaflet.Draw for toolbar control and drawing modes. Maps initialize with `{editable: true}` option, then editing is enabled on individual layers via Leaflet.Editable. See [ARCHITECTURE.md External Integrations table](./ARCHITECTURE.md#external-integrations) for versions and external dependencies.
 
 ### Configuration Pattern
 
@@ -124,56 +104,41 @@ Framework layer controls all lifecycle via abstract classes:
 - `finishBuild()` → trigger event cascade
 - `dispose()` → cleanup
 
-Provider implementations respond to framework commands but do not manage their own lifecycle. Framework maintains parent-child relationships (maps contain markers, shapes, file layers).
+Provider implementations respond to framework commands but do not manage their own lifecycle. Framework maintains parent-child relationships (maps contain markers, shapes, file layers, features).
 
 See [ARCHITECTURE.md T3](./ARCHITECTURE.md#t3-framework-layer-owns-lifecycle-and-state-management) for lifecycle ownership details.
 
 ## Code Standards
 
-**Member Ordering (enforced by ESLint):**
-1. Private fields (`_name`)
-2. Protected fields
-3. Public fields
-4. Constructor
-5. Private methods
-6. Protected methods
-7. Public methods
+See [CONTRIBUTING.md Code Standards section](./.github/CONTRIBUTING.md#code-standards) for complete code standards.
 
-Within each group: alphabetical order.
-
-**Naming:**
-- Exported functions: `StrictPascalCase`
-- Interfaces: `IPascalCase` (must start with `I`)
+**Quick reference:**
 - Private properties/methods: `_strictCamelCase` (leading underscore required)
 - Public/protected: `strictCamelCase` (no underscore)
-
-**Formatting:** Single quotes, semicolons required, 120 char width, tabs (width 4). Prettier config in `.prettierrc.json`.
-
-See [CONTRIBUTING.md](./.github/CONTRIBUTING.md#code-standards) for complete standards.
+- Interfaces: `IPascalCase` (must start with `I`)
+- Exported functions/classes: `StrictPascalCase`
+- Member ordering: private fields → protected fields → public fields → constructor → private methods → protected methods → public methods (alphabetical within each group, enforced by ESLint)
 
 ## Documentation
 
 Document public APIs with JSDoc comments. Type `/**` above functions for templates (VS Code "Document This" extension).
 
 Architectural decisions documented in `docs/adr/`. Use `docs/adr/ADR-0000-Title-of-ADR.md` as template. Existing ADRs:
-- `ADR-0001-Google-Markers-Draw-Performance.md` - Addresses marker clustering draw performance by disabling draw during addition but keeping repaint after addition
+- `ADR-0001-Google-Markers-Draw-Performance.md` - Disables draw during marker addition but keeps repaint after addition to optimize marker clustering performance
 
 ## PR Requirements
+
+See [CONTRIBUTING.md Pull Request Requirements section](./.github/CONTRIBUTING.md#pull-request-requirements) for complete PR requirements.
 
 **Critical:** PRs must include:
 - Link to sample page demonstrating the change
 - Problem description ("What was happening?")
 - Solution description ("What was done?")
-- Test steps
-- Screenshots or GIFs
+- Test steps and screenshots/GIFs
+- At least one label: `feature`, `bug`/`bugfix`, `dependencies`, `chore`
 
-**Labels Required:** At least one of `feature`, `bug`/`bugfix`, `dependencies`, `chore`. Avoid `do not merge` label.
-
-**Branch:** Create from `dev` with pattern `<JIRA-ID>` or `<JIRA-ID>-description` (e.g., `ROU-12619`)
-
-**PR Title:** Must match regex `^([A-Z][A-Z0-9]*-\d+(:)?\s\w)` (e.g., `ROU-12619 Fix marker clustering performance`)
-
-See [CONTRIBUTING.md](./.github/CONTRIBUTING.md#pull-request-requirements) for complete PR requirements.
+**Branch pattern:** `<JIRA-ID>` or `<JIRA-ID>-description` (e.g., `ROU-12619`)
+**PR title format:** `<JIRA-ID> <description>` (e.g., `ROU-12619 Fix marker clustering performance`)
 
 ## Common Tasks
 
