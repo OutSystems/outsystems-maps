@@ -2,6 +2,10 @@
 
 Thank you for contributing to OutSystems Maps. This guide covers the development workflow and standards for this TypeScript mapping component library.
 
+## Code of Conduct
+
+We must follow the code of conduct of OutSystems.
+
 ## Development Setup
 
 **Prerequisites:**
@@ -81,6 +85,8 @@ The PR template requires:
 2. Build succeeds: `npm run build`
 3. No ESLint errors: `npm run lint`
 4. Add JSDoc comments (type `/**` above functions)
+
+
 
 ## Building and Testing
 
@@ -187,6 +193,17 @@ Contact the UI Components team via [component support page](https://www.outsyste
 
 Slack channel `#rd-uicomponents-contributors` (business days, 2-3 PM PT)
 Trusted Committer: [UI Components team on support rotation](mailto:rd.uicomponents.team@outsystems.com)
+
+
+## Trusted Committers
+
+Our Trusted Committer will always be the [UI Components team member on support rotation](mailto:rd.uicomponents.team@outsystems.com).
+
+
+## Trusted Committer Availability Schedule
+
+Our Trusted Committees are available internally on Slack channel _#rd-uicomponents-contributors_ on business days from 2PM-3PM (PT time).
+
 
 ## License
 
