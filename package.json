@@ -46,6 +46,7 @@
     "stylelint-config-prettier": "^9.0.5",
     "stylelint-order": "^6.0.4",
     "stylelint": "^14.16.1",
+    "terra-draw": "^1.25.0",
     "typedoc": "^0.23.28",
     "typedoc-plugin-merge-modules": "^4.1.0",
     "typedoc-umlclass": "^0.7.1",
