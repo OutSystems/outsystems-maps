@@ -1,9 +1,9 @@
-/// <reference path="AbstractDrawShape.ts" />
+/// <reference path="../AbstractDrawShape.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.DrawingTools.TerraDraw {
 	export abstract class AbstractDrawPolyshape<
-		T extends Provider.Maps.Google.Configuration.DrawingTools.DrawBasicShapeConfig,
+		T extends Configuration.DrawBasicShapeConfig,
 	> extends AbstractDrawShape<T> {
 		/**
 		 * Extracts location strings ("{lat},{lng}") from a GeoJSON LineString or Polygon ring.

@@ -1,5 +1,3 @@
-/// <reference path="../../../../../OSFramework/Maps/Configuration/AbstractConfiguration.ts" />
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.DrawingTools.TerraDraw.Configuration {
 	export class DrawingToolsConfig
