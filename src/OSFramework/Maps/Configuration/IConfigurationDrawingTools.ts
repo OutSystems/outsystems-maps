@@ -6,6 +6,7 @@ namespace OSFramework.Maps.Configuration {
 	 */
 	export interface IConfigurationDrawingTools extends IConfiguration {
 		position: string;
+		providerType?: OSFramework.Maps.Enum.ProviderType;
 		uniqueId: string;
 	}
 }
