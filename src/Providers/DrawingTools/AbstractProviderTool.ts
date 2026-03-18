@@ -1,7 +1,5 @@
-/// <reference path="../../../OSFramework/Maps/DrawingTools/AbstractTool.ts" />
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.DrawingTools.TerraDraw {
+namespace Provider.DrawingTools {
 	export abstract class AbstractProviderTool<
 		T extends OSFramework.Maps.Configuration.IConfigurationTool,
 	> extends OSFramework.Maps.DrawingTools.AbstractTool<T> {
@@ -77,7 +75,7 @@ namespace Provider.DrawingTools.TerraDraw {
 		 * @param feature GeoJSON feature from TerraDraw's store snapshot.
 		 * @param configs Tool configuration at the time of creation.
 		 */
-		protected abstract createElement(uniqueId: string, feature: TerraDrawGeoJSONFeature, configs: T): unknown;
+		protected abstract createElement(uniqueId: string, feature: TerraDrawGeoJSONFeature, configs: unknown): unknown;
 
 		/**
 		 * Instantiates the corresponding TerraDraw mode with styles from this tool's config.
@@ -94,7 +92,7 @@ namespace Provider.DrawingTools.TerraDraw {
 		/** The options object for the TerraDraw mode, derived from the tool's config. */
 		public abstract get options(): unknown;
 
-		/** The mode name used by TerraDraw (e.g. 'circle', 'polygon', 'linestring'). */
-		public abstract get terraDrawModeName(): string;
+		/** The mode name used by the provider (e.g. 'circle', 'polygon', 'linestring'). */
+		public abstract get drawModeName(): string;
 	}
 }

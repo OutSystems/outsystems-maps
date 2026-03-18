@@ -1,9 +1,9 @@
 /// <reference path="AbstractProviderTool.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.DrawingTools.TerraDraw {
+namespace Provider.DrawingTools {
 	export abstract class AbstractDrawShape<
-		T extends Provider.Maps.Google.Configuration.DrawingTools.DrawConfig,
+		T extends Provider.DrawingTools.TerraDraw.Configuration.DrawConfig,
 	> extends AbstractProviderTool<T> {
 		/**
 		 * Wires the OS shape's own change event so that post-creation edits
@@ -35,9 +35,9 @@ namespace Provider.DrawingTools.TerraDraw {
 		protected createShapeElement(
 			uniqueId: string,
 			type: OSFramework.Maps.Enum.ShapeType,
-			configs: unknown
+			configs: OSFramework.Maps.Configuration.IConfigurationShape
 		): OSFramework.Maps.Shape.IShape {
-			const shape = Provider.Maps.Google.Shape.ShapeFactory.MakeShape(this.map, uniqueId, type, configs);
+			const shape = OSFramework.Maps.Shape.ShapeFactory.MakeShape(this.map, uniqueId, type, configs);
 			this._setOnChangeEvent(shape);
 			this.map.addShape(shape);
 			return shape;
