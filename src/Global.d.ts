@@ -41,6 +41,7 @@ declare global {
     type TerraDrawInstance = InstanceType<typeof TerraDrawLib.TerraDraw>;
     type TerraDrawGeoJSONFeature = TerraDrawLib.GeoJSONStoreFeatures;
     type TerraDrawFeatureId = TerraDrawLib.GeoJSONStoreFeatures['id'];
+    type TerraDrawGoogleMapsAdapter = TerraDrawLib.TerraDrawExtend.TerraDrawGoogleMapsAdapter;
     /** Hex colour accepted by TerraDraw style properties (must start with '#'). */
     type TerraDrawHexColor = `#${string}`;
     /** Base class for all TerraDraw draw modes. */
