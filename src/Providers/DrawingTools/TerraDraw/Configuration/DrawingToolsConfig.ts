@@ -5,7 +5,13 @@ namespace Provider.DrawingTools.TerraDraw.Configuration {
 		implements OSFramework.Maps.Configuration.IConfigurationDrawingTools
 	{
 		public position: string;
+		public providerType: OSFramework.Maps.Enum.ProviderType;
 		public uniqueId: string;
+
+		constructor(configs: unknown) {
+			super(configs);
+			this.providerType ??= OSFramework.Maps.Enum.ProviderType.Google;
+		}
 
 		public getProviderConfig(): unknown {
 			return {
