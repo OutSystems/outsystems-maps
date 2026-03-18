@@ -35,8 +35,8 @@ namespace Provider.DrawingTools.TerraDraw {
 			);
 		}
 
-		protected getLocation(feature: TerraDrawGeoJSONFeature): string[] {
-			return this.extractLocations(feature);
+		protected getLocation(feature: TerraDrawGeoJSONFeature): string | string[] {
+			return JSON.stringify(this.extractLocations(feature));
 		}
 	}
 }
