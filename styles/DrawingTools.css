@@ -1,0 +1,114 @@
+/* ═══════════════════════════════════════════════════════════════
+   TerraDraw Drawing Tools Toolbar
+   ═══════════════════════════════════════════════════════════════
+   SVG icon URLs use placeholder strings that are replaced during
+   the module build / deployment step:
+     TERRADRAW_SVG_MARKER
+     TERRADRAW_SVG_LINESTRING
+     TERRADRAW_SVG_POLYGON
+     TERRADRAW_SVG_CIRCLE
+     TERRADRAW_SVG_RECTANGLE
+   ─────────────────────────────────────────────────────────────── */
+
+/* ── Toolbar container ─────────────────────────────────────────── */
+.os-terradraw-toolbar {
+    align-items: center;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.14),
+        0 1px 2px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 6px;
+}
+
+/* ── Base button ───────────────────────────────────────────────── */
+.os-terradraw-btn {
+    background-color: transparent;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 0;
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.os-terradraw-btn:focus-visible {
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.30);
+    outline: none;
+}
+
+/* ── PNG icons sprite */
+.os-terradraw-btn__icon {
+    background-image: var(--terradraw-drawingtools);
+    display: block;
+    height: 16px;
+    pointer-events: none;
+    transition: background-color 0.15s ease;
+    width: 16px;
+}
+
+/* ── Per-mode position ────────────────────────────────────────── */
+.os-terradraw-btn[data-mode="linestring"] {
+    .os-terradraw-btn__icon {
+        background-position-y: -32px;
+    }
+
+    &:is(:hover, .os-terradraw-btn--active) .os-terradraw-btn__icon {
+        background-position-y: 64px;
+    }
+}
+
+.os-terradraw-btn[data-mode="marker"] {
+    .os-terradraw-btn__icon {
+        background-position-y: 16px;
+    }
+
+    &:is(:hover, .os-terradraw-btn--active) .os-terradraw-btn__icon {
+        background-position-y: 80px;
+    }
+}
+
+.os-terradraw-btn[data-mode="polygon"] {
+    .os-terradraw-btn__icon {
+        background-position-y: -64px;
+    }
+
+    &:is(:hover, .os-terradraw-btn--active) .os-terradraw-btn__icon {
+        background-position-y: 96px;
+    }
+}
+
+.os-terradraw-btn[data-mode="circle"] {
+    .os-terradraw-btn__icon {
+        background-position-y: 32px;
+    }
+
+    &:is(:hover, .os-terradraw-btn--active) .os-terradraw-btn__icon {
+        background-position-y: 0;
+    }
+}
+
+.os-terradraw-btn[data-mode="rectangle"] {
+    .os-terradraw-btn__icon {
+        background-position-y: -16px;
+    }
+
+    &:is(:hover, .os-terradraw-btn--active) .os-terradraw-btn__icon {
+        background-position-y: -48px;
+    }
+}
+
+.os-terradraw-btn[data-mode="hand"] {
+    .os-terradraw-btn__icon {
+        background-position-y: -80px;
+    }
+
+    &:is(:hover, .os-terradraw-btn--active) .os-terradraw-btn__icon {
+        background-position-y: 48px;
+    }
+}
