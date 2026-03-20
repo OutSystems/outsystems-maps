@@ -23,14 +23,13 @@ namespace Provider.DrawingTools.TerraDraw {
 				// 	return new DrawMarker(map, drawingTools, toolId, type, configs);
 				case OSFramework.Maps.Enum.DrawingToolsTypes.Polyline:
 					return new DrawPolyline(map, drawingTools, toolId, type, configs);
-				// case OSFramework.Maps.Enum.DrawingToolsTypes.Polygon:
-				// 	return new DrawPolygon(map, drawingTools, toolId, type, configs);
+				case OSFramework.Maps.Enum.DrawingToolsTypes.Polygon:
+					return new DrawPolygon(map, drawingTools, toolId, type, configs);
 				// case OSFramework.Maps.Enum.DrawingToolsTypes.Circle:
 				// 	return new DrawCircle(map, drawingTools, toolId, type, configs);
 				// case OSFramework.Maps.Enum.DrawingToolsTypes.Rectangle:
 				// 	return new DrawRectangle(map, drawingTools, toolId, type, configs);
 				default:
-					//throw new Error(`There is no TerraDraw factory for tool type: ${type}`);
 					console.warn(`The tool type: ${type} is not yet available...`);
 			}
 		}
