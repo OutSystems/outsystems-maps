@@ -8,4 +8,4 @@ node_modules
 *.css
 
 # don't lint settings
-.snyk
+.wiz
