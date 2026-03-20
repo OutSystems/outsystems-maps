@@ -159,7 +159,7 @@
         background-position-y: -32px;
     }
 
-    &:is(:hover, .os-terradraw-btn--active) .os-terradraw-btn__icon {
+    &.os-terradraw-btn--active .os-terradraw-btn__icon {
         background-position-y: 64px;
     }
 }
