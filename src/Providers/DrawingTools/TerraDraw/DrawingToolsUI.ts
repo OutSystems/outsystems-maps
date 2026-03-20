@@ -4,6 +4,7 @@ namespace Provider.DrawingTools.TerraDraw {
 	const _cssButton = 'os-terradraw-btn';
 	const _cssButtonActive = 'os-terradraw-btn--active';
 	const _cssButtonIcon = 'os-terradraw-btn__icon';
+	const _cssMapPositioned = 'os-terradraw-map-positioned';
 
 	/** Maps TerraDraw mode name → human-readable accessible label */
 	const _modeLabels: Record<string, string> = {
@@ -14,16 +15,20 @@ namespace Provider.DrawingTools.TerraDraw {
 		rectangle: 'Rectangle',
 	};
 
-	/** Maps OS position string → CSS { top/bottom/left/right } values */
-	const _positionStyles: Record<string, Partial<CSSStyleDeclaration>> = {
-		TOP_LEFT: { top: '10px', left: '10px' },
-		TOP_CENTER: { top: '10px', left: '50%', transform: 'translateX(-50%)' },
-		TOP_RIGHT: { top: '10px', right: '10px' },
-		LEFT_TOP: { top: '10px', left: '10px' },
-		RIGHT_TOP: { top: '10px', right: '10px' },
-		BOTTOM_LEFT: { bottom: '10px', left: '10px' },
-		BOTTOM_CENTER: { bottom: '10px', left: '50%', transform: 'translateX(-50%)' },
-		BOTTOM_RIGHT: { bottom: '10px', right: '10px' },
+	/** Maps OS position string → toolbar BEM modifier class */
+	const _positionClasses: Record<string, string> = {
+		TOP_LEFT: `${_cssToolbar}--top-left`,
+		TOP_CENTER: `${_cssToolbar}--top-center`,
+		TOP_RIGHT: `${_cssToolbar}--top-right`,
+		LEFT_TOP: `${_cssToolbar}--left-top`,
+		LEFT_CENTER: `${_cssToolbar}--left-center`,
+		LEFT_BOTTOM: `${_cssToolbar}--left-bottom`,
+		RIGHT_TOP: `${_cssToolbar}--right-top`,
+		RIGHT_CENTER: `${_cssToolbar}--right-center`,
+		RIGHT_BOTTOM: `${_cssToolbar}--right-bottom`,
+		BOTTOM_LEFT: `${_cssToolbar}--bottom-left`,
+		BOTTOM_CENTER: `${_cssToolbar}--bottom-center`,
+		BOTTOM_RIGHT: `${_cssToolbar}--bottom-right`,
 	};
 
 	/**
@@ -50,8 +55,8 @@ namespace Provider.DrawingTools.TerraDraw {
 		}
 
 		private _applyPosition(position: string): void {
-			const styles = _positionStyles[position] ?? _positionStyles['TOP_LEFT'];
-			Object.assign(this._container.style, styles);
+			const cls = _positionClasses[position] ?? _positionClasses['TOP_LEFT'];
+			this._container.classList.add(cls);
 		}
 
 		private _clearActive(): void {
@@ -101,8 +106,6 @@ namespace Provider.DrawingTools.TerraDraw {
 		public build(toolModeNames: string[], position: string): void {
 			this._container = document.createElement('div');
 			this._container.className = _cssToolbar;
-			this._container.style.position = 'absolute';
-			this._container.style.zIndex = '1000';
 			this._applyPosition(position);
 
 			const appendAll = this._toolsOrder.length === toolModeNames.length;
@@ -112,11 +115,8 @@ namespace Provider.DrawingTools.TerraDraw {
 				}
 			});
 
-			// Ensure the map container is a positioning context
-			const currentPosition = globalThis.getComputedStyle(this._mapContainer).position;
-			if (!currentPosition || currentPosition === 'static') {
-				this._mapContainer.style.position = 'relative';
-			}
+			// Ensure the map container is a positioning context via class (avoids inline style / CSP issues)
+			this._mapContainer.classList.add(_cssMapPositioned);
 			this._mapContainer.appendChild(this._container);
 		}
 
