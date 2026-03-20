@@ -117,11 +117,11 @@ namespace Provider.DrawingTools.TerraDraw {
 			if (this.isReady) {
 				tool.build();
 				// TerraDraw does not support dynamic mode addition — rebuild the instance
-				const snapshot = this._provider.getSnapshot();
-				this._buildTerraDraw();
-				if (snapshot.length > 0) {
-					this._provider.addFeatures(snapshot);
-				}
+				// const snapshot = this._provider.getSnapshot();
+				// this._buildTerraDraw();
+				// if (snapshot.length > 0) {
+				// 	this._provider.addFeatures(snapshot);
+				// }
 				const modeNames = this.tools.map(
 					(t) => (t as AbstractProviderTool<OSFramework.Maps.Configuration.IConfigurationTool>).drawModeName
 				);
@@ -201,11 +201,11 @@ namespace Provider.DrawingTools.TerraDraw {
 			super.removeTool(toolId);
 
 			if (this.isReady) {
-				const snapshot = this._provider.getSnapshot();
-				this._buildTerraDraw();
-				if (snapshot.length > 0) {
-					this._provider.addFeatures(snapshot);
-				}
+				// const snapshot = this._provider.getSnapshot();
+				// this._buildTerraDraw();
+				// if (snapshot.length > 0) {
+				// 	this._provider.addFeatures(snapshot);
+				// }
 				const modeNames = this.tools.map(
 					(t) => (t as AbstractProviderTool<OSFramework.Maps.Configuration.IConfigurationTool>).drawModeName
 				);
