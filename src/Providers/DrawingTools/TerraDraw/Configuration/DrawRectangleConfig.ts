@@ -2,5 +2,5 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.DrawingTools.TerraDraw.Configuration {
-	export class DrawPolygonConfig extends DrawFilledShapeConfig {}
+	export class DrawRectangleConfig extends DrawFilledShapeConfig {}
 }
