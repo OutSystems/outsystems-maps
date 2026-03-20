@@ -25,8 +25,8 @@ namespace Provider.DrawingTools.TerraDraw {
 					return new DrawPolyline(map, drawingTools, toolId, type, configs);
 				case OSFramework.Maps.Enum.DrawingToolsTypes.Polygon:
 					return new DrawPolygon(map, drawingTools, toolId, type, configs);
-				// case OSFramework.Maps.Enum.DrawingToolsTypes.Circle:
-				// 	return new DrawCircle(map, drawingTools, toolId, type, configs);
+				case OSFramework.Maps.Enum.DrawingToolsTypes.Circle:
+					return new DrawCircle(map, drawingTools, toolId, type, configs);
 				case OSFramework.Maps.Enum.DrawingToolsTypes.Rectangle:
 					return new DrawRectangle(map, drawingTools, toolId, type, configs);
 				default:
