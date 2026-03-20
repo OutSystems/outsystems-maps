@@ -3,8 +3,9 @@ namespace Provider.DrawingTools.TerraDraw {
 	const _cssToolbar = 'os-terradraw-toolbar';
 	const _cssButton = 'os-terradraw-btn';
 	const _cssButtonActive = 'os-terradraw-btn--active';
+	const _cssButtonIcon = 'os-terradraw-btn__icon';
 
-	/** Maps TerraDraw mode name → human-readable button label */
+	/** Maps TerraDraw mode name → human-readable accessible label */
 	const _modeLabels: Record<string, string> = {
 		marker: 'Marker',
 		linestring: 'Polyline',
@@ -62,12 +63,20 @@ namespace Provider.DrawingTools.TerraDraw {
 		}
 
 		private _createButton(modeName: string): HTMLButtonElement {
+			const label = _modeLabels[modeName] ?? modeName;
+
 			const btn = document.createElement('button');
 			btn.type = 'button';
 			btn.className = _cssButton;
 			btn.dataset.mode = modeName;
-			btn.title = modeName;
-			btn.textContent = _modeLabels[modeName] ?? modeName;
+			btn.title = label;
+			btn.setAttribute('aria-label', label);
+
+			const icon = document.createElement('span');
+			icon.className = _cssButtonIcon;
+			icon.setAttribute('aria-hidden', 'true');
+			btn.appendChild(icon);
+
 			btn.addEventListener('click', () => this._handleClick(btn, modeName));
 			return btn;
 		}
@@ -89,7 +98,6 @@ namespace Provider.DrawingTools.TerraDraw {
 			this._activeMode = modeName;
 		}
 
-		/** Removes any active button highlight without firing the deselect callback. */
 		public build(toolModeNames: string[], position: string): void {
 			this._container = document.createElement('div');
 			this._container.className = _cssToolbar;
