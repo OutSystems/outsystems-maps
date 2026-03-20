@@ -116,12 +116,26 @@
     background-color: transparent;
     border: 2px solid transparent;
     border-radius: 6px;
+
     cursor: pointer;
+
+    align-items: center;
+    display: flex;
+    justify-content: center;
+
+    height: 32px;
+    width: 32px;
     padding: 0;
+
     transition:
         background-color 0.15s ease,
         border-color 0.15s ease,
         box-shadow 0.15s ease;
+}
+
+.os-terradraw-btn:hover,
+.os-terradraw-btn--active {
+    background-color: #eee;
 }
 
 .os-terradraw-btn:focus-visible {
@@ -155,7 +169,7 @@
         background-position-y: 16px;
     }
 
-    &:is(:hover, .os-terradraw-btn--active) .os-terradraw-btn__icon {
+    &.os-terradraw-btn--active .os-terradraw-btn__icon {
         background-position-y: 80px;
     }
 }
@@ -165,7 +179,7 @@
         background-position-y: -64px;
     }
 
-    &:is(:hover, .os-terradraw-btn--active) .os-terradraw-btn__icon {
+    &.os-terradraw-btn--active .os-terradraw-btn__icon {
         background-position-y: 96px;
     }
 }
@@ -175,7 +189,7 @@
         background-position-y: 32px;
     }
 
-    &:is(:hover, .os-terradraw-btn--active) .os-terradraw-btn__icon {
+    &.os-terradraw-btn--active .os-terradraw-btn__icon {
         background-position-y: 0;
     }
 }
@@ -185,7 +199,7 @@
         background-position-y: -16px;
     }
 
-    &:is(:hover, .os-terradraw-btn--active) .os-terradraw-btn__icon {
+    &.os-terradraw-btn--active .os-terradraw-btn__icon {
         background-position-y: -48px;
     }
 }
@@ -195,7 +209,7 @@
         background-position-y: -80px;
     }
 
-    &:is(:hover, .os-terradraw-btn--active) .os-terradraw-btn__icon {
+    &.os-terradraw-btn--active .os-terradraw-btn__icon {
         background-position-y: 48px;
     }
 }
