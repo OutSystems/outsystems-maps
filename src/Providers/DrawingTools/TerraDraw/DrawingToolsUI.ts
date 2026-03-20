@@ -43,6 +43,7 @@ namespace Provider.DrawingTools.TerraDraw {
 		private readonly _mapContainer: HTMLElement;
 		private readonly _onModeDeselect: () => void;
 		private readonly _onModeSelect: (modeName: string) => void;
+		private _selectButton: HTMLButtonElement;
 		private readonly _toolsOrder: string[];
 
 		constructor(mapContainer: HTMLElement, onModeSelect: (modeName: string) => void, onModeDeselect: () => void) {
@@ -87,8 +88,8 @@ namespace Provider.DrawingTools.TerraDraw {
 		}
 
 		private _handleClick(btn: HTMLButtonElement, modeName: string): void {
-			if (this._activeMode === modeName) {
-				this._clearActive();
+			if (this._activeMode === modeName || modeName === Constants.ModeName.Select) {
+				this._setActive(this._selectButton, Constants.ModeName.Select);
 				this._onModeDeselect();
 			} else {
 				this._setActive(btn, modeName);
@@ -108,7 +109,12 @@ namespace Provider.DrawingTools.TerraDraw {
 			this._container.className = _cssToolbar;
 			this._applyPosition(position);
 
+			// Adding the select button to the toolbar
+			this._selectButton = this._createButton(Constants.ModeName.Select);
+			this._container.appendChild(this._selectButton);
+
 			const appendAll = this._toolsOrder.length === toolModeNames.length;
+
 			this._toolsOrder.forEach((mode) => {
 				if (appendAll || toolModeNames.includes(mode)) {
 					this._container.appendChild(this._createButton(mode));
@@ -118,11 +124,7 @@ namespace Provider.DrawingTools.TerraDraw {
 			// Ensure the map container is a positioning context via class (avoids inline style / CSP issues)
 			this._mapContainer.classList.add(_cssMapPositioned);
 			this._mapContainer.appendChild(this._container);
-		}
-
-		/** Removes any active button highlight without firing the deselect callback. */
-		public clearActiveButton(): void {
-			this._clearActive();
+			this.setDefaultMode();
 		}
 
 		/** Removes the toolbar from the DOM and resets state. */
@@ -133,6 +135,7 @@ namespace Provider.DrawingTools.TerraDraw {
 			this._container = undefined;
 			this._activeButton = undefined;
 			this._activeMode = undefined;
+			this._selectButton = undefined;
 		}
 
 		/**
@@ -143,6 +146,13 @@ namespace Provider.DrawingTools.TerraDraw {
 		public refresh(toolModeNames: string[], position: string): void {
 			this.dispose();
 			this.build(toolModeNames, position);
+		}
+
+		public setDefaultMode(): void {
+			this._clearActive();
+			if (this._selectButton) {
+				this._setActive(this._selectButton, Constants.ModeName.Select);
+			}
 		}
 	}
 }

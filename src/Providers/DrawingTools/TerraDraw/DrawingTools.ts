@@ -107,8 +107,8 @@ namespace Provider.DrawingTools.TerraDraw {
 			this._provider.removeFeatures([featureId]);
 
 			// Return to a neutral state
-			this._provider.setMode('select');
-			this._ui?.clearActiveButton();
+			this._provider.setMode(Constants.ModeName.Select);
+			this._ui?.setDefaultMode();
 		}
 
 		public addTool(tool: OSFramework.Maps.DrawingTools.ITool): OSFramework.Maps.DrawingTools.ITool {
@@ -152,7 +152,8 @@ namespace Provider.DrawingTools.TerraDraw {
 						this._provider.setMode(modeName);
 					},
 					() => {
-						this._provider.setMode('select');
+						this._provider.setMode(Constants.ModeName.Select);
+						this._ui.setDefaultMode();
 					}
 				);
 				const modeNames = this.tools.map(

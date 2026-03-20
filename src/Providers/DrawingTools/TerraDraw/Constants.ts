@@ -6,6 +6,7 @@ namespace Provider.DrawingTools.TerraDraw.Constants {
 		Marker = 'marker',
 		Polygon = 'polygon',
 		Rectangle = 'rectangle',
+		Select = 'select',
 	}
 	export const enum ShapeType {
 		Circle = 'Circle',

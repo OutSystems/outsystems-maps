@@ -190,7 +190,7 @@
     }
 }
 
-.os-terradraw-btn[data-mode="hand"] {
+.os-terradraw-btn[data-mode="select"] {
     .os-terradraw-btn__icon {
         background-position-y: -80px;
     }
