@@ -23,9 +23,9 @@ namespace Provider.DrawingTools.TerraDraw {
 		 * Extracts a "lat,lng" string from a GeoJSON Point feature.
 		 * GeoJSON coordinates are stored as [lng, lat].
 		 */
-		private _extractLocation(feature: TerraDrawGeoJSONFeature): string {
+		private _extractLocation(feature: TerraDrawGeoJSONFeature): OSFramework.Maps.OSStructures.OSMap.OSCoordinates {
 			const [lng, lat] = (feature.geometry as GeoJSON.Point).coordinates as number[];
-			return `${lat},${lng}`;
+			return { Lat: Number(lat), Lng: Number(lng) };
 		}
 
 		/**
@@ -83,12 +83,12 @@ namespace Provider.DrawingTools.TerraDraw {
 		}
 
 		protected getCoordinates(feature: TerraDrawGeoJSONFeature): string {
-			const [lng, lat] = (feature.geometry as GeoJSON.Point).coordinates as number[];
-			return JSON.stringify({ Lat: lat, Lng: lng });
+			return JSON.stringify(this._extractLocation(feature));
 		}
 
 		protected getLocation(feature: TerraDrawGeoJSONFeature): string {
-			return this._extractLocation(feature);
+			const location = this._extractLocation(feature);
+			return `${location.Lat},${location.Lng}`;
 		}
 
 		public createTerraDrawMode(): TerraDrawBaseDrawMode {

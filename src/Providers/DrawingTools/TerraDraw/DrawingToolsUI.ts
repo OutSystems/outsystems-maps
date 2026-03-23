@@ -8,11 +8,11 @@ namespace Provider.DrawingTools.TerraDraw {
 
 	/** Maps TerraDraw mode name → human-readable accessible label */
 	const _modeLabels: Record<string, string> = {
-		marker: 'Marker',
-		linestring: 'Polyline',
-		polygon: 'Polygon',
-		circle: 'Circle',
-		rectangle: 'Rectangle',
+		[Constants.ModeName.Marker]: 'Marker',
+		[Constants.ModeName.LineString]: 'Polyline',
+		[Constants.ModeName.Polygon]: 'Polygon',
+		[Constants.ModeName.Circle]: 'Circle',
+		[Constants.ModeName.Rectangle]: 'Rectangle',
 	};
 
 	/** Maps OS position string → toolbar BEM modifier class */
