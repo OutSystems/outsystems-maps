@@ -1,9 +1,8 @@
 /// <reference path="AbstractDrawPolyshape.ts" />
-/// <reference path="Configuration/DrawPolygonConfig.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.DrawingTools.TerraDraw {
-	export class DrawPolygon extends AbstractDrawPolyshape<Configuration.DrawPolygonConfig> {
+	export class DrawPolygon extends AbstractDrawPolyshape<Configuration.DrawFilledShapeConfig> {
 		constructor(
 			map: OSFramework.Maps.OSMap.IMap,
 			drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
@@ -15,7 +14,7 @@ namespace Provider.DrawingTools.TerraDraw {
 				drawingTools,
 				drawingToolsId,
 				Constants.ModeName.Polygon,
-				new Configuration.DrawPolygonConfig(configs)
+				new Configuration.DrawFilledShapeConfig(configs)
 			);
 		}
 

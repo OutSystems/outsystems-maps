@@ -1,9 +1,8 @@
 /// <reference path="../AbstractDrawShape.ts" />
-/// <reference path="Configuration/DrawCircleConfig.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.DrawingTools.TerraDraw {
-	export class DrawCircle extends AbstractDrawShape<Configuration.DrawCircleConfig> {
+	export class DrawCircle extends AbstractDrawShape<Configuration.DrawFilledShapeConfig> {
 		constructor(
 			map: OSFramework.Maps.OSMap.IMap,
 			drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
@@ -15,7 +14,7 @@ namespace Provider.DrawingTools.TerraDraw {
 				drawingTools,
 				drawingToolsId,
 				Constants.ModeName.Circle,
-				new Configuration.DrawCircleConfig(configs)
+				new Configuration.DrawFilledShapeConfig(configs)
 			);
 		}
 
