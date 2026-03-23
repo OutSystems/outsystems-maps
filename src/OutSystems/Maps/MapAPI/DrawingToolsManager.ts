@@ -2,6 +2,7 @@
 namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 	const drawingToolsMap = new Map<string, string>(); //drawingTools.uniqueId -> map.uniqueId
 	let drawingToolsElement = undefined;
+	let _internalUseTerraDraw = true;
 
 	/* pending tools map holds the tools to be created if the drawing tools block is not ready to add new tools */
 	const _pendingTools = new Map<string, Array<OSFramework.Maps.OSStructures.API.PendingTools>>(); //drawingTools.uniqueId -> Array<tool.uniqueId, tool.type, tool.configs>
@@ -18,7 +19,8 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 				drawingTools,
 				toolId,
 				type,
-				JSON.parse(configs)
+				JSON.parse(configs),
+				_internalUseTerraDraw
 			);
 			drawingTools.addTool(_tool);
 			Events.CheckPendingEvents(drawingTools);
@@ -164,7 +166,8 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 			const _drawingTools = OSFramework.Maps.DrawingTools.DrawingToolsFactory.MakeDrawingTools(
 				map,
 				drawingToolsId,
-				JSON.parse(configs)
+				JSON.parse(configs),
+				_internalUseTerraDraw
 			);
 			drawingToolsElement = _drawingTools;
 			drawingToolsMap.set(drawingToolsId, map.uniqueId);
@@ -235,6 +238,29 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 		const drawingTools = GetDrawingToolsById(drawingToolsId, false);
 
 		drawingTools && drawingTools.removeTool(toolId);
+	}
+
+	/**
+	 * Sets the internal use of TerraDraw for the DrawingToolsManager.
+	 * This is only applicable for the Google provider, and enable the
+	 * use of the Google provider for the DrawingTools, instead of the
+	 * default TerraDraw provider.
+	 *
+	 * @param {boolean} useTerraDraw true if the DrawingToolsManager should use TerraDraw, false otherwise
+	 */
+	export function SetUseTerraDraw(useTerraDraw = true): void {
+		const gmversion = Number(Provider.Maps.Google.Version.Get());
+		if (!Number.isNaN(gmversion)) {
+			if (gmversion < 3.65 && !useTerraDraw) {
+				_internalUseTerraDraw = useTerraDraw;
+			} else {
+				console.warn(
+					`The Google Maps version ${gmversion} does not support the use of DrawingTools. Falling back to TerraDraw provider instead.`,
+					'https://developers.google.com/maps/deprecations#drawing_library_deprecated_as_of_aug_8_2025'
+				);
+				_internalUseTerraDraw = true;
+			}
+		}
 	}
 }
 
