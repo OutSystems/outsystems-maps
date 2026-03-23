@@ -91,8 +91,5 @@ namespace Provider.DrawingTools {
 
 		/** The options object for the TerraDraw mode, derived from the tool's config. */
 		public abstract get options(): unknown;
-
-		/** The mode name used by the provider (e.g. 'circle', 'polygon', 'linestring'). */
-		public abstract get drawModeName(): string;
 	}
 }

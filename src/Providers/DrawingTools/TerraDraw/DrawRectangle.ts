@@ -39,7 +39,7 @@ namespace Provider.DrawingTools.TerraDraw {
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		protected applyStyleChange(propertyName: string, value: unknown): void {
 			const draw = this.drawingTools.provider as TerraDrawInstance;
-			draw.updateModeOptions(this.drawModeName, this.config.getProviderConfig());
+			draw.updateModeOptions(this.type, this.config.getProviderConfig());
 		}
 
 		protected get completedToolEventName(): string {
@@ -73,10 +73,6 @@ namespace Provider.DrawingTools.TerraDraw {
 
 		public get options(): Configuration.DrawRectangleConfig {
 			return this.config;
-		}
-
-		public get drawModeName(): string {
-			return Constants.ModeName.Rectangle;
 		}
 	}
 }
