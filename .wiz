@@ -1,8 +1,8 @@
 ignore:
     global_paths:
-        "styles/**":
+        /styles/**:
             reason: BY_DESIGN
-        "jobs/**":
+        /jobs/**:
             reason: BY_DESIGN
-        "docs/**":
+        /docs/**:
             reason: BY_DESIGN
