@@ -8,10 +8,15 @@ namespace Provider.DrawingTools.TerraDraw {
 			map: OSFramework.Maps.OSMap.IMap,
 			drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
 			drawingToolsId: string,
-			type: string,
 			configs: JSON
 		) {
-			super(map, drawingTools, drawingToolsId, type, new Configuration.DrawPolygonConfig(configs));
+			super(
+				map,
+				drawingTools,
+				drawingToolsId,
+				Constants.ModeName.Polygon,
+				new Configuration.DrawPolygonConfig(configs)
+			);
 		}
 
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars

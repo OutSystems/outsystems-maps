@@ -8,10 +8,15 @@ namespace Provider.DrawingTools.TerraDraw {
 			map: OSFramework.Maps.OSMap.IMap,
 			drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
 			drawingToolsId: string,
-			type: string,
 			configs: JSON
 		) {
-			super(map, drawingTools, drawingToolsId, type, new Configuration.DrawCircleConfig(configs));
+			super(
+				map,
+				drawingTools,
+				drawingToolsId,
+				Constants.ModeName.Circle,
+				new Configuration.DrawCircleConfig(configs)
+			);
 		}
 
 		/**
