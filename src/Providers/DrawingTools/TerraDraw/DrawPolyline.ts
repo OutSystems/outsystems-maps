@@ -45,9 +45,5 @@ namespace Provider.DrawingTools.TerraDraw {
 		public createTerraDrawMode(): TerraDrawBaseDrawMode {
 			return new globalThis.terraDraw.TerraDrawLineStringMode(this.config.getProviderConfig());
 		}
-
-		public get options(): Configuration.DrawPolylineConfig {
-			return this.config;
-		}
 	}
 }

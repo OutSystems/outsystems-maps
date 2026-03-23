@@ -94,9 +94,5 @@ namespace Provider.DrawingTools.TerraDraw {
 		public createTerraDrawMode(): TerraDrawBaseDrawMode {
 			return new globalThis.terraDraw.TerraDrawMarkerMode(this.config.getProviderConfig());
 		}
-
-		public get options(): Configuration.DrawMarkerConfig {
-			return this.config;
-		}
 	}
 }

@@ -92,9 +92,5 @@ namespace Provider.DrawingTools.TerraDraw {
 		public createTerraDrawMode(): TerraDrawBaseDrawMode {
 			return new globalThis.terraDraw.TerraDrawCircleMode(this.config.getProviderConfig());
 		}
-
-		public get options(): Configuration.DrawCircleConfig {
-			return this.config;
-		}
 	}
 }

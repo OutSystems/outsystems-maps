@@ -90,6 +90,8 @@ namespace Provider.DrawingTools {
 		protected abstract getLocation(feature: TerraDrawGeoJSONFeature): string | string[];
 
 		/** The options object for the TerraDraw mode, derived from the tool's config. */
-		public abstract get options(): unknown;
+		public get options(): T {
+			return this.config;
+		}
 	}
 }
