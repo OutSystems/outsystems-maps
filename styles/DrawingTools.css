@@ -149,10 +149,10 @@
 /* ── PNG icons sprite ──────────────────────────────────────────── */
 .os-terradraw-btn__icon {
     background-image: var(--terradraw-drawingtools);
+    background-size: 16px auto;
     display: block;
     height: 16px;
     pointer-events: none;
-    transition: background-color 0.15s ease;
     width: 16px;
 }
 

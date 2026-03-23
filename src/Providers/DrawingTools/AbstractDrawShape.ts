@@ -7,7 +7,7 @@ namespace Provider.DrawingTools {
 	> extends AbstractProviderTool<T> {
 		/**
 		 * Wires the OS shape's own change event so that post-creation edits
-		 * (via Google Maps' native editable handles) also fire the framework event.
+		 * (via OutSystems Maps' editable handles) also fire the framework event.
 		 */
 		private _setOnChangeEvent(shape: OSFramework.Maps.Shape.IShape): void {
 			shape.shapeEvents.addHandler(

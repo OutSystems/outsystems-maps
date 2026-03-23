@@ -8,7 +8,7 @@ namespace Provider.DrawingTools.TerraDraw.Configuration {
 
 		/**
 		 * Translates OutSystems polygon/rectangle drawing tool config into TerraDraw's
-		 * TerraDrawPolygonMode/TerraDrawRectangleMode constructor options.
+		 * TerraDrawPolygonMode/TerraDrawRectangleMode/TerraCircleMode constructor options.
 		 *
 		 * Mapping:
 		 *   fillColor     → styles.fillColor
