@@ -19,7 +19,7 @@ namespace Provider.DrawingTools.TerraDraw {
 			} else if (geomType === Constants.ModeName.Polygon) {
 				// First ring; drop the closing duplicate point
 				const ring = (geom.coordinates as number[][][])[0];
-				positions = ring.slice();
+				positions = ring.slice(0, -1);
 			} else {
 				positions = [];
 			}
