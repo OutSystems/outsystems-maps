@@ -19,8 +19,8 @@ namespace Provider.DrawingTools.TerraDraw {
 			configs: JSON
 		): OSFramework.Maps.DrawingTools.ITool {
 			switch (type) {
-				// case OSFramework.Maps.Enum.DrawingToolsTypes.Marker:
-				// 	return new DrawMarker(map, drawingTools, toolId, type, configs);
+				case OSFramework.Maps.Enum.DrawingToolsTypes.Marker:
+					return new DrawMarker(map, drawingTools, toolId, configs);
 				case OSFramework.Maps.Enum.DrawingToolsTypes.Polyline:
 					return new DrawPolyline(map, drawingTools, toolId, configs);
 				case OSFramework.Maps.Enum.DrawingToolsTypes.Polygon:
