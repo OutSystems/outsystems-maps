@@ -44,13 +44,13 @@
     top: var(--drawingtools-distance-from-edge);
 }
 
-.os-terradraw-toolbar--top-left { 
+.os-terradraw-toolbar--top-left {
     left: var(--drawingtools-distance-from-edge);
 }
 
-.os-terradraw-toolbar--top-center { 
-    left: 50%; 
-    transform: translateX(-50%); 
+.os-terradraw-toolbar--top-center {
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .os-terradraw-toolbar--top-right {
@@ -68,12 +68,15 @@
 .os-terradraw-toolbar--bottom-left {
     left: var(--drawingtools-distance-from-edge);
 }
+
 .os-terradraw-toolbar--bottom-center {
     left: 50%;
     transform: translateX(-50%);
 }
+
 .os-terradraw-toolbar--bottom-right {
-    right: var(--drawingtools-distance-from-edge);}
+    right: var(--drawingtools-distance-from-edge);
+}
 
 /* Left side — buttons flow top-to-bottom (flex-direction: column inherited) */
 .os-terradraw-toolbar--left-top,
@@ -85,10 +88,12 @@
 .os-terradraw-toolbar--left-top {
     top: var(--drawingtools-distance-from-edge);
 }
+
 .os-terradraw-toolbar--left-center {
     top: 50%;
     transform: translateY(-50%);
 }
+
 .os-terradraw-toolbar--left-bottom {
     bottom: var(--drawingtools-distance-from-edge);
 }
@@ -103,34 +108,32 @@
 .os-terradraw-toolbar--right-top {
     top: var(--drawingtools-distance-from-edge);
 }
+
 .os-terradraw-toolbar--right-center {
     top: 50%;
     transform: translateY(-50%);
 }
+
 .os-terradraw-toolbar--right-bottom {
     bottom: var(--drawingtools-distance-from-edge);
 }
 
 /* ── Base button ───────────────────────────────────────────────── */
 .os-terradraw-btn {
+    align-items: center;
     background-color: transparent;
     border: 2px solid transparent;
     border-radius: 6px;
-
     cursor: pointer;
-
-    align-items: center;
     display: flex;
-    justify-content: center;
-
     height: 32px;
-    width: 32px;
+    justify-content: center;
     padding: 0;
-
     transition:
         background-color 0.15s ease,
         border-color 0.15s ease,
         box-shadow 0.15s ease;
+    width: 32px;
 }
 
 .os-terradraw-btn:hover,
@@ -143,7 +146,7 @@
     outline: none;
 }
 
-/* ── PNG icons sprite */
+/* ── PNG icons sprite ──────────────────────────────────────────── */
 .os-terradraw-btn__icon {
     background-image: var(--terradraw-drawingtools);
     display: block;
@@ -153,63 +156,51 @@
     width: 16px;
 }
 
-/* ── Per-mode position ────────────────────────────────────────── */
-.os-terradraw-btn[data-mode="linestring"] {
-    .os-terradraw-btn__icon {
-        background-position-y: -32px;
-    }
-
-    &.os-terradraw-btn--active .os-terradraw-btn__icon {
-        background-position-y: 64px;
-    }
+/* ── Per-mode sprite positions ─────────────────────────────────── */
+.os-terradraw-btn[data-mode="linestring"] .os-terradraw-btn__icon {
+    background-position-y: -32px;
 }
 
-.os-terradraw-btn[data-mode="marker"] {
-    .os-terradraw-btn__icon {
-        background-position-y: 16px;
-    }
-
-    &.os-terradraw-btn--active .os-terradraw-btn__icon {
-        background-position-y: 80px;
-    }
+.os-terradraw-btn[data-mode="linestring"].os-terradraw-btn--active .os-terradraw-btn__icon {
+    background-position-y: 64px;
 }
 
-.os-terradraw-btn[data-mode="polygon"] {
-    .os-terradraw-btn__icon {
-        background-position-y: -64px;
-    }
-
-    &.os-terradraw-btn--active .os-terradraw-btn__icon {
-        background-position-y: 96px;
-    }
+.os-terradraw-btn[data-mode="marker"] .os-terradraw-btn__icon {
+    background-position-y: 16px;
 }
 
-.os-terradraw-btn[data-mode="circle"] {
-    .os-terradraw-btn__icon {
-        background-position-y: 32px;
-    }
-
-    &.os-terradraw-btn--active .os-terradraw-btn__icon {
-        background-position-y: 0;
-    }
+.os-terradraw-btn[data-mode="marker"].os-terradraw-btn--active .os-terradraw-btn__icon {
+    background-position-y: 80px;
 }
 
-.os-terradraw-btn[data-mode="rectangle"] {
-    .os-terradraw-btn__icon {
-        background-position-y: -16px;
-    }
-
-    &.os-terradraw-btn--active .os-terradraw-btn__icon {
-        background-position-y: -48px;
-    }
+.os-terradraw-btn[data-mode="polygon"] .os-terradraw-btn__icon {
+    background-position-y: -64px;
 }
 
-.os-terradraw-btn[data-mode="select"] {
-    .os-terradraw-btn__icon {
-        background-position-y: -80px;
-    }
+.os-terradraw-btn[data-mode="polygon"].os-terradraw-btn--active .os-terradraw-btn__icon {
+    background-position-y: 96px;
+}
 
-    &.os-terradraw-btn--active .os-terradraw-btn__icon {
-        background-position-y: 48px;
-    }
+.os-terradraw-btn[data-mode="circle"] .os-terradraw-btn__icon {
+    background-position-y: 32px;
+}
+
+.os-terradraw-btn[data-mode="circle"].os-terradraw-btn--active .os-terradraw-btn__icon {
+    background-position-y: 0;
+}
+
+.os-terradraw-btn[data-mode="rectangle"] .os-terradraw-btn__icon {
+    background-position-y: -16px;
+}
+
+.os-terradraw-btn[data-mode="rectangle"].os-terradraw-btn--active .os-terradraw-btn__icon {
+    background-position-y: -48px;
+}
+
+.os-terradraw-btn[data-mode="select"] .os-terradraw-btn__icon {
+    background-position-y: -80px;
+}
+
+.os-terradraw-btn[data-mode="select"].os-terradraw-btn--active .os-terradraw-btn__icon {
+    background-position-y: 48px;
 }
