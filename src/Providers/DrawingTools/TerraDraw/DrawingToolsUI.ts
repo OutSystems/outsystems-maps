@@ -44,6 +44,10 @@ namespace Provider.DrawingTools.TerraDraw {
 		private readonly _onModeDeselect: () => void;
 		private readonly _onModeSelect: (modeName: string) => void;
 		private _selectButton: HTMLButtonElement;
+		/**
+		 * Canonical button display order, derived from _modeLabels key insertion order.
+		 * Kept on the instance so refresh() produces the same ordering as the initial build().
+		 */
 		private readonly _toolsOrder: string[];
 
 		constructor(mapContainer: HTMLElement, onModeSelect: (modeName: string) => void, onModeDeselect: () => void) {
@@ -87,6 +91,11 @@ namespace Provider.DrawingTools.TerraDraw {
 			return btn;
 		}
 
+		/**
+		 * Clicking an already-active drawing tool deactivates it (toggling back to
+		 * select mode) so the user can cancel an in-progress draw without leaving
+		 * the toolbar. Clicking the select button explicitly also routes here.
+		 */
 		private _handleClick(btn: HTMLButtonElement, modeName: string): void {
 			if (this._activeMode === modeName || modeName === Constants.ModeName.Select) {
 				this._setActive(this._selectButton, Constants.ModeName.Select);
@@ -113,6 +122,7 @@ namespace Provider.DrawingTools.TerraDraw {
 			this._selectButton = this._createButton(Constants.ModeName.Select);
 			this._container.appendChild(this._selectButton);
 
+			// Fast path: if the tool count matches the full ordered list, skip the includes() check.
 			const appendAll = this._toolsOrder.length === toolModeNames.length;
 
 			this._toolsOrder.forEach((mode) => {

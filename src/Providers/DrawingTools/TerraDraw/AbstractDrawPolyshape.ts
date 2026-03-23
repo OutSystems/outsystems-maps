@@ -27,6 +27,10 @@ namespace Provider.DrawingTools.TerraDraw {
 			return positions.map(([lng, lat]) => `${lat},${lng}`);
 		}
 
+		/**
+		 * Returns a JSON array of {Lat, Lng} objects for the framework OnDrawingChange event.
+		 * PascalCase keys are required by the OutSystems serialization contract.
+		 */
 		protected getCoordinates(feature: TerraDrawGeoJSONFeature): string {
 			return JSON.stringify(
 				this.extractLocations(feature).map((loc) => {
@@ -36,6 +40,10 @@ namespace Provider.DrawingTools.TerraDraw {
 			);
 		}
 
+		/**
+		 * Returns a JSON-encoded string array of "lat,lng" pairs suitable for
+		 * the OutSystems Shape block's Locations input parameter.
+		 */
 		protected getLocation(feature: TerraDrawGeoJSONFeature): string | string[] {
 			return JSON.stringify(this.extractLocations(feature));
 		}

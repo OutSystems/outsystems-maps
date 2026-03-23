@@ -1,6 +1,10 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.DrawingTools.TerraDraw {
-	/** Provider events reuse the same names as Google Drawing Manager for framework compatibility. */
+	/**
+	 * Provider event names intentionally mirror those used by the Google DrawingManager
+	 * integration so that the OutSystems framework event-wiring layer (DrawingToolsManager)
+	 * requires no changes when switching between providers.
+	 */
 	const _providerEvents = [
 		OSFramework.Maps.Helper.Constants.drawingCircleCompleted,
 		OSFramework.Maps.Helper.Constants.drawingMarkerCompleted,
@@ -57,6 +61,11 @@ namespace Provider.DrawingTools.TerraDraw {
 			return modes;
 		}
 
+		/**
+		 * (Re)creates the TerraDraw instance from the current tool list.
+		 * If a previous instance exists it is stopped first — TerraDraw does not
+		 * support hot-swapping modes, so the entire instance must be replaced.
+		 */
 		private _buildTerraDraw(): void {
 			if (this._provider) {
 				this._provider.stop();
@@ -69,7 +78,9 @@ namespace Provider.DrawingTools.TerraDraw {
 
 			this._provider.on('finish', (id, context) => this._onFinish(id, context));
 
-			// this._provider.start();
+			// start() is intentionally deferred: the provider is started on the first
+			// toolbar interaction (see build()) to avoid TerraDraw intercepting map
+			// pointer events before the user activates any drawing tool.
 
 			this._modeToTool.clear();
 			this.tools.forEach((tool) => {
@@ -92,6 +103,12 @@ namespace Provider.DrawingTools.TerraDraw {
 			}
 		}
 
+		/**
+		 * Central handler for TerraDraw's 'finish' event.
+		 * TerraDraw fires 'finish' for every completed interaction — drawing, editing,
+		 * dragging, and rotating — distinguished by context.action. We only act on
+		 * 'draw' to avoid creating duplicate OS elements for post-creation edits.
+		 */
 		private _onFinish(featureId: TerraDrawFeatureId, context: { action: string; mode: string }): void {
 			if (context.action !== 'draw') {
 				return;
