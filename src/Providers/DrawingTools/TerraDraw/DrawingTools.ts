@@ -103,7 +103,16 @@ namespace Provider.DrawingTools.TerraDraw {
 			}
 
 			const feature = this._provider.getSnapshotFeature(featureId);
-			tool.handleFinish(feature);
+			try {
+				tool.handleFinish(feature);
+			} catch (error) {
+				this.map.mapEvents.trigger(
+					OSFramework.Maps.Event.OSMap.MapEventType.OnError,
+					this.map,
+					OSFramework.Maps.Enum.ErrorCodes.API_FailedCreatingShape,
+					`Failed to create shape: ${error}`
+				);
+			}
 
 			// Remove the TerraDraw overlay — the shape is now owned by the OS framework
 			this._provider.removeFeatures([featureId]);
@@ -141,7 +150,10 @@ namespace Provider.DrawingTools.TerraDraw {
 				this._ui = new DrawingToolsUi(
 					mapContainer,
 					(modeName) => {
-						this._provider.start();
+						if (!this._provider.enabled) {
+							this._provider.start();
+						}
+
 						this._provider.setMode(modeName);
 					},
 					() => {

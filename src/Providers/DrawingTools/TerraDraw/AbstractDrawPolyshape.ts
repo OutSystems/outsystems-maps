@@ -31,7 +31,7 @@ namespace Provider.DrawingTools.TerraDraw {
 			return JSON.stringify(
 				this.extractLocations(feature).map((loc) => {
 					const [lat, lng] = loc.split(',');
-					return { Lat: lat, Lng: lng };
+					return { Lat: Number(lat), Lng: Number(lng) };
 				})
 			);
 		}
