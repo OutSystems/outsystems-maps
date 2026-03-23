@@ -85,7 +85,7 @@ Chosen option: **Option 3 — Terra Draw**, because it is the only option that:
    acceptable implementation effort.
 2. Produces a solution that works identically across both map providers (Google
    Maps and Leaflet), honoring the framework's provider-abstraction tenet.
-3. Is explicitly recommended by Google as the migration path.
+3. Is explicitly recommended by Google as the migration path (see https://developers.google.com/maps/deprecations#drawing_library_deprecated_as_of_aug_8_2025).
 
 Positive consequences:
 
@@ -358,7 +358,7 @@ classDiagram
 **TerraDraw overlays are transient.** When TerraDraw fires a `finish` event, the
 integration layer creates the permanent OS framework element (shape or marker),
 then immediately removes the TerraDraw GeoJSON feature from its store. The
-permanent shape is owned and rendered by the OS provider (Google Maps or
+permanent shape is owned and rendered by the Map provider (Google Maps or
 Leaflet), not by TerraDraw. This ensures that the edit and style behaviour of
 completed shapes is consistent with shapes added programmatically.
 
