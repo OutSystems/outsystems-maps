@@ -142,6 +142,217 @@ transformation pattern: they extend `AbstractConfiguration`, expose OutSystems
 property names, and implement `getProviderConfig()` to produce the corresponding
 TerraDraw mode constructor options.
 
+### Class diagram
+```mermaid
+classDiagram
+    %% ── OSFramework layer (external, abbreviated) ─────────────────────────────
+    class AbstractConfiguration {
+        <<OSFramework>>
+    }
+    class IConfigurationTool {
+        <<OSFramework interface>>
+        +getProviderConfig() unknown[]
+    }
+    class IConfigurationDrawingTools {
+        <<OSFramework interface>>
+    }
+    class AbstractTool~T~ {
+        <<OSFramework>>
+        #_built bool
+        +type string
+        +uniqueId string
+        +config T
+        +map IMap
+        +drawingTools IDrawingTools
+        +build()
+        +dispose()
+        +changeProperty()
+        +addCompletedEvent()*
+        +options* unknown
+    }
+    class AbstractDrawingTools~TProvider, TConfig~ {
+        <<OSFramework>>
+        +tools ITool[]
+        +createdElements unknown[]
+        +build()
+        +addTool()
+        +removeTool()
+        +dispose()
+    }
+
+    %% ── Configuration hierarchy ───────────────────────────────────────────────
+    class DrawConfig {
+        <<abstract>>
+        +allowDrag bool
+        +uniqueId string
+        +getProviderConfig()* unknown[]
+    }
+    class DrawBasicShapeConfig {
+        <<abstract>>
+        +allowEdit bool
+        +strokeColor string
+        +strokeOpacity number
+        +strokeWeight number
+    }
+    class DrawFilledShapeConfig {
+        +fillColor string
+        +fillOpacity number
+        +getProviderConfig() unknown[]
+    }
+    class DrawPolylineConfig {
+        +getProviderConfig() unknown[]
+    }
+    class DrawMarkerConfig {
+        +iconUrl string
+        +getProviderConfig() unknown[]
+    }
+    class DrawingToolsConfig {
+        +position string
+        +providerType ProviderType
+        +uniqueId string
+        +getProviderConfig() unknown
+    }
+
+    AbstractConfiguration <|-- DrawConfig
+    AbstractConfiguration <|-- DrawingToolsConfig
+    IConfigurationTool <|.. DrawConfig
+    IConfigurationDrawingTools <|.. DrawingToolsConfig
+    DrawConfig <|-- DrawBasicShapeConfig
+    DrawConfig <|-- DrawMarkerConfig
+    DrawBasicShapeConfig <|-- DrawFilledShapeConfig
+    DrawBasicShapeConfig <|-- DrawPolylineConfig
+
+    %% ── Tool hierarchy ────────────────────────────────────────────────────────
+    class AbstractProviderTool~T~ {
+        <<Provider.DrawingTools>>
+        #newElm unknown
+        +addCompletedEvent()
+        +build()
+        +handleFinish(feature)
+        +createTerraDrawMode()* TerraDrawBaseDrawMode
+        #createElement()* unknown
+        #getCoordinates()* string
+        #getLocation()* string|string[]
+        #applyStyleChange()* void
+        #completedToolEventName* string
+        #triggerOnDrawingChangeEvent()
+        +options T
+    }
+    class AbstractDrawShape~T~ {
+        <<Provider.DrawingTools>>
+        #createShapeElement() IShape
+        -_setOnChangeEvent()
+    }
+    class AbstractDrawPolyshape~T~ {
+        <<Provider.DrawingTools.TerraDraw>>
+        #extractLocations() string[]
+        #getCoordinates() string
+        #getLocation() string[]
+    }
+
+    AbstractTool~T~ <|-- AbstractProviderTool~T~
+    AbstractProviderTool~T~ <|-- AbstractDrawShape~T~
+    AbstractDrawShape~T~ <|-- AbstractDrawPolyshape~T~
+
+    %% ── Concrete tools ────────────────────────────────────────────────────────
+    class DrawPolyline {
+        +createTerraDrawMode() TerraDrawLineStringMode
+        #createElement() IShape
+        #applyStyleChange()
+        #completedToolEventName string
+    }
+    class DrawPolygon {
+        +createTerraDrawMode() TerraDrawPolygonMode
+        #createElement() IShape
+        #applyStyleChange()
+        #completedToolEventName string
+    }
+    class DrawRectangle {
+        +createTerraDrawMode() TerraDrawRectangleMode
+        #createElement() IShape
+        #getCoordinates() string
+        #getLocation() string
+        #applyStyleChange()
+        #completedToolEventName string
+        -_extractBounds() BoundsString
+    }
+    class DrawCircle {
+        +createTerraDrawMode() TerraDrawCircleMode
+        #createElement() IShape
+        #getCoordinates() string
+        #getLocation() string
+        #applyStyleChange()
+        #completedToolEventName string
+        -_computeCenter() lat,lng
+        -_computeRadius() number
+    }
+    class DrawMarker {
+        +createTerraDrawMode() TerraDrawMarkerMode
+        #createElement() IMarker
+        #getCoordinates() string
+        #getLocation() string
+        #applyStyleChange()
+        #completedToolEventName string
+        -_extractLocation() string
+        -_setOnChangeEvent()
+    }
+
+    AbstractDrawPolyshape~T~ <|-- DrawPolyline
+    AbstractDrawPolyshape~T~ <|-- DrawPolygon
+    AbstractDrawShape~T~ <|-- DrawRectangle
+    AbstractDrawShape~T~ <|-- DrawCircle
+    AbstractProviderTool~T~ <|-- DrawMarker
+
+    DrawPolyline --> DrawPolylineConfig : config
+    DrawPolygon --> DrawFilledShapeConfig : config
+    DrawRectangle --> DrawFilledShapeConfig : config
+    DrawCircle --> DrawFilledShapeConfig : config
+    DrawMarker --> DrawMarkerConfig : config
+
+    %% ── DrawingTools orchestrator ─────────────────────────────────────────────
+    class DrawingTools {
+        -_modeToTool Map~string, AbstractProviderTool~
+        -_ui DrawingToolsUi
+        +build()
+        +addTool()
+        +removeTool()
+        +changeProperty()
+        +dispose()
+        +providerEvents string[]
+        -_buildTerraDraw()
+        -_buildModes() TerraDrawBaseDrawMode[]
+        -_getAdapter() TerraDrawGoogleMapsAdapter
+        -_onFinish()
+    }
+    class DrawingToolsUi {
+        -_container HTMLElement
+        -_activeButton HTMLButtonElement
+        -_activeMode string
+        -_selectButton HTMLButtonElement
+        +build()
+        +dispose()
+        +refresh()
+        +setDefaultMode()
+        -_applyPosition()
+        -_createButton() HTMLButtonElement
+        -_handleClick()
+    }
+    class DrawingToolsFactory {
+        <<namespace>>
+        +MakeDrawingTools() IDrawingTools
+        +MakeTool() ITool
+    }
+
+    AbstractDrawingTools~TProvider, TConfig~ <|-- DrawingTools
+    DrawingTools --> DrawingToolsConfig : config
+    DrawingTools *-- DrawingToolsUi : owns
+    DrawingToolsFactory ..> DrawPolyline : instantiates
+    DrawingToolsFactory ..> DrawPolygon : instantiates
+    DrawingToolsFactory ..> DrawRectangle : instantiates
+    DrawingToolsFactory ..> DrawCircle : instantiates
+    DrawingToolsFactory ..> DrawMarker : instantiates
+```
+
 ### Key design decisions within the implementation
 
 **TerraDraw overlays are transient.** When TerraDraw fires a `finish` event, the
