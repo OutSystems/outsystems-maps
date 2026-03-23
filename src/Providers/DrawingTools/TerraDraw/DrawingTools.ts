@@ -129,8 +129,6 @@ namespace Provider.DrawingTools.TerraDraw {
 		public build(): void {
 			super.build();
 
-			const configs = this.getProviderConfig();
-
 			this._buildTerraDraw();
 			this.tools.forEach((tool) => tool.build());
 
@@ -151,8 +149,8 @@ namespace Provider.DrawingTools.TerraDraw {
 						this._ui.setDefaultMode();
 					}
 				);
-				this._ui.build(modeNames, configs.position);
 				const modeNames = this.tools.map((t) => t.type);
+				this._ui.build(modeNames, this.config.position);
 			}
 
 			this.finishBuild();

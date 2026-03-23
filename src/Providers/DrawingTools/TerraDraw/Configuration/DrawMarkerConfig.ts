@@ -11,15 +11,12 @@ namespace Provider.DrawingTools.TerraDraw.Configuration {
 	 * — icon URLs are not supported by TerraDrawPointMode.
 	 */
 	export class DrawMarkerConfig extends DrawConfig {
-		public defaultMarkerIconURL: string;
 		public iconUrl: string;
 
 		public getProviderConfig(): unknown[] {
 			return {
 				styles: {
-					markerUrl: this.iconUrl ?? this.defaultMarkerIconURL,
-					markerWidth: 32,
-					markerHeight: 32,
+					markerUrl: this.iconUrl ?? '',
 				},
 			} as unknown as unknown[];
 		}

@@ -8,13 +8,6 @@ namespace Provider.DrawingTools.TerraDraw.Constants {
 		Rectangle = 'rectangle',
 		Select = 'select',
 	}
-	export const enum ShapeType {
-		Circle = 'Circle',
-		LineString = 'LineString',
-		Marker = 'Marker',
-		Polygon = 'Polygon',
-		Rectangle = 'Rectangle',
-	}
 
 	/** DOM id used to guard against injecting the stylesheet more than once. */
 	export const drawingToolsCssId = 'os-terradraw-styles';

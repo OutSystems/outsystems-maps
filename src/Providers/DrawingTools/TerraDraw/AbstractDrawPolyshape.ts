@@ -12,10 +12,11 @@ namespace Provider.DrawingTools.TerraDraw {
 		protected extractLocations(feature: TerraDrawGeoJSONFeature): string[] {
 			const geom = feature.geometry;
 			let positions: number[][];
+			const geomType = geom.type.toLocaleLowerCase();
 
-			if (geom.type === Constants.ShapeType.LineString) {
+			if (geomType === Constants.ModeName.LineString) {
 				positions = geom.coordinates as number[][];
-			} else if (geom.type === Constants.ShapeType.Polygon) {
+			} else if (geomType === Constants.ModeName.Polygon) {
 				// First ring; drop the closing duplicate point
 				const ring = (geom.coordinates as number[][][])[0];
 				positions = ring.slice();
