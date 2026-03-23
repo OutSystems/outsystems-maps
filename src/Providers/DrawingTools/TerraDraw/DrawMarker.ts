@@ -64,7 +64,7 @@ namespace Provider.DrawingTools.TerraDraw {
 			feature: TerraDrawGeoJSONFeature,
 			configs: OSFramework.Maps.Configuration.IConfigurationMarker
 		): OSFramework.Maps.Marker.IMarker {
-			const location = this._extractLocation(feature);
+			const location = this.getLocation(feature);
 			const finalConfigs = {
 				...configs,
 				location,
