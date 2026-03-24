@@ -251,14 +251,20 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 	export function SetUseTerraDraw(useTerraDraw = true): void {
 		const gmversion = Number(Provider.Maps.Google.Version.Get());
 		if (!Number.isNaN(gmversion)) {
-			if (gmversion < 3.65 && !useTerraDraw) {
-				_internalUseTerraDraw = useTerraDraw;
-			} else {
+			if (useTerraDraw) {
+				// Explicitly use TerraDraw, regardless of Google Maps version
+				_internalUseTerraDraw = true;
+			} else if (gmversion >= 3.65) {
+				// Google Maps DrawingTools are deprecated/unsupported from this version onwards,
+				// so fall back to TerraDraw and warn the developer.
 				console.warn(
 					`The Google Maps version ${gmversion} does not support the use of DrawingTools. Falling back to TerraDraw provider instead.`,
 					'https://developers.google.com/maps/deprecations#drawing_library_deprecated_as_of_aug_8_2025'
 				);
 				_internalUseTerraDraw = true;
+			} else {
+				// Google Maps DrawingTools are supported and TerraDraw was disabled
+				_internalUseTerraDraw = false;
 			}
 		}
 	}
