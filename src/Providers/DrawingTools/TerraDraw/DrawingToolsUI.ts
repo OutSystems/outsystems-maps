@@ -73,16 +73,14 @@ namespace Provider.DrawingTools.TerraDraw {
 			this._activeMode = null;
 		}
 
-		private _createButton(modeName: string): HTMLButtonElement {
-			const label = _modeLabels[modeName] ?? modeName;
-
+		private _createButton(modeName: string, areaLabel: string): HTMLButtonElement {
 			const btn = document.createElement('button');
 			btn.type = 'button';
 			btn.className = _cssButton;
 			btn.dataset.mode = modeName;
-			btn.title = label;
+			btn.title = areaLabel;
 			btn.setAttribute('role', 'menuitemradio');
-			btn.setAttribute('aria-label', label);
+			btn.setAttribute('aria-label', areaLabel);
 			btn.setAttribute('aria-checked', 'false');
 
 			const icon = document.createElement('span');
@@ -124,7 +122,7 @@ namespace Provider.DrawingTools.TerraDraw {
 			this._applyPosition(position);
 
 			// Adding the select button to the toolbar
-			this._selectButton = this._createButton(Constants.ModeName.Select);
+			this._selectButton = this._createButton(Constants.ModeName.Select, 'Stop drawing');
 			this._container.appendChild(this._selectButton);
 
 			// Fast path: if the tool count matches the full ordered list, skip the includes() check.
@@ -132,7 +130,9 @@ namespace Provider.DrawingTools.TerraDraw {
 
 			this._toolsOrder.forEach((mode) => {
 				if (appendAll || toolModeNames.includes(mode)) {
-					this._container.appendChild(this._createButton(mode));
+					const ariaLabel =
+						mode === Constants.ModeName.Marker ? 'Add a marker' : `Draw a ${_modeLabels[mode] ?? mode}`;
+					this._container.appendChild(this._createButton(mode, ariaLabel));
 				}
 			});
 
