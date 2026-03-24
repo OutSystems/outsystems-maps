@@ -26,7 +26,6 @@ namespace Provider.Maps.Google.OSMap {
 		}
 
 		private _addMapDragEndHandler(): void {
-
 			if (this && this._provider && this._gPostionChangeListener === undefined) {
 				this._gPostionChangeListener = google.maps.event.addListener(
 					this._provider,
@@ -483,7 +482,7 @@ namespace Provider.Maps.Google.OSMap {
 					const markerProvider: any = this.markers[0].provider;
 					//Validate if the marker is already created
 					if (markerProvider !== undefined) {
-						//If the position is default or the zoom is auto the marker position will be 
+						//If the position is default or the zoom is auto the marker position will be
 						//used as center
 						if (isDefault || this.features.zoom.isAutofit) {
 							position = markerProvider.position.toJSON();

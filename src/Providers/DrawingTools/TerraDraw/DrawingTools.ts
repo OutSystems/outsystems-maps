@@ -142,7 +142,10 @@ namespace Provider.DrawingTools.TerraDraw {
 		public addTool(tool: OSFramework.Maps.DrawingTools.ITool): OSFramework.Maps.DrawingTools.ITool {
 			super.addTool(tool);
 
-			this._modeToTool.set(tool.type, tool as AbstractProviderTool<OSFramework.Maps.Configuration.IConfigurationTool>);
+			this._modeToTool.set(
+				tool.type,
+				tool as AbstractProviderTool<OSFramework.Maps.Configuration.IConfigurationTool>
+			);
 
 			if (this.isReady) {
 				tool.build();
