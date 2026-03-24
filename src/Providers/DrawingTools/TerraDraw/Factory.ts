@@ -29,8 +29,11 @@ namespace Provider.DrawingTools.TerraDraw {
 					return new DrawCircle(map, drawingTools, toolId, configs);
 				case OSFramework.Maps.Enum.DrawingToolsTypes.Rectangle:
 					return new DrawRectangle(map, drawingTools, toolId, configs);
-				default:
-					console.warn(`The tool type: ${type} is not yet available...`);
+				default: {
+					const message = `The tool type: ${type} is not yet available...`;
+					console.warn(message);
+					throw new Error(message);
+				}
 			}
 		}
 	}
