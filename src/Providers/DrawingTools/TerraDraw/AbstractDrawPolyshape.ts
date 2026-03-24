@@ -12,7 +12,7 @@ namespace Provider.DrawingTools.TerraDraw {
 		protected extractLocations(feature: TerraDrawGeoJSONFeature): string[] {
 			const geom = feature.geometry;
 			let positions: number[][];
-			const geomType = geom.type.toLocaleLowerCase();
+			const geomType = geom.type.toLowerCase();
 
 			if (geomType === Constants.ModeName.LineString) {
 				positions = geom.coordinates as number[][];
