@@ -67,6 +67,7 @@ namespace Provider.DrawingTools.TerraDraw {
 		private _clearActive(): void {
 			if (this._activeButton) {
 				this._activeButton.classList.remove(_cssButtonActive);
+				this._activeButton.setAttribute('aria-checked', 'false');
 				this._activeButton = null;
 			}
 			this._activeMode = null;
@@ -80,7 +81,9 @@ namespace Provider.DrawingTools.TerraDraw {
 			btn.className = _cssButton;
 			btn.dataset.mode = modeName;
 			btn.title = label;
+			btn.setAttribute('role', 'menuitemradio');
 			btn.setAttribute('aria-label', label);
+			btn.setAttribute('aria-checked', 'false');
 
 			const icon = document.createElement('span');
 			icon.className = _cssButtonIcon;
@@ -109,6 +112,7 @@ namespace Provider.DrawingTools.TerraDraw {
 		private _setActive(btn: HTMLButtonElement, modeName: string): void {
 			this._clearActive();
 			btn.classList.add(_cssButtonActive);
+			btn.setAttribute('aria-checked', 'true');
 			this._activeButton = btn;
 			this._activeMode = modeName;
 		}
@@ -116,6 +120,7 @@ namespace Provider.DrawingTools.TerraDraw {
 		public build(toolModeNames: string[], position: string): void {
 			this._container = document.createElement('div');
 			this._container.className = _cssToolbar;
+			this._container.setAttribute('role', 'menubar');
 			this._applyPosition(position);
 
 			// Adding the select button to the toolbar
@@ -159,7 +164,6 @@ namespace Provider.DrawingTools.TerraDraw {
 		}
 
 		public setDefaultMode(): void {
-			this._clearActive();
 			if (this._selectButton) {
 				this._setActive(this._selectButton, Constants.ModeName.Select);
 			}
