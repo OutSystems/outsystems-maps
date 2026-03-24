@@ -127,7 +127,7 @@ namespace Provider.DrawingTools.TerraDraw {
 					OSFramework.Maps.Event.OSMap.MapEventType.OnError,
 					this.map,
 					OSFramework.Maps.Enum.ErrorCodes.API_FailedCreatingShape,
-					`Failed to create shape: ${error}`
+					`Failed to create shape: ${error instanceof Error ? error.message : String(error)}`
 				);
 			}
 
