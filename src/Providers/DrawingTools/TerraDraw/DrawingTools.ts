@@ -142,6 +142,8 @@ namespace Provider.DrawingTools.TerraDraw {
 		public addTool(tool: OSFramework.Maps.DrawingTools.ITool): OSFramework.Maps.DrawingTools.ITool {
 			super.addTool(tool);
 
+			this._modeToTool.set(tool.type, tool as AbstractProviderTool<OSFramework.Maps.Configuration.IConfigurationTool>);
+
 			if (this.isReady) {
 				tool.build();
 
@@ -215,7 +217,11 @@ namespace Provider.DrawingTools.TerraDraw {
 		}
 
 		public removeTool(toolId: string): void {
+			const tool = this.getTool(toolId);
+
 			super.removeTool(toolId);
+
+			tool && this._modeToTool.delete(tool.type);
 
 			if (this.isReady) {
 				const modeNames = this.tools.map((t) => t.type);
