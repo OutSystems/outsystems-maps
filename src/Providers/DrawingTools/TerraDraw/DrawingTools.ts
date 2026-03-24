@@ -134,9 +134,10 @@ namespace Provider.DrawingTools.TerraDraw {
 			// Remove the TerraDraw overlay — the shape is now owned by the OS framework
 			this._provider.removeFeatures([featureId]);
 
-			// Return to a neutral state
-			this._provider.setMode(Constants.ModeName.Select);
-			this._ui?.setDefaultMode();
+			// Return to a neutral state - Leaflet behaviour ⬇️           //
+			// this._provider.setMode(Constants.ModeName.Select);         //
+			// this._ui?.setDefaultMode();                                //
+			// Commenting out the code emulates the Google Maps behaviour //
 		}
 
 		public addTool(tool: OSFramework.Maps.DrawingTools.ITool): OSFramework.Maps.DrawingTools.ITool {
