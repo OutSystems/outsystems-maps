@@ -67,14 +67,14 @@ namespace Provider.DrawingTools.TerraDraw {
 			this._activeMode = null;
 		}
 
-		private _createButton(modeName: string, areaLabel: string): HTMLButtonElement {
+		private _createButton(modeName: string, ariaLabel: string): HTMLButtonElement {
 			const btn = document.createElement('button');
 			btn.type = 'button';
 			btn.className = _cssButton;
 			btn.dataset.mode = modeName;
-			btn.title = areaLabel;
+			btn.title = ariaLabel;
 			btn.setAttribute('role', 'menuitemradio');
-			btn.setAttribute('aria-label', areaLabel);
+			btn.setAttribute('aria-label', ariaLabel);
 			btn.setAttribute('aria-checked', 'false');
 
 			const icon = document.createElement('span');
