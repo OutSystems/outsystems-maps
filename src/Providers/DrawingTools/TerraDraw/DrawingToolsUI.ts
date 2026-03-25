@@ -44,11 +44,6 @@ namespace Provider.DrawingTools.TerraDraw {
 		private readonly _onModeDeselect: () => void;
 		private readonly _onModeSelect: (modeName: string) => void;
 		private _selectButton: HTMLButtonElement;
-		/**
-		 * Canonical button display order, derived from _modeLabels key insertion order.
-		 * Kept on the instance so refresh() produces the same ordering as the initial build().
-		 */
-		private readonly _toolsOrder: string[];
 
 		constructor(mapContainer: HTMLElement, onModeSelect: (modeName: string) => void, onModeDeselect: () => void) {
 			this._mapContainer = mapContainer;
@@ -56,7 +51,6 @@ namespace Provider.DrawingTools.TerraDraw {
 			this._onModeDeselect = onModeDeselect;
 			this._activeButton = null;
 			this._activeMode = null;
-			this._toolsOrder = Object.keys(_modeLabels);
 		}
 
 		private _applyPosition(position: string): void {
@@ -125,15 +119,10 @@ namespace Provider.DrawingTools.TerraDraw {
 			this._selectButton = this._createButton(Constants.ModeName.Select, 'Stop drawing');
 			this._container.appendChild(this._selectButton);
 
-			// Fast path: if the tool count matches the full ordered list, skip the includes() check.
-			const appendAll = this._toolsOrder.length === toolModeNames.length;
-
-			this._toolsOrder.forEach((mode) => {
-				if (appendAll || toolModeNames.includes(mode)) {
-					const ariaLabel =
-						mode === Constants.ModeName.Marker ? 'Add a marker' : `Draw a ${_modeLabels[mode] ?? mode}`;
-					this._container.appendChild(this._createButton(mode, ariaLabel));
-				}
+			toolModeNames.forEach((mode) => {
+				const ariaLabel =
+					mode === Constants.ModeName.Marker ? 'Add a marker' : `Draw a ${_modeLabels[mode] ?? mode}`;
+				this._container.appendChild(this._createButton(mode, ariaLabel));
 			});
 
 			// Ensure the map container is a positioning context via class (avoids inline style / CSP issues)

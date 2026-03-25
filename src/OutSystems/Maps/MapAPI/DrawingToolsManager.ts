@@ -258,7 +258,8 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 				// Google Maps DrawingTools are deprecated/unsupported from this version onwards,
 				// so fall back to TerraDraw and warn the developer.
 				console.warn(
-					`The Google Maps version ${gmversion} does not support the use of DrawingTools. Falling back to TerraDraw provider instead.`,
+					`The Google Maps version %s does not support the use of DrawingTools. Falling back to TerraDraw provider instead.`,
+					gmversion,
 					'https://developers.google.com/maps/deprecations#drawing_library_deprecated_as_of_aug_8_2025'
 				);
 				_internalUseTerraDraw = true;
