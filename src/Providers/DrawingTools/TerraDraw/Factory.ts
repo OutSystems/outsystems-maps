@@ -30,9 +30,8 @@ namespace Provider.DrawingTools.TerraDraw {
 				case OSFramework.Maps.Enum.DrawingToolsTypes.Rectangle:
 					return new DrawRectangle(map, drawingTools, toolId, configs);
 				default: {
-					const message = `The tool type: ${type} is not yet available...`;
-					console.warn(message);
-					throw new Error(message);
+					console.warn('The tool type: %s is not yet available...', type);
+					throw new Error(`The tool type: ${type} is not yet available...`);
 				}
 			}
 		}
