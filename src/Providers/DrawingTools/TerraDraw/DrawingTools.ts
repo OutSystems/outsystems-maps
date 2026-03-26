@@ -151,6 +151,10 @@ namespace Provider.DrawingTools.TerraDraw {
 			if (this.isReady) {
 				tool.build();
 
+				this._buildTerraDraw();
+
+				this._provider.start();
+
 				const modeNames = this.tools.map((t) => t.type);
 				this._ui?.refresh(modeNames, this.config.position);
 			}
@@ -228,6 +232,10 @@ namespace Provider.DrawingTools.TerraDraw {
 			tool && this._modeToTool.delete(tool.type);
 
 			if (this.isReady) {
+				this._buildTerraDraw();
+
+				this._provider.start();
+
 				const modeNames = this.tools.map((t) => t.type);
 				this._ui?.refresh(modeNames, this.config.position);
 			}
