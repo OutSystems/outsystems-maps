@@ -73,7 +73,7 @@ namespace OSFramework.Maps.DrawingTools {
 			this.drawingToolsEvents.trigger(Event.DrawingTools.DrawingToolsEventType.Initialized);
 		}
 
-		protected getTool(toolId: string): ITool {
+		protected getTool(toolId: string): ITool | undefined {
 			return this._tools.get(toolId);
 		}
 
