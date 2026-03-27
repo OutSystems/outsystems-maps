@@ -206,7 +206,6 @@ namespace OSFramework.Maps.OSMap {
 				if (Maps.Enum.OS_Config_Map.respectUserPosition === Maps.Enum.OS_Config_Map[propertyName]) {
 					this._positionChanged = false;
 				}
-
 			} else {
 				this.mapEvents.trigger(
 					Event.OSMap.MapEventType.OnError,

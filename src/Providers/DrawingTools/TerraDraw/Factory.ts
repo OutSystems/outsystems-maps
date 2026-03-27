@@ -1,0 +1,39 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+namespace Provider.DrawingTools.TerraDraw {
+	export namespace DrawingToolsFactory {
+		export function MakeDrawingTools(
+			map: OSFramework.Maps.OSMap.IMap,
+			drawingToolsId: string,
+			configs: JSON
+		): OSFramework.Maps.DrawingTools.IDrawingTools {
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			// @ts-ignore: DrawingTools satisfies IDrawingTools at runtime
+			return new DrawingTools(map, drawingToolsId, configs);
+		}
+
+		export function MakeTool(
+			map: OSFramework.Maps.OSMap.IMap,
+			drawingTools: OSFramework.Maps.DrawingTools.IDrawingTools,
+			toolId: string,
+			type: OSFramework.Maps.Enum.DrawingToolsTypes,
+			configs: JSON
+		): OSFramework.Maps.DrawingTools.ITool {
+			switch (type) {
+				case OSFramework.Maps.Enum.DrawingToolsTypes.Marker:
+					return new Tools.DrawMarker(map, drawingTools, toolId, configs);
+				case OSFramework.Maps.Enum.DrawingToolsTypes.Polyline:
+					return new Tools.DrawPolyline(map, drawingTools, toolId, configs);
+				case OSFramework.Maps.Enum.DrawingToolsTypes.Polygon:
+					return new Tools.DrawPolygon(map, drawingTools, toolId, configs);
+				case OSFramework.Maps.Enum.DrawingToolsTypes.Circle:
+					return new Tools.DrawCircle(map, drawingTools, toolId, configs);
+				case OSFramework.Maps.Enum.DrawingToolsTypes.Rectangle:
+					return new Tools.DrawRectangle(map, drawingTools, toolId, configs);
+				default: {
+					console.warn('The tool type: %s is not yet available...', type);
+					throw new Error(`The tool type: ${type} is not yet available...`);
+				}
+			}
+		}
+	}
+}
