@@ -97,22 +97,25 @@ namespace Provider.DrawingTools.TerraDraw {
 			});
 
 			// Ensure the map container is a positioning context via class (avoids inline style / CSP issues)
-			this._mapContainer.classList.add(Constants.cssMapPositioned);
+			if (!this._mapContainer.classList.contains(Constants.cssMapPositioned)) {
+				this._mapContainer.classList.add(Constants.cssMapPositioned);
+			}
 			this._mapContainer.appendChild(this._container);
 			this.setDefaultMode();
 		}
 
 		/** Removes the toolbar from the DOM and resets state. */
-		public dispose(): void {
+		public dispose(isFinalDispose: boolean = true): void {
 			if (this._container?.parentNode) {
 				this._container.remove();
-				this._mapContainer.classList.remove(Constants.cssMapPositioned);
+				isFinalDispose && this._mapContainer.classList.remove(Constants.cssMapPositioned);
 			}
 			this._container = undefined;
 			this._activeButton = undefined;
 			this._activeMode = undefined;
 			this._selectButton = undefined;
-			this._mapContainer = undefined;
+
+			isFinalDispose && (this._mapContainer = undefined);
 		}
 
 		/**
@@ -121,7 +124,7 @@ namespace Provider.DrawingTools.TerraDraw {
 		 * @param position OS position string.
 		 */
 		public refresh(toolModeNames: string[], position: string): void {
-			this.dispose();
+			this.dispose(false);
 			this.build(toolModeNames, position);
 		}
 
