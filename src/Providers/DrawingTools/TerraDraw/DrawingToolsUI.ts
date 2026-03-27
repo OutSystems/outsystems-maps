@@ -1,36 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.DrawingTools.TerraDraw {
-	const _cssToolbar = 'os-terradraw-toolbar';
-	const _cssButton = 'os-terradraw-btn';
-	const _cssButtonActive = 'os-terradraw-btn--active';
-	const _cssButtonIcon = 'os-terradraw-btn__icon';
-	const _cssMapPositioned = 'os-terradraw-map-positioned';
-
-	/** Maps TerraDraw mode name → human-readable accessible label */
-	const _modeLabels: Record<string, string> = {
-		[Constants.ModeName.Marker]: 'Marker',
-		[Constants.ModeName.LineString]: 'Polyline',
-		[Constants.ModeName.Polygon]: 'Polygon',
-		[Constants.ModeName.Circle]: 'Circle',
-		[Constants.ModeName.Rectangle]: 'Rectangle',
-	};
-
-	/** Maps OS position string → toolbar BEM modifier class */
-	const _positionClasses: Record<string, string> = {
-		TOP_LEFT: `${_cssToolbar}--top-left`,
-		TOP_CENTER: `${_cssToolbar}--top-center`,
-		TOP_RIGHT: `${_cssToolbar}--top-right`,
-		LEFT_TOP: `${_cssToolbar}--left-top`,
-		LEFT_CENTER: `${_cssToolbar}--left-center`,
-		LEFT_BOTTOM: `${_cssToolbar}--left-bottom`,
-		RIGHT_TOP: `${_cssToolbar}--right-top`,
-		RIGHT_CENTER: `${_cssToolbar}--right-center`,
-		RIGHT_BOTTOM: `${_cssToolbar}--right-bottom`,
-		BOTTOM_LEFT: `${_cssToolbar}--bottom-left`,
-		BOTTOM_CENTER: `${_cssToolbar}--bottom-center`,
-		BOTTOM_RIGHT: `${_cssToolbar}--bottom-right`,
-	};
-
 	/**
 	 * Builds and manages the Drawing Tools floating toolbar DOM element.
 	 * Owned and lifecycle-managed by DrawingTools.
@@ -40,7 +9,7 @@ namespace Provider.DrawingTools.TerraDraw {
 		private _activeButton: HTMLButtonElement | null;
 		private _activeMode: string | null;
 		private _container: HTMLElement;
-		private readonly _mapContainer: HTMLElement;
+		private _mapContainer: HTMLElement;
 		private readonly _onModeDeselect: () => void;
 		private readonly _onModeSelect: (modeName: string) => void;
 		private _selectButton: HTMLButtonElement;
@@ -54,13 +23,13 @@ namespace Provider.DrawingTools.TerraDraw {
 		}
 
 		private _applyPosition(position: string): void {
-			const cls = _positionClasses[position] ?? _positionClasses['TOP_LEFT'];
+			const cls = Constants.positionClasses[position] ?? Constants.positionClasses[Constants.defaultPosition];
 			this._container.classList.add(cls);
 		}
 
 		private _clearActive(): void {
 			if (this._activeButton) {
-				this._activeButton.classList.remove(_cssButtonActive);
+				this._activeButton.classList.remove(Constants.cssButtonActive);
 				this._activeButton.setAttribute('aria-checked', 'false');
 				this._activeButton = null;
 			}
@@ -70,7 +39,7 @@ namespace Provider.DrawingTools.TerraDraw {
 		private _createButton(modeName: string, ariaLabel: string): HTMLButtonElement {
 			const btn = document.createElement('button');
 			btn.type = 'button';
-			btn.className = _cssButton;
+			btn.className = Constants.cssButton;
 			btn.dataset.mode = modeName;
 			btn.title = ariaLabel;
 			btn.setAttribute('role', 'menuitemradio');
@@ -78,7 +47,7 @@ namespace Provider.DrawingTools.TerraDraw {
 			btn.setAttribute('aria-checked', 'false');
 
 			const icon = document.createElement('span');
-			icon.className = _cssButtonIcon;
+			icon.className = Constants.cssButtonIcon;
 			icon.setAttribute('aria-hidden', 'true');
 			btn.appendChild(icon);
 
@@ -103,7 +72,7 @@ namespace Provider.DrawingTools.TerraDraw {
 
 		private _setActive(btn: HTMLButtonElement, modeName: string): void {
 			this._clearActive();
-			btn.classList.add(_cssButtonActive);
+			btn.classList.add(Constants.cssButtonActive);
 			btn.setAttribute('aria-checked', 'true');
 			this._activeButton = btn;
 			this._activeMode = modeName;
@@ -111,7 +80,7 @@ namespace Provider.DrawingTools.TerraDraw {
 
 		public build(toolModeNames: string[], position: string): void {
 			this._container = document.createElement('div');
-			this._container.className = _cssToolbar;
+			this._container.className = Constants.cssToolbar;
 			this._container.setAttribute('role', 'menubar');
 			this._applyPosition(position);
 
@@ -121,12 +90,14 @@ namespace Provider.DrawingTools.TerraDraw {
 
 			toolModeNames.forEach((mode) => {
 				const ariaLabel =
-					mode === Constants.ModeName.Marker ? 'Add a marker' : `Draw a ${_modeLabels[mode] ?? mode}`;
+					mode === Constants.ModeName.Marker
+						? 'Add a marker'
+						: `Draw a ${Constants.modeLabels[mode] ?? mode}`;
 				this._container.appendChild(this._createButton(mode, ariaLabel));
 			});
 
 			// Ensure the map container is a positioning context via class (avoids inline style / CSP issues)
-			this._mapContainer.classList.add(_cssMapPositioned);
+			this._mapContainer.classList.add(Constants.cssMapPositioned);
 			this._mapContainer.appendChild(this._container);
 			this.setDefaultMode();
 		}
@@ -135,11 +106,13 @@ namespace Provider.DrawingTools.TerraDraw {
 		public dispose(): void {
 			if (this._container?.parentNode) {
 				this._container.remove();
+				this._mapContainer.classList.remove(Constants.cssMapPositioned);
 			}
 			this._container = undefined;
 			this._activeButton = undefined;
 			this._activeMode = undefined;
 			this._selectButton = undefined;
+			this._mapContainer = undefined;
 		}
 
 		/**
