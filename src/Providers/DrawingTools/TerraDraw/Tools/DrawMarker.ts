@@ -1,8 +1,5 @@
-/// <reference path="../AbstractProviderTool.ts" />
-/// <reference path="Configuration/DrawMarkerConfig.ts" />
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.DrawingTools.TerraDraw {
+namespace Provider.DrawingTools.TerraDraw.Tools {
 	export class DrawMarker extends AbstractProviderTool<Configuration.DrawMarkerConfig> {
 		constructor(
 			map: OSFramework.Maps.OSMap.IMap,

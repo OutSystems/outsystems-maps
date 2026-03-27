@@ -1,7 +1,5 @@
-/// <reference path="../AbstractDrawShape.ts" />
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace Provider.DrawingTools.TerraDraw {
+namespace Provider.DrawingTools.TerraDraw.Tools {
 	export class DrawRectangle extends AbstractDrawShape<Configuration.DrawFilledShapeConfig> {
 		constructor(
 			map: OSFramework.Maps.OSMap.IMap,

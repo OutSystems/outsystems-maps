@@ -20,15 +20,15 @@ namespace Provider.DrawingTools.TerraDraw {
 		): OSFramework.Maps.DrawingTools.ITool {
 			switch (type) {
 				case OSFramework.Maps.Enum.DrawingToolsTypes.Marker:
-					return new DrawMarker(map, drawingTools, toolId, configs);
+					return new Tools.DrawMarker(map, drawingTools, toolId, configs);
 				case OSFramework.Maps.Enum.DrawingToolsTypes.Polyline:
-					return new DrawPolyline(map, drawingTools, toolId, configs);
+					return new Tools.DrawPolyline(map, drawingTools, toolId, configs);
 				case OSFramework.Maps.Enum.DrawingToolsTypes.Polygon:
-					return new DrawPolygon(map, drawingTools, toolId, configs);
+					return new Tools.DrawPolygon(map, drawingTools, toolId, configs);
 				case OSFramework.Maps.Enum.DrawingToolsTypes.Circle:
-					return new DrawCircle(map, drawingTools, toolId, configs);
+					return new Tools.DrawCircle(map, drawingTools, toolId, configs);
 				case OSFramework.Maps.Enum.DrawingToolsTypes.Rectangle:
-					return new DrawRectangle(map, drawingTools, toolId, configs);
+					return new Tools.DrawRectangle(map, drawingTools, toolId, configs);
 				default: {
 					console.warn('The tool type: %s is not yet available...', type);
 					throw new Error(`The tool type: ${type} is not yet available...`);
