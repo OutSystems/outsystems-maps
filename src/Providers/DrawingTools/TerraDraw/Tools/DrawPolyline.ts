@@ -1,3 +1,4 @@
+/// <reference path="./AbstractDrawPolyshape.ts" />
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.DrawingTools.TerraDraw.Tools {
 	export class DrawPolyline extends AbstractDrawPolyshape<Configuration.DrawPolylineConfig> {
