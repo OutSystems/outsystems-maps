@@ -144,8 +144,8 @@ namespace Provider.Maps.Google.Marker {
 					this._triggerEvent(
 						OSFramework.Maps.Event.Marker.MarkerEventType.OnClick,
 						OSFramework.Maps.Event.Marker.MarkerEventType.OnClick,
-						Helper.Conversions.GetCoordinateValue(this._provider.position.lat),
-						Helper.Conversions.GetCoordinateValue(this._provider.position.lng)
+						this._provider.position.lat,
+						this._provider.position.lng
 					);
 				});
 			}
@@ -168,8 +168,8 @@ namespace Provider.Maps.Google.Marker {
 								this._triggerEvent(
 									OSFramework.Maps.Event.Marker.MarkerEventType.ProviderEvent,
 									eventName,
-									Helper.Conversions.GetCoordinateValue(this._provider.position.lat),
-									Helper.Conversions.GetCoordinateValue(this._provider.position.lng)
+									this._provider.position.lat,
+									this._provider.position.lng
 								);
 							}
 						);
@@ -181,8 +181,8 @@ namespace Provider.Maps.Google.Marker {
 								this._triggerEvent(
 									OSFramework.Maps.Event.Marker.MarkerEventType.ProviderEvent,
 									eventName,
-									Helper.Conversions.GetCoordinateValue(this._provider.position.lat),
-									Helper.Conversions.GetCoordinateValue(this._provider.position.lng)
+									this._provider.position.lat,
+									this._provider.position.lng
 								);
 							};
 							this._addedDomListeners.push({ htmlEventName: HtmlEventName, listener });
