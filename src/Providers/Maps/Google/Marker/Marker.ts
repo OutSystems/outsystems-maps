@@ -47,9 +47,14 @@ namespace Provider.Maps.Google.Marker {
 						}
 						this._provider.content = markerIconWrapper;
 					} else {
-						markerIconWrapper.textContent = this.config.label;
-
-						const markerIcon = new google.maps.marker.PinElement({ glyph: markerIconWrapper });
+						// The current Type definition of Google Maps is not updated
+						// with the new definition of google.maps.marker.PinElementOptions.
+						// This is a temporary solution to bypass the type error.
+						// TODO: Remove this once a new version of the package @types\google.maps
+						// is made available and the type definition is updated.
+						const markerIcon = new google.maps.marker.PinElement({
+							glyphText: this.config.label,
+						} as unknown as google.maps.marker.PinElementOptions);
 						this._provider.content = markerIcon;
 					}
 				} catch (e) {
