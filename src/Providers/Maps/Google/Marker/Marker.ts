@@ -50,7 +50,7 @@ namespace Provider.Maps.Google.Marker {
 						markerIconWrapper.textContent = this.config.label;
 
 						const markerIcon = new google.maps.marker.PinElement({ glyph: markerIconWrapper });
-						this._provider.content = markerIcon.element;
+						this._provider.content = markerIcon;
 					}
 				} catch (e) {
 					console.error(e);
