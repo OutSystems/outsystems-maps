@@ -50,7 +50,7 @@ namespace Provider.Maps.Google.Marker {
 						// The current Type definition of Google Maps is not updated
 						// with the new definition of google.maps.marker.PinElementOptions.
 						// This is a temporary solution to bypass the type error.
-						// TODO: Remove this once a new version of the package @types\google.maps
+						// TODO: Remove this once a new version of the package @types/google.maps
 						// is made available and the type definition is updated.
 						const markerIcon = new google.maps.marker.PinElement({
 							glyphText: this.config.label,
