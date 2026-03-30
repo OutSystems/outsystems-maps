@@ -27,10 +27,10 @@ namespace Provider.Maps.Google.Marker {
 					const height = this.config.iconHeight;
 					const width = this.config.iconWidth;
 
-					const markerIconWrapper = document.createElement('div');
-					markerIconWrapper.className = 'os-marker-icon';
-
 					if (this.config.iconUrl !== '') {
+						const markerIconWrapper = document.createElement('div');
+						markerIconWrapper.className = 'os-marker-icon';
+
 						const markerIconImage = document.createElement('img');
 						markerIconImage.src = this.config.iconUrl;
 						if (height > 0 && width > 0) {
