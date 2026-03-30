@@ -121,20 +121,20 @@ namespace Provider.Maps.Google.Marker {
 
 		protected _setMarkerEvents(): void {
 			// Make sure the listeners get removed before adding the new ones
-			this._addedEvents.forEach((eventListener, index) => {
-				google.maps.event.clearListeners(this.provider, eventListener);
+			this._addedEvents.splice(0).forEach((eventName, index) => {
+				google.maps.event.clearListeners(this._provider, Constants.Marker.ProviderEventNames[eventName]);
 				this._addedEvents.splice(index, 1);
 			});
 
 			// OnClick Event (OS accelerator)
 			if (this.markerEvents.hasHandlers(OSFramework.Maps.Event.Marker.MarkerEventType.OnClick)) {
-				this._addedEvents.push('click');
-				this._provider.addListener('click', (e: google.maps.MapMouseEvent) => {
+				this._addedEvents.push(OSFramework.Maps.Event.Marker.MarkerEventType.OnClick);
+				this._provider.addListener(Constants.Marker.ProviderEventNames.OnClick, () => {
 					this._triggerEvent(
 						OSFramework.Maps.Event.Marker.MarkerEventType.OnClick,
 						OSFramework.Maps.Event.Marker.MarkerEventType.OnClick,
-						e.latLng.lat,
-						e.latLng.lng
+						Helper.Conversions.GetCoordinateValue(this._provider.position.lat),
+						Helper.Conversions.GetCoordinateValue(this._provider.position.lng)
 					);
 				});
 			}
@@ -153,12 +153,12 @@ namespace Provider.Maps.Google.Marker {
 							ProviderEventName,
 							// Callback CAN have an attribute (e) which is of the type MapMouseEvent
 							// Trigger the event by specifying the ProviderEvent MarkerType and the coords (lat, lng) if the callback has the attribute MapMouseEvent
-							(e: google.maps.MapMouseEvent) => {
+							() => {
 								this._triggerEvent(
 									OSFramework.Maps.Event.Marker.MarkerEventType.ProviderEvent,
 									eventName,
-									e.latLng.lat,
-									e.latLng.lng
+									Helper.Conversions.GetCoordinateValue(this._provider.position.lat),
+									Helper.Conversions.GetCoordinateValue(this._provider.position.lng)
 								);
 							}
 						);
@@ -176,8 +176,8 @@ namespace Provider.Maps.Google.Marker {
 									this._triggerEvent(
 										OSFramework.Maps.Event.Marker.MarkerEventType.ProviderEvent,
 										eventName,
-										this._provider.position.lat,
-										this.provider.position.lng
+										Helper.Conversions.GetCoordinateValue(this._provider.position.lat),
+										Helper.Conversions.GetCoordinateValue(this._provider.position.lng)
 									);
 								}
 							);
