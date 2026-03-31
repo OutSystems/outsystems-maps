@@ -2,7 +2,7 @@
 namespace OSFramework.Maps.Configuration {
 	/**
 	 * Used to translate configurations from OS to Provider
-	 * Defines the basic structure for DrawingTools objects
+	 * Defines the basic structure for HeatmapLayer objects
 	 */
 	export interface IConfigurationHeatmapLayer extends IConfiguration {
 		gradient: Array<string | OSStructures.HeatmapLayer.Color>;
