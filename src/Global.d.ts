@@ -1,4 +1,4 @@
-import {
+import type {
     DefaultRenderer as OriginalDefaultRenderer,
     MarkerClusterer as OriginalMarkerClusterer,
     MarkerClustererOptions as OriginalMarkerClustererOptions,
@@ -7,6 +7,15 @@ import {
     Algorithm as OriginalAlgorithm
 } from '@googlemaps/markerclusterer';
 import type * as TerraDrawLib from 'terra-draw';
+import type {
+    Deck as OriginalDeck, 
+    Color as OriginalDeckglColor
+} from '@deck.gl/core';
+import type {
+    HeatmapLayer as OriginalDeckglHeatmapLayer, 
+    HeatmapLayerProps as OriginalDeckglHeatmapLayerProps
+} from '@deck.gl/aggregation-layers';
+import type {GoogleMapsOverlay as OriginalGoogleMapsOverlay} from '@deck.gl/google-maps';
 
 declare global {
     //Adding object that will be available globally in runtime.
@@ -24,6 +33,10 @@ declare global {
                 lib: typeof google.maps;
                 coordinatePrecision?: number;
             }) => TerraDrawLib.TerraDrawExtend.TerraDrawBaseAdapter;
+        };
+        deck: {
+            HeatmapLayer: typeof OriginalDeckglHeatmapLayer;
+            GoogleMapsOverlay: typeof OriginalGoogleMapsOverlay;
         };
     }
     //The types below, are useful for TypeScript intellisense.
@@ -58,5 +71,10 @@ declare global {
         setDrawingOptions?: never;
         setOptions?: never;
     };
+
+    type DeckglHeatmapLayerProps<T> = OriginalDeckglHeatmapLayerProps<T>;
+    type DeckglHeatmapLayer = OriginalDeckglHeatmapLayer;
+    type DeckglColor = OriginalDeckglColor;
+    type DeckglGoogleMapsOverlay = OriginalGoogleMapsOverlay;
 }
 window.GMCB = window.GMCB || {};
