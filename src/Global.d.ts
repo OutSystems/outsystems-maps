@@ -8,7 +8,6 @@ import type {
 } from '@googlemaps/markerclusterer';
 import type * as TerraDrawLib from 'terra-draw';
 import type {
-    Deck as OriginalDeck, 
     Color as OriginalDeckglColor
 } from '@deck.gl/core';
 import type {
