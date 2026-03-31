@@ -8,7 +8,7 @@ namespace Provider.Layers.deckgl.HeatmapLayer {
 		DeckglGoogleMapsOverlay,
 		Configuration.HeatmapLayer.IConfigurationDeckglHeatmapLayer
 	> {
-		private _providerHeatmapLayer: DeckglHeatmapLayer;
+		private _providerHeatmapLayer: DeckglHeatmapLayer | undefined;
 
 		constructor(map: OSFramework.Maps.OSMap.IMap, HeatmapLayerId: string, configs: JSON) {
 			super(map, HeatmapLayerId, new Configuration.HeatmapLayer.HeatmapLayerConfig(configs));
@@ -43,6 +43,10 @@ namespace Provider.Layers.deckgl.HeatmapLayer {
 				parseInt(hex.slice(5, 7), 16),
 				hex.length > 7 ? parseInt(hex.slice(7, 9), 16) : 255,
 			];
+		}
+
+		public get providerHeatmapLayer(): DeckglHeatmapLayer | undefined {
+			return this._providerHeatmapLayer;
 		}
 
 		public build(): void {
