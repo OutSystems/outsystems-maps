@@ -170,7 +170,7 @@ namespace MapAPI.HeatmapLayerManager {
 		);
 		OutSystems.Maps.MapAPI.HeatmapLayerManager.ChangeProperty(heatmapLayerId, propertyName, propertyValue);
 	}
-	// eslint-disable-next-line @typescript-eslint/naming-convention
+
 	export function CreateHeatmapLayer(
 		heatmapLayerId: string,
 		configs: string

@@ -1,10 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.Maps.HeatmapLayer {
-	export abstract class AbstractHeatmapLayer<
-		W,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		T extends Configuration.IConfigurationHeatmapLayer,
-	> implements IHeatmapLayer
+	export abstract class AbstractHeatmapLayer<W, T extends Configuration.IConfigurationHeatmapLayer>
+		implements IHeatmapLayer
 	{
 		/** Configuration reference */
 		private _config: T;
