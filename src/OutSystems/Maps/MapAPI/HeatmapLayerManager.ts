@@ -69,18 +69,23 @@ namespace OutSystems.Maps.MapAPI.HeatmapLayerManager {
 			return;
 		}
 		if (!map.hasHeatmapLayer(heatmapLayerId)) {
-			const _heatmapLayer = Provider.Maps.Google.HeatmapLayer.HeatmapLayerFactory.MakeHeatmapLayer(
-				map,
-				heatmapLayerId,
-				JSON.parse(configs)
-			);
+			let heatmapFactory = Provider.Layers.deckgl.HeatmapLayer.HeatmapLayerFactory.MakeHeatmapLayer;
+
+			if (!_internalUseDeckgl) {
+				heatmapFactory = Provider.Maps.Google.HeatmapLayer.HeatmapLayerFactory.MakeHeatmapLayer;
+			}
+
+			const _heatmapLayer = heatmapFactory(map, heatmapLayerId, JSON.parse(configs));
 			heatmapLayerArr.push(_heatmapLayer);
 			heatmapLayerMap.set(heatmapLayerId, map.uniqueId);
 			map.addHeatmapLayer(_heatmapLayer);
 
 			return _heatmapLayer;
 		} else {
-			console.error(`There is already a HeatmapLayer registered on the specified Map under id:${heatmapLayerId}`);
+			console.error(
+				`There is already a HeatmapLayer registered on the specified Map under id: %s`,
+				heatmapLayerId
+			);
 		}
 	}
 
