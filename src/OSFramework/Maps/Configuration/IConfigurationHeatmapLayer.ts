@@ -5,7 +5,7 @@ namespace OSFramework.Maps.Configuration {
 	 * Defines the basic structure for DrawingTools objects
 	 */
 	export interface IConfigurationHeatmapLayer extends IConfiguration {
-		gradient: Array<string>;
+		gradient: Array<string | OSStructures.HeatmapLayer.Color>;
 		maxIntensity: number;
 		opacity: number;
 		points: Array<OSStructures.HeatmapLayer.Points>;
