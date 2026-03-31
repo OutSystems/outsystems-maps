@@ -45,6 +45,12 @@ namespace Provider.Layers.deckgl.HeatmapLayer {
 			];
 		}
 
+		/**
+		 * Gets the provider HeatmapLayer instance. Enable access to the provider
+		 * HeatmapLayer instance, allowing for further configuration and manipulation,
+		 * outside of the OutSystemsMaps framework.
+		 * @returns {DeckglHeatmapLayer | undefined} The provider HeatmapLayer instance.
+		 */
 		public get providerHeatmapLayer(): DeckglHeatmapLayer | undefined {
 			return this._providerHeatmapLayer;
 		}
@@ -69,6 +75,11 @@ namespace Provider.Layers.deckgl.HeatmapLayer {
 		public changeProperty(propertyName: string, value: unknown): void {
 			super.changeProperty(propertyName, value);
 			if (this.isReady) {
+				// The provider does not support the change of properties via methods.
+				// Instead it is required to duplicate the layer, change the configurations,
+				// and then to send to the provider.
+				// The provider, will perform a comparison and then affect the changed
+				// values only.
 				this._providerHeatmapLayer = this._buildProviderLayer();
 				this._provider.setProps({
 					layers: [this._providerHeatmapLayer],
