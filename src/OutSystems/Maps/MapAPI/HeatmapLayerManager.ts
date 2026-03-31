@@ -104,7 +104,7 @@ namespace OutSystems.Maps.MapAPI.HeatmapLayerManager {
 		);
 
 		if (heatmapLayer === undefined && raiseError) {
-			throw new Error(`Marker id:${heatmapLayerId} not found`);
+			throw new Error(`HeatmapLayer id:${heatmapLayerId} not found`);
 		}
 
 		return heatmapLayer;
@@ -147,13 +147,13 @@ namespace OutSystems.Maps.MapAPI.HeatmapLayerManager {
 				// Google Maps Heatmap are deprecated/unsupported from this version onwards,
 				// so fall back to deck.gl and warn the developer.
 				console.warn(
-					`The Google Maps version %s does not support the use of DrawingTools. Falling back to deck.gl provider instead.`,
+					`The Google Maps version %s does not support the use of HeatmapLayer. Falling back to deck.gl provider instead.`,
 					gmversion,
 					'https://developers.google.com/maps/deprecations#heatmap-layer-js-deprecation'
 				);
 				internalUseDeckgl = true;
 			} else {
-				// Google Maps DrawingTools are supported and deck.gl was disabled
+				// Google Maps HeatmapLayer is supported and deck.gl is not used.
 				internalUseDeckgl = false;
 			}
 		}
