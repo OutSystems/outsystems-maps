@@ -85,8 +85,8 @@ namespace OSFramework.Maps.HeatmapLayer {
 			return id === this._uniqueId || id === this.widgetId;
 		}
 
-		public getProviderConfig(): Configuration.IConfigurationHeatmapLayer {
-			return this._config.getProviderConfig() as Configuration.IConfigurationHeatmapLayer;
+		public getProviderConfig<Z>(): Z {
+			return this._config.getProviderConfig() as Z;
 		}
 	}
 }

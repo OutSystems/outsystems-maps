@@ -5,7 +5,6 @@ namespace OSFramework.Maps.Configuration {
 	 * Defines the basic structure for DrawingTools objects
 	 */
 	export interface IConfigurationHeatmapLayer extends IConfiguration {
-		dissipateOnZoom: boolean;
 		gradient: Array<string>;
 		maxIntensity: number;
 		opacity: number;

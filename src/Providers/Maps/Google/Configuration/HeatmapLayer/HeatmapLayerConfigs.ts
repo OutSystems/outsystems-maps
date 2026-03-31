@@ -4,7 +4,7 @@
 namespace Provider.Maps.Google.Configuration.HeatmapLayer {
 	export class HeatmapLayerConfig
 		extends OSFramework.Maps.Configuration.AbstractConfiguration
-		implements OSFramework.Maps.Configuration.IConfigurationHeatmapLayer
+		implements IConfigurationGoogleHeatmapLayer
 	{
 		public dissipateOnZoom: boolean;
 		public gradient: Array<string>;

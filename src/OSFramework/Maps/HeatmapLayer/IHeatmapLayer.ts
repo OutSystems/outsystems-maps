@@ -9,5 +9,6 @@ namespace OSFramework.Maps.HeatmapLayer {
 		widgetId: string;
 
 		changeProperty(propertyName: string, propertyValue: unknown): void;
+		getProviderConfig<T>(): T;
 	}
 }
