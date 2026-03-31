@@ -2,7 +2,7 @@
 namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 	const drawingToolsMap = new Map<string, string>(); //drawingTools.uniqueId -> map.uniqueId
 	let drawingToolsElement = undefined;
-	let _internalUseTerraDraw = true;
+	let internalUseTerraDraw = true;
 
 	/* pending tools map holds the tools to be created if the drawing tools block is not ready to add new tools */
 	const _pendingTools = new Map<string, Array<OSFramework.Maps.OSStructures.API.PendingTools>>(); //drawingTools.uniqueId -> Array<tool.uniqueId, tool.type, tool.configs>
@@ -20,7 +20,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 				toolId,
 				type,
 				JSON.parse(configs),
-				_internalUseTerraDraw
+				internalUseTerraDraw
 			);
 			drawingTools.addTool(_tool);
 			Events.CheckPendingEvents(drawingTools);
@@ -167,7 +167,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 				map,
 				drawingToolsId,
 				JSON.parse(configs),
-				_internalUseTerraDraw
+				internalUseTerraDraw
 			);
 			drawingToolsElement = _drawingTools;
 			drawingToolsMap.set(drawingToolsId, map.uniqueId);
@@ -253,7 +253,7 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 		if (!Number.isNaN(gmversion)) {
 			if (useTerraDraw) {
 				// Explicitly use TerraDraw, regardless of Google Maps version
-				_internalUseTerraDraw = true;
+				internalUseTerraDraw = true;
 			} else if (gmversion >= 3.65) {
 				// Google Maps DrawingTools are deprecated/unsupported from this version onwards,
 				// so fall back to TerraDraw and warn the developer.
@@ -262,10 +262,10 @@ namespace OutSystems.Maps.MapAPI.DrawingToolsManager {
 					gmversion,
 					'https://developers.google.com/maps/deprecations#drawing_library_deprecated_as_of_aug_8_2025'
 				);
-				_internalUseTerraDraw = true;
+				internalUseTerraDraw = true;
 			} else {
 				// Google Maps DrawingTools are supported and TerraDraw was disabled
-				_internalUseTerraDraw = false;
+				internalUseTerraDraw = false;
 			}
 		}
 	}

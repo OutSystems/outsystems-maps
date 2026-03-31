@@ -2,7 +2,7 @@
 namespace OutSystems.Maps.MapAPI.HeatmapLayerManager {
 	const heatmapLayerMap = new Map<string, string>(); //heatmapLayer.uniqueId -> map.uniqueId
 	const heatmapLayerArr = new Array<OSFramework.Maps.HeatmapLayer.IHeatmapLayer>();
-	let _internalUseDeckgl = true;
+	let internalUseDeckgl = true;
 
 	/**
 	 * Gets the Map to which the HeatmapLayer belongs to
@@ -71,7 +71,7 @@ namespace OutSystems.Maps.MapAPI.HeatmapLayerManager {
 		if (!map.hasHeatmapLayer(heatmapLayerId)) {
 			let heatmapFactory = Provider.Layers.deckgl.HeatmapLayer.HeatmapLayerFactory.MakeHeatmapLayer;
 
-			if (!_internalUseDeckgl) {
+			if (!internalUseDeckgl) {
 				heatmapFactory = Provider.Maps.Google.HeatmapLayer.HeatmapLayerFactory.MakeHeatmapLayer;
 			}
 
@@ -142,7 +142,7 @@ namespace OutSystems.Maps.MapAPI.HeatmapLayerManager {
 		if (!Number.isNaN(gmversion)) {
 			if (useDeckgl) {
 				// Explicitly use deck.gl, regardless of Google Maps version
-				_internalUseDeckgl = true;
+				internalUseDeckgl = true;
 			} else if (gmversion >= 3.65) {
 				// Google Maps Heatmap are deprecated/unsupported from this version onwards,
 				// so fall back to deck.gl and warn the developer.
@@ -151,10 +151,10 @@ namespace OutSystems.Maps.MapAPI.HeatmapLayerManager {
 					gmversion,
 					'https://developers.google.com/maps/deprecations#heatmap-layer-js-deprecation'
 				);
-				_internalUseDeckgl = true;
+				internalUseDeckgl = true;
 			} else {
 				// Google Maps DrawingTools are supported and deck.gl was disabled
-				_internalUseDeckgl = false;
+				internalUseDeckgl = false;
 			}
 		}
 	}
