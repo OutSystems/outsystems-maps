@@ -16,9 +16,7 @@ namespace Provider.Maps.Google.Configuration.HeatmapLayer {
 		public getProviderConfig(): unknown {
 			// eslint-disable-next-line prefer-const
 			let provider = {
-				points: this.points,
 				dissipate: this.dissipateOnZoom,
-				gradient: this.gradient,
 				maxIntensity: this.maxIntensity,
 				opacity: this.opacity,
 				radius: this.radius,
