@@ -2,6 +2,7 @@
 namespace OutSystems.Maps.MapAPI.HeatmapLayerManager {
 	const heatmapLayerMap = new Map<string, string>(); //heatmapLayer.uniqueId -> map.uniqueId
 	const heatmapLayerArr = new Array<OSFramework.Maps.HeatmapLayer.IHeatmapLayer>();
+	let _internalUseDeckgl = true;
 
 	/**
 	 * Gets the Map to which the HeatmapLayer belongs to
@@ -121,6 +122,36 @@ namespace OutSystems.Maps.MapAPI.HeatmapLayerManager {
 			}),
 			1
 		);
+	}
+
+	/**
+	 * Sets the internal use of deck.gl for the HeatmapLayerManager.
+	 * This is only applicable for the Google provider, and enable the
+	 * use of the Google provider for the HeatmapLayer, instead of the
+	 * default deck.gl provider.
+	 *
+	 * @param {boolean} useDeckgl true if the HeatmapLayerManager should use deck.gl, false otherwise
+	 */
+	export function SetUseDeckgl(useDeckgl = true): void {
+		const gmversion = Number(Provider.Maps.Google.Version.Get());
+		if (!Number.isNaN(gmversion)) {
+			if (useDeckgl) {
+				// Explicitly use deck.gl, regardless of Google Maps version
+				_internalUseDeckgl = true;
+			} else if (gmversion >= 3.65) {
+				// Google Maps Heatmap are deprecated/unsupported from this version onwards,
+				// so fall back to deck.gl and warn the developer.
+				console.warn(
+					`The Google Maps version %s does not support the use of DrawingTools. Falling back to deck.gl provider instead.`,
+					gmversion,
+					'https://developers.google.com/maps/deprecations#heatmap-layer-js-deprecation'
+				);
+				_internalUseDeckgl = true;
+			} else {
+				// Google Maps DrawingTools are supported and deck.gl was disabled
+				_internalUseDeckgl = false;
+			}
+		}
 	}
 }
 
