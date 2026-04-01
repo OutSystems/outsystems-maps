@@ -228,6 +228,8 @@ namespace Provider.DrawingTools.TerraDraw {
 		public removeTool(toolId: string): void {
 			const tool = this.getTool(toolId);
 
+			this._provider.setMode(Constants.ModeName.Select);
+			
 			super.removeTool(toolId);
 
 			tool && this._modeToTool.delete(tool.type);
