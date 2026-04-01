@@ -208,6 +208,7 @@ namespace Provider.DrawingTools.TerraDraw {
 
 		public dispose(): void {
 			if (this.isReady) {
+				this._provider.setMode(Constants.ModeName.Select);
 				this._provider.stop();
 				this._ui?.dispose();
 			}
