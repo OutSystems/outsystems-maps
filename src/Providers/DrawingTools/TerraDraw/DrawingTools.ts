@@ -208,6 +208,7 @@ namespace Provider.DrawingTools.TerraDraw {
 
 		public dispose(): void {
 			if (this.isReady) {
+				// Sets the mode to select to reset the mouse icon to the default value
 				this._provider.setMode(Constants.ModeName.Select);
 				this._provider.stop();
 				this._ui?.dispose();
@@ -233,6 +234,7 @@ namespace Provider.DrawingTools.TerraDraw {
 			tool && this._modeToTool.delete(tool.type);
 
 			if (this.isReady) {
+				// Sets the mode to select to reset the mouse icon to the default value
 				this._provider.setMode(Constants.ModeName.Select);
 
 				this._buildTerraDraw();
