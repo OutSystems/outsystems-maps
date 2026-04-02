@@ -129,7 +129,7 @@ namespace Provider.Maps.Google.Marker {
 		protected _setMarkerEvents(): void {
 			// Remove previously registered Google Maps API listeners
 			this._addedProviderEvents.splice(0).forEach((eventName) => {
-				google.maps.event.clearListeners(this._provider, Constants.Marker.ProviderEventNames[eventName]);
+				google.maps.event.clearListeners(this._provider, eventName);
 			});
 
 			// Remove previously registered DOM listeners using the stored callback references
@@ -139,8 +139,8 @@ namespace Provider.Maps.Google.Marker {
 
 			// OnClick Event (OS accelerator)
 			if (this.markerEvents.hasHandlers(OSFramework.Maps.Event.Marker.MarkerEventType.OnClick)) {
-				this._addedProviderEvents.push(OSFramework.Maps.Event.Marker.MarkerEventType.OnClick);
-				this._provider.addListener(Constants.Marker.ProviderEventNames.OnClick, () => {
+				this._addedProviderEvents.push(Constants.Marker.ProviderEventNames.click);
+				this._provider.addListener(Constants.Marker.ProviderEventNames.click, () => {
 					this._triggerEvent(
 						OSFramework.Maps.Event.Marker.MarkerEventType.OnClick,
 						OSFramework.Maps.Event.Marker.MarkerEventType.OnClick,
