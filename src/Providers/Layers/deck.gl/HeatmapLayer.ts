@@ -73,7 +73,14 @@ namespace Provider.Layers.deckgl.HeatmapLayer {
 		}
 
 		public changeProperty(propertyName: string, value: unknown): void {
-			super.changeProperty(propertyName, value);
+			let propertyValue = value;
+			if (
+				OSFramework.Maps.Enum.OS_Config_HeatmapLayer[propertyName] ===
+				OSFramework.Maps.Enum.OS_Config_HeatmapLayer.gradient
+			) {
+				propertyValue = JSON.parse(value as string);
+			}
+			super.changeProperty(propertyName, propertyValue);
 			if (this.isReady) {
 				// The provider does not support the change of properties via methods.
 				// Instead it is required to duplicate the layer, change the configurations,
