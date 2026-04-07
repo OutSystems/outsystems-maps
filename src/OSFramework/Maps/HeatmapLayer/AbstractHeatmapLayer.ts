@@ -44,7 +44,7 @@ namespace OSFramework.Maps.HeatmapLayer {
 
 		private _setWidgetId(): void {
 			this._widgetId = Helper.GetElementByUniqueId(this.uniqueId, false)
-				? Helper.GetElementByUniqueId(this.uniqueId).closest(Helper.Constants.heatmapLayerTag).id
+				? Helper.GetElementByUniqueId(this.uniqueId).closest(this.blockTag).id
 				: undefined;
 		}
 
@@ -85,5 +85,7 @@ namespace OSFramework.Maps.HeatmapLayer {
 		public getProviderConfig<Z>(): Z {
 			return this._config.getProviderConfig() as Z;
 		}
+
+		protected abstract get blockTag(): string;
 	}
 }

@@ -36,6 +36,14 @@ namespace Provider.Maps.Google.HeatmapLayer {
 			return data;
 		}
 
+		/**
+		 * Gets the block tag for the HeatmapLayer.
+		 * @returns The block tag for the HeatmapLayer.
+		 */
+		protected get blockTag(): string {
+			return OSFramework.Maps.Helper.Constants.heatmapLayerTag_deprecated;
+		}
+
 		public build(): void {
 			super.build();
 

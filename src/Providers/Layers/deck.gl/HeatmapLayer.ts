@@ -51,6 +51,14 @@ namespace Provider.Layers.deckgl.HeatmapLayer {
 		}
 
 		/**
+		 * Gets the block tag for the HeatmapLayer.
+		 * @returns The block tag for the HeatmapLayer.
+		 */
+		protected get blockTag(): string {
+			return OSFramework.Maps.Helper.Constants.heatmapLayerTag;
+		}
+
+		/**
 		 * Gets the provider HeatmapLayer instance. Enable access to the provider
 		 * HeatmapLayer instance, allowing for further configuration and manipulation,
 		 * outside of the OutSystemsMaps framework.
