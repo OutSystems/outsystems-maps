@@ -66,8 +66,6 @@ namespace Provider.Layers.deckgl.HeatmapLayer {
 
 			this._provider.setMap(this.map.provider);
 
-			//this._provider.pickable = true; // Ensure pickable is true after creation
-
 			this.finishBuild();
 		}
 
