@@ -21,6 +21,7 @@ namespace Provider.Layers.deckgl.HeatmapLayer {
 			const finalConfigs = {
 				...providerConfigs,
 				colorRange: this._gradientColors(),
+				// Id that enables the deck.gl to perform the update to the layer.
 				id: this.uniqueId,
 			} as ConstructorParameters<typeof window.deck.HeatmapLayer>[0];
 
@@ -35,6 +36,11 @@ namespace Provider.Layers.deckgl.HeatmapLayer {
 			});
 		}
 
+		/**
+		 * Converts a hex color to a rgba color.
+		 * @param hex - The hex color to convert.
+		 * @returns The rgba color.
+		 */
 		private _hexToRgba(hex: string): DeckglColor {
 			return [
 				parseInt(hex.slice(1, 3), 16),
