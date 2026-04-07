@@ -34,7 +34,7 @@ namespace Provider.Layers.deckgl.Configuration.HeatmapLayer {
 				getWeight: (d: PointsHeatMapLayerDataType) => d.Weight,
 				radiusPixels: this.radius,
 				colorDomain: colorDomainLocal,
-				opacity: this.opacity > 1 ? 1 : this.opacity < 0 ? 0 : this.opacity,
+				opacity: Math.max(Math.min(this.opacity, 1), 0),
 				visible: true,
 				pickable: true,
 			};

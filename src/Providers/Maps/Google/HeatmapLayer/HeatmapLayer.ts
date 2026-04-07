@@ -55,7 +55,7 @@ namespace Provider.Maps.Google.HeatmapLayer {
 				// first we need to convert the points from OS format to data GoogleProvider format
 				data: this._pointsToData(this.config.points),
 				// then, we need to make sure if the gradient is empty, we set it with the GoogleProvider default values
-				gradient: this._gradientColors(this.config.gradient as string[]),
+				gradient: this._gradientColors(this.config.gradient),
 				map: this.map.provider,
 			});
 

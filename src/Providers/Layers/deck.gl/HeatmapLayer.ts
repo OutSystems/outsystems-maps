@@ -23,15 +23,15 @@ namespace Provider.Layers.deckgl.HeatmapLayer {
 				colorRange: this._gradientColors(),
 				// Id that enables the deck.gl to perform the update to the layer.
 				id: this.uniqueId,
-			} as ConstructorParameters<typeof window.deck.HeatmapLayer>[0];
+			} as ConstructorParameters<typeof globalThis.deck.HeatmapLayer>[0];
 
-			return new window.deck.HeatmapLayer(finalConfigs);
+			return new globalThis.deck.HeatmapLayer(finalConfigs);
 		}
 
 		private _gradientColors(): DeckglColor[] {
 			if (this.config.gradient.length === 0) return Constants.gradientHeatmapColors;
 			return this.config.gradient.map((color) => {
-				if (color.hex && color.hex.startsWith('#')) return this._hexToRgba(color.hex);
+				if (color.hex?.startsWith('#')) return this._hexToRgba(color.hex);
 				return [color.red, color.green, color.blue, color.alpha];
 			});
 		}
@@ -43,10 +43,10 @@ namespace Provider.Layers.deckgl.HeatmapLayer {
 		 */
 		private _hexToRgba(hex: string): DeckglColor {
 			return [
-				parseInt(hex.slice(1, 3), 16),
-				parseInt(hex.slice(3, 5), 16),
-				parseInt(hex.slice(5, 7), 16),
-				hex.length > 7 ? parseInt(hex.slice(7, 9), 16) : 255,
+				Number.parseInt(hex.slice(1, 3), 16),
+				Number.parseInt(hex.slice(3, 5), 16),
+				Number.parseInt(hex.slice(5, 7), 16),
+				hex.length > 7 ? Number.parseInt(hex.slice(7, 9), 16) : 255,
 			];
 		}
 
@@ -74,7 +74,7 @@ namespace Provider.Layers.deckgl.HeatmapLayer {
 			// Creates the provider HeatmapLayer
 			this._providerHeatmapLayer = this._buildProviderLayer();
 
-			this._provider = new window.deck.GoogleMapsOverlay({
+			this._provider = new globalThis.deck.GoogleMapsOverlay({
 				layers: [this._providerHeatmapLayer],
 			});
 
