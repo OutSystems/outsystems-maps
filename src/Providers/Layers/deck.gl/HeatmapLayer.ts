@@ -22,7 +22,6 @@ namespace Provider.Layers.deckgl.HeatmapLayer {
 				...providerConfigs,
 				colorRange: this._gradientColors(),
 				id: this.uniqueId,
-				opacity: this.config.opacity,
 			} as ConstructorParameters<typeof window.deck.HeatmapLayer>[0];
 
 			return new window.deck.HeatmapLayer(finalConfigs);
