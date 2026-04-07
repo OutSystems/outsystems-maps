@@ -15,7 +15,9 @@ namespace Provider.Layers.deckgl.Configuration.HeatmapLayer {
 
 		public getProviderConfig(): DeckglHeatmapLayerProps<PointsHeatMapLayerDataType> {
 			const colorDomainLocal: Readonly<[number, number]> | null =
-				this.minIntensity !== this.maxIntensity ? [this.minIntensity, this.maxIntensity] : null;
+				!(this.minIntensity === 0 && this.maxIntensity === 0) && this.minIntensity < this.maxIntensity
+					? [this.minIntensity, this.maxIntensity]
+					: null;
 
 			return {
 				id: undefined,
