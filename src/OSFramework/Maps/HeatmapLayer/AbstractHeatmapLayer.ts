@@ -82,8 +82,8 @@ namespace OSFramework.Maps.HeatmapLayer {
 			return id === this._uniqueId || id === this.widgetId;
 		}
 
-		public getProviderConfig<Z>(): Z {
-			return this._config.getProviderConfig() as Z;
+		public getProviderConfig(): unknown {
+			return this._config.getProviderConfig();
 		}
 
 		protected abstract get blockTag(): string;

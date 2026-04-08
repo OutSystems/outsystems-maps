@@ -47,7 +47,7 @@ namespace Provider.Maps.Google.HeatmapLayer {
 		public build(): void {
 			super.build();
 
-			const providerConfigs = this.getProviderConfig<google.maps.visualization.HeatmapLayerOptions>();
+			const providerConfigs = this.getProviderConfig() as google.maps.visualization.HeatmapLayerOptions;
 
 			// Creates the provider HeatmapLayer
 			this._provider = new google.maps.visualization.HeatmapLayer({

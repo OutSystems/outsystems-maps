@@ -16,7 +16,7 @@ namespace Provider.Layers.deckgl.HeatmapLayer {
 
 		private _buildProviderLayer(): DeckglHeatmapLayer {
 			const providerConfigs =
-				this.getProviderConfig<DeckglHeatmapLayerProps<OSFramework.Maps.OSStructures.HeatmapLayer.Points>>();
+				this.getProviderConfig() as DeckglHeatmapLayerProps<OSFramework.Maps.OSStructures.HeatmapLayer.Points>;
 
 			const finalConfigs = {
 				...providerConfigs,
