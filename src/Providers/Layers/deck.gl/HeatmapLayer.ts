@@ -87,7 +87,9 @@ namespace Provider.Layers.deckgl.HeatmapLayer {
 			let propertyValue = value;
 			if (
 				OSFramework.Maps.Enum.OS_Config_HeatmapLayer[propertyName] ===
-				OSFramework.Maps.Enum.OS_Config_HeatmapLayer.gradient
+					OSFramework.Maps.Enum.OS_Config_HeatmapLayer.gradient ||
+				OSFramework.Maps.Enum.OS_Config_HeatmapLayer[propertyName] ===
+					OSFramework.Maps.Enum.OS_Config_HeatmapLayer.points
 			) {
 				propertyValue = JSON.parse(value as string);
 			}
