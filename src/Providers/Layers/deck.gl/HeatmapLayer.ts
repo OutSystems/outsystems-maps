@@ -17,10 +17,11 @@ namespace Provider.Layers.deckgl.HeatmapLayer {
 		private _buildProviderLayer(): DeckglHeatmapLayer {
 			const providerConfigs =
 				this.getProviderConfig() as DeckglHeatmapLayerProps<OSFramework.Maps.OSStructures.HeatmapLayer.Points>;
+			const gradientColors = this._gradientColors();
 
 			const finalConfigs = {
 				...providerConfigs,
-				colorRange: this._gradientColors(),
+				...(gradientColors ? { colorRange: gradientColors } : {}),
 				// Id that enables the deck.gl to perform the update to the layer.
 				id: this.uniqueId,
 			} as ConstructorParameters<typeof globalThis.deck.HeatmapLayer>[0];
@@ -28,8 +29,8 @@ namespace Provider.Layers.deckgl.HeatmapLayer {
 			return new globalThis.deck.HeatmapLayer(finalConfigs);
 		}
 
-		private _gradientColors(): DeckglColor[] {
-			if (this.config.gradient.length === 0) return Constants.gradientHeatmapColors;
+		private _gradientColors(): DeckglColor[] | undefined {
+			if (this.config.gradient.length === 0) return undefined;
 			return this.config.gradient.map((color) => {
 				if (color.hex?.startsWith('#')) return this._hexToRgba(color.hex);
 				return [color.red, color.green, color.blue, color.alpha];
