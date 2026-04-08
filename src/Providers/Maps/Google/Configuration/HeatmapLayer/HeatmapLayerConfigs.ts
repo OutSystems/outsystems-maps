@@ -4,7 +4,7 @@
 namespace Provider.Maps.Google.Configuration.HeatmapLayer {
 	export class HeatmapLayerConfig
 		extends OSFramework.Maps.Configuration.AbstractConfiguration
-		implements OSFramework.Maps.Configuration.IConfigurationHeatmapLayer
+		implements IConfigurationGoogleHeatmapLayer
 	{
 		public dissipateOnZoom: boolean;
 		public gradient: Array<string>;
@@ -16,9 +16,7 @@ namespace Provider.Maps.Google.Configuration.HeatmapLayer {
 		public getProviderConfig(): unknown {
 			// eslint-disable-next-line prefer-const
 			let provider = {
-				points: this.points,
 				dissipate: this.dissipateOnZoom,
-				gradient: this.gradient,
 				maxIntensity: this.maxIntensity,
 				opacity: this.opacity,
 				radius: this.radius,
