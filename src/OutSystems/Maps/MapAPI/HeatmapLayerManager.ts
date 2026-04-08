@@ -59,7 +59,8 @@ namespace OutSystems.Maps.MapAPI.HeatmapLayerManager {
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	export function CreateHeatmapLayer(
 		heatmapLayerId: string,
-		configs: string
+		configs: string,
+		useDeckgl = true
 	): OSFramework.Maps.HeatmapLayer.IHeatmapLayer {
 		const map = GetMapByHeatmapLayerId(heatmapLayerId);
 		if (
@@ -68,18 +69,23 @@ namespace OutSystems.Maps.MapAPI.HeatmapLayerManager {
 			return;
 		}
 		if (!map.hasHeatmapLayer(heatmapLayerId)) {
-			const _heatmapLayer = Provider.Maps.Google.HeatmapLayer.HeatmapLayerFactory.MakeHeatmapLayer(
-				map,
-				heatmapLayerId,
-				JSON.parse(configs)
-			);
+			let heatmapFactory = Provider.Layers.deckgl.HeatmapLayer.HeatmapLayerFactory.MakeHeatmapLayer;
+
+			if (!useDeckgl) {
+				heatmapFactory = Provider.Maps.Google.HeatmapLayer.HeatmapLayerFactory.MakeHeatmapLayer;
+			}
+
+			const _heatmapLayer = heatmapFactory(map, heatmapLayerId, JSON.parse(configs));
 			heatmapLayerArr.push(_heatmapLayer);
 			heatmapLayerMap.set(heatmapLayerId, map.uniqueId);
 			map.addHeatmapLayer(_heatmapLayer);
 
 			return _heatmapLayer;
 		} else {
-			console.error(`There is already a HeatmapLayer registered on the specified Map under id:${heatmapLayerId}`);
+			console.error(
+				`There is already a HeatmapLayer registered on the specified Map under id: %s`,
+				heatmapLayerId
+			);
 		}
 	}
 
@@ -98,7 +104,7 @@ namespace OutSystems.Maps.MapAPI.HeatmapLayerManager {
 		);
 
 		if (heatmapLayer === undefined && raiseError) {
-			throw new Error(`Marker id:${heatmapLayerId} not found`);
+			throw new Error(`HeatmapLayer id:${heatmapLayerId} not found`);
 		}
 
 		return heatmapLayer;
@@ -134,7 +140,7 @@ namespace MapAPI.HeatmapLayerManager {
 		);
 		OutSystems.Maps.MapAPI.HeatmapLayerManager.ChangeProperty(heatmapLayerId, propertyName, propertyValue);
 	}
-	// eslint-disable-next-line @typescript-eslint/naming-convention
+
 	export function CreateHeatmapLayer(
 		heatmapLayerId: string,
 		configs: string

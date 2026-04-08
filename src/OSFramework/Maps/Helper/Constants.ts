@@ -26,6 +26,8 @@ namespace OSFramework.Maps.Helper.Constants {
 	export const fileLayerTag = '[data-block="FileLayer.FileLayer"]';
 	/** Tag used to find the HeatmapLayer */
 	export const heatmapLayerTag = '[data-block="HeatmapLayer.HeatmapLayer"]';
+	/** Tag used to find the HeatmapLayer */
+	export const heatmapLayerTag_deprecated = '[data-block="HeatmapLayer.DEPRECATED_HeatmapLayer"]';
 	/** Tag used to find the SearchPlaces */
 	export const searchPlacesTag = '[data-block="SearchPlaces.SearchPlaces"]';
 	export const searchPlacesTag_Legacy = '[data-block="SearchPlaces_Legacy.SearchPlaces_Legacy"]';

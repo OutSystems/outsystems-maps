@@ -1,10 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.Maps.HeatmapLayer {
-	export abstract class AbstractHeatmapLayer<
-		W,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		T extends Configuration.IConfigurationHeatmapLayer,
-	> implements IHeatmapLayer
+	export abstract class AbstractHeatmapLayer<W, T extends Configuration.IConfigurationHeatmapLayer>
+		implements IHeatmapLayer
 	{
 		/** Configuration reference */
 		private _config: T;
@@ -47,7 +44,7 @@ namespace OSFramework.Maps.HeatmapLayer {
 
 		private _setWidgetId(): void {
 			this._widgetId = Helper.GetElementByUniqueId(this.uniqueId, false)
-				? Helper.GetElementByUniqueId(this.uniqueId).closest(Helper.Constants.heatmapLayerTag).id
+				? Helper.GetElementByUniqueId(this.uniqueId).closest(this.blockTag).id
 				: undefined;
 		}
 
@@ -85,8 +82,10 @@ namespace OSFramework.Maps.HeatmapLayer {
 			return id === this._uniqueId || id === this.widgetId;
 		}
 
-		public getProviderConfig(): Configuration.IConfigurationHeatmapLayer {
-			return this._config.getProviderConfig() as Configuration.IConfigurationHeatmapLayer;
+		public getProviderConfig(): unknown {
+			return this._config.getProviderConfig();
 		}
+
+		protected abstract get blockTag(): string;
 	}
 }
