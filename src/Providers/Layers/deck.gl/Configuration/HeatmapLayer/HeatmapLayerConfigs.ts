@@ -14,7 +14,7 @@ namespace Provider.Layers.deckgl.Configuration.HeatmapLayer {
 		public radius: number;
 
 		public getProviderConfig(): DeckglHeatmapLayerProps<PointsHeatMapLayerDataType> {
-			// This parameter is a tupple array with two numbers.
+			// This parameter is a tuple array with two numbers.
 			// If both min and max intensity is not set (platform default=0) then the colorDomain is null.
 			const colorDomainLocal: Readonly<[number, number]> | null =
 				!(this.minIntensity === 0 && this.maxIntensity === 0) && this.minIntensity < this.maxIntensity
@@ -29,7 +29,7 @@ namespace Provider.Layers.deckgl.Configuration.HeatmapLayer {
 				data: this.points,
 				// This function is invoked by the deck.gl HeatmapLayer library
 				// to get the position of the point. Notice that by default the
-				// library uses a cartasian coordinate system [x, y , z] = [lng, lat, height].
+				// library uses a cartesian coordinate system [x, y , z] = [lng, lat, height].
 				getPosition: (d: PointsHeatMapLayerDataType) => [d.Lng, d.Lat],
 				getWeight: (d: PointsHeatMapLayerDataType) => d.Weight,
 				radiusPixels: this.radius,
