@@ -12,7 +12,7 @@ namespace Provider.Maps.Google.Marker {
 			// Open the popup when the user clicks on the Marker
 			// To close the Marker click on it and then use the ESC or the "x" on the top right corner of the popup
 			// Or use the API method - closePopup()
-			this._provider.addListener('click', () => {
+			this._provider.addListener(Constants.Marker.ProviderEventNames.click, () => {
 				this.refreshPopupContent();
 				this.openPopup();
 			});
