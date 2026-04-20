@@ -116,6 +116,10 @@ namespace OSFramework.Maps.OSMap {
 			return this.config.respectUserZoom || this.config.respectUserPosition;
 		}
 
+		public get respectUserPosition(): boolean {
+			return !!this.config.respectUserPosition && this._positionChanged;
+		}
+
 		public get uniqueId(): string {
 			return this._uniqueId;
 		}
