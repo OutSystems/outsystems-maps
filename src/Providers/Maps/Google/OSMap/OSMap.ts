@@ -472,7 +472,7 @@ namespace Provider.Maps.Google.OSMap {
 
 			// If the user has dragged the map and the developer intends to respect user position
 			// then the current map center will be used.
-			if (this.respectUserPosition) {
+			if (this.shouldRespectUserPosition) {
 				position = this.provider.getCenter()?.toJSON() ?? position;
 			} else {
 				// If there are markers, let's choose the map center accordingly.

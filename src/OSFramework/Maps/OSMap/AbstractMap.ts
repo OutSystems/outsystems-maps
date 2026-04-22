@@ -108,7 +108,7 @@ namespace OSFramework.Maps.OSMap {
 			return this._providerType;
 		}
 
-		public get respectUserPosition(): boolean {
+		public get shouldRespectUserPosition(): boolean {
 			return !!this.config.respectUserPosition && this._positionChanged;
 		}
 
