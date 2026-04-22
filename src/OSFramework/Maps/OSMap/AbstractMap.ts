@@ -82,10 +82,6 @@ namespace OSFramework.Maps.OSMap {
 			return Array.from(this._fileLayersSet);
 		}
 
-		public get hasZoomOrPositionChanged(): boolean {
-			return this._zoomChanged || this._positionChanged;
-		}
-
 		public get heatmapLayers(): HeatmapLayer.IHeatmapLayer[] {
 			return Array.from(this._heatmapLayersSet);
 		}
@@ -112,8 +108,8 @@ namespace OSFramework.Maps.OSMap {
 			return this._providerType;
 		}
 
-		public get respectUserChange(): boolean {
-			return this.config.respectUserZoom || this.config.respectUserPosition;
+		public get shouldRespectUserPosition(): boolean {
+			return !!this.config.respectUserPosition && this._positionChanged;
 		}
 
 		public get uniqueId(): string {
