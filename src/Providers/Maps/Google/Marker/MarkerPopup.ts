@@ -4,7 +4,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Maps.Google.Marker {
 	export class MarkerPopup extends Marker implements OSFramework.Maps.Marker.IMarkerPopup {
-		private _contentString: string;
+		private _contentString: string = '';
 
 		protected _setMarkerEvents(): void {
 			super._setMarkerEvents();
@@ -12,7 +12,7 @@ namespace Provider.Maps.Google.Marker {
 			// Open the popup when the user clicks on the Marker
 			// To close the Marker click on it and then use the ESC or the "x" on the top right corner of the popup
 			// Or use the API method - closePopup()
-			this._provider.addListener('click', () => {
+			this._provider.addListener(Constants.Marker.ProviderEventNames.click, () => {
 				this.refreshPopupContent();
 				this.openPopup();
 			});
@@ -36,9 +36,10 @@ namespace Provider.Maps.Google.Marker {
 		}
 
 		public refreshPopupContent(): void {
-			this._contentString = OSFramework.Maps.Helper.GetElementByUniqueId(this.uniqueId).querySelector(
-				OSFramework.Maps.Helper.Constants.markerPopup
-			).innerHTML;
+			this._contentString =
+				OSFramework.Maps.Helper.GetElementByUniqueId(this.uniqueId)?.querySelector(
+					OSFramework.Maps.Helper.Constants.markerPopup
+				)?.innerHTML ?? '';
 			this.map.features.infoWindow.setPopupContent(this._contentString);
 		}
 	}
