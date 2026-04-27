@@ -74,7 +74,7 @@ namespace Provider.DrawingTools.TerraDraw {
 			this._provider = new window.terraDraw.TerraDraw({
 				adapter: this._getAdapter(),
 				modes: this._buildModes(),
-			}) as TerraDrawProviderCompatible;
+			});
 
 			this._provider.on('finish', (id, context) => this._onFinish(id, context));
 
@@ -196,9 +196,9 @@ namespace Provider.DrawingTools.TerraDraw {
 		}
 
 		public changeProperty(propertyName: string, value: unknown): void {
-			const propValue = OSFramework.Maps.Enum.OS_Config_DrawingTools[propertyName];
 			super.changeProperty(propertyName, value);
 			if (this.isReady) {
+				const propValue = OSFramework.Maps.Enum.OS_Config_DrawingTools[propertyName];
 				if (propValue === OSFramework.Maps.Enum.OS_Config_DrawingTools.position) {
 					const modeNames = this.tools.map((t) => t.type);
 					this._ui?.refresh(modeNames, value as string);
