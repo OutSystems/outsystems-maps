@@ -238,7 +238,7 @@ namespace Provider.DrawingTools.TerraDraw {
 			tool && this._modeToTool.delete(tool.type);
 
 			if (this.isReady) {
-				// Resets the mouse icon to its default state. 
+				// Resets the mouse icon to its default state.
 				// This prevents the tool's custom mouse icon from persisting after the provider is destroyed.
 				this._provider.setMode(Constants.ModeName.Select);
 
