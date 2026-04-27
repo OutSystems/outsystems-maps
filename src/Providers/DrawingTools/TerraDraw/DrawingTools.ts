@@ -67,7 +67,7 @@ namespace Provider.DrawingTools.TerraDraw {
 		 * support hot-swapping modes, so the entire instance must be replaced.
 		 */
 		private _buildTerraDraw(): void {
-			if (this._provider) {
+			if (this._provider?.enabled) {
 				this._provider.stop();
 			}
 
