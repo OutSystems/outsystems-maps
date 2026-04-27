@@ -18,7 +18,7 @@ namespace Provider.Maps.Google.Shape {
 		protected _createProvider(path: Array<OSFramework.Maps.OSStructures.OSMap.Coordinates>): google.maps.Polygon {
 			return new google.maps.Polygon({
 				map: this.map.provider,
-				paths: path,
+				paths: path as google.maps.LatLngLiteral[],
 				...(this.getProviderConfig() as Configuration.Shape.IShapeProviderConfig),
 			});
 		}
