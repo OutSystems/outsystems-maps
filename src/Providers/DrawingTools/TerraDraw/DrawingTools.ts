@@ -208,10 +208,13 @@ namespace Provider.DrawingTools.TerraDraw {
 
 		public dispose(): void {
 			if (this.isReady) {
-				// Resets the mouse icon to its default state. 
-				// This prevents the tool's custom mouse icon from persisting after the provider is destroyed.
-				this._provider.setMode(Constants.ModeName.Select);
-				this._provider.stop();
+				// If the provider is not enabled, means that it was never started.
+				if (this.provider.enabled) {
+					// Resets the mouse icon to its default state.
+					// This prevents the tool's custom mouse icon from persisting after the provider is destroyed.
+					this._provider.setMode(Constants.ModeName.Select);
+					this._provider.stop();
+				}
 				this._ui?.dispose();
 			}
 			this._provider = undefined;
