@@ -35,7 +35,7 @@ namespace Provider.DrawingTools.TerraDraw {
 
 			// Always include a select mode so the user can deselect drawing without reloading
 			modes.push(
-				new globalThis.terraDraw.TerraDrawSelectMode({
+				new window.terraDraw.TerraDrawSelectMode({
 					flags: {
 						circle: { feature: { draggable: true } },
 						linestring: {
@@ -67,14 +67,14 @@ namespace Provider.DrawingTools.TerraDraw {
 		 * support hot-swapping modes, so the entire instance must be replaced.
 		 */
 		private _buildTerraDraw(): void {
-			if (this._provider) {
+			if (this._provider?.enabled) {
 				this._provider.stop();
 			}
 
-			this._provider = new globalThis.terraDraw.TerraDraw({
+			this._provider = new window.terraDraw.TerraDraw({
 				adapter: this._getAdapter(),
 				modes: this._buildModes(),
-			}) as TerraDrawProviderCompatible;
+			});
 
 			this._provider.on('finish', (id, context) => this._onFinish(id, context));
 
@@ -93,7 +93,7 @@ namespace Provider.DrawingTools.TerraDraw {
 
 		private _getAdapter(): TerraDrawGoogleMapsAdapter {
 			if (this.config.providerType === OSFramework.Maps.Enum.ProviderType.Google) {
-				return new globalThis.terraDrawGoogleMapsAdapter.TerraDrawGoogleMapsAdapter({
+				return new window.terraDrawGoogleMapsAdapter.TerraDrawGoogleMapsAdapter({
 					map: this.map.provider as google.maps.Map,
 					lib: google.maps,
 					coordinatePrecision: 9,
@@ -196,9 +196,9 @@ namespace Provider.DrawingTools.TerraDraw {
 		}
 
 		public changeProperty(propertyName: string, value: unknown): void {
-			const propValue = OSFramework.Maps.Enum.OS_Config_DrawingTools[propertyName];
 			super.changeProperty(propertyName, value);
 			if (this.isReady) {
+				const propValue = OSFramework.Maps.Enum.OS_Config_DrawingTools[propertyName];
 				if (propValue === OSFramework.Maps.Enum.OS_Config_DrawingTools.position) {
 					const modeNames = this.tools.map((t) => t.type);
 					this._ui?.refresh(modeNames, value as string);
@@ -208,10 +208,13 @@ namespace Provider.DrawingTools.TerraDraw {
 
 		public dispose(): void {
 			if (this.isReady) {
-				// Resets the mouse icon to its default state. 
-				// This prevents the tool's custom mouse icon from persisting after the provider is destroyed.
-				this._provider.setMode(Constants.ModeName.Select);
-				this._provider.stop();
+				// If the provider is not enabled, it means that it was never started.
+				if (this.provider.enabled) {
+					// Resets the mouse icon to its default state.
+					// This prevents the tool's custom mouse icon from persisting after the provider is destroyed.
+					this._provider.setMode(Constants.ModeName.Select);
+					this._provider.stop();
+				}
 				this._ui?.dispose();
 			}
 			this._provider = undefined;
@@ -235,10 +238,12 @@ namespace Provider.DrawingTools.TerraDraw {
 			tool && this._modeToTool.delete(tool.type);
 
 			if (this.isReady) {
-				// Resets the mouse icon to its default state. 
-				// This prevents the tool's custom mouse icon from persisting after the provider is destroyed.
-				this._provider.setMode(Constants.ModeName.Select);
-
+				// If the provider is not enabled, it means that it was never started.
+				if (this.provider.enabled) {
+					// Resets the mouse icon to its default state.
+					// This prevents the tool's custom mouse icon from persisting after the provider is destroyed.
+					this._provider.setMode(Constants.ModeName.Select);
+				}
 				this._buildTerraDraw();
 
 				this._provider.start();

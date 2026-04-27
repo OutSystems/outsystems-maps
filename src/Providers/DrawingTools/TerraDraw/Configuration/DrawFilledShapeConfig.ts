@@ -17,7 +17,7 @@ namespace Provider.DrawingTools.TerraDraw.Configuration {
 		 *   strokeWeight  → styles.outlineWidth
 		 *   strokeOpacity → styles.outlineOpacity
 		 */
-		public getProviderConfig(): unknown[] {
+		public getProviderConfig(): unknown {
 			return {
 				styles: {
 					fillColor: this.fillColor ?? '#aaaaaa',
@@ -26,7 +26,7 @@ namespace Provider.DrawingTools.TerraDraw.Configuration {
 					outlineWidth: this.strokeWeight ?? 2,
 					outlineOpacity: this.strokeOpacity ?? 1,
 				},
-			} as unknown as unknown[];
+			};
 		}
 	}
 }
