@@ -8,6 +8,6 @@ namespace Provider.DrawingTools.TerraDraw.Configuration {
 		public allowDrag: boolean;
 		public uniqueId: string;
 
-		public abstract getProviderConfig(): unknown[];
+		public abstract getProviderConfig(): unknown;
 	}
 }
