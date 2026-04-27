@@ -42,7 +42,9 @@ namespace Provider.DrawingTools.TerraDraw.Tools {
 
 		public createTerraDrawMode(): TerraDrawBaseDrawMode {
 			return new window.terraDraw.TerraDrawPolygonMode(
-				this.config.getProviderConfig() as ConstructorParameters<typeof window.terraDraw.TerraDrawPolygonMode>[0]
+				this.config.getProviderConfig() as ConstructorParameters<
+					typeof window.terraDraw.TerraDrawPolygonMode
+				>[0]
 			);
 		}
 	}
