@@ -208,7 +208,7 @@ namespace Provider.DrawingTools.TerraDraw {
 
 		public dispose(): void {
 			if (this.isReady) {
-				// If the provider is not enabled, means that it was never started.
+				// If the provider is not enabled, it means that it was never started.
 				if (this.provider.enabled) {
 					// Resets the mouse icon to its default state.
 					// This prevents the tool's custom mouse icon from persisting after the provider is destroyed.
@@ -238,7 +238,7 @@ namespace Provider.DrawingTools.TerraDraw {
 			tool && this._modeToTool.delete(tool.type);
 
 			if (this.isReady) {
-				// If the provider is not enabled, means that it was never started.
+				// If the provider is not enabled, it means that it was never started.
 				if (this.provider.enabled) {
 					// Resets the mouse icon to its default state.
 					// This prevents the tool's custom mouse icon from persisting after the provider is destroyed.
