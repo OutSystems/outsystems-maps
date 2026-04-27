@@ -12,14 +12,14 @@ namespace Provider.DrawingTools.TerraDraw.Configuration {
 	 *   strokeOpacity → styles.lineStringOpacity
 	 */
 	export class DrawPolylineConfig extends DrawBasicShapeConfig {
-		public getProviderConfig(): unknown[] {
+		public getProviderConfig(): unknown {
 			return {
 				styles: {
 					lineStringColor: this.strokeColor ?? '#555555',
 					lineStringWidth: this.strokeWeight ?? 2,
 					lineStringOpacity: this.strokeOpacity ?? 1,
 				},
-			} as unknown as unknown[];
+			};
 		}
 	}
 }

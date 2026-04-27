@@ -14,12 +14,12 @@ namespace Provider.DrawingTools.TerraDraw.Configuration {
 	export class DrawMarkerConfig extends DrawConfig {
 		public iconUrl: string;
 
-		public getProviderConfig(): unknown[] {
+		public getProviderConfig(): unknown {
 			return {
 				styles: {
 					markerUrl: this.iconUrl ?? '',
 				},
-			} as unknown as unknown[];
+			};
 		}
 	}
 }
