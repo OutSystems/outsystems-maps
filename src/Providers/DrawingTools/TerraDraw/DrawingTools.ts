@@ -35,7 +35,7 @@ namespace Provider.DrawingTools.TerraDraw {
 
 			// Always include a select mode so the user can deselect drawing without reloading
 			modes.push(
-				new globalThis.terraDraw.TerraDrawSelectMode({
+				new window.terraDraw.TerraDrawSelectMode({
 					flags: {
 						circle: { feature: { draggable: true } },
 						linestring: {
@@ -71,7 +71,7 @@ namespace Provider.DrawingTools.TerraDraw {
 				this._provider.stop();
 			}
 
-			this._provider = new globalThis.terraDraw.TerraDraw({
+			this._provider = new window.terraDraw.TerraDraw({
 				adapter: this._getAdapter(),
 				modes: this._buildModes(),
 			}) as TerraDrawProviderCompatible;
@@ -93,7 +93,7 @@ namespace Provider.DrawingTools.TerraDraw {
 
 		private _getAdapter(): TerraDrawGoogleMapsAdapter {
 			if (this.config.providerType === OSFramework.Maps.Enum.ProviderType.Google) {
-				return new globalThis.terraDrawGoogleMapsAdapter.TerraDrawGoogleMapsAdapter({
+				return new window.terraDrawGoogleMapsAdapter.TerraDrawGoogleMapsAdapter({
 					map: this.map.provider as google.maps.Map,
 					lib: google.maps,
 					coordinatePrecision: 9,

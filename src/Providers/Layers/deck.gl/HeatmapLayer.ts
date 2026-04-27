@@ -24,9 +24,9 @@ namespace Provider.Layers.deckgl.HeatmapLayer {
 				...(gradientColors ? { colorRange: gradientColors } : {}),
 				// Id that enables the deck.gl to perform the update to the layer.
 				id: this.uniqueId,
-			} as ConstructorParameters<typeof globalThis.deck.HeatmapLayer>[0];
+			} as ConstructorParameters<typeof window.deck.HeatmapLayer>[0];
 
-			return new globalThis.deck.HeatmapLayer(finalConfigs);
+			return new window.deck.HeatmapLayer(finalConfigs);
 		}
 
 		private _gradientColors(): DeckglColor[] | undefined {
@@ -75,7 +75,7 @@ namespace Provider.Layers.deckgl.HeatmapLayer {
 			// Creates the provider HeatmapLayer
 			this._providerHeatmapLayer = this._buildProviderLayer();
 
-			this._provider = new globalThis.deck.GoogleMapsOverlay({
+			this._provider = new window.deck.GoogleMapsOverlay({
 				layers: [this._providerHeatmapLayer],
 			});
 

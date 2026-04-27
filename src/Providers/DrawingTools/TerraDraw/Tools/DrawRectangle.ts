@@ -65,7 +65,9 @@ namespace Provider.DrawingTools.TerraDraw.Tools {
 		}
 
 		public createTerraDrawMode(): TerraDrawBaseDrawMode {
-			return new globalThis.terraDraw.TerraDrawRectangleMode(this.config.getProviderConfig());
+			return new window.terraDraw.TerraDrawRectangleMode(
+				this.config.getProviderConfig() as ConstructorParameters<typeof window.terraDraw.TerraDrawRectangleMode>[0]
+			);
 		}
 	}
 }
