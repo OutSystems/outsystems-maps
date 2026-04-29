@@ -26,7 +26,6 @@ namespace Provider.Maps.Google.OSMap {
 		}
 
 		private _addMapDragEndHandler(): void {
-
 			if (this && this._provider && this._gPostionChangeListener === undefined) {
 				this._gPostionChangeListener = google.maps.event.addListener(
 					this._provider,
@@ -471,20 +470,19 @@ namespace Provider.Maps.Google.OSMap {
 				position.lat === OSFramework.Maps.Helper.Constants.defaultMapCenter.lat &&
 				position.lng === OSFramework.Maps.Helper.Constants.defaultMapCenter.lng;
 
-			//If the user has zoomed or dragged the map and the developer intends to respect user zoom
-			//then the current map center will be used.
-			if (this.respectUserChange && this.hasZoomOrPositionChanged) {
-				position = this.provider.getCenter().toJSON();
+			// If the user has dragged the map and the developer intends to respect user position
+			// then the current map center will be used.
+			if (this.shouldRespectUserPosition) {
+				position = this.provider.getCenter()?.toJSON() ?? position;
 			} else {
-				//If there are markers, let's choose the map center accordingly.
-				//Otherwise, the map center will be the one current center position.
+				// If there are markers, let's choose the map center accordingly.
+				// Otherwise, the map center will be the one current center position.
 				if (this.markers.length > 0) {
 					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 					const markerProvider: any = this.markers[0].provider;
-					//Validate if the marker is already created
+					// Validate if the marker is already created
 					if (markerProvider !== undefined) {
-						//If the position is default or the zoom is auto the marker position will be 
-						//used as center
+						// If the position is default or the zoom is auto the marker position will be used as center
 						if (isDefault || this.features.zoom.isAutofit) {
 							position = markerProvider.position.toJSON();
 						}

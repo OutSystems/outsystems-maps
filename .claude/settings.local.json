@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(echo MISSING: $path:*)",
+      "WebFetch(domain:success.outsystems.com)",
+      "Bash(echo MISSING: $file:*)",
+      "WebFetch(domain:outsystemsui-qa.outsystemsenterprise.com)",
+      "WebFetch(domain:developers.google.com)",
+      "WebFetch(domain:leafletjs.com)",
+      "WebFetch(domain:unpkg.com)",
+      "WebFetch(domain:app.unpkg.com)"
+    ]
+  }
+}

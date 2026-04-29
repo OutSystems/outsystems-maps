@@ -1,0 +1,8 @@
+ignore:
+    global_paths:
+        /styles/**:
+            reason: BY_DESIGN
+        /jobs/**:
+            reason: BY_DESIGN
+        /docs/**:
+            reason: BY_DESIGN

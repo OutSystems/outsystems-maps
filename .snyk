@@ -1,5 +1,0 @@
-exclude:
- global:
-   - styles/**
-   - jobs/**
-   - docs/**

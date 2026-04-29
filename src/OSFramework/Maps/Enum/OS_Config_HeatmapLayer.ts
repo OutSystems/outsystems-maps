@@ -7,6 +7,7 @@ namespace OSFramework.Maps.Enum {
 		dissipateOnZoom,
 		gradient,
 		maxIntensity,
+		minIntensity,
 		points,
 		opacity,
 		radius,

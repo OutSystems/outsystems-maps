@@ -28,6 +28,5 @@ namespace Provider.Maps.Leaflet.Constants.OSMap {
 		zoom_end = 'zoomend',
 		// eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
 		zoom = 'zoom',
-	
 	}
 }

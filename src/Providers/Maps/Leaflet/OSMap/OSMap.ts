@@ -284,10 +284,10 @@ namespace Provider.Maps.Leaflet.OSMap {
 				position.lat === OSFramework.Maps.Helper.Constants.defaultMapCenter.lat &&
 				position.lng === OSFramework.Maps.Helper.Constants.defaultMapCenter.lng;
 
-			//If the user has zoomed or dragged the map and the developer intends to respect user zoom
+			//If the user has dragged the map and the developer intends to respect user position
 			//then the current map center will be used.
-			if (this.respectUserChange && this.hasZoomOrPositionChanged) {
-				position = this.provider.getCenter();
+			if (this.shouldRespectUserPosition) {
+				position = this.provider.getCenter() ?? position;
 			} else {
 				//If there are markers, let's choose the map center accordingly.
 				//Otherwise, the map center will be the one current center position.

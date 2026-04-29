@@ -4,7 +4,7 @@ namespace Provider.Maps.Google.Constants.Marker {
 	 * Enum that defines the available Provider Events
 	 */
 	export enum ProviderEventNames {
-		click = 'click',
+		click = 'gmp-click',
 		drag = 'drag',
 		dragend = 'dragend',
 		dragstart = 'dragstart',

@@ -8,7 +8,7 @@ namespace Provider.Maps.Google.HeatmapLayer {
 	};
 	export class HeatmapLayer extends OSFramework.Maps.HeatmapLayer.AbstractHeatmapLayer<
 		google.maps.visualization.HeatmapLayer,
-		OSFramework.Maps.Configuration.IConfigurationHeatmapLayer
+		Configuration.HeatmapLayer.IConfigurationGoogleHeatmapLayer
 	> {
 		constructor(map: OSFramework.Maps.OSMap.IMap, HeatmapLayerId: string, configs: JSON) {
 			super(map, HeatmapLayerId, new Configuration.HeatmapLayer.HeatmapLayerConfig(configs));
@@ -36,18 +36,26 @@ namespace Provider.Maps.Google.HeatmapLayer {
 			return data;
 		}
 
+		/**
+		 * Gets the block tag for the HeatmapLayer.
+		 * @returns The block tag for the HeatmapLayer.
+		 */
+		protected get blockTag(): string {
+			return OSFramework.Maps.Helper.Constants.heatmapLayerTag_deprecated;
+		}
+
 		public build(): void {
 			super.build();
 
-			const configs = this.getProviderConfig();
+			const providerConfigs = this.getProviderConfig() as google.maps.visualization.HeatmapLayerOptions;
 
 			// Creates the provider HeatmapLayer
 			this._provider = new google.maps.visualization.HeatmapLayer({
-				...configs,
+				...providerConfigs,
 				// first we need to convert the points from OS format to data GoogleProvider format
-				data: this._pointsToData(configs.points),
+				data: this._pointsToData(this.config.points),
 				// then, we need to make sure if the gradient is empty, we set it with the GoogleProvider default values
-				gradient: this._gradientColors(configs.gradient),
+				gradient: this._gradientColors(this.config.gradient),
 				map: this.map.provider,
 			});
 

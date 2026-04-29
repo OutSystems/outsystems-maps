@@ -9,7 +9,8 @@ namespace Provider.Maps.Google.Marker {
 		>
 		implements IMarkerGoogle
 	{
-		private readonly _addedEvents: Array<string>;
+		private readonly _addedDomListeners: Array<{ htmlEventName: string; listener: () => void }>;
+		private readonly _addedProviderEvents: Array<string>;
 
 		constructor(
 			map: OSFramework.Maps.OSMap.IMap,
@@ -18,7 +19,8 @@ namespace Provider.Maps.Google.Marker {
 			configs: unknown
 		) {
 			super(map, markerId, type, new Configuration.Marker.GoogleMarkerConfig(configs));
-			this._addedEvents = [];
+			this._addedProviderEvents = [];
+			this._addedDomListeners = [];
 		}
 
 		private _setIcon(): void {
@@ -27,10 +29,10 @@ namespace Provider.Maps.Google.Marker {
 					const height = this.config.iconHeight;
 					const width = this.config.iconWidth;
 
-					const markerIconWrapper = document.createElement('div');
-					markerIconWrapper.className = 'os-marker-icon';
-
 					if (this.config.iconUrl !== '') {
+						const markerIconWrapper = document.createElement('div');
+						markerIconWrapper.className = 'os-marker-icon';
+
 						const markerIconImage = document.createElement('img');
 						markerIconImage.src = this.config.iconUrl;
 						if (height > 0 && width > 0) {
@@ -47,10 +49,15 @@ namespace Provider.Maps.Google.Marker {
 						}
 						this._provider.content = markerIconWrapper;
 					} else {
-						markerIconWrapper.textContent = this.config.label;
-
-						const markerIcon = new google.maps.marker.PinElement({ glyph: markerIconWrapper });
-						this._provider.content = markerIcon.element;
+						// The current Type definition of Google Maps is not updated
+						// with the new definition of google.maps.marker.PinElementOptions.
+						// This is a temporary solution to bypass the type error.
+						// TODO: Remove this once a new version of the package @types/google.maps
+						// is made available and the type definition is updated.
+						const markerIcon = new google.maps.marker.PinElement({
+							glyphText: this.config.label,
+						} as unknown as google.maps.marker.PinElementOptions);
+						this._provider.content = markerIcon;
 					}
 				} catch (e) {
 					console.error(e);
@@ -120,21 +127,25 @@ namespace Provider.Maps.Google.Marker {
 		}
 
 		protected _setMarkerEvents(): void {
-			// Make sure the listeners get removed before adding the new ones
-			this._addedEvents.forEach((eventListener, index) => {
-				google.maps.event.clearListeners(this.provider, eventListener);
-				this._addedEvents.splice(index, 1);
+			// Remove previously registered Google Maps API listeners
+			this._addedProviderEvents.splice(0).forEach((eventName) => {
+				google.maps.event.clearListeners(this._provider, eventName);
+			});
+
+			// Remove previously registered DOM listeners using the stored callback references
+			this._addedDomListeners.splice(0).forEach(({ htmlEventName, listener }) => {
+				this._provider.element.removeEventListener(htmlEventName, listener);
 			});
 
 			// OnClick Event (OS accelerator)
 			if (this.markerEvents.hasHandlers(OSFramework.Maps.Event.Marker.MarkerEventType.OnClick)) {
-				this._addedEvents.push('click');
-				this._provider.addListener('click', (e: google.maps.MapMouseEvent) => {
+				this._addedProviderEvents.push(Constants.Marker.ProviderEventNames.click);
+				this._provider.addListener(Constants.Marker.ProviderEventNames.click, () => {
 					this._triggerEvent(
 						OSFramework.Maps.Event.Marker.MarkerEventType.OnClick,
 						OSFramework.Maps.Event.Marker.MarkerEventType.OnClick,
-						e.latLng.lat,
-						e.latLng.lng
+						this._provider.position.lat,
+						this._provider.position.lng
 					);
 				});
 			}
@@ -147,18 +158,18 @@ namespace Provider.Maps.Google.Marker {
 					const ProviderEventName = Constants.Marker.ProviderEventNames[eventName];
 
 					if (ProviderEventName !== undefined) {
-						this._addedEvents.push(eventName);
+						this._addedProviderEvents.push(eventName);
 						this._provider.addListener(
 							// Name of the event (e.g. click, dblclick, contextmenu, etc)
 							ProviderEventName,
 							// Callback CAN have an attribute (e) which is of the type MapMouseEvent
 							// Trigger the event by specifying the ProviderEvent MarkerType and the coords (lat, lng) if the callback has the attribute MapMouseEvent
-							(e: google.maps.MapMouseEvent) => {
+							() => {
 								this._triggerEvent(
 									OSFramework.Maps.Event.Marker.MarkerEventType.ProviderEvent,
 									eventName,
-									e.latLng.lat,
-									e.latLng.lng
+									this._provider.position.lat,
+									this._provider.position.lng
 								);
 							}
 						);
@@ -166,21 +177,16 @@ namespace Provider.Maps.Google.Marker {
 						const HtmlEventName = Constants.Marker.ProviderEventNamesHtml[eventName];
 
 						if (HtmlEventName !== undefined) {
-							this._addedEvents.push(eventName);
-							this._provider.element.addEventListener(
-								// Name of the event (e.g. click, dblclick, contextmenu, etc)
-								HtmlEventName,
-								// Callback CAN have an attribute (e) which is of the type MapMouseEvent
-								// Trigger the event by specifying the ProviderEvent MarkerType and the coords (lat, lng) if the callback has the attribute MapMouseEvent
-								() => {
-									this._triggerEvent(
-										OSFramework.Maps.Event.Marker.MarkerEventType.ProviderEvent,
-										eventName,
-										this._provider.position.lat,
-										this.provider.position.lng
-									);
-								}
-							);
+							const listener = () => {
+								this._triggerEvent(
+									OSFramework.Maps.Event.Marker.MarkerEventType.ProviderEvent,
+									eventName,
+									this._provider.position.lat,
+									this._provider.position.lng
+								);
+							};
+							this._addedDomListeners.push({ htmlEventName: HtmlEventName, listener });
+							this._provider.element.addEventListener(HtmlEventName, listener);
 						} else {
 							console.error(`Event ${eventName} is not a valid event for the Marker.`);
 						}

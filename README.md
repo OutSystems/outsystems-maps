@@ -1,4 +1,4 @@
-# OutSystems Maps · v2.2.0
+# OutSystems Maps · v2.3.1
 
 ![GitHub License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg) ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
@@ -16,7 +16,7 @@ Use the OutSystems Maps to create visual rich enterprise-grade interfaces that h
 * **No javascript knowledge required**
 
 ### Where can you find the component?
-The OutSystems component, like all components, can be found in [OutSystems forge](https://www.outsystems.com/forge/component-overview/9909/outsystems-maps). There you can also find a [sample application](https://www.outsystems.com/forge/component-overview/10984/outsystems-maps-sample) that show-cases several uses of the component.
+The OutSystems component, like all components, can be found in [OutSystems Forge](https://www.outsystems.com/forge/component-overview/9909/outsystems-maps) and [OutSystems Forge Component Page (ODC)](https://www.outsystems.com/forge/component-overview/15930/outsystems-maps-odc). There you can also find a [sample application](https://www.outsystems.com/forge/component-overview/10984/outsystems-maps-sample) that show-cases several uses of the component.
 The documentation for the component can be found in the [official page](https://success.outsystems.com/Documentation/11/Developing_an_Application/Design_UI/Patterns/Using_Mobile_and_Reactive_Patterns/Map), as well as, in a more interactive way in the [Component living documentation](https://outsystemsui.outsystems.com/OutSystemsMapsSample/).
 
 ### Why use this component?
@@ -78,7 +78,8 @@ To be accepted, a Pull Request needs to:
     * Avoid exposing sensible information of any kind (e.g. internal server link, process, etc).
 
 ## Useful Links
-* Download latest version in [OutSystems forge](https://www.outsystems.com/forge/component-versions/9909)
+* Download latest O11 version in [OutSystems forge](https://www.outsystems.com/forge/component-overview/9909/outsystems-maps-o11)
+- Download latest ODC version in [OutSystems Forge Component Page (ODC)](https://www.outsystems.com/forge/component-overview/15930/outsystems-maps-odc)
 * Test the latest changes in the [sample app](https://www.outsystems.com/forge/component-overview/10984/outsystems-maps-sample)
 * [Component living documentation](https://outsystemsui.outsystems.com/OutSystemsMapsSample/)
 * Component [documentation](https://success.outsystems.com/Documentation/11/Developing_an_Application/Design_UI/Patterns/Using_Mobile_and_Reactive_Patterns/Map)
