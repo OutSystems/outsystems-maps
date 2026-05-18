@@ -1,0 +1,19 @@
+{
+  "name": "loaders-gl-bundle",
+  "version": "4.4.2",
+  "private": true,
+  "scripts": {
+    "build": "rollup -c rollup.config.mjs"
+  },
+  "dependencies": {
+    "@loaders.gl/core": "4.4.2",
+    "@loaders.gl/kml": "4.4.2",
+    "@loaders.gl/xml": "4.4.2"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "28.0.3",
+    "@rollup/plugin-node-resolve": "15.3.1",
+    "@rollup/plugin-terser": "0.4.4",
+    "rollup": "4.40.2"
+  }
+}
