@@ -2,6 +2,7 @@
 namespace OutSystems.Maps.MapAPI.FileLayerManager {
 	const fileLayerMap = new Map<string, string>(); //fileLayer.uniqueId -> map.uniqueId
 	const fileLayerArr = new Array<OSFramework.Maps.FileLayer.IFileLayer>();
+	let internalUseDeckglLoader = true;
 
 	/**
 	 * Gets the Map to which the FileLayer belongs to
@@ -75,6 +76,16 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
 		} else {
 			console.error(`There is already a FileLayer registered on the specified Map under id:${fileLayerId}`);
 		}
+	}
+
+	/**
+	 * Sets whether the FileLayerManager should use the deck.gl loader (loaders.gl + GeoJsonLayer)
+	 * or the native Google Maps KmlLayer to render KML files.
+	 *
+	 * @param {boolean} useDeckglLoader true (default) = deck.gl loader; false = Google KmlLayer
+	 */
+	export function SetUseDeckglLoader(useDeckglLoader = true): void {
+		internalUseDeckglLoader = useDeckglLoader;
 	}
 
 	/**
