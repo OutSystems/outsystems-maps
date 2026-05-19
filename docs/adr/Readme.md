@@ -24,8 +24,12 @@ Each ADR should follow the template in `ADR-0000-Title-of-ADR.md`.
 
 ## ADR Log
 
-| ADR Number | Title                                                             | Status   | Date                                |
-| :--------- | :---------------------------------------------------------------- | :------- | :---------------------------------- |
-| ADR-0000   | Template for ADRs                                                 | Meta     | 2026-02-04                          |
-| ADR-0001   | Use AI for Development Assistance                                 | Accepted | 2026-02-04                          |
-| ADR-0002   | Highcharts TypeScript typings compatibility fixes v12 Assistance                                 | Accepted | 2026-02-04                          |
+| ADR Number | Title                                                                                  | Status   | Date       |
+| :--------- | :------------------------------------------------------------------------------------- | :------- | :--------- |
+| [ADR-0000](./ADR-0000-Title-of-ADR.md) | Template for ADRs                                                          | Meta     | —          |
+| [ADR-0001](./ADR-0001-Google-Markers-Draw-Performance.md) | Google Markers and Marker Cluster draw phase            | Accepted | 2026-02-10 |
+| [ADR-0002](./ADR-0002-Replace-Google-DrawingManager-with-TerraDraw.md) | Replace Google DrawingManager with Terra Draw | Accepted | 2026-03-17 |
+| [ADR-0003](./ADR-0003-Replace-Google-HeatmapLayer-with-deck-gl.md) | Replace Google HeatmapLayer with deck.gl HeatmapLayer | Accepted | 2026-04-07 |
+| [ADR-0004](./ADR-0004-Fix-RespectUserZoom-Only-Breaking-Map-Center-Refresh.md) | Fix map center not refreshing when only respectUserZoom is active | Accepted | 2026-04-20 |
+| [ADR-0005](./ADR-0005-Self-Contained-Bundling-of-NPM-Only-Runtime-Libraries.md) | Self-contained bundling of npm-only runtime libraries via external_libs folder | Proposed | 2026-05-19 |
+| [ADR-0006](./ADR-0006-Replace-Google-KmlLayer-with-deck-gl-FileLayer.md) | Replace Google KmlLayer with deck.gl-based FileLayer | Proposed | 2026-05-19 |
