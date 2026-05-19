@@ -220,7 +220,7 @@ libraries that are **only** distributed as ESM/CJS.
 ## Links
 
 - ROU-12785 (deck.gl FileLayer — first consumer of the pattern)
-- [external_libs/README.md](../../external_libs/README.md)
+- Vendoring workflow reference: documented in this ADR
 - [loaders.gl KMLLoader documentation](https://loaders.gl/docs/modules/kml/api-reference/kml-loader)
 
 ## Date
