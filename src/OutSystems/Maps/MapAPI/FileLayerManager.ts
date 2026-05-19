@@ -57,16 +57,24 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
 	 * @param {string} configs configurations for the FileLayer in JSON format
 	 * @returns {*}  {FileLayer.IFileLayer} instance of the FileLayer
 	 */
-	export function CreateFileLayer(fileLayerId: string, configs: string): OSFramework.Maps.FileLayer.IFileLayer {
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	export function CreateFileLayer(
+		fileLayerId: string,
+		configs: string
+	): OSFramework.Maps.FileLayer.IFileLayer | undefined {
 		const map = GetMapByFileLayerId(fileLayerId);
-		if (OSFramework.Maps.Helper.ValidateFeatureProvider(map, OSFramework.Maps.Enum.Feature.FileLayer) === false) {
-			return;
+		if (
+			map &&
+			OSFramework.Maps.Helper.ValidateFeatureProvider(map, OSFramework.Maps.Enum.Feature.FileLayer) === false
+		) {
+			return undefined;
 		}
-		if (!map.hasFileLayer(fileLayerId)) {
-			const _fileLayer = Provider.Maps.Google.FileLayer.FileLayerFactory.MakeFileLayer(
+		if (map && !map.hasFileLayer(fileLayerId)) {
+			const _fileLayer = OSFramework.Maps.FileLayer.FileLayerFactory.MakeFileLayer(
 				map,
 				fileLayerId,
-				JSON.parse(configs)
+				JSON.parse(configs),
+				internalUseDeckglLoader
 			);
 			fileLayerArr.push(_fileLayer);
 			fileLayerMap.set(fileLayerId, map.uniqueId);
@@ -75,6 +83,7 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
 			return _fileLayer;
 		} else {
 			console.error(`There is already a FileLayer registered on the specified Map under id:${fileLayerId}`);
+			return undefined;
 		}
 	}
 
