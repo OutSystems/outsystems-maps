@@ -46,6 +46,7 @@ namespace OSFramework.Maps.Enum {
 		LIB_InvalidApiKeySearchPlaces = 'MAPS-LIB-10001',
 		LIB_FailedGeocodingSearchAreaLocations = 'MAPS-LIB-10002',
 		LIB_FailedGeocodingLeafletMap = 'MAPS-LIB-11001',
+		LIB_FailedLoadingFileLayer = 'MAPS-LIB-07001',
 
 		// Error Codes - API errors - Specific errors generated when exposing the component client actions API/Framework.
 		API_FailedRemoveDirections = 'MAPS-API-03001',
