@@ -1,6 +1,20 @@
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import terser from '@rollup/plugin-terser';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+const pkg = require('./package.json');
+
+const bundledPackages = Object.entries(pkg.dependencies)
+    .map(([name, version]) => `${name}@${version}`)
+    .join(', ');
+
+const banner = `/*!
+ * loaders.gl UMD bundle v${pkg.version}
+ * Packages: ${bundledPackages}
+ * Generated: ${new Date().toISOString()}
+ */`;
 
 export default {
     input: 'src/index.js',
@@ -9,6 +23,7 @@ export default {
         format: 'umd',
         name: 'loaders',
         exports: 'named',
+        banner,
     },
     plugins: [
         resolve({ browser: true, preferBuiltins: false }),
