@@ -9,13 +9,12 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
 	 *
 	 * @param {string} fileLayerId Id of the FileLayer that exists on the Map
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	function GetMapByFileLayerId(fileLayerId: string): OSFramework.Maps.OSMap.IMap {
-		let map: OSFramework.Maps.OSMap.IMap;
+	function GetMapByFileLayerId(fileLayerId: string): OSFramework.Maps.OSMap.IMap | undefined {
+		let map: OSFramework.Maps.OSMap.IMap | undefined = undefined;
 
 		//fileLayerId is the UniqueId
 		if (fileLayerMap.has(fileLayerId)) {
-			map = MapManager.GetMapById(fileLayerMap.get(fileLayerId), false);
+			map = MapManager.GetMapById(fileLayerMap.get(fileLayerId) as string, false);
 		}
 		//UniqueID not found
 		else {
@@ -43,7 +42,7 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
 	 */
 	export function ChangeProperty(fileLayerId: string, propertyName: string, propertyValue: unknown): void {
 		const fileLayer = GetFileLayerById(fileLayerId);
-		const map = fileLayer.map;
+		const map = fileLayer?.map;
 
 		if (map !== undefined) {
 			map.changeFileLayerProperty(fileLayerId, propertyName, propertyValue);
@@ -103,8 +102,11 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
 	 * @export
 	 * @param fileLayerId Id of the FileLayer
 	 */
-	export function GetFileLayerById(fileLayerId: string, raiseError = true): OSFramework.Maps.FileLayer.IFileLayer {
-		const fileLayer: OSFramework.Maps.FileLayer.IFileLayer = fileLayerArr.find(
+	export function GetFileLayerById(
+		fileLayerId: string,
+		raiseError = true
+	): OSFramework.Maps.FileLayer.IFileLayer | undefined {
+		const fileLayer: OSFramework.Maps.FileLayer.IFileLayer | undefined = fileLayerArr.find(
 			(p) => p && p.equalsToID(fileLayerId)
 		);
 
@@ -122,7 +124,7 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
 	 */
 	export function RemoveFileLayer(fileLayerId: string): void {
 		const fileLayer = GetFileLayerById(fileLayerId);
-		const map = fileLayer.map;
+		const map = fileLayer?.map;
 
 		map && map.removeFileLayer(fileLayerId);
 		fileLayerMap.delete(fileLayerId);
@@ -146,14 +148,20 @@ namespace MapAPI.FileLayerManager {
 		OutSystems.Maps.MapAPI.FileLayerManager.ChangeProperty(fileLayerId, propertyName, propertyValue);
 	}
 
-	export function CreateFileLayer(fileLayerId: string, configs: string): OSFramework.Maps.FileLayer.IFileLayer {
+	export function CreateFileLayer(
+		fileLayerId: string,
+		configs: string
+	): OSFramework.Maps.FileLayer.IFileLayer | undefined {
 		OSFramework.Maps.Helper.LogWarningMessage(
 			`${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.CreateFileLayer()'`
 		);
 		return OutSystems.Maps.MapAPI.FileLayerManager.CreateFileLayer(fileLayerId, configs);
 	}
 
-	export function GetFileLayerById(fileLayerId: string, raiseError = true): OSFramework.Maps.FileLayer.IFileLayer {
+	export function GetFileLayerById(
+		fileLayerId: string,
+		raiseError = true
+	): OSFramework.Maps.FileLayer.IFileLayer | undefined {
 		OSFramework.Maps.Helper.LogWarningMessage(
 			`${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.GetFileLayerById()'`
 		);
