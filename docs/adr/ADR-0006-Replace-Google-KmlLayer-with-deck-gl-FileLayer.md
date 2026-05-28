@@ -198,6 +198,9 @@ A new sub-namespace was introduced under `src/Providers/Layers/deck.gl/`:
 |---|---|
 | `FileLayer/FileLayer.ts` | Orchestrator. Loads the KML via the vendored loaders.gl bundle, builds the icon atlas, constructs a `deck.GeoJsonLayer`, wraps it in `deck.GoogleMapsOverlay`, and attaches it to the Google Map. Owns the property-change path (rebuild layer + setProps). |
 | `FileLayer/Factory.ts` | Factory method `MakeFileLayer()` that instantiates the deck.gl File Layer for the framework's Factory. |
+| `FileLayer/IIconMapping.ts` | TypeScript interface for atlas entries passed to `GeoJsonLayer`'s `iconMapping`: `{ x, y, width, height, anchorX, anchorY }`. |
+| `Constants.ts` | Namespace-level constants shared across deck.gl layer implementations: `DEFAULT_ICON_KEY` (`'__default__'`), `DEFAULT_ICON_URL` (path to the bundled fallback marker image), `ICON_CELL_SIZE` (`64` px), `DEFAULT_STROKE_COLOR` (`[66, 133, 244, 255]` — Google-blue, fully opaque), and `DEFAULT_FILL_COLOR` (`[66, 133, 244, 60]` — Google-blue, ~24% opaque). |
+| `Helper.ts` | Shared utility functions for deck.gl layer implementations. `HexToRgba(hex)` converts a `#RRGGBB` or `#RRGGBBAA` hex string to a `[r, g, b, a]` color tuple compatible with deck.gl color accessors. |
 | `Configuration/FileLayer/FileLayerConfigs.ts` | Configuration class implementing `IConfigurationFileLayer` (`layerUrl`, `preserveViewport`, `suppressPopups`). |
 
 ### Pipeline
@@ -232,24 +235,66 @@ To bypass deck.gl's loader path entirely, the File Layer **pre-builds
 an icon atlas in the browser** before constructing the deck.gl layer:
 
 1. Walk the loaded features and collect unique `properties.icon` URLs
-   (trimmed). A default fallback URL is always included so features
-   without an explicit icon still render.
-2. Load each URL with a plain `new Image()` (`crossOrigin = 'anonymous'`),
-   wrapped in a Promise. Per-URL `try/catch` ensures one failed icon does
-   not block the layer.
-3. Composite successful loads into an offscreen `<canvas>` arranged as a
-   grid of 64 × 64 cells.
-4. Construct an `iconMapping` keyed by URL, with each entry providing
-   `x`, `y`, `width`, `height`, `anchorX`, `anchorY` (anchor at
-   bottom-centre, matching pushpin convention).
-5. Pass the canvas to `iconAtlas` and the mapping to `iconMapping` on
+   (trimmed). A default fallback URL (`Constants.DEFAULT_ICON_URL`) is
+   always included so features without an explicit icon still render.
+2. Load each URL via `_tryLoad(url, withCors = true)` — a thin
+   `Promise<HTMLImageElement | null>` wrapper around `new Image()`.
+   The bundled default icon is fetched without `crossOrigin` (local
+   asset); all external KML icon URLs use `crossOrigin = 'anonymous'`.
+   A `null` result means the fetch failed; the icon is omitted from
+   the atlas without blocking the layer.
+3. The default image (`_defaultImg`) is cached with `??=` and persists
+   across URL changes, so the bundled marker is only fetched once per
+   layer instance.
+4. Composite successful loads into an offscreen `<canvas>`. Icons are
+   packed into a square grid: `cols = Math.max(1, Math.ceil(Math.sqrt(entries.length)))`,
+   `rows = Math.ceil(entries.length / cols)`. Each cell is
+   `ICON_CELL_SIZE × ICON_CELL_SIZE` pixels (64 px, from `Constants.ICON_CELL_SIZE`).
+5. Construct an `iconMapping` keyed by URL, where each value is an
+   `IIconMapping` record (`x`, `y`, `width`, `height`, `anchorX`,
+   `anchorY`). Anchor is set to bottom-centre (`anchorX = size/2`,
+   `anchorY = size`), matching pushpin convention.
+6. Pass the canvas to `iconAtlas` and the mapping to `iconMapping` on
    `GeoJsonLayer`. `getIcon` returns the URL string as the mapping key
-   (falling back to the default when no atlas entry exists for the
-   feature's URL).
+   (falling back to `Constants.DEFAULT_ICON_KEY` — `'__default__'` —
+   when no atlas entry exists for the feature's URL).
 
 This approach is robust to whatever deck.gl bundle the OutSystems Forge
 component happens to load, because the layer never asks deck.gl to fetch
 icons — it hands deck.gl a finished texture.
+
+### Color resolution — `_colorFromProperties`
+
+After loaders.gl parses the KML, Polygon and LineString features carry style
+properties inherited from the KML `<Style>` block:
+
+| GeoJSON property | Type | Meaning |
+|---|---|---|
+| `fill` | `#RRGGBB` hex string | Polygon fill colour |
+| `fill-opacity` | `number` 0–1 | Polygon fill opacity |
+| `stroke` | `#RRGGBB` hex string | Line/polygon border colour |
+| `stroke-opacity` | `number` 0–1 | Line/polygon border opacity |
+| `stroke-width` | `number` (px) | Line width in pixels |
+
+`_colorFromProperties(props, colorKey, opacityKey, fallback)` centralises
+hex-to-RGBA conversion for both `getLineColor` and `getFillColor` callbacks
+on `GeoJsonLayer`. It:
+
+1. Reads `props[colorKey]` as a `#RRGGBB` string.
+2. Delegates the hex-to-RGBA conversion to `Helper.HexToRgba(hex)`, which
+   parses `r`, `g`, `b` (and optionally `a`) from a `#RRGGBB` or `#RRGGBBAA`
+   string using `parseInt(hex.slice(...), 16)`. When no alpha channel is
+   present in the hex string, the alpha defaults to `255` (fully opaque).
+3. Reads `props[opacityKey]` (defaults to `1` if absent) and scales it to
+   the 0–255 alpha range with `Math.round(opacity * 255)`, overriding the
+   alpha returned by `HexToRgba`.
+4. Returns `[r, g, b, a]`. If the hex string is absent or malformed,
+   returns the caller-supplied `fallback` tuple directly.
+
+Default fallback values are defined as `Constants.DEFAULT_STROKE_COLOR` and
+`Constants.DEFAULT_FILL_COLOR` and referenced by name in `_buildProviderLayer()`:
+- `getLineColor` fallback: `Constants.DEFAULT_STROKE_COLOR` → `[66, 133, 244, 255]` — Google-blue, fully opaque.
+- `getFillColor` fallback: `Constants.DEFAULT_FILL_COLOR` → `[66, 133, 244, 60]` — Google-blue, ~24% opaque.
 
 ### Event flow
 
@@ -269,11 +314,17 @@ legacy `KmlMouseEvent.featureData` payload is replaced by the GeoJSON
   construct deck.gl layer + overlay, attach to map, optionally fit bounds,
   then `finishBuild()`.
 - `changeProperty(layerUrl)` → tear down the overlay, clear the atlas,
-  re-run `_loadAndBuild(false)` with the new URL.
+  re-run `_loadAndBuild(false)` with the new URL. `_defaultImg` is
+  intentionally preserved (not cleared) to avoid re-fetching the
+  bundled fallback icon.
 - `changeProperty(suppressPopups)` → rebuild the layer and call
   `overlay.setProps({ layers })`; atlas state is preserved.
 - `changeProperty(preserveViewport)` → invoke `_fitBounds()` when the new
   value is `false`.
+- `refreshProviderEvents()` → rebuilds the deck.gl layer via
+  `_createFileLayer()` (GeoJSON data and atlas are preserved); called by
+  the framework when click-handler registration changes after `build()`
+  completes, so `onClick` wiring on the layer stays in sync.
 - `dispose()` → detach the overlay, finalise deck.gl resources, clear all
   retained state (`_provider`, `_geoJsonLayer`, `_geoJsonData`,
   `_iconAtlas`, `_iconMapping`).
