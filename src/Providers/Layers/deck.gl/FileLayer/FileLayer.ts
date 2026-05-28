@@ -189,7 +189,14 @@ namespace Provider.Layers.deckgl.FileLayer {
 		// Instantiates a fresh provider layer from the current data and atlas, then pushes it onto the deck.gl overlay.
 		private _createFileLayer(): void {
 			this._geoJsonLayer = this._buildProviderLayer();
-			this._provider.setProps({ layers: [this._geoJsonLayer] });
+			if (!this._provider) {
+				this._provider = new window.deck.GoogleMapsOverlay({
+					layers: [this._geoJsonLayer],
+				});
+				this._provider.setMap(this.map.provider);
+			} else {
+				this._provider.setProps({ layers: [this._geoJsonLayer] });
+			}
 		}
 
 		// Detaches the overlay from the Google Map, finalizes deck.gl resources, and resets all layer state to undefined.
@@ -245,8 +252,6 @@ namespace Provider.Layers.deckgl.FileLayer {
 				await this._buildIconAtlas();
 
 				this._createFileLayer();
-
-				this._provider.setMap(this.map.provider);
 
 				if (!this.config.preserveViewport) {
 					this._fitBounds();
