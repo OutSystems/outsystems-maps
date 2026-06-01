@@ -1,6 +1,6 @@
 # loaders.gl external bundle
 
-This sub-project builds a standalone bundle of `@loaders.gl/core`, `@loaders.gl/kml`, and `@loaders.gl/xml` that is checked in and consumed by the main library at runtime.
+This sub-project builds a standalone bundle of `@loaders.gl/core`, and `@loaders.gl/kml` that is checked in and consumed by the main library at runtime.
 
 ## Why different versions?
 
