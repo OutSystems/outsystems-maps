@@ -23,7 +23,7 @@ namespace OSFramework.Maps.FileLayer {
 				throw new Error(`There is no factory for the FileLayer using the provider ${map.providerType}`);
 			}
 
-			return fileLayerBuilder(map, fileLayerId, configs) as IFileLayer;
+			return fileLayerBuilder(map, fileLayerId, configs);
 		}
 	}
 }
