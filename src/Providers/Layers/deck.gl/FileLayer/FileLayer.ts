@@ -117,7 +117,7 @@ namespace Provider.Layers.deckgl.FileLayer {
 				// Uses the icons previously stored in the icon atlas.
 				getIcon: (feature: GeoJSON.Feature) => {
 					const url = (feature.properties as { icon?: string } | undefined)?.icon?.trim() ?? '';
-					return this._iconMapping?.[url] !== undefined ? url : Constants.DEFAULT_ICON_KEY;
+					return this._iconMapping?.[url] ? url : Constants.DEFAULT_ICON_KEY;
 				},
 				stroked: true,
 				filled: true,

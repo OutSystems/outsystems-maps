@@ -14,7 +14,7 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
 
 		//fileLayerId is the UniqueId
 		if (fileLayerMap.has(fileLayerId)) {
-			map = MapManager.GetMapById(fileLayerMap.get(fileLayerId) as string, false);
+			map = MapManager.GetMapById(fileLayerMap.get(fileLayerId)!, false);
 		}
 		//UniqueID not found
 		else {
