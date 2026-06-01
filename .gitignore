@@ -2,6 +2,7 @@ node_modules
 dist
 !external_libs/**/dist
 !external_libs/**/dist/**
+!external_libs/package-lock.json
 
 code/*.bat
 code/package-lock.json
