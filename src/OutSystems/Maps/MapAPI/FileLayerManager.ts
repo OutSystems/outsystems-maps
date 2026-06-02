@@ -96,16 +96,6 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
 	}
 
 	/**
-	 * Sets whether the FileLayerManager should use the deck.gl loader (loaders.gl + GeoJsonLayer)
-	 * or the native Google Maps KmlLayer to render KML files.
-	 *
-	 * @param {boolean} useDeckglLoader true (default) = deck.gl loader; false = Google KmlLayer
-	 */
-	export function SetUseDeckglLoader(useDeckglLoader = true): void {
-		internalUseDeckglLoader = useDeckglLoader;
-	}
-
-	/**
 	 * Returns a FileLayer element based on Id
 	 *
 	 * @export
@@ -143,6 +133,16 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
 			}),
 			1
 		);
+	}
+
+	/**
+	 * Sets whether the FileLayerManager should use the deck.gl loader (loaders.gl + GeoJsonLayer)
+	 * or the native Google Maps KmlLayer to render KML files.
+	 *
+	 * @param {boolean} useDeckglLoader true (default) = deck.gl loader; false = Google KmlLayer
+	 */
+	export function SetUseDeckglLoader(useDeckglLoader = true): void {
+		internalUseDeckglLoader = useDeckglLoader;
 	}
 }
 
