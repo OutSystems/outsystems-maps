@@ -30,6 +30,21 @@ The root `package.json` only references these libraries as `devDependencies` (vi
 7. Add the library as a type-only `devDependency` in the root `package.json`
 8. Declare the `window.<global>` type in `src/Global.d.ts`
 
+## Node version management (Volta)
+
+Each subfolder pins its required Node.js and npm versions via [Volta](https://volta.sh/) in its `package.json`:
+
+```json
+"volta": {
+  "node": "24.13.1",
+  "npm": "11.10.1"
+}
+```
+
+If Volta is installed, it automatically switches to the pinned versions when you `cd` into the subfolder. If you do not use Volta, ensure you are running a compatible Node version before building.
+
+To install Volta: https://docs.volta.sh/guide/getting-started
+
 ## Rebuilding a bundle
 
 ```bash
