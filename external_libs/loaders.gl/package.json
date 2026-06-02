@@ -18,5 +18,9 @@
   },
   "overrides": {
     "@xmldom/xmldom": "0.9.10"
+  },
+  "volta": {
+    "node": "24.13.1",
+    "npm": "11.10.1"
   }
 }

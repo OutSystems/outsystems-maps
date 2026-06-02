@@ -10,7 +10,7 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
 	 * @param {string} fileLayerId Id of the FileLayer that exists on the Map
 	 */
 	function GetMapByFileLayerId(fileLayerId: string): OSFramework.Maps.OSMap.IMap | undefined {
-		let map: OSFramework.Maps.OSMap.IMap | undefined = undefined;
+		let map: OSFramework.Maps.OSMap.IMap | undefined;
 
 		//fileLayerId is the UniqueId
 		if (fileLayerMap.has(fileLayerId)) {
@@ -56,7 +56,6 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
 	 * @param {string} configs configurations for the FileLayer in JSON format
 	 * @returns {*}  {FileLayer.IFileLayer} instance of the FileLayer
 	 */
-	// eslint-disable-next-line @typescript-eslint/naming-convention
 	export function CreateFileLayer(
 		fileLayerId: string,
 		configs: string
@@ -66,22 +65,32 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
 			map &&
 			OSFramework.Maps.Helper.ValidateFeatureProvider(map, OSFramework.Maps.Enum.Feature.FileLayer) === false
 		) {
+			console.warn(
+				`The FileLayer with id:${fileLayerId} cannot be created because the provider of the map with id:${map.widgetId} doesn't support File Layers.`
+			);
 			return undefined;
 		}
-		if (map && !map.hasFileLayer(fileLayerId)) {
-			const _fileLayer = OSFramework.Maps.FileLayer.FileLayerFactory.MakeFileLayer(
-				map,
-				fileLayerId,
-				JSON.parse(configs),
-				internalUseDeckglLoader
-			);
-			fileLayerArr.push(_fileLayer);
-			fileLayerMap.set(fileLayerId, map.uniqueId);
-			map.addFileLayer(_fileLayer);
+		if (map) {
+			if (!map.hasFileLayer(fileLayerId)) {
+				const _fileLayer = OSFramework.Maps.FileLayer.FileLayerFactory.MakeFileLayer(
+					map,
+					fileLayerId,
+					JSON.parse(configs),
+					internalUseDeckglLoader
+				);
+				fileLayerArr.push(_fileLayer);
+				fileLayerMap.set(fileLayerId, map.uniqueId);
+				map.addFileLayer(_fileLayer);
 
-			return _fileLayer;
+				return _fileLayer;
+			} else {
+				console.error(`There is already a FileLayer registered on the specified Map under id:${fileLayerId}`);
+				return undefined;
+			}
 		} else {
-			console.error(`There is already a FileLayer registered on the specified Map under id:${fileLayerId}`);
+			console.error(
+				`No Map was found for the FileLayer with id:${fileLayerId}. Please make sure the Map is rendered before creating the FileLayer.`
+			);
 			return undefined;
 		}
 	}
