@@ -2,19 +2,19 @@
 namespace OutSystems.Maps.MapAPI.FileLayerManager {
 	const fileLayerMap = new Map<string, string>(); //fileLayer.uniqueId -> map.uniqueId
 	const fileLayerArr = new Array<OSFramework.Maps.FileLayer.IFileLayer>();
+	let internalUseDeckglLoader = true;
 
 	/**
 	 * Gets the Map to which the FileLayer belongs to
 	 *
 	 * @param {string} fileLayerId Id of the FileLayer that exists on the Map
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	function GetMapByFileLayerId(fileLayerId: string): OSFramework.Maps.OSMap.IMap {
-		let map: OSFramework.Maps.OSMap.IMap;
+	function GetMapByFileLayerId(fileLayerId: string): OSFramework.Maps.OSMap.IMap | undefined {
+		let map: OSFramework.Maps.OSMap.IMap | undefined;
 
 		//fileLayerId is the UniqueId
 		if (fileLayerMap.has(fileLayerId)) {
-			map = MapManager.GetMapById(fileLayerMap.get(fileLayerId), false);
+			map = MapManager.GetMapById(fileLayerMap.get(fileLayerId)!, false);
 		}
 		//UniqueID not found
 		else {
@@ -42,7 +42,7 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
 	 */
 	export function ChangeProperty(fileLayerId: string, propertyName: string, propertyValue: unknown): void {
 		const fileLayer = GetFileLayerById(fileLayerId);
-		const map = fileLayer.map;
+		const map = fileLayer?.map;
 
 		if (map !== undefined) {
 			map.changeFileLayerProperty(fileLayerId, propertyName, propertyValue);
@@ -56,24 +56,42 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
 	 * @param {string} configs configurations for the FileLayer in JSON format
 	 * @returns {*}  {FileLayer.IFileLayer} instance of the FileLayer
 	 */
-	export function CreateFileLayer(fileLayerId: string, configs: string): OSFramework.Maps.FileLayer.IFileLayer {
+	export function CreateFileLayer(
+		fileLayerId: string,
+		configs: string
+	): OSFramework.Maps.FileLayer.IFileLayer | undefined {
 		const map = GetMapByFileLayerId(fileLayerId);
-		if (OSFramework.Maps.Helper.ValidateFeatureProvider(map, OSFramework.Maps.Enum.Feature.FileLayer) === false) {
-			return;
-		}
-		if (!map.hasFileLayer(fileLayerId)) {
-			const _fileLayer = Provider.Maps.Google.FileLayer.FileLayerFactory.MakeFileLayer(
-				map,
-				fileLayerId,
-				JSON.parse(configs)
+		if (
+			map &&
+			OSFramework.Maps.Helper.ValidateFeatureProvider(map, OSFramework.Maps.Enum.Feature.FileLayer) === false
+		) {
+			console.warn(
+				`The FileLayer with id:${fileLayerId} cannot be created because the provider of the map with id:${map.widgetId} doesn't support File Layers.`
 			);
-			fileLayerArr.push(_fileLayer);
-			fileLayerMap.set(fileLayerId, map.uniqueId);
-			map.addFileLayer(_fileLayer);
+			return undefined;
+		}
+		if (map) {
+			if (!map.hasFileLayer(fileLayerId)) {
+				const _fileLayer = OSFramework.Maps.FileLayer.FileLayerFactory.MakeFileLayer(
+					map,
+					fileLayerId,
+					JSON.parse(configs),
+					internalUseDeckglLoader
+				);
+				fileLayerArr.push(_fileLayer);
+				fileLayerMap.set(fileLayerId, map.uniqueId);
+				map.addFileLayer(_fileLayer);
 
-			return _fileLayer;
+				return _fileLayer;
+			} else {
+				console.error(`There is already a FileLayer registered on the specified Map under id:${fileLayerId}`);
+				return undefined;
+			}
 		} else {
-			console.error(`There is already a FileLayer registered on the specified Map under id:${fileLayerId}`);
+			console.error(
+				`No Map was found for the FileLayer with id:${fileLayerId}. Please make sure the Map is rendered before creating the FileLayer.`
+			);
+			return undefined;
 		}
 	}
 
@@ -83,8 +101,11 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
 	 * @export
 	 * @param fileLayerId Id of the FileLayer
 	 */
-	export function GetFileLayerById(fileLayerId: string, raiseError = true): OSFramework.Maps.FileLayer.IFileLayer {
-		const fileLayer: OSFramework.Maps.FileLayer.IFileLayer = fileLayerArr.find(
+	export function GetFileLayerById(
+		fileLayerId: string,
+		raiseError = true
+	): OSFramework.Maps.FileLayer.IFileLayer | undefined {
+		const fileLayer: OSFramework.Maps.FileLayer.IFileLayer | undefined = fileLayerArr.find(
 			(p) => p && p.equalsToID(fileLayerId)
 		);
 
@@ -102,7 +123,7 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
 	 */
 	export function RemoveFileLayer(fileLayerId: string): void {
 		const fileLayer = GetFileLayerById(fileLayerId);
-		const map = fileLayer.map;
+		const map = fileLayer?.map;
 
 		map && map.removeFileLayer(fileLayerId);
 		fileLayerMap.delete(fileLayerId);
@@ -112,6 +133,16 @@ namespace OutSystems.Maps.MapAPI.FileLayerManager {
 			}),
 			1
 		);
+	}
+
+	/**
+	 * Sets whether the FileLayerManager should use the deck.gl loader (loaders.gl + GeoJsonLayer)
+	 * or the native Google Maps KmlLayer to render KML files.
+	 *
+	 * @param {boolean} useDeckglLoader true (default) = deck.gl loader; false = Google KmlLayer
+	 */
+	export function SetUseDeckglLoader(useDeckglLoader = true): void {
+		internalUseDeckglLoader = useDeckglLoader;
 	}
 }
 
@@ -126,14 +157,20 @@ namespace MapAPI.FileLayerManager {
 		OutSystems.Maps.MapAPI.FileLayerManager.ChangeProperty(fileLayerId, propertyName, propertyValue);
 	}
 
-	export function CreateFileLayer(fileLayerId: string, configs: string): OSFramework.Maps.FileLayer.IFileLayer {
+	export function CreateFileLayer(
+		fileLayerId: string,
+		configs: string
+	): OSFramework.Maps.FileLayer.IFileLayer | undefined {
 		OSFramework.Maps.Helper.LogWarningMessage(
 			`${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.CreateFileLayer()'`
 		);
 		return OutSystems.Maps.MapAPI.FileLayerManager.CreateFileLayer(fileLayerId, configs);
 	}
 
-	export function GetFileLayerById(fileLayerId: string, raiseError = true): OSFramework.Maps.FileLayer.IFileLayer {
+	export function GetFileLayerById(
+		fileLayerId: string,
+		raiseError = true
+	): OSFramework.Maps.FileLayer.IFileLayer | undefined {
 		OSFramework.Maps.Helper.LogWarningMessage(
 			`${OSFramework.Maps.Helper.warningMessage} 'OutSystems.Maps.MapAPI.FileLayerManager.GetFileLayerById()'`
 		);

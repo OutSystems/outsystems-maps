@@ -32,23 +32,9 @@ namespace Provider.Layers.deckgl.HeatmapLayer {
 		private _gradientColors(): DeckglColor[] | undefined {
 			if (this.config.gradient.length === 0) return undefined;
 			return this.config.gradient.map((color) => {
-				if (color.hex?.startsWith('#')) return this._hexToRgba(color.hex);
+				if (color.hex?.startsWith('#')) return Helper.HexToRgba(color.hex);
 				return [color.red, color.green, color.blue, color.alpha];
 			});
-		}
-
-		/**
-		 * Converts a hex color to a rgba color.
-		 * @param hex - The hex color to convert.
-		 * @returns The rgba color.
-		 */
-		private _hexToRgba(hex: string): DeckglColor {
-			return [
-				Number.parseInt(hex.slice(1, 3), 16),
-				Number.parseInt(hex.slice(3, 5), 16),
-				Number.parseInt(hex.slice(5, 7), 16),
-				hex.length > 7 ? Number.parseInt(hex.slice(7, 9), 16) : 255,
-			];
 		}
 
 		/**

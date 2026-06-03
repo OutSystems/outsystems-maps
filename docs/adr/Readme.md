@@ -31,5 +31,5 @@ Each ADR should follow the template in `ADR-0000-Title-of-ADR.md`.
 | [ADR-0002](./ADR-0002-Replace-Google-DrawingManager-with-TerraDraw.md) | Replace Google DrawingManager with Terra Draw | Accepted | 2026-03-17 |
 | [ADR-0003](./ADR-0003-Replace-Google-HeatmapLayer-with-deck-gl.md) | Replace Google HeatmapLayer with deck.gl HeatmapLayer | Accepted | 2026-04-07 |
 | [ADR-0004](./ADR-0004-Fix-RespectUserZoom-Only-Breaking-Map-Center-Refresh.md) | Fix map center not refreshing when only respectUserZoom is active | Accepted | 2026-04-20 |
-| [ADR-0005](./ADR-0005-Self-Contained-Bundling-of-NPM-Only-Runtime-Libraries.md) | Self-contained bundling of npm-only runtime libraries via external_libs folder | Proposed | 2026-05-19 |
-| [ADR-0006](./ADR-0006-Replace-Google-KmlLayer-with-deck-gl-FileLayer.md) | Replace Google KmlLayer with deck.gl-based FileLayer | Proposed | 2026-05-19 |
+| [ADR-0005](./ADR-0005-Self-Contained-Bundling-of-NPM-Only-Runtime-Libraries.md) | Self-contained bundling of npm-only runtime libraries via external_libs folder | Accepted | 2026-05-19 |
+| [ADR-0006](./ADR-0006-Replace-Google-KmlLayer-with-deck-gl-FileLayer.md) | Replace Google KmlLayer with deck.gl-based FileLayer | Accepted | 2026-05-19 |
