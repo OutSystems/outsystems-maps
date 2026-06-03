@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Layers.deckgl.Helper {
     export function HexToRgba(hex: string): DeckglColor {
         return [
