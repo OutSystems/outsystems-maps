@@ -1,6 +1,5 @@
 /// <reference path="../../../../../OSFramework/Maps/Configuration/AbstractConfiguration.ts" />
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Provider.Layers.deckgl.Configuration.FileLayer {
 	export class FileLayerConfig
 		extends OSFramework.Maps.Configuration.AbstractConfiguration
