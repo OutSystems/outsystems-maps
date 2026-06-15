@@ -22,6 +22,7 @@ namespace Provider.Maps.Google.Feature {
 			this._currRouteTime = 0;
 			this._currRouteLegs = [];
 			this._retriveLegsFromRoute = false;
+			this._waypoints = [];
 			this._directionsRenderer = new DirectionsRenderer(map);
 		}
 
@@ -71,7 +72,7 @@ namespace Provider.Maps.Google.Feature {
 		): Types.RoutesRequestBody {
 			const isOriginCoordinate = Helper.TypeChecker.IsValidCoordinates(directionOptions.originRoute);
 			const isDestinationCoordinate = Helper.TypeChecker.IsValidCoordinates(directionOptions.destinationRoute);
-			this._waypoints = directionOptions.waypoints;
+			this._waypoints = directionOptions.waypoints ?? [];
 
 			const requestBody: Types.RoutesRequestBody = {
 				origin: {
@@ -90,7 +91,7 @@ namespace Provider.Maps.Google.Feature {
 						: undefined,
 					address: isDestinationCoordinate ? undefined : directionOptions.destinationRoute,
 				},
-				intermediates: this._waypointsCleanup(directionOptions.waypoints),
+				intermediates: this._waypointsCleanup(this._waypoints),
 				travelMode: this._convertTravelMode(directionOptions.travelMode),
 				routingPreference: directionOptions.travelMode === 'DRIVING' ? 'TRAFFIC_UNAWARE' : undefined,
 				routeModifiers: {
