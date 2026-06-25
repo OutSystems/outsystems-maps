@@ -50,6 +50,6 @@ namespace Provider.Maps.Google {
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const style = Style[OSFramework.Maps.Enum.OSMap.Style[id - 1]].style.replace(/'/g, '"');
 		// Parse to JSON and return the value
-		return style !== '' ? JSON.parse(style) : '';
+		return style !== '' ? JSON.parse(style) : [];
 	}
 }
