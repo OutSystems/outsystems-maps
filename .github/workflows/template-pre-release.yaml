@@ -107,7 +107,7 @@ jobs:
 
             - name: 🔐 Azure login
               #uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-login@9d497d1c5bc6e355aa8f4663539e6b75c212f6b4 #v2.0.7
-              uses: ./.github/actions/az-login
+              uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-login@c8485a9aece78d1de3c56451a0a7a2cab0fb3212 #v2.0.9
               with:
                   client-id: ${{ secrets.OSUI_AZURE_CLIENT_ID }}
                   tenant-id: ${{ secrets.OSUI_AZURE_TENANT_ID }}
@@ -116,7 +116,7 @@ jobs:
             - name: 🔑 Get GitHub Token
               id: get-github-token
               #uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-keyvault-get@9d497d1c5bc6e355aa8f4663539e6b75c212f6b4 #v2.0.7
-              uses: ./.github/actions/az-keyvault-get
+              uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-keyvault-get@c8485a9aece78d1de3c56451a0a7a2cab0fb3212 #v2.0.9
               with:
                   key-name: o11odc-github-gitpersonal-token-prd
 
@@ -158,7 +158,7 @@ jobs:
 
             - name: 🔐 Azure login
               #uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-login@9d497d1c5bc6e355aa8f4663539e6b75c212f6b4 #v2.0.7
-              uses: ./.github/actions/az-login
+              uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-login@c8485a9aece78d1de3c56451a0a7a2cab0fb3212 #v2.0.9
               with:
                   client-id: ${{ secrets.OSUI_AZURE_CLIENT_ID }}
                   tenant-id: ${{ secrets.OSUI_AZURE_TENANT_ID }}
@@ -167,7 +167,7 @@ jobs:
             - name: 🔑 Get GitHub Token
               id: get-github-token
               #uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-keyvault-get@9d497d1c5bc6e355aa8f4663539e6b75c212f6b4 #v2.0.7
-              uses: ./.github/actions/az-keyvault-get
+              uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-keyvault-get@c8485a9aece78d1de3c56451a0a7a2cab0fb3212 #v2.0.9
               with:
                   key-name: o11odc-github-gitpersonal-token-prd
 
@@ -197,7 +197,7 @@ jobs:
 
             - name: 🔐 Azure login
               #uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-login@9d497d1c5bc6e355aa8f4663539e6b75c212f6b4 #v2.0.7
-              uses: ./.github/actions/az-login
+              uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-login@c8485a9aece78d1de3c56451a0a7a2cab0fb3212 #v2.0.9
               with:
                   client-id: ${{ secrets.OSUI_AZURE_CLIENT_ID }}
                   tenant-id: ${{ secrets.OSUI_AZURE_TENANT_ID }}
@@ -206,7 +206,7 @@ jobs:
             - name: 🔑 Get GitHub Token
               id: get-github-token
               #uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-keyvault-get@9d497d1c5bc6e355aa8f4663539e6b75c212f6b4 #v2.0.7
-              uses: ./.github/actions/az-keyvault-get
+              uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-keyvault-get@c8485a9aece78d1de3c56451a0a7a2cab0fb3212 #v2.0.9
               with:
                   key-name: o11odc-github-gitpersonal-token-prd
 
@@ -237,7 +237,7 @@ jobs:
 
             - name: 🔐 Azure login
               #uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-login@9d497d1c5bc6e355aa8f4663539e6b75c212f6b4 #v2.0.7
-              uses: ./.github/actions/az-login
+              uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-login@c8485a9aece78d1de3c56451a0a7a2cab0fb3212 #v2.0.9
               with:
                   client-id: ${{ secrets.OSUI_AZURE_CLIENT_ID }}
                   tenant-id: ${{ secrets.OSUI_AZURE_TENANT_ID }}
@@ -246,7 +246,7 @@ jobs:
             - name: 🔑 Get GitHub Token
               id: get-github-token
               #uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-keyvault-get@9d497d1c5bc6e355aa8f4663539e6b75c212f6b4 #v2.0.7
-              uses: ./.github/actions/az-keyvault-get
+              uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-keyvault-get@c8485a9aece78d1de3c56451a0a7a2cab0fb3212 #v2.0.9
               with:
                   key-name: o11odc-github-gitpersonal-token-prd
 
@@ -288,7 +288,7 @@ jobs:
 
             - name: 🔐 Azure login
               #uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-login@9d497d1c5bc6e355aa8f4663539e6b75c212f6b4 #v2.0.7
-              uses: ./.github/actions/az-login
+              uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-login@c8485a9aece78d1de3c56451a0a7a2cab0fb3212 #v2.0.9
               with:
                   client-id: ${{ secrets.OSUI_AZURE_CLIENT_ID }}
                   tenant-id: ${{ secrets.OSUI_AZURE_TENANT_ID }}
@@ -297,7 +297,7 @@ jobs:
             - name: 🔑 Get GitHub Token
               id: get-github-token
               #uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-keyvault-get@9d497d1c5bc6e355aa8f4663539e6b75c212f6b4 #v2.0.7
-              uses: ./.github/actions/az-keyvault-get
+              uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-keyvault-get@c8485a9aece78d1de3c56451a0a7a2cab0fb3212 #v2.0.9
               with:
                   key-name: o11odc-github-gitpersonal-token-prd
           
@@ -347,7 +347,7 @@ jobs:
             - name: 🔑 Get GPG Passphrase from Azure Key Vault
               id: GetGPGPassphrase
               #uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-keyvault-get@9d497d1c5bc6e355aa8f4663539e6b75c212f6b4 #v2.0.7
-              uses: ./.github/actions/az-keyvault-get
+              uses: OutSystems/rd.github-reusable-workflows/.github/actions/az-keyvault-get@c8485a9aece78d1de3c56451a0a7a2cab0fb3212 #v2.0.9
               with:
                   key-name: o11odc-github-gpg-passphrase-prd
 
