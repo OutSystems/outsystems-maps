@@ -84,4 +84,5 @@ namespace OSFramework.Maps.Helper.Constants {
 
 	/** Default/Custom cluster icon CSS class */
 	export const clusterIconCSSClass = 'custom-clustericon';
+	// Test comment
 }
