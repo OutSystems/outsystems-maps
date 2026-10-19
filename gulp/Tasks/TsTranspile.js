@@ -1,8 +1,7 @@
-const gulp = require('gulp');
 const { series } = require('gulp');
 const fs = require('fs');
-const sourcemaps = require('gulp-sourcemaps');
-const ts = require('gulp-typescript');
+const path = require('node:path');
+const ts = require('typescript');
 
 const distFolder = './dist';
 const project = require('../DefaultSpecs');
@@ -53,6 +52,22 @@ function rollBackTsConfigFile() {
 	defaultTsConfigText = '';
 }
 
+function formatDiagnostics(diagnostics) {
+	const formatHost = {
+		getCanonicalFileName: (fileName) => fileName,
+		getCurrentDirectory: ts.sys.getCurrentDirectory,
+		getNewLine: () => ts.sys.newLine,
+	};
+
+	diagnostics.forEach((diagnostic) => {
+		console.error(ts.formatDiagnosticWithColorAndContext(diagnostic, formatHost));
+	});
+}
+
+function hasCompilationErrors(diagnostics) {
+	return diagnostics.some((diagnostic) => diagnostic.category === ts.DiagnosticCategory.Error);
+}
+
 // Compile TypeScript
 function tsTranspile(cb, envMode, platformType) {
 	// Store the default platformType
@@ -87,39 +102,63 @@ function tsTranspile(cb, envMode, platformType) {
 }
 
 // Method that will trigger the transpile of Ts according if it's development or production mode and platform type (O11 or ODC)
-async function tsTranspileBasedOnPlatform(cb, envMode, platformType, shouldCreateAll) {
-	let tsProject = ts.createProject('tsconfig.json', {
-		outDir: distFolder,
-		declaration: envMode === project.globalConsts.envType.production ? true : false,
-		outFile: `${envMode === project.globalConsts.envType.production ? '' : envMode + '.'}${
-			platformType !== '' ? platformType + '.' : ''
-		}${project.globalConsts.fileName}.js`,
-	});
+function tsTranspileBasedOnPlatform(cb, envMode, platformType, shouldCreateAll) {
+	const outFileName = `${envMode === project.globalConsts.envType.production ? '' : envMode + '.'}${
+		platformType !== '' ? platformType + '.' : ''
+	}${project.globalConsts.fileName}.js`;
+	const configPath = path.resolve('tsconfig.json');
+	const configFile = ts.readConfigFile(configPath, ts.sys.readFile);
 
-	if (envMode === project.globalConsts.envType.development) {
-		tsProject
-			.src()
-			.pipe(sourcemaps.init())
-			.pipe(tsProject())
-			.js.pipe(sourcemaps.write('.'))
-			.pipe(gulp.dest(distFolder))
-			.on('finish', () => {
-				onTsCompileFinish(platformType, cb, shouldCreateAll);
-			});
-	} else {
-		tsProject
-			.src()
-			.pipe(tsProject())
-			.pipe(gulp.dest(distFolder))
-			.on('finish', () => {
-				onTsCompileFinish(platformType, cb, shouldCreateAll);
-			});
+	if (configFile.error) {
+		formatDiagnostics([configFile.error]);
+		if (defaultTsConfigText !== '') {
+			rollBackTsConfigFile();
+		}
+		cb(new Error('Failed to read tsconfig.json'));
+		return;
 	}
 
-	// Rollback tsconfig file to the default state
+	const parsedConfig = ts.parseJsonConfigFileContent(
+		configFile.config,
+		ts.sys,
+		path.dirname(configPath),
+		{
+			outFile: path.join(distFolder, outFileName),
+			declaration: envMode === project.globalConsts.envType.production,
+			sourceMap: envMode === project.globalConsts.envType.development,
+		},
+		configPath
+	);
+
+	const compilerHost = ts.createCompilerHost(parsedConfig.options, true);
+	const program = ts.createProgram({
+		rootNames: parsedConfig.fileNames,
+		options: parsedConfig.options,
+		host: compilerHost,
+	});
+
+	const emitResult = program.emit();
+	const diagnostics = [
+		...parsedConfig.errors,
+		...program.getSemanticDiagnostics(),
+		...program.getDeclarationDiagnostics(),
+		...emitResult.diagnostics,
+	];
+
+	if (diagnostics.length > 0) {
+		formatDiagnostics(diagnostics);
+	}
+
 	if (defaultTsConfigText !== '') {
 		rollBackTsConfigFile();
 	}
+
+	if (hasCompilationErrors(diagnostics)) {
+		cb(new Error('TypeScript compilation failed'));
+		return;
+	}
+
+	onTsCompileFinish(platformType, cb, shouldCreateAll);
 }
 
 // Set as Development Mode
