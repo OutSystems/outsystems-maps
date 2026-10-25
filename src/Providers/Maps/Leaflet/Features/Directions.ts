@@ -36,8 +36,8 @@ namespace Provider.Maps.Leaflet.Feature {
 			this._isEnabled = false;
 			//Let's make sure to reset the currentDistance and currentDuration with the values NaN.
 			//By making this, we ensure any time the GetDistance and GetDuration methods get invoked, they will make a new request.
-			this._currentDistance = NaN;
-			this._currentDuration = NaN;
+			this._currentDistance = Number.NaN;
+			this._currentDuration = Number.NaN;
 
 			this._bindSetRoute = this._routeOutcomeHandler.bind(
 				this,
@@ -287,7 +287,7 @@ namespace Provider.Maps.Leaflet.Feature {
 			return new Promise((resolve) => {
 				// If there currentDistance is not NaN, this means it already has a value and the directions didn't change,
 				// so we can resolve the Promise with the same distance we had before
-				if (isNaN(this._currentDistance)) {
+				if (Number.isNaN(this._currentDistance)) {
 					this._waitForRouteTotal(resolve, ResolveType.GetDistance);
 				} else {
 					resolve(this._currentDistance);
@@ -307,7 +307,7 @@ namespace Provider.Maps.Leaflet.Feature {
 			return new Promise((resolve) => {
 				// If there currentDuration is not NaN, this means it already has a value and the directions didn't change,
 				// so we can resolve the Promise with the same duration we had before
-				if (isNaN(this._currentDuration)) {
+				if (Number.isNaN(this._currentDuration)) {
 					this._waitForRouteTotal(resolve, ResolveType.GetDuration);
 				} else {
 					resolve(this._currentDuration);
@@ -375,8 +375,8 @@ namespace Provider.Maps.Leaflet.Feature {
 			const previousDuration = this._currentDuration;
 			//Let's make sure to reset the currentDistance and currentDuration with the values NaN.
 			//By making this, we ensure any time the GetDistance and GetDuration methods get invoked, they will wait for the new route.
-			this._currentDistance = NaN;
-			this._currentDuration = NaN;
+			this._currentDistance = Number.NaN;
+			this._currentDuration = Number.NaN;
 
 			this._onRouteOutcome(this._bindSetRoute);
 
