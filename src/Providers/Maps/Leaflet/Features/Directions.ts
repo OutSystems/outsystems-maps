@@ -216,8 +216,8 @@ namespace Provider.Maps.Leaflet.Feature {
 		 * If the route totals are still unknown they become 0, as there is no route.
 		 */
 		private _settlePendingTotals(): void {
-			if (isNaN(this._currentDistance)) this._currentDistance = 0;
-			if (isNaN(this._currentDuration)) this._currentDuration = 0;
+			if (Number.isNaN(this._currentDistance)) this._currentDistance = 0;
+			if (Number.isNaN(this._currentDuration)) this._currentDuration = 0;
 			// Copy the array, as each listener removes itself from it
 			[...this._pendingTotalListeners].forEach((listener) => listener(undefined));
 		}
@@ -408,7 +408,7 @@ namespace Provider.Maps.Leaflet.Feature {
 					// otherwise a previous route request is still in progress and will answer them.
 					this._currentDistance = previousDistance;
 					this._currentDuration = previousDuration;
-					isNaN(previousDistance) === false && this._settlePendingTotals();
+					Number.isNaN(previousDistance) === false && this._settlePendingTotals();
 					returningMessage = {
 						code: error.code,
 						message: error.message,
