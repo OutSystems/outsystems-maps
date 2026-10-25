@@ -166,7 +166,7 @@ Document all public APIs using JSDoc comments. VS Code's "Document This" extensi
 
 **Architectural Decision Records:**
 
-Architectural decisions are documented in `docs/adr/`. Follow the template in `docs/adr/ADR-0000-Title-of-ADR.md` when creating new ADRs.
+Architectural decisions are documented in `docs-internal/adr/`. Follow the template in `docs-internal/adr/ADR-0000-Title-of-ADR.md` when creating new ADRs.
 
 ## Common Patterns
 

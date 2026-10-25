@@ -123,7 +123,7 @@ See [CONTRIBUTING.md Code Standards section](./.github/CONTRIBUTING.md#code-stan
 
 Document public APIs with JSDoc comments. Type `/**` above functions for templates (VS Code "Document This" extension).
 
-Architectural decisions documented in `docs/adr/`. Use `docs/adr/ADR-0000-Title-of-ADR.md` as template. Existing ADRs:
+Architectural decisions documented in `docs-internal/adr/`. Use `docs-internal/adr/ADR-0000-Title-of-ADR.md` as template. Existing ADRs:
 - `ADR-0001-Google-Markers-Draw-Performance.md` - Disables draw during marker addition but keeps repaint after addition to optimize marker clustering performance
 
 ## PR Requirements
