@@ -13,4 +13,14 @@ namespace Provider.Maps.Leaflet.Feature {
 		setWaypoints(waypoints: unknown[]): unknown;
 		spliceWaypoints(index: number, waypointsToRemove: number, ...wayPoints: unknown[]): unknown[];
 	}
+
+	/** Structure of the routingerror event of the leaflet-routing-machine control (L.Routing.RoutingErrorEvent) */
+	export interface IRoutingErrorEvent {
+		error?: { message?: string; status?: number | string };
+	}
+
+	/** Structure of the routesfound event of the leaflet-routing-machine control (L.Routing.RoutingResultEvent) */
+	export interface IRoutingResultEvent {
+		routes: [{ summary: { totalDistance: number; totalTime: number } }];
+	}
 }

@@ -123,8 +123,14 @@ See [CONTRIBUTING.md Code Standards section](./.github/CONTRIBUTING.md#code-stan
 
 Document public APIs with JSDoc comments. Type `/**` above functions for templates (VS Code "Document This" extension).
 
-Architectural decisions documented in `docs/adr/`. Use `docs/adr/ADR-0000-Title-of-ADR.md` as template. Existing ADRs:
+Architectural decisions documented in `docs-internal/adr/`. Use `docs-internal/adr/ADR-0000-Title-of-ADR.md` as template. Existing ADRs:
 - `ADR-0001-Google-Markers-Draw-Performance.md` - Disables draw during marker addition but keeps repaint after addition to optimize marker clustering performance
+- `ADR-0002-Replace-Google-DrawingManager-with-TerraDraw.md` - Replaces the Google DrawingManager with Terra Draw
+- `ADR-0003-Replace-Google-HeatmapLayer-with-deck-gl.md` - Replaces the Google HeatmapLayer with the deck.gl HeatmapLayer
+- `ADR-0004-Fix-RespectUserZoom-Only-Breaking-Map-Center-Refresh.md` - Fixes the map center not refreshing when only respectUserZoom is active
+- `ADR-0005-Self-Contained-Bundling-of-NPM-Only-Runtime-Libraries.md` - Bundles npm-only runtime libraries through the `external_libs` folder
+- `ADR-0006-Replace-Google-KmlLayer-with-deck-gl-FileLayer.md` - Replaces the Google KmlLayer with a deck.gl-based FileLayer
+- `ADR-0007-Fix-Leaflet-Directions-Route-Request-Lifecycle.md` - Leaflet Directions: cancels in-flight route requests before removing the control, one request per SetDirections, routing errors raise OnError once and never leave GetTotalDistance/Duration waiting
 
 ## PR Requirements
 

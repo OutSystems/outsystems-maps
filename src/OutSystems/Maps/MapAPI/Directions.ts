@@ -11,6 +11,8 @@ namespace OutSystems.Maps.MapAPI.Directions {
 
 	/**
 	 * Function that will calculate the total distance of the direction that is rendered on the Map.
+	 * With Leaflet, it returns 0 when the routing service failed to calculate the direction or when the direction got removed while being calculated.
+	 * A failure is only reported once, by the Map OnError event raised when the routing fails, so this function doesn't raise it again.
 	 * @param mapId Id of the Map where the total distance of the direction will be calculated.
 	 */
 	export function GetTotalDistanceFromDirection(mapId: string): Promise<number> {
@@ -20,6 +22,8 @@ namespace OutSystems.Maps.MapAPI.Directions {
 
 	/**
 	 * Function that will calculate the total duration of the direction that is rendered on the Map.
+	 * With Leaflet, it returns 0 when the routing service failed to calculate the direction or when the direction got removed while being calculated.
+	 * A failure is only reported once, by the Map OnError event raised when the routing fails, so this function doesn't raise it again.
 	 * @param mapId Id of the Map where the total duration of the direction will be calculated.
 	 */
 	export function GetTotalDurationFromDirection(mapId: string): Promise<number> {
@@ -47,6 +51,8 @@ namespace OutSystems.Maps.MapAPI.Directions {
 
 	/**
 	 * Function that will calculate directions and create the route based on an start and end locations.
+	 * With Leaflet, the result only covers the options validation, as it is returned when the route request starts.
+	 * Routing failures (eg: no route found, network error) are reported later through the Map OnError event (MAPS-LIB-04001), raised once per failed route.
 	 * @param mapId Id of the Map where the direction will be calculated.
 	 * @param options Defines the stringified options from which to calculate directions. (contains origin, destination, travelMode, waypoints, optimizeWaypoints and avoidance criteria)
 	 */

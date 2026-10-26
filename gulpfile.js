@@ -15,11 +15,13 @@ const serverPort = 3000;
 const watchTsFiles = 'src/**/*.ts';
 
 // Clean Dist Folder
-function cleanOldFiles(cb) {
-	if (fs.existsSync(distFolder)) {
-		gulp.src(distFolder + '/*', { read: false }).pipe(clean());
+function cleanOldFiles() {
+	if (fs.existsSync(distFolder) === false) {
+		return Promise.resolve();
 	}
-	cb();
+
+	// Return the stream so gulp waits for the deletion before the (synchronous) TS emit writes into dist
+	return gulp.src(distFolder + '/*', { read: false, allowEmpty: true }).pipe(clean());
 }
 
 // Starts a Browser instance
