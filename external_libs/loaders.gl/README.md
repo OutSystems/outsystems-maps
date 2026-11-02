@@ -2,17 +2,18 @@
 
 This sub-project builds a standalone bundle of `@loaders.gl/core`, and `@loaders.gl/kml` that is checked in and consumed by the main library at runtime.
 
-## Why different versions?
+## Keeping versions aligned
 
-The root `package.json` pins `@loaders.gl/core` and `@loaders.gl/kml` to **4.3.4** because `@deck.gl/layers@9.2.11` declares a peer dependency of `@loaders.gl/core@~4.3.4`. Installing any 4.4.x version in the root causes npm to throw an `ERESOLVE` conflict and block `npm install`.
+The root `package.json` also lists `@loaders.gl/core` and `@loaders.gl/kml`, for TypeScript types only. Keep them on the same version as this bundle. The root version must also satisfy the `@loaders.gl/core` peer range of `@deck.gl/layers` (`^4.4.3` for deck.gl 9.4.x), otherwise `npm install` fails with `ERESOLVE`.
 
+The `@xmldom/xmldom` override is a security fix. Keep it on the latest patch when you update this bundle.
 
 ## Version summary
 
 | Context | Version | Purpose |
 |---|---|---|
-| Root `devDependencies` | 4.3.4 | TypeScript types / IDE tooling only |
-| `external_libs/loaders.gl/` | 4.4.2 | Actual runtime bundle |
+| Root `devDependencies` | 4.5.4 | TypeScript types / IDE tooling only |
+| `external_libs/loaders.gl/` | 4.5.4 | Actual runtime bundle |
 
 ## Runtime side effects
 
