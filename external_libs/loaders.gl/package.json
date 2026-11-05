@@ -1,14 +1,14 @@
 {
   "name": "loaders-gl-bundle",
-  "version": "4.4.2",
+  "version": "4.5.4",
   "private": true,
   "scripts": {
     "build": "rollup -c rollup.config.mjs"
   },
   "dependencies": {
-    "@loaders.gl/core": "4.4.2",
-    "@loaders.gl/kml": "4.4.2",
-    "@loaders.gl/xml": "4.4.2"
+    "@loaders.gl/core": "4.5.4",
+    "@loaders.gl/kml": "4.5.4",
+    "@loaders.gl/xml": "4.5.4"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "28.0.3",
@@ -17,7 +17,7 @@
     "rollup": "4.40.2"
   },
   "overrides": {
-    "@xmldom/xmldom": "0.9.10"
+    "@xmldom/xmldom": "0.9.12"
   },
   "volta": {
     "node": "24.13.1",
