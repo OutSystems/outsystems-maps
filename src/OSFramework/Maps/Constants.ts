@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace OSFramework.Maps.Constants {
 	/* OutSystems Maps Version */
-	export const OSMapsVersion = '2.3.1';
+	export const OSMapsVersion = '2.3.2';
 
 	/**
 	 * Maps Set OutSystems platform in use (O11/ODC).

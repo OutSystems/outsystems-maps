@@ -7,3 +7,6 @@ package-lock.json
 
 !docs/Licenses
 !docs/README.md
+!external_libs/**/dist
+!external_libs/**/dist/**
+!external_libs/**/package-lock.json

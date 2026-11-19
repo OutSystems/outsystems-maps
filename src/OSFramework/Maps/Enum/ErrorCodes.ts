@@ -43,6 +43,7 @@ namespace OSFramework.Maps.Enum {
 		LIB_FailedSetDirections = 'MAPS-LIB-04001',
 		LIB_FailedGeocodingShapeLocations = 'MAPS-LIB-05001',
 		LIB_FailedGeocodingLeafletShapeLocations = 'MAPS-LIB-05002',
+		LIB_FailedLoadingFileLayer = 'MAPS-LIB-07001',
 		LIB_InvalidApiKeySearchPlaces = 'MAPS-LIB-10001',
 		LIB_FailedGeocodingSearchAreaLocations = 'MAPS-LIB-10002',
 		LIB_FailedGeocodingLeafletMap = 'MAPS-LIB-11001',

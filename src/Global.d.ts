@@ -7,6 +7,9 @@ import type {
     Algorithm as OriginalAlgorithm
 } from '@googlemaps/markerclusterer';
 import type * as TerraDrawLib from 'terra-draw';
+import type { load as LoadersGlLoad } from '@loaders.gl/core';
+import type { KMLLoader as OriginalKMLLoader } from '@loaders.gl/kml';
+import type { GeoJsonLayer as OriginalDeckglGeoJsonLayer, GeoJsonLayerProps as OriginalDeckglGeoJsonLayerProps } from '@deck.gl/layers';
 import type {
     Color as OriginalDeckglColor
 } from '@deck.gl/core';
@@ -34,8 +37,13 @@ declare global {
             }) => TerraDrawLib.TerraDrawExtend.TerraDrawBaseAdapter;
         };
         deck: {
+            GeoJsonLayer: typeof OriginalDeckglGeoJsonLayer;
             HeatmapLayer: typeof OriginalDeckglHeatmapLayer;
             GoogleMapsOverlay: typeof OriginalGoogleMapsOverlay;
+        };
+        loaders: {
+            load: typeof LoadersGlLoad;
+            KMLLoader: typeof OriginalKMLLoader;
         };
     }
     //The types below, are useful for TypeScript intellisense.
@@ -75,5 +83,8 @@ declare global {
     type DeckglHeatmapLayer = OriginalDeckglHeatmapLayer;
     type DeckglColor = OriginalDeckglColor;
     type DeckglGoogleMapsOverlay = OriginalGoogleMapsOverlay;
+    type DeckglGeoJsonLayer = OriginalDeckglGeoJsonLayer;
+    type DeckglGeoJsonLayerData = OriginalDeckglGeoJsonLayerProps['data'];
+    type DeckglKmlLayer = OriginalKMLLoader;
 }
 window.GMCB = window.GMCB || {};
