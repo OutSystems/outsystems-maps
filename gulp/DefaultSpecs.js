@@ -19,7 +19,7 @@ const constants = {
 
 // Store the default project specifications
 const specs = {
-	version: '2.4.1',
+	version: '2.6.0',
 	name: 'OutSystems Maps',
 	description: '',
 	url: 'Website:\n • ' + constants.websiteUrl,
